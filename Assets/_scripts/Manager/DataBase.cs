@@ -71,7 +71,7 @@ public class DataBase : MonoBehaviour
             List<Item> searchList = new List<Item>();
             foreach (Item x in list)
             {
-                if (x.label.StartsWith(s))
+                if (x.label.Contains(s))
                     searchList.Add(x);
             }
             for (int i = 0; i < searchList.Count && i < 5; i++)

@@ -29,7 +29,6 @@ public class BuilderManager : MonoBehaviour
     public List<Box> boxList;
     public List<Skill> skillList;
     public List<Skill> saveList;
-    public List<Button> buttons;
     public InputField playerName;
     public InputField className;
     public InputField level;

@@ -41,9 +41,7 @@ public class Manager : MonoBehaviour
     public GameObject speedObj;
     public List<InputField> money;
     public List<InputField> moneyAdd;
-    public List<Button> buttons;
-    public CinemachineVirtualCamera camera;
-    public Text head;
+    
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
     Dictionary<int, int> _charModifier = new Dictionary<int, int>();
     Dictionary<int, int> _charSkill = new Dictionary<int, int>();
@@ -272,38 +270,7 @@ public class Manager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void ChangePanel(GameObject panel)
-    {
-        switch (panel.name)
-        {
-            case "Inventory":
-                head.text = "Инвентарь";
-                break;
-            case "Main":
-                head.text = "Главный Экран";
-                break;
-            case "Skills":
-                head.text = "Навыки";
-                break;
-        }
-        camera.Follow = panel.transform;
-    }
-
-    public void DeactivateButton(Button button)
-    {
-        foreach (Button x in buttons)
-        {
-
-            if (x == button)
-            {
-                x.interactable = false;
-            }
-            else
-            {
-                x.interactable = true;
-            }
-        }
-    }
+    
 
     public void LoadBuilder()
     {
