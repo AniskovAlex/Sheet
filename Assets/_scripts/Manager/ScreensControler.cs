@@ -66,7 +66,7 @@ public class ScreensControler : MonoBehaviour
                 int index = screens.FindIndex(x => x == vCam.Follow.gameObject) + 1;
                 if (index < screens.Count)
                 {
-                    vCam.Follow = screens[index].transform;
+                    ChangePanel(screens[index]);
                     DeactivateButton(buttons[index]);
                 }
             }
@@ -75,7 +75,7 @@ public class ScreensControler : MonoBehaviour
                 int index = screens.FindIndex(x => x == vCam.Follow.gameObject) - 1;
                 if (index >= 0)
                 {
-                    vCam.Follow = screens[index].transform;
+                    ChangePanel(screens[index]);
                     DeactivateButton(buttons[index]);
                 }
             }

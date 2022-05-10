@@ -1826,7 +1826,7 @@ MonoBehaviour:
   - {fileID: 1786085637}
   - {fileID: 1981381924}
   head: {fileID: 14159355}
-  velocity: 1
+  velocity: 0.5
 --- !u!4 &97093329
 Transform:
   m_ObjectHideFlags: 0
@@ -3087,12 +3087,6 @@ MonoBehaviour:
   - {fileID: 332226865}
   - {fileID: 1175968193}
   - {fileID: 452276315}
-  buttons:
-  - {fileID: 1417332756}
-  - {fileID: 1786085637}
-  - {fileID: 1981381924}
-  camera: {fileID: 986822477}
-  head: {fileID: 14159355}
 --- !u!4 &167414103
 Transform:
   m_ObjectHideFlags: 0
@@ -22875,7 +22869,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0423"
+  m_Text: "\u041D"
 --- !u!222 &1749465583
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25425,7 +25419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 171.98999, y: 74.84999}
+  m_AnchoredPosition: {x: 172, y: 74.84999}
   m_SizeDelta: {x: 166.29999, y: 150.30008}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1981381924

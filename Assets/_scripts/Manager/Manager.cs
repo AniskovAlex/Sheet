@@ -41,7 +41,7 @@ public class Manager : MonoBehaviour
     public GameObject speedObj;
     public List<InputField> money;
     public List<InputField> moneyAdd;
-    
+
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
     Dictionary<int, int> _charModifier = new Dictionary<int, int>();
     Dictionary<int, int> _charSkill = new Dictionary<int, int>();
@@ -220,44 +220,102 @@ public class Manager : MonoBehaviour
         PlayerPrefs.SetInt(moneySaveName + x.index, moneyInt);
         PlayerPrefs.Save();
     }
+
     public void MoneyCon()
     {
-        foreach (InputField x in money)
+        List<(int, int)> m = new List<(int, int)>();
+        InputField x;
+        for (int index = 0; index < money.Count; index++)
         {
-            int moneyInt;
-            int moneyAddInt;
-            int moneyIndex = money.IndexOf(x);
-            if (int.TryParse(x.text, out moneyInt) && int.TryParse(moneyAdd[moneyIndex].text, out moneyAddInt))
+            x = money[index];
+            int moneyInt = 0;
+            int moneyAddInt = 0;
+            int.TryParse(x.text, out moneyInt);
+            int.TryParse(moneyAdd[index].text, out moneyAddInt);
+            m.Add((moneyInt, moneyAddInt));
+            moneyAdd[index].text = "";
+        }
+        bool flag = false;
+        for (int index = 0; index < m.Count; index++)
+        {
+            int diver = m[index].Item1 - m[index].Item2;
+            if (diver < 0)
             {
-                moneyInt -= moneyAddInt;
-                if (moneyInt < 0)
-                    moneyInt = 0;
-                x.text = moneyInt.ToString();
-                string saveName = moneySaveName + moneyIndex;
-                PlayerPrefs.SetInt(saveName, moneyInt);
+                if (index != 0 && !flag)
+                {
+                    (int, int) buf2 = m[index];
+                    buf2.Item1 += 10;
+                    m[index] = buf2;
+                    index--;
+                    buf2 = m[index];
+                    buf2.Item2 += 1;
+                    m[index] = buf2;
+                    index--;
+                }
+                else
+                {
+                    flag = true;
+                    /*(int, int) buf2 = m[index];
+                    buf2.Item1 = 0;
+                    m[index] = buf2;*/
+                }
             }
-            moneyAdd[moneyIndex].text = "";
+            else
+            {
+                (int, int) buf2 = m[index];
+                buf2.Item1 = diver;
+                buf2.Item2 = 0;
+                m[index] = buf2;
+            }
 
+        }
+        for (int index = 0; index < money.Count; index++)
+        {
+            x = money[index];
+            x.text = m[index].Item1.ToString();
+            string saveName = moneySaveName + index;
+            PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
         PlayerPrefs.Save();
     }
     public void MoneyPlus()
     {
-        foreach (InputField x in money)
+        List<(int, int)> m = new List<(int, int)>();
+        InputField x;
+        for (int index = 0; index < money.Count; index++)
         {
-            int moneyInt;
-            int moneyAddInt;
-            int moneyIndex = money.IndexOf(x);
-            if (int.TryParse(x.text, out moneyInt) && int.TryParse(moneyAdd[moneyIndex].text, out moneyAddInt))
+            x = money[index];
+            int moneyInt = 0;
+            int moneyAddInt = 0;
+            int.TryParse(x.text, out moneyInt);
+            int.TryParse(moneyAdd[index].text, out moneyAddInt);
+            m.Add((moneyInt, moneyAddInt));
+            moneyAdd[index].text = "";
+        }
+        for (int index = m.Count - 1; index >= 0; index--)
+        {
+            int diver = m[index].Item1 + m[index].Item2;
+            if (diver >= 10 && index != 0)
             {
-                moneyInt += moneyAddInt;
-                if (moneyInt > 999999)
-                    moneyInt = 999999;
-                x.text = moneyInt.ToString();
-                string saveName = moneySaveName + moneyIndex;
-                PlayerPrefs.SetInt(saveName, moneyInt);
+                int extra = diver / 10;
+                diver %= 10;
+                (int, int) buf2 = m[index];
+                buf2.Item1 = diver;
+                m[index] = buf2;
+                buf2 = m[index - 1];
+                buf2.Item2 += extra;
+                m[index - 1] = buf2;
             }
-            moneyAdd[moneyIndex].text = "";
+            else
+            {
+                (int, int) buf2 = m[index];
+                buf2.Item1 = diver;
+                m[index] = buf2;
+            }
+            x = money[index];
+            x.text = m[index].Item1.ToString();
+            string saveName = moneySaveName + index;
+            PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
         PlayerPrefs.Save();
     }
@@ -270,7 +328,7 @@ public class Manager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    
+
 
     public void LoadBuilder()
     {
