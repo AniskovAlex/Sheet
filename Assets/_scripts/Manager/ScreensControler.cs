@@ -14,10 +14,15 @@ public class ScreensControler : MonoBehaviour
     public List<Button> buttons;
     public Text head;
     public float velocity = 0.1f;
+    public List<ScrollRect> scrollRects;
     float currentTime;
     float? offSet = null;
+    float offSetY = 0;
     float offSetStart = 0;
+    float offSetStartY = 0;
     float scaleToCanvas;
+    bool firstCalculation = false;
+    bool vertical = false;
     CinemachineFramingTransposer transposer;
     void Start()
     {
@@ -46,41 +51,73 @@ public class ScreensControler : MonoBehaviour
             if (offSet == null)
             {
                 offSetStart = Input.mousePosition.x;
+                offSetStartY = Input.mousePosition.y;
                 offSet = 0;
+                offSetY = 0;
                 currentTime = 0f;
+                firstCalculation = true;
             }
         if (Input.GetMouseButton(0))
             if (offSet != null)
             {
-                currentTime += Time.deltaTime;
-                offSet = offSetStart - Input.mousePosition.x;
-                transposer.m_ScreenX = (-(float)offSet / Screen.width + 0.5f);
+                if (!vertical)
+                {
+                    currentTime += Time.deltaTime;
+                    offSet = offSetStart - Input.mousePosition.x;
+                    offSetY = offSetStartY - Input.mousePosition.y;
+                    transposer.m_ScreenX = (-(float)offSet / Screen.width + 0.5f);
+                    if (firstCalculation && (Mathf.Abs(offSetY) > 0.5f || Mathf.Abs((float)offSet) > 0.5f))
+                    {
+                        if (Mathf.Abs(offSetY) > Mathf.Abs((float)offSet))
+                        {
+                            vertical = true;
+                            transposer.m_ScreenX = 0.5f;
+                        }
+                        else
+                        {
+                            foreach(ScrollRect x in scrollRects)
+                            {
+                                x.vertical = false;
+                            }
+                        }
+                        firstCalculation = false;
+                    }
+                }
             }
         if (Input.GetMouseButtonUp(0))
         {
             offSet = null;
-            float currentVelocity = (transposer.m_ScreenX - 0.5f) / currentTime;
-            Debug.Log(currentVelocity);
-            if (transposer.m_ScreenX < 0.3f || -velocity > currentVelocity)
+            if (!vertical)
             {
-                int index = screens.FindIndex(x => x == vCam.Follow.gameObject) + 1;
-                if (index < screens.Count)
+                float currentVelocity = (transposer.m_ScreenX - 0.5f) / currentTime;
+                //Debug.Log(currentVelocity);
+                if (transposer.m_ScreenX < 0.3f || -velocity > currentVelocity)
                 {
-                    ChangePanel(screens[index]);
-                    DeactivateButton(buttons[index]);
+                    int index = screens.FindIndex(x => x == vCam.Follow.gameObject) + 1;
+                    if (index < screens.Count)
+                    {
+                        ChangePanel(screens[index]);
+                        DeactivateButton(buttons[index]);
+                    }
                 }
-            }
-            if (transposer.m_ScreenX > 0.7f || velocity < currentVelocity)
-            {
-                int index = screens.FindIndex(x => x == vCam.Follow.gameObject) - 1;
-                if (index >= 0)
+                if (transposer.m_ScreenX > 0.7f || velocity < currentVelocity)
                 {
-                    ChangePanel(screens[index]);
-                    DeactivateButton(buttons[index]);
+                    int index = screens.FindIndex(x => x == vCam.Follow.gameObject) - 1;
+                    if (index >= 0)
+                    {
+                        ChangePanel(screens[index]);
+                        DeactivateButton(buttons[index]);
+                    }
+                }
+                foreach (ScrollRect x in scrollRects)
+                {
+                    x.vertical = true;
                 }
             }
             transposer.m_ScreenX = 0.5f;
+            vertical = false;
         }
+
         //Touch touch;
     }
     public void ChangePanel(GameObject panel)
