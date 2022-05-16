@@ -16,6 +16,7 @@ public class Manager : MonoBehaviour
     const string saveSaveName = "save_";
     const string maxHealthSaveName = "maxHP_";
     const string healthSaveName = "HP_";
+    const string tempHealthSaveName = "THP_";
     const string armorClassSaveName = "ac_";
     const string speedSaveName = "spd_";
     /*enum atr
@@ -34,7 +35,7 @@ public class Manager : MonoBehaviour
     public List<Skill> skillsList;
     public List<Skill> saveList;
     public GameObject armorClass;
-    public GameObject healthObj;
+    public List<GameObject> healthObjs;
     public GameObject initiative;
     public GameObject profModObj;
     public GameObject passPerObj;
@@ -49,7 +50,8 @@ public class Manager : MonoBehaviour
     int profMod = 0;
     int maxHealth = 0;
     int health = 0;
-
+    int tempHealth = 0;
+    bool healthStatusChanged = false;
     private void Start()
     {
         UploadData();
@@ -58,6 +60,22 @@ public class Manager : MonoBehaviour
         SetSave();
         SetAdditional();
         SetMoney();
+    }
+
+    private void Update()
+    {
+        if (healthStatusChanged)
+        {
+            foreach (GameObject x in healthObjs)
+            {
+                x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
+                x.GetComponentInChildren<Amount>().gameObject.GetComponent<Text>().text = "+" + tempHealth;
+            }
+            PlayerPrefs.SetInt(healthSaveName, health);
+            PlayerPrefs.SetInt(tempHealthSaveName, tempHealth);
+            PlayerPrefs.Save();
+            healthStatusChanged = false;
+        }
     }
 
     void UploadData()
@@ -84,6 +102,7 @@ public class Manager : MonoBehaviour
         armorClass.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
         maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
         health = PlayerPrefs.GetInt(healthSaveName);
+        tempHealth = PlayerPrefs.GetInt(tempHealthSaveName);
         speedObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(speedSaveName).ToString();
         if (health == 0)
         {
@@ -91,7 +110,7 @@ public class Manager : MonoBehaviour
             PlayerPrefs.SetInt(healthSaveName, health);
             PlayerPrefs.Save();
         }
-        healthObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
+        healthStatusChanged = true;
     }
 
     void SetAttributes()
@@ -322,13 +341,44 @@ public class Manager : MonoBehaviour
 
     public void ChangeHP(int value)
     {
-        health = Mathf.Clamp(health + value, 0, maxHealth);
-        healthObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
-        PlayerPrefs.SetInt(healthSaveName, health);
-        PlayerPrefs.Save();
+        if (value < 0)
+        {
+            tempHealth += value;
+            if (tempHealth < 0)
+            {
+                health = Mathf.Clamp(health + tempHealth, -999, maxHealth);
+                tempHealth = 0;
+            }
+        }
+        else
+            health = Mathf.Clamp(health + value, -999, maxHealth);
+        healthStatusChanged = true;
     }
 
+    public void ConHP(InputField value)
+    {
+        int buf;
+        int.TryParse(value.text, out buf);
+        value.text = "";
+        ChangeHP(-buf);
+    }
 
+    public void ProsHP(InputField value)
+    {
+        int buf;
+        int.TryParse(value.text, out buf);
+        value.text = "";
+        ChangeHP(buf);
+    }
+
+    public void AddTempHP(InputField value)
+    {
+        int buf;
+        int.TryParse(value.text, out buf);
+        value.text = "";
+        tempHealth = buf;
+        healthStatusChanged = true;
+    }
 
     public void LoadBuilder()
     {
