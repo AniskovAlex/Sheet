@@ -32,8 +32,3 @@ public struct Item
         this.type = type;
     }
 }
-
-public struct ItemWeapon
-{
-
-}

@@ -34,12 +34,12 @@ public class Manager : MonoBehaviour
     public List<Box> boxList;
     public List<Skill> skillsList;
     public List<Skill> saveList;
-    public GameObject armorClass;
+    public List<GameObject> armorClass;
     public List<GameObject> healthObjs;
-    public GameObject initiative;
+    public List<GameObject> initiative;
     public GameObject profModObj;
     public GameObject passPerObj;
-    public GameObject speedObj;
+    public List<GameObject> speedObj;
     public List<InputField> money;
     public List<InputField> moneyAdd;
 
@@ -99,11 +99,13 @@ public class Manager : MonoBehaviour
         level.text = profMod.ToString();
         profMod = (profMod - 1) / 4 + 2;
         profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
-        armorClass.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
+        foreach (GameObject x in armorClass)
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
         maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
         health = PlayerPrefs.GetInt(healthSaveName);
         tempHealth = PlayerPrefs.GetInt(tempHealthSaveName);
-        speedObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(speedSaveName).ToString();
+        foreach (GameObject x in speedObj)
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(speedSaveName).ToString();
         if (health == 0)
         {
             health = maxHealth;
@@ -207,12 +209,15 @@ public class Manager : MonoBehaviour
         if (_charModifier.TryGetValue(1, out dex))
         {
             if (dex >= 0)
-                initiative.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + dex.ToString();
+                foreach (GameObject x in initiative)
+                    x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + dex.ToString();
             else
-                initiative.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = dex.ToString();
+                foreach (GameObject x in initiative)
+                    x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = dex.ToString();
         }
         else
-            initiative.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+0";
+            foreach (GameObject x in initiative)
+                x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+0";
         int passPer;
         if (_charSkill.TryGetValue(9, out passPer))
         {

@@ -5,14 +5,20 @@ using UnityEngine.UI;
 
 public class DataBase : MonoBehaviour
 {
-    List<Item> list;
+    List<Item> itemColletion;
+    List<Armor> armorCollection;
+    List<string> armorList = new List<string>();
+    List<string> weaponList = new List<string>();
+    int armorEquipmented = -1;
     float timeWait = 0;
     bool deleted = false;
     // Start is called before the first frame update
     void Start()
     {
-        list = ItemCollection.GetCollection().GetList();
-        ItemCollection.GetCollection().ShowCollection();
+        itemColletion = ItemCollection.GetCollection().GetList();
+        armorCollection = ArmorCollection.GetCollection().GetList();
+        //ItemCollection.GetCollection().ShowCollection();
+        ArmorCollection.GetCollection().ShowCollection();
         nameField.onValueChanged.AddListener(delegate { ShowSearch(); });
         LoadItems();
     }
@@ -41,9 +47,12 @@ public class DataBase : MonoBehaviour
     const string itemMTypeSaveName = "itemMT_";
     const string itemTypeSaveName = "itemT_";
     const string itemAmountSaveName = "itemA_";
+    const string armorEquipSaveName = "armorE_";
 
     public GameObject item;
+    public GameObject armor;
     public GameObject panel;
+    public GameObject armorInventoryPanel;
     public GameObject input;
     public GameObject search;
     public InputField nameField;
@@ -69,7 +78,7 @@ public class DataBase : MonoBehaviour
         if (s != "" && flag)
         {
             List<Item> searchList = new List<Item>();
-            foreach (Item x in list)
+            foreach (Item x in itemColletion)
             {
                 if (x.label.Contains(s))
                     searchList.Add(x);
@@ -215,6 +224,26 @@ public class DataBase : MonoBehaviour
         {
             int amount = PlayerPrefs.GetInt(itemAmountSaveName + labelLast) - 1;
             PlayerPrefs.SetInt(itemAmountSaveName + labelLast, amount);
+            if (armorEquipmented >= 0)
+                if (labelLast == armorList[armorEquipmented])
+                {
+                    int index = 0;
+                    foreach (string x in armorList)
+                    {
+
+                        if (x == labelLast && index != armorEquipmented)
+                            break;
+                        index++;
+                    }
+                    armorList.RemoveAt(index);
+                    PlayerPrefs.DeleteKey(armorEquipSaveName + index);
+                    if (index < armorEquipmented)
+                    {
+                        PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
+                        armorEquipmented--;
+                        PlayerPrefs.SetInt(armorEquipSaveName + armorEquipmented, 1);
+                    }
+                }
         }
         else
         {
@@ -230,9 +259,13 @@ public class DataBase : MonoBehaviour
                 string labelNext = PlayerPrefs.GetString(itemSaveName + (i + 1));
                 PlayerPrefs.SetString(itemSaveName + i, labelNext);
             }
-            PlayerPrefs.DeleteKey(itemSaveName + (itemsCount-1));
+            PlayerPrefs.DeleteKey(itemSaveName + (itemsCount - 1));
             itemsCount--;
             PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
+            if (itemIndex == armorEquipmented)
+                armorEquipmented = -1;
+            PlayerPrefs.DeleteKey(armorEquipSaveName + armorList.FindIndex(labelLast.StartsWith));
+            armorList.Remove(labelLast);
         }
         PlayerPrefs.Save();
         ReloadItems();
@@ -268,6 +301,7 @@ public class DataBase : MonoBehaviour
                 newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.weight + " фнт";
                 break;
         }
+        int amount = PlayerPrefs.GetInt(itemAmountSaveName + x.label);
         string itemType = "";
         switch (x.type)
         {
@@ -275,14 +309,18 @@ public class DataBase : MonoBehaviour
                 itemType = "П";
                 break;
             case Item.Type.armor:
+                for (int i = 0; i < amount; i++)
+                    armorList.Add(x.label);
                 itemType = "Б";
                 break;
             case Item.Type.weapon:
+                for (int i = 0; i < amount; i++)
+                    weaponList.Add(x.label);
                 itemType = "О";
                 break;
         }
         newItem.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = itemType;
-        newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = PlayerPrefs.GetInt(itemAmountSaveName + x.label).ToString();
+        newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
         newItem.GetComponent<Box>().db = this;
         newItem.GetComponent<Box>().label = x.label;
     }
@@ -306,6 +344,7 @@ public class DataBase : MonoBehaviour
         }
         newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = moneyType + " " + PlayerPrefs.GetInt(itemCostSaveName + label);
         newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = PlayerPrefs.GetInt(itemWeightSaveName + label).ToString() + " фнт";
+        int amount = PlayerPrefs.GetInt(itemAmountSaveName + label);
         string type = "";
         int typeInt = PlayerPrefs.GetInt(itemTypeSaveName + label);
         switch (typeInt)
@@ -314,14 +353,18 @@ public class DataBase : MonoBehaviour
                 type = "П";
                 break;
             case 1:
+                for (int i = 0; i < amount; i++)
+                    armorList.Add(label);
                 type = "Б";
                 break;
             case 2:
+                for (int i = 0; i < amount; i++)
+                    weaponList.Add(label);
                 type = "О";
                 break;
         }
         newItem.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = type;
-        newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = PlayerPrefs.GetInt(itemAmountSaveName + label).ToString();
+        newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
         newItem.GetComponent<Box>().db = this;
         newItem.GetComponent<Box>().label = label;
     }
@@ -337,9 +380,10 @@ public class DataBase : MonoBehaviour
 
                 bool found = false;
                 string label = PlayerPrefs.GetString(itemSaveName + i);
-                if (PlayerPrefs.HasKey(label))
-                    continue;
-                foreach (Item x in list)
+                /*if (PlayerPrefs.HasKey(label))
+                    continue;*/
+
+                foreach (Item x in itemColletion)
                 {
                     if (x.label == label)
                     {
@@ -353,6 +397,7 @@ public class DataBase : MonoBehaviour
                     addNewGameObject(label);
                 }
             }
+            LoadInventoryArmorItems();
         }
     }
 
@@ -364,6 +409,107 @@ public class DataBase : MonoBehaviour
             panel.GetComponentInChildren<Box>().DestroyMyself();
             j++;
         }
+        armorList.Clear();
+        armorEquipmented = -1;
+        while (armorInventoryPanel.GetComponentInChildren<Box>())
+        {
+            armorInventoryPanel.GetComponentInChildren<Box>().DestroyMyself();
+        }
         LoadItems();
+    }
+
+    void LoadInventoryArmorItems()
+    {
+        int index = -1;
+        foreach (string x in armorList)
+        {
+            index++;
+            if (PlayerPrefs.HasKey(itemCostSaveName + x))
+            {
+                addNewArmorObject(x);
+                continue;
+            }
+
+            foreach (Armor y in armorCollection)
+            {
+                if (x == y.label)
+                {
+                    addExistArmorObject(y, index);
+                    break;
+                }
+
+            }
+        }
+    }
+
+    void addExistArmorObject(Armor x, int index)
+    {
+        GameObject newItem = Instantiate(armor, armorInventoryPanel.transform);
+        newItem.GetComponent<Box>().index = index;
+        newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { armorEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
+        newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
+        int equip = PlayerPrefs.GetInt(armorEquipSaveName + index);
+        if (equip == 1)
+        {
+            if (armorEquipmented == -1)
+            {
+                newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = true;
+                armorEquipmented = index;
+            }
+            else
+            {
+                PlayerPrefs.DeleteKey(armorEquipSaveName + index);
+                PlayerPrefs.Save();
+                newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = false;
+            }
+        }
+        else
+        {
+            newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = false;
+        }
+    }
+
+    void addNewArmorObject(string x)
+    {
+        //Дописать!!!
+    }
+
+    void armorEquipmentChanged(Toggle toggle)
+    {
+        int index = toggle.GetComponentInParent<Box>().index;
+        if (!toggle.isOn)
+        {
+            PlayerPrefs.DeleteKey(armorEquipSaveName + index);
+            PlayerPrefs.Save();
+            return;//временно
+        }
+
+        if (index == armorEquipmented)
+        {
+            PlayerPrefs.DeleteKey(armorEquipSaveName + index);
+            PlayerPrefs.Save();
+            armorEquipmented = -1;
+            return;
+        }
+        if (armorEquipmented == -1)
+        {
+            PlayerPrefs.SetInt(armorEquipSaveName + index, 1);
+            PlayerPrefs.Save();
+            armorEquipmented = index;
+            return;
+        }
+        Box[] list = armorInventoryPanel.GetComponentsInChildren<Box>();
+        foreach (Box x in list)
+        {
+            if (x.index == armorEquipmented)
+            {
+                x.GetComponentInChildren<Toggle>().isOn = false;
+                PlayerPrefs.DeleteKey(armorEquipSaveName + x.index);
+                break;
+            }
+        }
+        PlayerPrefs.SetInt(armorEquipSaveName + index, 1);
+        PlayerPrefs.Save();
+        armorEquipmented = index;
     }
 }
