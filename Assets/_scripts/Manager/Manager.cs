@@ -39,6 +39,8 @@ public class Manager : MonoBehaviour
     public List<GameObject> initiative;
     public GameObject profModObj;
     public GameObject passPerObj;
+    public GameObject equipmentPanel;
+    public GameObject hand;
     public List<GameObject> speedObj;
     public List<InputField> money;
     public List<InputField> moneyAdd;
@@ -99,8 +101,7 @@ public class Manager : MonoBehaviour
         level.text = profMod.ToString();
         profMod = (profMod - 1) / 4 + 2;
         profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
-        foreach (GameObject x in armorClass)
-            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
+        UploadArmorClass();
         maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
         health = PlayerPrefs.GetInt(healthSaveName);
         tempHealth = PlayerPrefs.GetInt(tempHealthSaveName);
@@ -113,6 +114,34 @@ public class Manager : MonoBehaviour
             PlayerPrefs.Save();
         }
         healthStatusChanged = true;
+    }
+
+    void UploadArmorClass()
+    {
+        foreach (GameObject x in armorClass)
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
+    }
+
+    public void UpdateArmorClass(int baseArmor, int dexArmor)
+    {
+        int dex;
+        _charModifier.TryGetValue(1, out dex);
+        int armor = baseArmor + Mathf.Clamp(dex, 0, dexArmor);
+        PlayerPrefs.SetInt(armorClassSaveName, armor);
+        UploadArmorClass();
+    }
+
+    public void UpdateEquipment(List<Weapon> list)
+    {
+        while (equipmentPanel.GetComponentInChildren<Box>())
+        {
+            equipmentPanel.GetComponentInChildren<Box>().DestroyMyself();
+        }
+        foreach(Weapon x in list)
+        {
+            GameObject newWeapon = Instantiate(hand, equipmentPanel.transform);
+            newWeapon.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label;
+        }
     }
 
     void SetAttributes()

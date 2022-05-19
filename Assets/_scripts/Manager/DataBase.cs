@@ -7,9 +7,12 @@ public class DataBase : MonoBehaviour
 {
     List<Item> itemColletion;
     List<Armor> armorCollection;
+    List<Weapon> weaponCollection;
     List<string> armorList = new List<string>();
     List<string> weaponList = new List<string>();
     int armorEquipmented = -1;
+    List<int> weaponEquipmented = new List<int>();
+    int maxWeaponInHand = 2;
     float timeWait = 0;
     bool deleted = false;
     // Start is called before the first frame update
@@ -17,8 +20,9 @@ public class DataBase : MonoBehaviour
     {
         itemColletion = ItemCollection.GetCollection().GetList();
         armorCollection = ArmorCollection.GetCollection().GetList();
+        weaponCollection = WeaponCollection.GetCollection().GetList();
         //ItemCollection.GetCollection().ShowCollection();
-        ArmorCollection.GetCollection().ShowCollection();
+        //ArmorCollection.GetCollection().ShowCollection();
         nameField.onValueChanged.AddListener(delegate { ShowSearch(); });
         LoadItems();
     }
@@ -48,11 +52,16 @@ public class DataBase : MonoBehaviour
     const string itemTypeSaveName = "itemT_";
     const string itemAmountSaveName = "itemA_";
     const string armorEquipSaveName = "armorE_";
+    const string weaponEquipSaveName = "weaponE_";
+    const string armorClassSaveName = "ac_";
 
+    public Manager manager;
     public GameObject item;
     public GameObject armor;
+    public GameObject weapon;
     public GameObject panel;
     public GameObject armorInventoryPanel;
+    public GameObject weaponInventoryPanel;
     public GameObject input;
     public GameObject search;
     public InputField nameField;
@@ -95,12 +104,6 @@ public class DataBase : MonoBehaviour
         else
             flag = true;
 
-    }
-
-    public void DestroyInChil(float t)
-    {
-        timeWait = t;
-        deleted = true;
     }
 
     public void showFoundedItem()
@@ -147,16 +150,7 @@ public class DataBase : MonoBehaviour
         if (found)
         {
             PlayerPrefs.Save();
-            nameField.text = "";
-            mType.value = 0;
-            mType.interactable = false;
-            costField.text = "0";
-            costField.interactable = false;
-            weightField.text = "0";
-            weightField.interactable = false;
-            type.value = 0;
-            type.interactable = false;
-            amountField.text = "1";
+            ClearField();
             return;
         }
         if (addItem != null)
@@ -192,6 +186,12 @@ public class DataBase : MonoBehaviour
                 addNewGameObject(itemLabel);
             }
         }
+        ClearField();
+        PlayerPrefs.Save();
+    }
+
+    void ClearField()
+    {
         nameField.text = "";
         mType.value = 0;
         mType.interactable = false;
@@ -202,7 +202,6 @@ public class DataBase : MonoBehaviour
         type.value = 0;
         type.interactable = false;
         amountField.text = "1";
-        PlayerPrefs.Save();
     }
 
     public void clear()
@@ -228,22 +227,74 @@ public class DataBase : MonoBehaviour
                 if (labelLast == armorList[armorEquipmented])
                 {
                     int index = 0;
+                    bool found = false;
                     foreach (string x in armorList)
                     {
 
                         if (x == labelLast && index != armorEquipmented)
+                        {
+                            found = true;
                             break;
+                        }
                         index++;
                     }
-                    armorList.RemoveAt(index);
-                    PlayerPrefs.DeleteKey(armorEquipSaveName + index);
-                    if (index < armorEquipmented)
+                    if (found)
                     {
+                        armorList.RemoveAt(index);
+                        PlayerPrefs.DeleteKey(armorEquipSaveName + index);
+                        if (index < armorEquipmented)
+                        {
+                            PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
+                            armorEquipmented--;
+                            PlayerPrefs.SetInt(armorEquipSaveName + armorEquipmented, 1);
+                        }
+                    }
+                    else
+                    {
+                        armorList.Remove(labelLast);
+                        armorEquipmented = -1;
                         PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
-                        armorEquipmented--;
-                        PlayerPrefs.SetInt(armorEquipSaveName + armorEquipmented, 1);
+                    }
+
+                }
+            if (weaponEquipmented.Count > 0)
+            {
+                if (weaponList.Contains(labelLast))
+                {
+                    int index = 0;
+                    bool found = false;
+                    foreach (string x in weaponList)
+                    {
+                        if (x == labelLast && !weaponEquipmented.Contains(index))
+                        {
+                            found = true;
+                            break;
+                        }
+                        index++;
+                    }
+                    if (found)
+                    {
+                        weaponList.RemoveAt(index);
+                        PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
+                    }
+                    else
+                    {
+                        index = weaponList.IndexOf(labelLast);
+                        weaponEquipmented.Remove(index);
+                        PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
+                        weaponList.Remove(labelLast);
+                    }
+                    for (int x = 0; x < weaponEquipmented.Count; x++)
+                    {
+                        if (index < weaponEquipmented[x])
+                        {
+                            PlayerPrefs.DeleteKey(weaponEquipSaveName + weaponEquipmented[x]);
+                            weaponEquipmented[x]--;
+                            PlayerPrefs.SetInt(weaponEquipSaveName + weaponEquipmented[x], 1);
+                        }
                     }
                 }
+            }
         }
         else
         {
@@ -263,9 +314,19 @@ public class DataBase : MonoBehaviour
             itemsCount--;
             PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
             if (itemIndex == armorEquipmented)
+            {
                 armorEquipmented = -1;
+            }
             PlayerPrefs.DeleteKey(armorEquipSaveName + armorList.FindIndex(labelLast.StartsWith));
             armorList.Remove(labelLast);
+
+            if (weaponEquipmented.Contains(itemIndex))
+            {
+                weaponEquipmented.Remove(itemIndex);
+            }
+            PlayerPrefs.DeleteKey(weaponEquipSaveName + weaponList.FindIndex(labelLast.StartsWith));
+            weaponList.Remove(labelLast);
+
         }
         PlayerPrefs.Save();
         ReloadItems();
@@ -374,14 +435,11 @@ public class DataBase : MonoBehaviour
         if (PlayerPrefs.HasKey(itemsCountSaveName))
         {
             itemsCount = PlayerPrefs.GetInt(itemsCountSaveName);
-            Debug.Log(itemsCount);
             for (int i = 0; i < itemsCount; i++)
             {
 
                 bool found = false;
                 string label = PlayerPrefs.GetString(itemSaveName + i);
-                /*if (PlayerPrefs.HasKey(label))
-                    continue;*/
 
                 foreach (Item x in itemColletion)
                 {
@@ -398,6 +456,7 @@ public class DataBase : MonoBehaviour
                 }
             }
             LoadInventoryArmorItems();
+            LoadInventoryWeaponItems();
         }
     }
 
@@ -415,6 +474,12 @@ public class DataBase : MonoBehaviour
         {
             armorInventoryPanel.GetComponentInChildren<Box>().DestroyMyself();
         }
+        weaponList.Clear();
+        weaponEquipmented.Clear();
+        while (weaponInventoryPanel.GetComponentInChildren<Box>())
+        {
+            weaponInventoryPanel.GetComponentInChildren<Box>().DestroyMyself();
+        }
         LoadItems();
     }
 
@@ -426,7 +491,7 @@ public class DataBase : MonoBehaviour
             index++;
             if (PlayerPrefs.HasKey(itemCostSaveName + x))
             {
-                addNewArmorObject(x);
+                AddNewArmorObject(x);
                 continue;
             }
 
@@ -434,7 +499,7 @@ public class DataBase : MonoBehaviour
             {
                 if (x == y.label)
                 {
-                    addExistArmorObject(y, index);
+                    AddExistArmorObject(y, index);
                     break;
                 }
 
@@ -442,11 +507,35 @@ public class DataBase : MonoBehaviour
         }
     }
 
-    void addExistArmorObject(Armor x, int index)
+    void LoadInventoryWeaponItems()
+    {
+        int index = -1;
+        foreach (string x in weaponList)
+        {
+            index++;
+            if (PlayerPrefs.HasKey(itemCostSaveName + x))
+            {
+                //AddNewWeaponObject(x);
+                continue;
+            }
+
+            foreach (Weapon y in weaponCollection)
+            {
+                if (x == y.label)
+                {
+                    AddExistWeaponObject(y, index);
+                    break;
+                }
+
+            }
+        }
+    }
+
+    void AddExistArmorObject(Armor x, int index)
     {
         GameObject newItem = Instantiate(armor, armorInventoryPanel.transform);
         newItem.GetComponent<Box>().index = index;
-        newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { armorEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
+        newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { ArmorEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
         newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
         int equip = PlayerPrefs.GetInt(armorEquipSaveName + index);
         if (equip == 1)
@@ -469,33 +558,58 @@ public class DataBase : MonoBehaviour
         }
     }
 
-    void addNewArmorObject(string x)
+    void AddExistWeaponObject(Weapon x, int index)
+    {
+        GameObject newItem = Instantiate(weapon, weaponInventoryPanel.transform);
+        newItem.GetComponent<Box>().index = index;
+        newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { WeaponEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
+        newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
+        int equip = PlayerPrefs.GetInt(weaponEquipSaveName + index);
+        if (equip == 1)
+        {
+            if (weaponEquipmented.Count < maxWeaponInHand)
+            {
+                newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = true;
+                weaponEquipmented.Add(index);
+            }
+            else
+            {
+                PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
+                PlayerPrefs.Save();
+                newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = false;
+            }
+        }
+        else
+        {
+            newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = false;
+        }
+    }
+
+    void AddNewArmorObject(string x)
     {
         //Дописать!!!
     }
 
-    void armorEquipmentChanged(Toggle toggle)
+    void ArmorEquipmentChanged(Toggle toggle)
     {
         int index = toggle.GetComponentInParent<Box>().index;
         if (!toggle.isOn)
         {
             PlayerPrefs.DeleteKey(armorEquipSaveName + index);
             PlayerPrefs.Save();
+            if (index == armorEquipmented)
+            {
+                armorEquipmented = -1;
+                ArmorClassChanged();
+            }
             return;//временно
-        }
-
-        if (index == armorEquipmented)
-        {
-            PlayerPrefs.DeleteKey(armorEquipSaveName + index);
-            PlayerPrefs.Save();
-            armorEquipmented = -1;
-            return;
         }
         if (armorEquipmented == -1)
         {
             PlayerPrefs.SetInt(armorEquipSaveName + index, 1);
             PlayerPrefs.Save();
             armorEquipmented = index;
+            ArmorClassChanged();
             return;
         }
         Box[] list = armorInventoryPanel.GetComponentsInChildren<Box>();
@@ -511,5 +625,79 @@ public class DataBase : MonoBehaviour
         PlayerPrefs.SetInt(armorEquipSaveName + index, 1);
         PlayerPrefs.Save();
         armorEquipmented = index;
+        ArmorClassChanged();
+    }
+
+    void WeaponEquipmentChanged(Toggle toggle)
+    {
+        int index = toggle.GetComponentInParent<Box>().index;
+        if (!toggle.isOn)
+        {
+            PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
+            PlayerPrefs.Save();
+            if (weaponEquipmented.Contains(index))
+            {
+                weaponEquipmented.Remove(index);
+                UpdateWeapon();
+            }
+            return;//временно
+        }
+        if (weaponEquipmented.Count < maxWeaponInHand)
+        {
+            PlayerPrefs.SetInt(weaponEquipSaveName + index, 1);
+            PlayerPrefs.Save();
+            weaponEquipmented.Add(index);
+            UpdateWeapon();
+            return;
+        }
+        Box[] list = weaponInventoryPanel.GetComponentsInChildren<Box>();
+        foreach (Box x in list)
+        {
+            if (x.index == weaponEquipmented[0])
+            {
+                x.GetComponentInChildren<Toggle>().isOn = false;
+                PlayerPrefs.DeleteKey(weaponEquipSaveName + x.index);
+                break;
+            }
+        }
+        PlayerPrefs.SetInt(weaponEquipSaveName + index, 1);
+        weaponEquipmented.Add(index);
+        UpdateWeapon();
+        PlayerPrefs.Save();
+    }
+
+    void UpdateWeapon()
+    {
+        List<Weapon> list = new List<Weapon>();
+        foreach(int x in weaponEquipmented)
+        {
+            foreach(Weapon y in weaponCollection)
+            {
+                if (y.label == weaponList[x])
+                {
+                    list.Add(y);
+                    break;
+                }
+            }
+        }
+        manager.UpdateEquipment(list);
+    }
+
+    void ArmorClassChanged()
+    {
+        string buf = "";
+        if (armorEquipmented != -1)
+        {
+            buf = armorList[armorEquipmented];
+            foreach (Armor x in armorCollection)
+            {
+                if (x.label == buf)
+                {
+                    manager.UpdateArmorClass(x.AC, x.ACCap);
+                    return;
+                }
+            }
+        }
+        manager.UpdateArmorClass(10, 100);
     }
 }
