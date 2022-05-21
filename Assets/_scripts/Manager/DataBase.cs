@@ -188,6 +188,7 @@ public class DataBase : MonoBehaviour
         }
         ClearField();
         PlayerPrefs.Save();
+        ReloadItems();
     }
 
     void ClearField()

@@ -9,7 +9,7 @@ public class WeaponCollection : ScriptableObject
 
     void LoadCollection()
     {
-        list.Add(new Weapon("цеп"));
+        list.Add(new Weapon("цеп", 1, 8, 5, 5, false, Weapon.DamageType.Crushing, new Weapon.Properties[] { }));
     }
 
     public static WeaponCollection GetCollection()
