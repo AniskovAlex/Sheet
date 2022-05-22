@@ -8,8 +8,9 @@ public class DataBase : MonoBehaviour
     List<Item> itemColletion;
     List<Armor> armorCollection;
     List<Weapon> weaponCollection;
-    List<string> armorList = new List<string>();
-    List<string> weaponList = new List<string>();
+    List<Item> itemList = new List<Item>();
+    List<Armor> armorList = new List<Armor>();
+    List<Weapon> weaponList = new List<Weapon>();
     int armorEquipmented = -1;
     List<int> weaponEquipmented = new List<int>();
     int maxWeaponInHand = 2;
@@ -25,6 +26,45 @@ public class DataBase : MonoBehaviour
         //ArmorCollection.GetCollection().ShowCollection();
         nameField.onValueChanged.AddListener(delegate { ShowSearch(); });
         LoadItems();
+    }
+
+    void LoadItems()
+    {
+        if (PlayerPrefs.HasKey(itemsCountSaveName))
+        {
+            itemsCount = PlayerPrefs.GetInt(itemsCountSaveName);
+            for (int i = 0; i < itemsCount; i++)
+            {
+
+                bool found = false;
+                string label = PlayerPrefs.GetString(itemSaveName + i);
+
+                foreach (Item x in itemColletion)
+                {
+                    if (x.label == label)
+                    {
+                        found = true;
+                        itemList.Add(x);
+                        addExistGameObject(x);
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    if (PlayerPrefs.HasKey(itemCostSaveName + label))
+                    {
+                        int cost = PlayerPrefs.GetInt(itemCostSaveName + label);
+                        int weight = PlayerPrefs.GetInt(itemWeightSaveName + label);
+                        Item.MType mType = Item.MType.goldCoin + PlayerPrefs.GetInt(itemMTypeSaveName + label);
+                        Item.Type type = Item.Type.item + PlayerPrefs.GetInt(itemTypeSaveName + label);
+                        Item newItem = new Item(label, cost, weight, mType, type);
+                        addExistGameObject(newItem);
+                    }
+                }
+            }
+            //LoadInventoryArmorItems();
+            //LoadInventoryWeaponItems();
+        }
     }
 
     private void Update()
@@ -141,8 +181,25 @@ public class DataBase : MonoBehaviour
             {
                 int amount;
                 int.TryParse(amountField.text, out amount);
-                PlayerPrefs.SetInt(itemAmountSaveName + label, PlayerPrefs.GetInt(itemAmountSaveName + label) + amount);
-                ReloadItems();
+                int buf = PlayerPrefs.GetInt(itemAmountSaveName + label) + amount;
+                PlayerPrefs.SetInt(itemAmountSaveName + label, buf);
+                panel.GetComponentsInChildren<Box>()[i].GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = buf.ToString();
+                //временно!!!
+                foreach (Armor y in armorCollection)
+                    if (label == y.label)
+                    {
+                        armorList.Add(y);
+                        AddExistArmorObject(y, armorList.Count - 1);
+                        break;
+                    }
+                foreach (Weapon y in weaponCollection)
+                    if (label == y.label)
+                    {
+                        weaponList.Add(y);
+                        AddExistWeaponObject(y, weaponList.Count - 1);
+                        break;
+                    }
+                //ReloadItems();
                 found = true;
                 break;
             }
@@ -162,6 +219,7 @@ public class DataBase : MonoBehaviour
             PlayerPrefs.SetInt(itemAmountSaveName + addItem.Value.label, amount);
             itemsCount++;
             PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
+            itemList.Add((Item)addItem);
             addExistGameObject((Item)addItem);
             addItem = null;
         }
@@ -183,12 +241,16 @@ public class DataBase : MonoBehaviour
                 PlayerPrefs.SetInt(itemAmountSaveName + itemLabel, amount);
                 itemsCount++;
                 PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
-                addNewGameObject(itemLabel);
+                Item.MType buf1 = Item.MType.goldCoin + mType.value;
+                Item.Type buf2 = Item.Type.item + type.value;
+                Item newItem = new Item(itemLabel, cost, weight, buf1, buf2);
+                itemList.Add(newItem);
+                addExistGameObject(newItem);
             }
         }
         ClearField();
         PlayerPrefs.Save();
-        ReloadItems();
+        //ReloadItems();
     }
 
     void ClearField()
@@ -210,127 +272,201 @@ public class DataBase : MonoBehaviour
         PlayerPrefs.DeleteAll();
     }
 
-    public void DeleteItem(string label)
+    public void DeleteItem(int itemIndex)
     {
-        int itemIndex = 0;
-        for (int i = 0; i < itemsCount; i++)
-            if (PlayerPrefs.GetString(itemSaveName + i) == label)
-            {
-                itemIndex = i;
-                break;
-            }
-        string labelLast = PlayerPrefs.GetString(itemSaveName + itemIndex);
-        if (PlayerPrefs.GetInt(itemAmountSaveName + labelLast) > 1)
+        string label = PlayerPrefs.GetString(itemSaveName + itemIndex);
+        if (PlayerPrefs.GetInt(itemAmountSaveName + label) > 1)
         {
-            int amount = PlayerPrefs.GetInt(itemAmountSaveName + labelLast) - 1;
-            PlayerPrefs.SetInt(itemAmountSaveName + labelLast, amount);
-            if (armorEquipmented >= 0)
-                if (labelLast == armorList[armorEquipmented])
-                {
-                    int index = 0;
-                    bool found = false;
-                    foreach (string x in armorList)
+            int amount = PlayerPrefs.GetInt(itemAmountSaveName + label) - 1;
+            PlayerPrefs.SetInt(itemAmountSaveName + label, amount);
+            panel.GetComponentsInChildren<Box>()[itemIndex].GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
+            if (itemList[itemIndex].type == Item.Type.armor)
+                if (armorEquipmented >= 0)
+                    if (label == armorList[armorEquipmented].label)
                     {
+                        int index = 0;
+                        bool found = false;
+                        foreach (Armor x in armorList)
+                        {
 
-                        if (x == labelLast && index != armorEquipmented)
-                        {
-                            found = true;
-                            break;
+                            if (x.label == label && index != armorEquipmented)
+                            {
+                                found = true;
+                                break;
+                            }
+                            index++;
                         }
-                        index++;
-                    }
-                    if (found)
-                    {
-                        armorList.RemoveAt(index);
-                        PlayerPrefs.DeleteKey(armorEquipSaveName + index);
-                        if (index < armorEquipmented)
+                        if (found)
                         {
+                            armorList.RemoveAt(index);
+                            PlayerPrefs.DeleteKey(armorEquipSaveName + index);
+                            if (index < armorEquipmented)
+                            {
+                                PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
+                                armorEquipmented--;
+                                PlayerPrefs.SetInt(armorEquipSaveName + armorEquipmented, 1);
+                            }
+                            Box[] armors = armorInventoryPanel.GetComponentsInChildren<Box>();
+                            armors[index].DestroyMyself();
+                        }
+                        else
+                        {
+                            armorList.RemoveAt(armorEquipmented);
                             PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
-                            armorEquipmented--;
-                            PlayerPrefs.SetInt(armorEquipSaveName + armorEquipmented, 1);
+                            Box[] armors = armorInventoryPanel.GetComponentsInChildren<Box>();
+                            armors[armorEquipmented].DestroyMyself();
+                            armorEquipmented = -1;
                         }
-                    }
-                    else
-                    {
-                        armorList.Remove(labelLast);
-                        armorEquipmented = -1;
-                        PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
-                    }
 
-                }
-            if (weaponEquipmented.Count > 0)
-            {
-                if (weaponList.Contains(labelLast))
+                    }
+            if (itemList[itemIndex].type == Item.Type.weapon)
+                if (weaponEquipmented.Count >= 0)
                 {
                     int index = 0;
-                    bool found = false;
-                    foreach (string x in weaponList)
+                    foreach (Weapon x in weaponList)
                     {
-                        if (x == labelLast && !weaponEquipmented.Contains(index))
+
+                        int indexEquipted = 0;
+                        bool foundEquipted = false;
+                        bool found = false;
+                        bool itemDeleted = false;
+                        if (x.label == label && !found)
                         {
-                            found = true;
+                            if (weaponEquipmented.Contains(index))
+                            {
+                                foundEquipted = true;
+                                indexEquipted = index;
+                            }
+                            else
+                            {
+                                found = true;
+                            }
+                        }
+                        if (found)
+                        {
+                            Box[] weapons = weaponInventoryPanel.GetComponentsInChildren<Box>();
+                            weapons[index].DestroyMyself();
+                            weaponList.RemoveAt(index);
+                            PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
+                            itemDeleted = true;
+                        }
+                        else
+                        {
+                            if (foundEquipted)
+                            {
+                                Box[] weapons = weaponInventoryPanel.GetComponentsInChildren<Box>();
+                                weapons[index].DestroyMyself();
+                                weaponEquipmented.Remove(indexEquipted);
+                                PlayerPrefs.DeleteKey(weaponEquipSaveName + indexEquipted);
+                                weaponList.RemoveAt(indexEquipted);
+                                itemDeleted = true;
+                            }
+                        }
+                        if (itemDeleted)
+                        {
+                            ListShift(index, weaponEquipmented, weaponEquipSaveName);
                             break;
                         }
                         index++;
                     }
-                    if (found)
-                    {
-                        weaponList.RemoveAt(index);
-                        PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
-                    }
-                    else
-                    {
-                        index = weaponList.IndexOf(labelLast);
-                        weaponEquipmented.Remove(index);
-                        PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
-                        weaponList.Remove(labelLast);
-                    }
-                    for (int x = 0; x < weaponEquipmented.Count; x++)
-                    {
-                        if (index < weaponEquipmented[x])
-                        {
-                            PlayerPrefs.DeleteKey(weaponEquipSaveName + weaponEquipmented[x]);
-                            weaponEquipmented[x]--;
-                            PlayerPrefs.SetInt(weaponEquipSaveName + weaponEquipmented[x], 1);
-                        }
-                    }
+                    UpdateWeapon();
                 }
-            }
         }
         else
         {
-            if (PlayerPrefs.HasKey(itemCostSaveName + labelLast))
+            if (PlayerPrefs.HasKey(itemCostSaveName + label))
             {
-                PlayerPrefs.DeleteKey(itemCostSaveName + labelLast);
-                PlayerPrefs.DeleteKey(itemMTypeSaveName + labelLast);
-                PlayerPrefs.DeleteKey(itemWeightSaveName + labelLast);
-                PlayerPrefs.DeleteKey(itemTypeSaveName + labelLast);
+                PlayerPrefs.DeleteKey(itemCostSaveName + label);
+                PlayerPrefs.DeleteKey(itemMTypeSaveName + label);
+                PlayerPrefs.DeleteKey(itemWeightSaveName + label);
+                PlayerPrefs.DeleteKey(itemTypeSaveName + label);
             }
+            Box[] boxes = panel.GetComponentsInChildren<Box>();
+            boxes[itemIndex].DestroyMyself();
             for (int i = itemIndex; i < itemsCount - 1; i++)
             {
                 string labelNext = PlayerPrefs.GetString(itemSaveName + (i + 1));
                 PlayerPrefs.SetString(itemSaveName + i, labelNext);
+                boxes[i + 1].index = i;
             }
             PlayerPrefs.DeleteKey(itemSaveName + (itemsCount - 1));
             itemsCount--;
             PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
-            if (itemIndex == armorEquipmented)
+            if (itemList[itemIndex].type == Item.Type.armor)
             {
-                armorEquipmented = -1;
-            }
-            PlayerPrefs.DeleteKey(armorEquipSaveName + armorList.FindIndex(labelLast.StartsWith));
-            armorList.Remove(labelLast);
+                int index = 0;
+                bool found = false;
+                foreach (Armor x in armorList)
+                {
+                    if (label == x.label)
+                    {
+                        armorList.RemoveAt(index);
+                        if (index == armorEquipmented)
+                        {
 
-            if (weaponEquipmented.Contains(itemIndex))
-            {
-                weaponEquipmented.Remove(itemIndex);
+                            PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
+                            armorEquipmented = -1;
+                            found = true;
+                        }
+                        break;
+                    }
+                    index++;
+                }
+                if (!found)
+                {
+                    if (index < armorEquipmented)
+                    {
+                        PlayerPrefs.DeleteKey(armorEquipSaveName + armorEquipmented);
+                        armorEquipmented--;
+                        PlayerPrefs.SetInt(armorEquipSaveName + armorEquipmented, 1);
+                    }
+                }
+                Box[] armors = armorInventoryPanel.GetComponentsInChildren<Box>();
+                armors[index].DestroyMyself();
+                for (int i = index; i < armors.Length; i++)
+                {
+                    armors[i].index--;
+                }
             }
-            PlayerPrefs.DeleteKey(weaponEquipSaveName + weaponList.FindIndex(labelLast.StartsWith));
-            weaponList.Remove(labelLast);
+            if (itemList[itemIndex].type == Item.Type.weapon)
+            {
+                int index = 0;
+                foreach (Weapon x in weaponList)
+                {
+                    if (label == x.label)
+                        break;
+                    index++;
+                }
+                if (weaponEquipmented.Contains(index))
+                {
+                    weaponEquipmented.Remove(index);
+                    PlayerPrefs.DeleteKey(weaponEquipSaveName + index);
+                    ListShift(index, weaponEquipmented, weaponEquipSaveName);
+                }
+                Box[] weapons = weaponInventoryPanel.GetComponentsInChildren<Box>();
+                weapons[index].DestroyMyself();
+                weaponList.RemoveAt(index);
+                for (int i = index; i < weapons.Length; i++)
+                {
+                    weapons[i].index--;
+                }
+                UpdateWeapon();
+            }
+
 
         }
         PlayerPrefs.Save();
-        ReloadItems();
+        //ReloadItems();
+    }
+
+    void ListShift(int index, List<int> list, string saveName)
+    {
+        for (int y = index; y < list.Count; y++)
+        {
+            PlayerPrefs.DeleteKey(saveName + list[y]);
+            list[y]--;
+            PlayerPrefs.SetInt(saveName + list[y], 1);
+        }
     }
 
     void addExistGameObject(Item x)
@@ -371,22 +507,38 @@ public class DataBase : MonoBehaviour
                 itemType = "П";
                 break;
             case Item.Type.armor:
-                for (int i = 0; i < amount; i++)
-                    armorList.Add(x.label);
+                foreach (Armor y in armorCollection)
+                    if (x.label == y.label)
+                    {
+                        for (int i = 0; i < amount; i++)
+                        {
+                            armorList.Add(y);
+                            AddExistArmorObject(y, armorList.Count - 1);
+                        }
+                        break;
+                    }
                 itemType = "Б";
                 break;
             case Item.Type.weapon:
-                for (int i = 0; i < amount; i++)
-                    weaponList.Add(x.label);
+                foreach (Weapon y in weaponCollection)
+                    if (x.label == y.label)
+                    {
+                        for (int i = 0; i < amount; i++)
+                        {
+                            weaponList.Add(y);
+                            AddExistWeaponObject(y, weaponList.Count - 1);
+                        }
+                        break;
+                    }
                 itemType = "О";
                 break;
         }
         newItem.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = itemType;
         newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
         newItem.GetComponent<Box>().db = this;
-        newItem.GetComponent<Box>().label = x.label;
+        newItem.GetComponent<Box>().index = itemList.IndexOf(x);
     }
-    void addNewGameObject(string label)
+    /*void addNewGameObject(string label)
     {
         GameObject newItem = Instantiate(item, panel.transform);
         newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = label[0].ToString().ToUpper() + label.Remove(0, 1);
@@ -429,37 +581,9 @@ public class DataBase : MonoBehaviour
         newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
         newItem.GetComponent<Box>().db = this;
         newItem.GetComponent<Box>().label = label;
-    }
+    }*/
 
-    void LoadItems()
-    {
-        if (PlayerPrefs.HasKey(itemsCountSaveName))
-        {
-            itemsCount = PlayerPrefs.GetInt(itemsCountSaveName);
-            for (int i = 0; i < itemsCount; i++)
-            {
 
-                bool found = false;
-                string label = PlayerPrefs.GetString(itemSaveName + i);
-
-                foreach (Item x in itemColletion)
-                {
-                    if (x.label == label)
-                    {
-                        found = true;
-                        addExistGameObject(x);
-                        break;
-                    }
-                }
-                if (!found)
-                {
-                    addNewGameObject(label);
-                }
-            }
-            LoadInventoryArmorItems();
-            LoadInventoryWeaponItems();
-        }
-    }
 
     void ReloadItems()
     {
@@ -487,18 +611,18 @@ public class DataBase : MonoBehaviour
     void LoadInventoryArmorItems()
     {
         int index = -1;
-        foreach (string x in armorList)
+        foreach (Armor x in armorList)
         {
             index++;
             if (PlayerPrefs.HasKey(itemCostSaveName + x))
             {
-                AddNewArmorObject(x);
+                //AddNewArmorObject(x);
                 continue;
             }
 
             foreach (Armor y in armorCollection)
             {
-                if (x == y.label)
+                if (x.label == y.label)
                 {
                     AddExistArmorObject(y, index);
                     break;
@@ -511,7 +635,7 @@ public class DataBase : MonoBehaviour
     void LoadInventoryWeaponItems()
     {
         int index = -1;
-        foreach (string x in weaponList)
+        foreach (Weapon x in weaponList)
         {
             index++;
             if (PlayerPrefs.HasKey(itemCostSaveName + x))
@@ -522,7 +646,7 @@ public class DataBase : MonoBehaviour
 
             foreach (Weapon y in weaponCollection)
             {
-                if (x == y.label)
+                if (x.label == y.label)
                 {
                     AddExistWeaponObject(y, index);
                     break;
@@ -538,6 +662,35 @@ public class DataBase : MonoBehaviour
         newItem.GetComponent<Box>().index = index;
         newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { ArmorEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
         newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
+        string type = "";
+        switch (x.type)
+        {
+            case Armor.Type.Light:
+                type = "Лёгкий";
+                break;
+            case Armor.Type.Medium:
+                type = "Средний";
+                break;
+            case Armor.Type.Heavy:
+                type = "Тяжёлый";
+                break;
+        };
+        newItem.GetComponentInChildren<MType>().GetComponentInChildren<Text>().text = type;
+        newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.AC.ToString();
+        switch (x.ACCap)
+        {
+            case 0:
+                newItem.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = "+ мод ЛОВ" + x.ACCap.ToString();
+                break;
+            case -1:
+                newItem.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = "-";
+                break;
+            default:
+                newItem.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = "+ мод ЛОВ(Макс. " + x.ACCap.ToString() + ")";
+                break;
+        }
+        newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = "Сил. " + x.strReq;
+        newItem.GetComponentInChildren<Amount>().GetComponent<Toggle>().isOn = x.stealthDis;
         int equip = PlayerPrefs.GetInt(armorEquipSaveName + index);
         if (equip == 1)
         {
@@ -565,13 +718,75 @@ public class DataBase : MonoBehaviour
         newItem.GetComponent<Box>().index = index;
         newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { WeaponEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
         newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
+        newItem.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice;
+        if (x.dist == x.maxDist)
+            newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.dist + " фт.";
+        else
+            newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.dist + "/" + x.maxDist;
+        newItem.GetComponentInChildren<MType>().GetComponent<Toggle>().isOn = x.magic;
+        switch (x.damageType)
+        {
+            case Weapon.DamageType.Slashing:
+                newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Рубящий";
+                break;
+            case Weapon.DamageType.Piercing:
+                newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Колющий";
+                break;
+            case Weapon.DamageType.Crushing:
+                newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Дробящий";
+                break;
+        }
+        Text buf = newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>();
+        foreach (Weapon.Properties y in x.properties)
+        {
+            switch (y)
+            {
+                case Weapon.Properties.Ammo:
+                    buf.text += "Боеприпас";
+                    break;
+                case Weapon.Properties.Distance:
+                    buf.text += "Дис.";
+                    break;
+                case Weapon.Properties.Fencing:
+                    buf.text += "Фехтовальное";
+                    break;
+                case Weapon.Properties.Heavy:
+                    buf.text += "Тяжёлое";
+                    break;
+                case Weapon.Properties.Light:
+                    buf.text += "Лёгкое";
+                    break;
+                case Weapon.Properties.Reach:
+                    buf.text += "Досягаемость";
+                    break;
+                case Weapon.Properties.Reload:
+                    buf.text += "Перезарядка";
+                    break;
+                case Weapon.Properties.Special:
+                    buf.text += "Особое";
+                    break;
+                case Weapon.Properties.Throwing:
+                    buf.text += "Метательное";
+                    break;
+                case Weapon.Properties.TwoHanded:
+                    buf.text += "Двуручное";
+                    break;
+                case Weapon.Properties.Universal:
+                    buf.text += "Универсальное " + x.dices + "к" + (x.hitDice + 2);
+                    break;
+            }
+            if (y != x.properties[x.properties.Length - 1])
+            {
+                buf.text += ", ";
+            }
+        }
+
         int equip = PlayerPrefs.GetInt(weaponEquipSaveName + index);
         if (equip == 1)
         {
             if (weaponEquipmented.Count < maxWeaponInHand)
             {
                 newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = true;
-                weaponEquipmented.Add(index);
             }
             else
             {
@@ -643,6 +858,26 @@ public class DataBase : MonoBehaviour
             }
             return;//временно
         }
+        bool found = false;
+        foreach (Weapon.Properties x in weaponList[index].properties)
+        {
+            if (x == Weapon.Properties.TwoHanded)
+            {
+                found = true;
+                maxWeaponInHand = 1;
+                break;
+            }
+        }
+        if (!found)
+        {
+            if (maxWeaponInHand == 1 && weaponEquipmented.Count > 0)
+            {
+                PlayerPrefs.DeleteKey(weaponEquipSaveName + weaponEquipmented[0]);
+                weaponInventoryPanel.GetComponentsInChildren<Box>()[weaponEquipmented[0]].GetComponentInChildren<Toggle>().isOn = false;
+                
+            }
+            maxWeaponInHand = 2;
+        }
         if (weaponEquipmented.Count < maxWeaponInHand)
         {
             PlayerPrefs.SetInt(weaponEquipSaveName + index, 1);
@@ -652,53 +887,49 @@ public class DataBase : MonoBehaviour
             return;
         }
         Box[] list = weaponInventoryPanel.GetComponentsInChildren<Box>();
+        weaponEquipmented.Add(index);
         foreach (Box x in list)
         {
-            if (x.index == weaponEquipmented[0])
-            {
-                x.GetComponentInChildren<Toggle>().isOn = false;
-                PlayerPrefs.DeleteKey(weaponEquipSaveName + x.index);
-                break;
-            }
+            for (int j = 0; j < weaponEquipmented.Count - maxWeaponInHand; j++)
+                if (x.index == weaponEquipmented[j])
+                {
+                    x.GetComponentInChildren<Toggle>().isOn = false;
+                    PlayerPrefs.DeleteKey(weaponEquipSaveName + x.index);
+                    break;
+                }
         }
         PlayerPrefs.SetInt(weaponEquipSaveName + index, 1);
-        weaponEquipmented.Add(index);
-        UpdateWeapon();
         PlayerPrefs.Save();
     }
 
     void UpdateWeapon()
     {
         List<Weapon> list = new List<Weapon>();
-        foreach(int x in weaponEquipmented)
+        foreach (int x in weaponEquipmented)
         {
-            foreach(Weapon y in weaponCollection)
-            {
-                if (y.label == weaponList[x])
-                {
-                    list.Add(y);
-                    break;
-                }
-            }
+            list.Add(weaponList[x]);
         }
         manager.UpdateEquipment(list);
     }
 
     void ArmorClassChanged()
     {
-        string buf = "";
+        Armor buf;
         if (armorEquipmented != -1)
         {
             buf = armorList[armorEquipmented];
-            foreach (Armor x in armorCollection)
-            {
-                if (x.label == buf)
-                {
-                    manager.UpdateArmorClass(x.AC, x.ACCap);
-                    return;
-                }
-            }
+            manager.UpdateArmorClass(buf.AC, buf.ACCap);
+            return;
         }
         manager.UpdateArmorClass(10, 100);
+    }
+
+    Armor? GetItemInArmorList(string label, List<Armor> list)
+    {
+        foreach (Armor x in list)
+        {
+            if (x.label == label) return x;
+        }
+        return null;
     }
 }

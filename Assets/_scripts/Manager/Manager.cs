@@ -137,10 +137,50 @@ public class Manager : MonoBehaviour
         {
             equipmentPanel.GetComponentInChildren<Box>().DestroyMyself();
         }
-        foreach(Weapon x in list)
+        foreach (Weapon x in list)
         {
             GameObject newWeapon = Instantiate(hand, equipmentPanel.transform);
             newWeapon.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label;
+            int buf = _charModifier[0] + profMod;
+            int buf1 = _charModifier[0];
+            foreach(Weapon.Properties y in x.properties)
+            {
+                if (y == Weapon.Properties.Ammo)
+                {
+                    buf = _charModifier[1] + profMod;
+                    buf1 = _charModifier[1];
+                }
+                if (y == Weapon.Properties.Fencing)
+                {
+                    buf = Mathf.Max(_charModifier[0], _charModifier[1]) + profMod;
+                    buf1 = Mathf.Max(_charModifier[0], _charModifier[1]);
+                }
+            }
+            if (buf >= 0)
+                newWeapon.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = "+" + buf;
+            else
+                newWeapon.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = buf.ToString();
+            if (buf1 >= 0)
+                newWeapon.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice + "+" + buf1;
+            else
+                newWeapon.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice + buf1;
+            if (x.dist == x.maxDist)
+                newWeapon.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dist + " фт.";
+            else
+                newWeapon.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dist + "/" + x.maxDist;
+            newWeapon.GetComponentInChildren<Amount>().GetComponent<Toggle>().isOn = x.magic;
+            switch (x.damageType)
+            {
+                case Weapon.DamageType.Slashing:
+                    newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Рубящий";
+                    break;
+                case Weapon.DamageType.Piercing:
+                    newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Колющий";
+                    break;
+                case Weapon.DamageType.Crushing:
+                    newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Дробящий";
+                    break;
+            }
         }
     }
 

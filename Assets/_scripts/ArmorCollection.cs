@@ -10,7 +10,7 @@ public class ArmorCollection : ScriptableObject
 
     void LoadCollection()
     {
-        list.Add(new Armor("кираса", 14, 2));
+        list.Add(new Armor("кираса", 14, 2, 0, false, Armor.Type.Medium));
     }
 
     public static ArmorCollection GetCollection()

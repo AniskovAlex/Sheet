@@ -27,6 +27,15 @@ public struct Weapon
         Fencing
     }
 
+    public enum Type
+    {
+        CommonMelee,
+        CommonDist,
+        WarMelee,
+        WarDist
+
+    }
+
     public string label;
     public int dices;
     public int hitDice;
@@ -35,8 +44,9 @@ public struct Weapon
     public bool magic;
     public DamageType damageType;
     public Properties[] properties;
+    public Type type;
 
-    public Weapon(string label,int dices,int hitDice ,int dist, int maxDist, bool magic,DamageType damageType, Properties[] properties)
+    public Weapon(string label,int dices,int hitDice ,int dist, int maxDist, bool magic,DamageType damageType, Properties[] properties, Type type)
     {
         this.label = label;
         this.dices = dices;
@@ -46,5 +56,6 @@ public struct Weapon
         this.magic = magic;
         this.damageType = damageType;
         this.properties = properties;
+        this.type= type;
     }
 }
