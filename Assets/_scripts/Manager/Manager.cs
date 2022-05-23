@@ -53,7 +53,10 @@ public class Manager : MonoBehaviour
     int maxHealth = 0;
     int health = 0;
     int tempHealth = 0;
+    int addArmor = 0;
     bool healthStatusChanged = false;
+    bool shieldEquip = false;
+
     private void Start()
     {
         UploadData();
@@ -118,8 +121,9 @@ public class Manager : MonoBehaviour
 
     void UploadArmorClass()
     {
+        int buf = PlayerPrefs.GetInt(armorClassSaveName) + addArmor;
         foreach (GameObject x in armorClass)
-            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
     }
 
     public void UpdateArmorClass(int baseArmor, int dexArmor)
@@ -140,48 +144,67 @@ public class Manager : MonoBehaviour
         foreach (Weapon x in list)
         {
             GameObject newWeapon = Instantiate(hand, equipmentPanel.transform);
-            newWeapon.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label;
-            int buf = _charModifier[0] + profMod;
-            int buf1 = _charModifier[0];
-            foreach(Weapon.Properties y in x.properties)
+            newWeapon.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
+            if (x.type != Weapon.Type.Shield)
             {
-                if (y == Weapon.Properties.Ammo)
+                int buf = _charModifier[0] + profMod;
+                int buf1 = _charModifier[0];
+                foreach (Weapon.Properties y in x.properties)
                 {
-                    buf = _charModifier[1] + profMod;
-                    buf1 = _charModifier[1];
+                    if (y == Weapon.Properties.Ammo)
+                    {
+                        buf = _charModifier[1] + profMod;
+                        buf1 = _charModifier[1];
+                    }
+                    if (y == Weapon.Properties.Fencing)
+                    {
+                        buf = Mathf.Max(_charModifier[0], _charModifier[1]) + profMod;
+                        buf1 = Mathf.Max(_charModifier[0], _charModifier[1]);
+                    }
                 }
-                if (y == Weapon.Properties.Fencing)
+                if (buf >= 0)
+                    newWeapon.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = "+" + buf;
+                else
+                    newWeapon.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = buf.ToString();
+                if (buf1 >= 0)
+                    newWeapon.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice + "+" + buf1;
+                else
+                    newWeapon.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice + buf1;
+                if (x.dist == x.maxDist)
+                    newWeapon.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dist + " фт.";
+                else
+                    newWeapon.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dist + "/" + x.maxDist;
+                newWeapon.GetComponentInChildren<Amount>().GetComponent<Toggle>().isOn = x.magic;
+                switch (x.damageType)
                 {
-                    buf = Mathf.Max(_charModifier[0], _charModifier[1]) + profMod;
-                    buf1 = Mathf.Max(_charModifier[0], _charModifier[1]);
+                    case Weapon.DamageType.Slashing:
+                        newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Рубящий";
+                        break;
+                    case Weapon.DamageType.Piercing:
+                        newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Колющий";
+                        break;
+                    case Weapon.DamageType.Crushing:
+                        newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Дробящий";
+                        break;
                 }
             }
-            if (buf >= 0)
-                newWeapon.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = "+" + buf;
             else
-                newWeapon.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = buf.ToString();
-            if (buf1 >= 0)
-                newWeapon.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice + "+" + buf1;
-            else
-                newWeapon.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice + buf1;
-            if (x.dist == x.maxDist)
-                newWeapon.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dist + " фт.";
-            else
-                newWeapon.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dist + "/" + x.maxDist;
-            newWeapon.GetComponentInChildren<Amount>().GetComponent<Toggle>().isOn = x.magic;
-            switch (x.damageType)
             {
-                case Weapon.DamageType.Slashing:
-                    newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Рубящий";
-                    break;
-                case Weapon.DamageType.Piercing:
-                    newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Колющий";
-                    break;
-                case Weapon.DamageType.Crushing:
-                    newWeapon.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = "Дробящий";
-                    break;
+                DestroyImmediate(newWeapon.GetComponentInChildren<MType>().gameObject);
+                shieldEquip = true;
+                addArmor = Mathf.Max(addArmor, x.hitDice);
             }
         }
+        if (!shieldEquip)
+        {
+            addArmor = 0;
+            UpdateArmorClass(PlayerPrefs.GetInt(armorClassSaveName), 0);
+        }
+        else
+        {
+            UpdateArmorClass(PlayerPrefs.GetInt(armorClassSaveName), 0);
+        }
+        shieldEquip = false;
     }
 
     void SetAttributes()

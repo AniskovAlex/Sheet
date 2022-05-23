@@ -32,7 +32,8 @@ public struct Weapon
         CommonMelee,
         CommonDist,
         WarMelee,
-        WarDist
+        WarDist,
+        Shield
 
     }
 

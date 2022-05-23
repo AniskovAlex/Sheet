@@ -11,6 +11,18 @@ public class ArmorCollection : ScriptableObject
     void LoadCollection()
     {
         list.Add(new Armor("кираса", 14, 2, 0, false, Armor.Type.Medium));
+        list.Add(new Armor("стёганый", 11, 0, 0, true, Armor.Type.Light));
+        list.Add(new Armor("кожаный", 11, 0, 0, false, Armor.Type.Light));
+        list.Add(new Armor("проклёпанный кожаный", 12, 0, 0, false, Armor.Type.Light));
+        list.Add(new Armor("шкурный", 12, 2, 0, false, Armor.Type.Medium));
+        list.Add(new Armor("кольчужная рубаха", 13, 2, 0, false, Armor.Type.Medium));
+        list.Add(new Armor("чешуйчатый", 14, 2, 0, true, Armor.Type.Medium));
+        list.Add(new Armor("полулаты", 15, 2, 0, true, Armor.Type.Medium));
+        list.Add(new Armor("колечный", 14, -1, 0, true, Armor.Type.Heavy));
+        list.Add(new Armor("кольчуга", 16, -1, 13, true, Armor.Type.Heavy));
+        list.Add(new Armor("наборный", 17, -1, 15, true, Armor.Type.Heavy));
+        list.Add(new Armor("латы", 18, -1, 15, true, Armor.Type.Heavy));
+        list.Add(new Armor("щит", 2, -1, 0, false, Armor.Type.Shield));
     }
 
     public static ArmorCollection GetCollection()

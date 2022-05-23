@@ -8,7 +8,8 @@ public struct Armor
     {
         Light,
         Medium,
-        Heavy
+        Heavy,
+        Shield
     }
 
     public string label;

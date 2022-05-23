@@ -156,9 +156,8 @@ public class DataBase : MonoBehaviour
             mType.value = (int)addItem.Value.mType;
             type.value = (int)addItem.Value.type;
             costField.interactable = false;
-            weightField.interactable = false;
+            weightField.interactable = false;// type = false
             mType.interactable = false;
-            type.interactable = false;
             flag1 = false;
         }
         else
@@ -166,7 +165,7 @@ public class DataBase : MonoBehaviour
             costField.interactable = true;
             weightField.interactable = true;
             mType.interactable = true;
-            type.interactable = true;
+            type.value = 0;// type = true
         }
     }
 
@@ -188,6 +187,13 @@ public class DataBase : MonoBehaviour
                 foreach (Armor y in armorCollection)
                     if (label == y.label)
                     {
+                        if (y.type == Armor.Type.Shield)
+                        {
+                            Weapon shield = new Weapon("щит", 0, 2, 0, 0, false, Weapon.DamageType.Crushing, new Weapon.Properties[] { }, Weapon.Type.Shield);
+                            weaponList.Add(shield);
+                            AddExistWeaponObject(shield, weaponList.Count - 1);
+                            break;
+                        }
                         armorList.Add(y);
                         AddExistArmorObject(y, armorList.Count - 1);
                         break;
@@ -199,7 +205,6 @@ public class DataBase : MonoBehaviour
                         AddExistWeaponObject(y, weaponList.Count - 1);
                         break;
                     }
-                //ReloadItems();
                 found = true;
                 break;
             }
@@ -210,7 +215,7 @@ public class DataBase : MonoBehaviour
             ClearField();
             return;
         }
-        if (addItem != null)
+        if (addItem != null && itemLabel == addItem.Value.label)
         {
 
             PlayerPrefs.SetString(itemSaveName + itemsCount, addItem.Value.label);
@@ -225,7 +230,7 @@ public class DataBase : MonoBehaviour
         }
         else
         {
-            if (nameField.text != "" && costField.text != "" && weightField.text != "")
+            if (nameField.text != "" && costField.text != "" && weightField.text != "") // убрать !=
             {
                 int cost;
                 int weight;
@@ -242,7 +247,7 @@ public class DataBase : MonoBehaviour
                 itemsCount++;
                 PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
                 Item.MType buf1 = Item.MType.goldCoin + mType.value;
-                Item.Type buf2 = Item.Type.item + type.value;
+                Item.Type buf2 = Item.Type.item;// + x.type
                 Item newItem = new Item(itemLabel, cost, weight, buf1, buf2);
                 itemList.Add(newItem);
                 addExistGameObject(newItem);
@@ -250,7 +255,6 @@ public class DataBase : MonoBehaviour
         }
         ClearField();
         PlayerPrefs.Save();
-        //ReloadItems();
     }
 
     void ClearField()
@@ -280,7 +284,7 @@ public class DataBase : MonoBehaviour
             int amount = PlayerPrefs.GetInt(itemAmountSaveName + label) - 1;
             PlayerPrefs.SetInt(itemAmountSaveName + label, amount);
             panel.GetComponentsInChildren<Box>()[itemIndex].GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
-            if (itemList[itemIndex].type == Item.Type.armor)
+            if (itemList[itemIndex].type == Item.Type.armor && itemList[itemIndex].label != "щит")
                 if (armorEquipmented >= 0)
                     if (label == armorList[armorEquipmented].label)
                     {
@@ -319,7 +323,7 @@ public class DataBase : MonoBehaviour
                         }
 
                     }
-            if (itemList[itemIndex].type == Item.Type.weapon)
+            if (itemList[itemIndex].type == Item.Type.weapon || itemList[itemIndex].label == "щит")
                 if (weaponEquipmented.Count >= 0)
                 {
                     int index = 0;
@@ -392,7 +396,7 @@ public class DataBase : MonoBehaviour
             PlayerPrefs.DeleteKey(itemSaveName + (itemsCount - 1));
             itemsCount--;
             PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
-            if (itemList[itemIndex].type == Item.Type.armor)
+            if (itemList[itemIndex].type == Item.Type.armor && itemList[itemIndex].label != "щит")
             {
                 int index = 0;
                 bool found = false;
@@ -428,7 +432,7 @@ public class DataBase : MonoBehaviour
                     armors[i].index--;
                 }
             }
-            if (itemList[itemIndex].type == Item.Type.weapon)
+            if (itemList[itemIndex].type == Item.Type.weapon || itemList[itemIndex].label == "щит")
             {
                 int index = 0;
                 foreach (Weapon x in weaponList)
@@ -456,7 +460,6 @@ public class DataBase : MonoBehaviour
 
         }
         PlayerPrefs.Save();
-        //ReloadItems();
     }
 
     void ListShift(int index, List<int> list, string saveName)
@@ -512,6 +515,13 @@ public class DataBase : MonoBehaviour
                     {
                         for (int i = 0; i < amount; i++)
                         {
+                            if (y.type == Armor.Type.Shield)
+                            {
+                                Weapon shield = new Weapon("щит", 0, 2, 0, 0, false, Weapon.DamageType.Crushing, new Weapon.Properties[] { }, Weapon.Type.Shield);
+                                weaponList.Add(shield);
+                                AddExistWeaponObject(shield, weaponList.Count - 1);
+                                continue;
+                            }
                             armorList.Add(y);
                             AddExistArmorObject(y, armorList.Count - 1);
                         }
@@ -537,123 +547,6 @@ public class DataBase : MonoBehaviour
         newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
         newItem.GetComponent<Box>().db = this;
         newItem.GetComponent<Box>().index = itemList.IndexOf(x);
-    }
-    /*void addNewGameObject(string label)
-    {
-        GameObject newItem = Instantiate(item, panel.transform);
-        newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = label[0].ToString().ToUpper() + label.Remove(0, 1);
-        string moneyType = "";
-        int moneyTypeInt = PlayerPrefs.GetInt(itemMTypeSaveName + label);
-        switch (moneyTypeInt)
-        {
-            case 0:
-                moneyType = "ЗМ:";
-                break;
-            case 1:
-                moneyType = "СМ:";
-                break;
-            case 2:
-                moneyType = "ММ:";
-                break;
-        }
-        newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = moneyType + " " + PlayerPrefs.GetInt(itemCostSaveName + label);
-        newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = PlayerPrefs.GetInt(itemWeightSaveName + label).ToString() + " фнт";
-        int amount = PlayerPrefs.GetInt(itemAmountSaveName + label);
-        string type = "";
-        int typeInt = PlayerPrefs.GetInt(itemTypeSaveName + label);
-        switch (typeInt)
-        {
-            case 0:
-                type = "П";
-                break;
-            case 1:
-                for (int i = 0; i < amount; i++)
-                    armorList.Add(label);
-                type = "Б";
-                break;
-            case 2:
-                for (int i = 0; i < amount; i++)
-                    weaponList.Add(label);
-                type = "О";
-                break;
-        }
-        newItem.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = type;
-        newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
-        newItem.GetComponent<Box>().db = this;
-        newItem.GetComponent<Box>().label = label;
-    }*/
-
-
-
-    void ReloadItems()
-    {
-        int j = 0;
-        while (panel.GetComponentInChildren<Box>())
-        {
-            panel.GetComponentInChildren<Box>().DestroyMyself();
-            j++;
-        }
-        armorList.Clear();
-        armorEquipmented = -1;
-        while (armorInventoryPanel.GetComponentInChildren<Box>())
-        {
-            armorInventoryPanel.GetComponentInChildren<Box>().DestroyMyself();
-        }
-        weaponList.Clear();
-        weaponEquipmented.Clear();
-        while (weaponInventoryPanel.GetComponentInChildren<Box>())
-        {
-            weaponInventoryPanel.GetComponentInChildren<Box>().DestroyMyself();
-        }
-        LoadItems();
-    }
-
-    void LoadInventoryArmorItems()
-    {
-        int index = -1;
-        foreach (Armor x in armorList)
-        {
-            index++;
-            if (PlayerPrefs.HasKey(itemCostSaveName + x))
-            {
-                //AddNewArmorObject(x);
-                continue;
-            }
-
-            foreach (Armor y in armorCollection)
-            {
-                if (x.label == y.label)
-                {
-                    AddExistArmorObject(y, index);
-                    break;
-                }
-
-            }
-        }
-    }
-
-    void LoadInventoryWeaponItems()
-    {
-        int index = -1;
-        foreach (Weapon x in weaponList)
-        {
-            index++;
-            if (PlayerPrefs.HasKey(itemCostSaveName + x))
-            {
-                //AddNewWeaponObject(x);
-                continue;
-            }
-
-            foreach (Weapon y in weaponCollection)
-            {
-                if (x.label == y.label)
-                {
-                    AddExistWeaponObject(y, index);
-                    break;
-                }
-
-            }
-        }
     }
 
     void AddExistArmorObject(Armor x, int index)
@@ -718,69 +611,76 @@ public class DataBase : MonoBehaviour
         newItem.GetComponent<Box>().index = index;
         newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().onValueChanged.AddListener(delegate { WeaponEquipmentChanged(newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>()); });
         newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
-        newItem.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice;
-        if (x.dist == x.maxDist)
-            newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.dist + " фт.";
+        if (x.type != Weapon.Type.Shield)
+        {
+            newItem.GetComponentInChildren<Modifier>().GetComponentInChildren<Text>().text = x.dices + "к" + x.hitDice;
+            if (x.dist == x.maxDist)
+                newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.dist + " фт.";
+            else
+                newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.dist + "/" + x.maxDist;
+            newItem.GetComponentInChildren<MType>().GetComponent<Toggle>().isOn = x.magic;
+            switch (x.damageType)
+            {
+                case Weapon.DamageType.Slashing:
+                    newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Рубящий";
+                    break;
+                case Weapon.DamageType.Piercing:
+                    newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Колющий";
+                    break;
+                case Weapon.DamageType.Crushing:
+                    newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Дробящий";
+                    break;
+            }
+            Text buf = newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>();
+            foreach (Weapon.Properties y in x.properties)
+            {
+                switch (y)
+                {
+                    case Weapon.Properties.Ammo:
+                        buf.text += "Боеприпас";
+                        break;
+                    case Weapon.Properties.Distance:
+                        buf.text += "Дис.";
+                        break;
+                    case Weapon.Properties.Fencing:
+                        buf.text += "Фехтовальное";
+                        break;
+                    case Weapon.Properties.Heavy:
+                        buf.text += "Тяжёлое";
+                        break;
+                    case Weapon.Properties.Light:
+                        buf.text += "Лёгкое";
+                        break;
+                    case Weapon.Properties.Reach:
+                        buf.text += "Досягаемость";
+                        break;
+                    case Weapon.Properties.Reload:
+                        buf.text += "Перезарядка";
+                        break;
+                    case Weapon.Properties.Special:
+                        buf.text += "Особое";
+                        break;
+                    case Weapon.Properties.Throwing:
+                        buf.text += "Метательное";
+                        break;
+                    case Weapon.Properties.TwoHanded:
+                        buf.text += "Двуручное";
+                        break;
+                    case Weapon.Properties.Universal:
+                        buf.text += "Универсальное " + x.dices + "к" + (x.hitDice + 2);
+                        break;
+                }
+                if (y != x.properties[x.properties.Length - 1])
+                {
+                    buf.text += ", ";
+                }
+            }
+        }
         else
-            newItem.GetComponentInChildren<Attribute>().GetComponentInChildren<Text>().text = x.dist + "/" + x.maxDist;
-        newItem.GetComponentInChildren<MType>().GetComponent<Toggle>().isOn = x.magic;
-        switch (x.damageType)
         {
-            case Weapon.DamageType.Slashing:
-                newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Рубящий";
-                break;
-            case Weapon.DamageType.Piercing:
-                newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Колющий";
-                break;
-            case Weapon.DamageType.Crushing:
-                newItem.GetComponentInChildren<Money>().GetComponentInChildren<Text>().text = "Дробящий";
-                break;
+            DestroyImmediate(newItem.GetComponentInChildren<Skill>().gameObject);
+            newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>().text = "КД +" + x.hitDice;
         }
-        Text buf = newItem.GetComponentInChildren<Weight>().GetComponentInChildren<Text>();
-        foreach (Weapon.Properties y in x.properties)
-        {
-            switch (y)
-            {
-                case Weapon.Properties.Ammo:
-                    buf.text += "Боеприпас";
-                    break;
-                case Weapon.Properties.Distance:
-                    buf.text += "Дис.";
-                    break;
-                case Weapon.Properties.Fencing:
-                    buf.text += "Фехтовальное";
-                    break;
-                case Weapon.Properties.Heavy:
-                    buf.text += "Тяжёлое";
-                    break;
-                case Weapon.Properties.Light:
-                    buf.text += "Лёгкое";
-                    break;
-                case Weapon.Properties.Reach:
-                    buf.text += "Досягаемость";
-                    break;
-                case Weapon.Properties.Reload:
-                    buf.text += "Перезарядка";
-                    break;
-                case Weapon.Properties.Special:
-                    buf.text += "Особое";
-                    break;
-                case Weapon.Properties.Throwing:
-                    buf.text += "Метательное";
-                    break;
-                case Weapon.Properties.TwoHanded:
-                    buf.text += "Двуручное";
-                    break;
-                case Weapon.Properties.Universal:
-                    buf.text += "Универсальное " + x.dices + "к" + (x.hitDice + 2);
-                    break;
-            }
-            if (y != x.properties[x.properties.Length - 1])
-            {
-                buf.text += ", ";
-            }
-        }
-
         int equip = PlayerPrefs.GetInt(weaponEquipSaveName + index);
         if (equip == 1)
         {
@@ -874,7 +774,7 @@ public class DataBase : MonoBehaviour
             {
                 PlayerPrefs.DeleteKey(weaponEquipSaveName + weaponEquipmented[0]);
                 weaponInventoryPanel.GetComponentsInChildren<Box>()[weaponEquipmented[0]].GetComponentInChildren<Toggle>().isOn = false;
-                
+
             }
             maxWeaponInHand = 2;
         }
@@ -918,7 +818,10 @@ public class DataBase : MonoBehaviour
         if (armorEquipmented != -1)
         {
             buf = armorList[armorEquipmented];
-            manager.UpdateArmorClass(buf.AC, buf.ACCap);
+            if (buf.ACCap == 0)
+                manager.UpdateArmorClass(buf.AC, 100);
+            else
+                manager.UpdateArmorClass(buf.AC, buf.ACCap);
             return;
         }
         manager.UpdateArmorClass(10, 100);
