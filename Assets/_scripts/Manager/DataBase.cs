@@ -58,6 +58,7 @@ public class DataBase : MonoBehaviour
                         Item.MType mType = Item.MType.goldCoin + PlayerPrefs.GetInt(itemMTypeSaveName + label);
                         Item.Type type = Item.Type.item + PlayerPrefs.GetInt(itemTypeSaveName + label);
                         Item newItem = new Item(label, cost, weight, mType, type);
+                        itemList.Add(newItem);
                         addExistGameObject(newItem);
                     }
                 }
@@ -104,6 +105,10 @@ public class DataBase : MonoBehaviour
     public GameObject weaponInventoryPanel;
     public GameObject input;
     public GameObject search;
+    public GameObject weaponSet;
+    public GameObject armorSet;
+    public GameObject propertiesPanel;
+    public GameObject propertie;
     public InputField nameField;
     public InputField costField;
     public InputField weightField;
@@ -155,9 +160,67 @@ public class DataBase : MonoBehaviour
             weightField.text = addItem.Value.weight.ToString();
             mType.value = (int)addItem.Value.mType;
             type.value = (int)addItem.Value.type;
+            switch (type.value)
+            {
+                case 0:
+                    armorSet.SetActive(false);
+                    weaponSet.SetActive(false);
+                    break;
+                case 1:
+                    armorSet.SetActive(true);
+                    weaponSet.SetActive(false);
+                    foreach (Armor x in armorCollection)
+                    {
+                        if (x.label == addItem.Value.label)
+                        {
+
+                        }
+                    }
+                    break;
+                case 2:
+                    armorSet.SetActive(false);
+                    weaponSet.SetActive(true);
+                    foreach (Weapon x in weaponCollection)
+                    {
+                        if (x.label == addItem.Value.label)
+                        {
+                            weaponSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().value = (int)x.damageType;
+                            weaponSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().interactable = false;
+                            weaponSet.GetComponentInChildren<Attribute>().GetComponent<InputField>().text = x.dices.ToString();
+                            weaponSet.GetComponentInChildren<Attribute>().GetComponent<InputField>().interactable = false;
+                            weaponSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().text = x.hitDice.ToString();
+                            weaponSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().interactable = false;
+                            weaponSet.GetComponentInChildren<Money>().GetComponent<InputField>().text = x.dist.ToString();
+                            weaponSet.GetComponentInChildren<Money>().GetComponent<InputField>().interactable = false;
+                            weaponSet.GetComponentInChildren<MType>().GetComponent<InputField>().text = x.maxDist.ToString();
+                            weaponSet.GetComponentInChildren<MType>().GetComponent<InputField>().interactable = false;
+                            weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().isOn = x.magic;
+                            weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().interactable = false;
+                            Skill[] buf = weaponSet.GetComponentsInChildren<Skill>();
+                            for (int i = 0; i < buf.Length; i++)
+                            {
+                                Destroy(buf[i].gameObject);
+                            }
+                            int j = 0;
+                            foreach (Weapon.Properties y in x.properties)
+                            {
+                                GameObject newGameObject = Instantiate(propertie, propertiesPanel.transform);
+                                newGameObject.GetComponent<Dropdown>().value = (int)x.properties[j];
+                                newGameObject.GetComponent<Dropdown>().onValueChanged.AddListener(delegate { AddProperties(newGameObject.GetComponent<Dropdown>()); });
+                                newGameObject.GetComponent<Dropdown>().interactable = false;
+                                j++;
+                            }
+                            weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().value = (int)x.type;
+                            weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().interactable = false;
+                            break;
+                        }
+                    }
+                    break;
+            }
             costField.interactable = false;
-            weightField.interactable = false;// type = false
+            weightField.interactable = false;
             mType.interactable = false;
+            type.interactable = false;
             flag1 = false;
         }
         else
@@ -165,7 +228,7 @@ public class DataBase : MonoBehaviour
             costField.interactable = true;
             weightField.interactable = true;
             mType.interactable = true;
-            type.value = 0;// type = true
+            type.interactable = true;
         }
     }
 
@@ -173,9 +236,9 @@ public class DataBase : MonoBehaviour
     {
         bool found = false;
         string itemLabel = nameField.text.ToLower();
-        for (int i = 0; i < itemsCount; i++)
+        for (int i = 0; i < itemList.Count; i++)
         {
-            string label = PlayerPrefs.GetString(itemSaveName + i);
+            string label = itemList[i].label;
             if (label == itemLabel)
             {
                 int amount;
@@ -184,27 +247,67 @@ public class DataBase : MonoBehaviour
                 PlayerPrefs.SetInt(itemAmountSaveName + label, buf);
                 panel.GetComponentsInChildren<Box>()[i].GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = buf.ToString();
                 //временно!!!
-                foreach (Armor y in armorCollection)
-                    if (label == y.label)
-                    {
-                        if (y.type == Armor.Type.Shield)
+                switch (itemList[i].type)
+                {
+                    case Item.Type.armor:
+                        Armor? newArmor = null;// = Armor.LoadArmor(label);
+                        if (newArmor == null)
                         {
-                            Weapon shield = new Weapon("щит", 0, 2, 0, 0, false, Weapon.DamageType.Crushing, new Weapon.Properties[] { }, Weapon.Type.Shield);
-                            weaponList.Add(shield);
-                            AddExistWeaponObject(shield, weaponList.Count - 1);
-                            break;
+                            foreach (Armor y in armorList)
+                                if (label == y.label)
+                                {
+                                    if (y.type == Armor.Type.Shield)
+                                    {
+                                        Weapon shield = new Weapon("щит", 0, 2, 0, 0, false, Weapon.DamageType.Crushing, new Weapon.Properties[] { }, Weapon.Type.Shield);
+                                        for (int j = 0; j < amount; j++)
+                                        {
+                                            weaponList.Add(shield);
+                                            AddExistWeaponObject(shield, weaponList.Count - 1);
+                                        }
+                                        break;
+                                    }
+                                    for (int j = 0; j < amount; j++)
+                                    {
+                                        armorList.Add(y);
+                                        AddExistArmorObject(y, armorList.Count - 1);
+                                    }
+                                    break;
+                                }
                         }
-                        armorList.Add(y);
-                        AddExistArmorObject(y, armorList.Count - 1);
+                        else
+                        {
+                            for (int j = 0; j < amount; j++)
+                            {
+                                armorList.Add((Armor)newArmor);
+                                AddExistArmorObject((Armor)newArmor, armorList.Count - 1);
+                            }
+                        }
                         break;
-                    }
-                foreach (Weapon y in weaponCollection)
-                    if (label == y.label)
-                    {
-                        weaponList.Add(y);
-                        AddExistWeaponObject(y, weaponList.Count - 1);
+                    case Item.Type.weapon:
+                        Weapon? newWeapon = Weapon.LoadWeapon(label);
+                        if (newWeapon == null)
+                        {
+                            foreach (Weapon y in weaponList)
+                                if (label == y.label)
+                                {
+                                    for (int j = 0; j < amount; j++)
+                                    {
+                                        weaponList.Add(y);
+                                        AddExistWeaponObject(y, weaponList.Count - 1);
+                                    }
+                                    break;
+                                }
+                        }
+                        else
+                        {
+                            for (int j = 0; j < amount; j++)
+                            {
+                                weaponList.Add((Weapon)newWeapon);
+                                AddExistWeaponObject((Weapon)newWeapon, weaponList.Count - 1);
+                            }
+                        }
                         break;
-                    }
+                }
                 found = true;
                 break;
             }
@@ -247,14 +350,44 @@ public class DataBase : MonoBehaviour
                 itemsCount++;
                 PlayerPrefs.SetInt(itemsCountSaveName, itemsCount);
                 Item.MType buf1 = Item.MType.goldCoin + mType.value;
-                Item.Type buf2 = Item.Type.item;// + x.type
+                Item.Type buf2 = Item.Type.item + type.value;
                 Item newItem = new Item(itemLabel, cost, weight, buf1, buf2);
                 itemList.Add(newItem);
+                switch (newItem.type)
+                {
+                    case Item.Type.armor:
+                        break;
+                    case Item.Type.weapon:
+                        CreatNewWeapon(itemLabel);
+                        break;
+                }
                 addExistGameObject(newItem);
             }
         }
         ClearField();
         PlayerPrefs.Save();
+    }
+
+    void CreatNewWeapon(string label)
+    {
+        int dices, hitDices, dist, maxDist;
+        bool magic;
+        Weapon.DamageType damageType = Weapon.DamageType.Slashing + weaponSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().value;
+        int.TryParse(weaponSet.GetComponentInChildren<Attribute>().GetComponent<InputField>().text, out dices);
+        int.TryParse(weaponSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().text, out hitDices);
+        int.TryParse(weaponSet.GetComponentInChildren<Money>().GetComponent<InputField>().text, out dist);
+        int.TryParse(weaponSet.GetComponentInChildren<MType>().GetComponent<InputField>().text, out maxDist);
+        magic = weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().isOn;
+        Skill[] buf = weaponSet.GetComponentsInChildren<Skill>();
+        List<Weapon.Properties> properties = new List<Weapon.Properties>();
+        for (int i = 0; i < buf.Length; i++)
+        {
+            if(buf[i].GetComponent<Dropdown>().value<11)
+            properties.Add(buf[i].GetComponent<Dropdown>().value + Weapon.Properties.Ammo);
+        }
+        Weapon.Type type = weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().value + Weapon.Type.CommonMelee;
+        Weapon newWeapon = new Weapon(label, dices, hitDices, dist, maxDist, magic, damageType, properties.ToArray(), type);
+        Weapon.SaveWeapon(newWeapon);
     }
 
     void ClearField()
@@ -454,6 +587,7 @@ public class DataBase : MonoBehaviour
                 {
                     weapons[i].index--;
                 }
+                Weapon.DeleteWeapon(label);
                 UpdateWeapon();
             }
 
@@ -474,6 +608,7 @@ public class DataBase : MonoBehaviour
 
     void addExistGameObject(Item x)
     {
+        bool exception = false;
         GameObject newItem = Instantiate(item, panel.transform);
         newItem.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
         string moneyType = "";
@@ -504,6 +639,7 @@ public class DataBase : MonoBehaviour
         }
         int amount = PlayerPrefs.GetInt(itemAmountSaveName + x.label);
         string itemType = "";
+        bool found = false;
         switch (x.type)
         {
             case Item.Type.item:
@@ -525,9 +661,27 @@ public class DataBase : MonoBehaviour
                             armorList.Add(y);
                             AddExistArmorObject(y, armorList.Count - 1);
                         }
+                        found = true;
                         break;
                     }
                 itemType = "Б";
+                if (!found)
+                {
+                    Armor? newArmor = null; //= Armor.LoadArmor(x.label);
+                    if (newArmor != null)
+                    {
+                        for (int i = 0; i < amount; i++)
+                        {
+                            armorList.Add((Armor)newArmor);
+                            AddExistArmorObject((Armor)newArmor, armorList.Count - 1);
+                        }
+                    }
+                    else
+                    {
+                        exception = true;
+                    }
+                }
+
                 break;
             case Item.Type.weapon:
                 foreach (Weapon y in weaponCollection)
@@ -538,15 +692,46 @@ public class DataBase : MonoBehaviour
                             weaponList.Add(y);
                             AddExistWeaponObject(y, weaponList.Count - 1);
                         }
+                        found = true;
                         break;
                     }
                 itemType = "О";
+                if (!found)
+                {
+                    Weapon? newWeapon = Weapon.LoadWeapon(x.label);
+                    if (newWeapon != null)
+                    {
+                        for (int i = 0; i < amount; i++)
+                        {
+                            weaponList.Add((Weapon)newWeapon);
+                            AddExistWeaponObject((Weapon)newWeapon, weaponList.Count - 1);
+                        }
+                    }
+                    else
+                    {
+                        exception = true;
+                    }
+                }
                 break;
+
         }
         newItem.GetComponentInChildren<Type>().GetComponentInChildren<Text>().text = itemType;
         newItem.GetComponentInChildren<Amount>().GetComponentInChildren<Text>().text = amount.ToString();
         newItem.GetComponent<Box>().db = this;
         newItem.GetComponent<Box>().index = itemList.IndexOf(x);
+        if (exception)
+        {
+            newItem.GetComponent<Box>().DestroyMyself();
+            PlayerPrefs.DeleteKey(itemSaveName + itemList.IndexOf(x));
+            PlayerPrefs.DeleteKey(itemCostSaveName + x.label);
+            PlayerPrefs.DeleteKey(itemMTypeSaveName + x.label);
+            PlayerPrefs.DeleteKey(itemWeightSaveName + x.label);
+            PlayerPrefs.DeleteKey(itemTypeSaveName + x.label);
+            Weapon.DeleteWeapon(x.label);
+            itemList.Remove(x);
+            PlayerPrefs.SetInt(itemCostSaveName, itemList.Count);
+            PlayerPrefs.Save();
+        }
     }
 
     void AddExistArmorObject(Armor x, int index)
@@ -834,5 +1019,43 @@ public class DataBase : MonoBehaviour
             if (x.label == label) return x;
         }
         return null;
+    }
+
+    public void ShowAdditionalSet(Dropdown dropdown)
+    {
+        switch (dropdown.value)
+        {
+            case 0:
+                armorSet.SetActive(false);
+                weaponSet.SetActive(false);
+                break;
+            case 1:
+                armorSet.SetActive(true);
+                weaponSet.SetActive(false);
+                break;
+            case 2:
+                armorSet.SetActive(false);
+                weaponSet.SetActive(true);
+                break;
+        }
+    }
+
+    public void AddProperties(Dropdown obj)
+    {
+        if (obj.value >= 11)
+        {
+            Destroy(obj.gameObject);
+            //Skill[] buf = propertiesPanel.GetComponentsInChildren<Skill>();
+            //buf[buf.Length - 1].GetComponent<Dropdown>().interactable = true;
+        }
+        else
+        {
+            //obj.interactable = false;
+            if (propertiesPanel.GetComponentsInChildren<Skill>()[propertiesPanel.GetComponentsInChildren<Skill>().Length - 1].GetComponent<Dropdown>().value < 11)
+            {
+                GameObject newGameObject = Instantiate(propertie, propertiesPanel.transform);
+                newGameObject.GetComponent<Dropdown>().onValueChanged.AddListener(delegate { AddProperties(newGameObject.GetComponent<Dropdown>()); });
+            }
+        }
     }
 }
