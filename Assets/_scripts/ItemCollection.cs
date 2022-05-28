@@ -109,7 +109,7 @@ public class ItemCollection : ScriptableObject
         list.Add(new Item("шипы, железные (10)", 1, 5, Item.MType.goldCoin, Item.Type.item));
         list.Add(new Item("шлямбур", 5, -2, Item.MType.copperCoin, Item.Type.item));
         list.Add(new Item("яд, простой (флакон)", 100, 0, Item.MType.goldCoin, Item.Type.item));
-        list.Add(new Item("стёганный", 5, 8, Item.MType.goldCoin, Item.Type.armor));
+        list.Add(new Item("стёганый", 5, 8, Item.MType.goldCoin, Item.Type.armor));
         list.Add(new Item("кожаный", 10, 10, Item.MType.goldCoin, Item.Type.armor));
         list.Add(new Item("проклёпанная кожа", 45, 13, Item.MType.goldCoin, Item.Type.armor));
         list.Add(new Item("шкурный", 10, 12, Item.MType.goldCoin, Item.Type.armor));

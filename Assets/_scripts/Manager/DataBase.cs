@@ -63,8 +63,6 @@ public class DataBase : MonoBehaviour
                     }
                 }
             }
-            //LoadInventoryArmorItems();
-            //LoadInventoryWeaponItems();
         }
     }
 
@@ -94,7 +92,6 @@ public class DataBase : MonoBehaviour
     const string itemAmountSaveName = "itemA_";
     const string armorEquipSaveName = "armorE_";
     const string weaponEquipSaveName = "weaponE_";
-    const string armorClassSaveName = "ac_";
 
     public Manager manager;
     public GameObject item;
@@ -173,7 +170,16 @@ public class DataBase : MonoBehaviour
                     {
                         if (x.label == addItem.Value.label)
                         {
-
+                            armorSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().value = (int)x.type;
+                            armorSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().interactable = false;
+                            armorSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().text = x.AC.ToString();
+                            armorSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().interactable = false;
+                            armorSet.GetComponentInChildren<Money>().GetComponent<InputField>().text = x.ACCap.ToString();
+                            armorSet.GetComponentInChildren<Money>().GetComponent<InputField>().interactable = false;
+                            armorSet.GetComponentInChildren<Amount>().GetComponent<InputField>().text = x.strReq.ToString();
+                            armorSet.GetComponentInChildren<Amount>().GetComponent<InputField>().interactable = false;
+                            weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().isOn = x.stealthDis;
+                            weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().interactable = false;
                         }
                     }
                     break;
@@ -884,11 +890,6 @@ public class DataBase : MonoBehaviour
         {
             newItem.GetComponentInChildren<Type>().gameObject.GetComponent<Toggle>().isOn = false;
         }
-    }
-
-    void AddNewArmorObject(string x)
-    {
-        //Дописать!!!
     }
 
     void ArmorEquipmentChanged(Toggle toggle)

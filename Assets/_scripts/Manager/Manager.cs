@@ -17,7 +17,7 @@ public class Manager : MonoBehaviour
     const string maxHealthSaveName = "maxHP_";
     const string healthSaveName = "HP_";
     const string tempHealthSaveName = "THP_";
-    const string armorClassSaveName = "ac_";
+    //const string armorClassSaveName = "ac_";
     const string speedSaveName = "spd_";
     /*enum atr
     {
@@ -54,6 +54,7 @@ public class Manager : MonoBehaviour
     int health = 0;
     int tempHealth = 0;
     int addArmor = 0;
+    int AC = 10;
     bool healthStatusChanged = false;
     bool shieldEquip = false;
 
@@ -104,7 +105,6 @@ public class Manager : MonoBehaviour
         level.text = profMod.ToString();
         profMod = (profMod - 1) / 4 + 2;
         profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
-        UploadArmorClass();
         maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
         health = PlayerPrefs.GetInt(healthSaveName);
         tempHealth = PlayerPrefs.GetInt(tempHealthSaveName);
@@ -121,17 +121,20 @@ public class Manager : MonoBehaviour
 
     void UploadArmorClass()
     {
-        int buf = PlayerPrefs.GetInt(armorClassSaveName) + addArmor;
+        //int buf = PlayerPrefs.GetInt(armorClassSaveName) + addArmor;
         foreach (GameObject x in armorClass)
-            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = AC.ToString();
     }
 
     public void UpdateArmorClass(int baseArmor, int dexArmor)
     {
         int dex;
         _charModifier.TryGetValue(1, out dex);
-        int armor = baseArmor + Mathf.Clamp(dex, 0, dexArmor);
-        PlayerPrefs.SetInt(armorClassSaveName, armor);
+        if (dexArmor != -1)
+            AC = baseArmor + Mathf.Clamp(dex, -10, dexArmor);
+        else
+            AC = baseArmor;
+        //PlayerPrefs.SetInt(armorClassSaveName, armor);
         UploadArmorClass();
     }
 
@@ -198,11 +201,11 @@ public class Manager : MonoBehaviour
         if (!shieldEquip)
         {
             addArmor = 0;
-            UpdateArmorClass(PlayerPrefs.GetInt(armorClassSaveName), 0);
+            UpdateArmorClass(AC, 0);
         }
         else
         {
-            UpdateArmorClass(PlayerPrefs.GetInt(armorClassSaveName), 0);
+            UpdateArmorClass(AC, 0);
         }
         shieldEquip = false;
     }

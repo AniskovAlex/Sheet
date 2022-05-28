@@ -125,7 +125,7 @@ public class ScreensControler : MonoBehaviour
         switch (panel.name)
         {
             case "Battle":
-                head.text = "???";
+                head.text = "Боевой Экран";
                 break;
             case "Inventory":
                 head.text = "Инвентарь";
