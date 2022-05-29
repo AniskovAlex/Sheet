@@ -150,6 +150,22 @@ public class DataBase : MonoBehaviour
 
     public void showFoundedItem()
     {
+        armorSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().interactable = true;
+        armorSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().interactable = true;
+        armorSet.GetComponentInChildren<Money>().GetComponent<InputField>().interactable = true;
+        armorSet.GetComponentInChildren<Amount>().GetComponent<InputField>().interactable = true;
+        armorSet.GetComponentInChildren<Type>().GetComponent<Toggle>().interactable = true;
+        weaponSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().interactable = true;
+        weaponSet.GetComponentInChildren<Attribute>().GetComponent<InputField>().interactable = true;
+        weaponSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().interactable = true;
+        weaponSet.GetComponentInChildren<Money>().GetComponent<InputField>().interactable = true;
+        weaponSet.GetComponentInChildren<MType>().GetComponent<InputField>().interactable = true;
+        weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().interactable = true;
+        Skill[] buf1 = weaponSet.GetComponentsInChildren<Skill>();
+        for (int i = 0; i < buf1.Length; i++)
+        {
+            Destroy(buf1[i].gameObject);
+        }
         if (addItem != null && flag1 == true)
         {
             nameField.text = addItem.Value.label[0].ToString().ToUpper() + addItem.Value.label.Remove(0, 1);
@@ -178,8 +194,8 @@ public class DataBase : MonoBehaviour
                             armorSet.GetComponentInChildren<Money>().GetComponent<InputField>().interactable = false;
                             armorSet.GetComponentInChildren<Amount>().GetComponent<InputField>().text = x.strReq.ToString();
                             armorSet.GetComponentInChildren<Amount>().GetComponent<InputField>().interactable = false;
-                            weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().isOn = x.stealthDis;
-                            weaponSet.GetComponentInChildren<Type>().GetComponent<Toggle>().interactable = false;
+                            armorSet.GetComponentInChildren<Type>().GetComponent<Toggle>().isOn = x.stealthDis;
+                            armorSet.GetComponentInChildren<Type>().GetComponent<Toggle>().interactable = false;
                         }
                     }
                     break;
@@ -231,6 +247,12 @@ public class DataBase : MonoBehaviour
         }
         else
         {
+            int j = 0;
+            while (input.GetComponentInChildren<Option>() && j < 5)
+            {
+                input.GetComponentInChildren<Option>().DestroyMyself();
+                j++;
+            }
             costField.interactable = true;
             weightField.interactable = true;
             mType.interactable = true;
@@ -256,7 +278,7 @@ public class DataBase : MonoBehaviour
                 switch (itemList[i].type)
                 {
                     case Item.Type.armor:
-                        Armor? newArmor = null;// = Armor.LoadArmor(label);
+                        Armor? newArmor = Armor.LoadArmor(label);
                         if (newArmor == null)
                         {
                             foreach (Armor y in armorList)
@@ -362,6 +384,7 @@ public class DataBase : MonoBehaviour
                 switch (newItem.type)
                 {
                     case Item.Type.armor:
+                        CreatNewArmor(itemLabel);
                         break;
                     case Item.Type.weapon:
                         CreatNewWeapon(itemLabel);
@@ -372,6 +395,19 @@ public class DataBase : MonoBehaviour
         }
         ClearField();
         PlayerPrefs.Save();
+    }
+
+    void CreatNewArmor(string label)
+    {
+        int AC, ACCap, str;
+        bool stealth;
+        Armor.Type type = Armor.Type.Light + armorSet.GetComponentInChildren<Weight>().GetComponent<Dropdown>().value;
+        int.TryParse(armorSet.GetComponentInChildren<Modifier>().GetComponent<InputField>().text, out AC);
+        int.TryParse(armorSet.GetComponentInChildren<Money>().GetComponent<InputField>().text, out ACCap);
+        int.TryParse(armorSet.GetComponentInChildren<Amount>().GetComponent<InputField>().text, out str);
+        stealth = armorSet.GetComponentInChildren<Type>().GetComponent<Toggle>().isOn;
+        Armor newArmor = new Armor(label, AC, ACCap, str, stealth, type);
+        Armor.SaveArmor(newArmor);
     }
 
     void CreatNewWeapon(string label)
@@ -388,8 +424,8 @@ public class DataBase : MonoBehaviour
         List<Weapon.Properties> properties = new List<Weapon.Properties>();
         for (int i = 0; i < buf.Length; i++)
         {
-            if(buf[i].GetComponent<Dropdown>().value<11)
-            properties.Add(buf[i].GetComponent<Dropdown>().value + Weapon.Properties.Ammo);
+            if (buf[i].GetComponent<Dropdown>().value < 11)
+                properties.Add(buf[i].GetComponent<Dropdown>().value + Weapon.Properties.Ammo);
         }
         Weapon.Type type = weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().value + Weapon.Type.CommonMelee;
         Weapon newWeapon = new Weapon(label, dices, hitDices, dist, maxDist, magic, damageType, properties.ToArray(), type);
@@ -543,7 +579,7 @@ public class DataBase : MonoBehaviour
                 {
                     if (label == x.label)
                     {
-                        armorList.RemoveAt(index);
+                        
                         if (index == armorEquipmented)
                         {
 
@@ -566,10 +602,12 @@ public class DataBase : MonoBehaviour
                 }
                 Box[] armors = armorInventoryPanel.GetComponentsInChildren<Box>();
                 armors[index].DestroyMyself();
+                armorList.RemoveAt(index);
                 for (int i = index; i < armors.Length; i++)
                 {
                     armors[i].index--;
                 }
+                Armor.DeleteArmor(label);
             }
             if (itemList[itemIndex].type == Item.Type.weapon || itemList[itemIndex].label == "щит")
             {
@@ -596,7 +634,7 @@ public class DataBase : MonoBehaviour
                 Weapon.DeleteWeapon(label);
                 UpdateWeapon();
             }
-
+            itemList.RemoveAt(itemIndex);
 
         }
         PlayerPrefs.Save();
@@ -673,7 +711,7 @@ public class DataBase : MonoBehaviour
                 itemType = "Б";
                 if (!found)
                 {
-                    Armor? newArmor = null; //= Armor.LoadArmor(x.label);
+                    Armor? newArmor = Armor.LoadArmor(x.label);
                     if (newArmor != null)
                     {
                         for (int i = 0; i < amount; i++)
@@ -734,8 +772,9 @@ public class DataBase : MonoBehaviour
             PlayerPrefs.DeleteKey(itemWeightSaveName + x.label);
             PlayerPrefs.DeleteKey(itemTypeSaveName + x.label);
             Weapon.DeleteWeapon(x.label);
+            Armor.DeleteArmor(x.label);
             itemList.Remove(x);
-            PlayerPrefs.SetInt(itemCostSaveName, itemList.Count);
+            PlayerPrefs.SetInt(itemsCountSaveName, itemList.Count);
             PlayerPrefs.Save();
         }
     }
