@@ -8,7 +8,6 @@ public class Opener : MonoBehaviour
 
     private void Start()
     {
-        panel = gameObject.GetComponentInParent<Box>().GetComponentInChildren<Discription>().gameObject;
         panel.SetActive(false);
     }
 

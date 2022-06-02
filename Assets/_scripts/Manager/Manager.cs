@@ -44,6 +44,8 @@ public class Manager : MonoBehaviour
     public List<GameObject> speedObj;
     public List<InputField> money;
     public List<InputField> moneyAdd;
+    public GameObject personalityPanel;
+    public GameObject basicForm;
 
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
     Dictionary<int, int> _charModifier = new Dictionary<int, int>();
@@ -66,6 +68,9 @@ public class Manager : MonoBehaviour
         SetSave();
         SetAdditional();
         SetMoney();
+        int buf;
+        _charModifier.TryGetValue(0, out buf);
+        Fighter player = new Fighter(2, personalityPanel, basicForm,buf, profMod);
     }
 
     private void Update()
