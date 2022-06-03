@@ -69,6 +69,8 @@ public class Manager : MonoBehaviour
         SetAdditional();
         SetMoney();
         int buf;
+        _charModifier.TryGetValue(1, out buf);
+        UpdateArmorClass(10, buf);
         _charModifier.TryGetValue(0, out buf);
         Fighter player = new Fighter(2, personalityPanel, basicForm,buf, profMod);
     }
@@ -126,9 +128,9 @@ public class Manager : MonoBehaviour
 
     void UploadArmorClass()
     {
-        //int buf = PlayerPrefs.GetInt(armorClassSaveName) + addArmor;
+        int buf = AC + addArmor;
         foreach (GameObject x in armorClass)
-            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = AC.ToString();
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
     }
 
     public void UpdateArmorClass(int baseArmor, int dexArmor)

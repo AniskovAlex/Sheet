@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayersClass : MonoBehaviour
+public abstract class PlayersClass
 {
     int healthDice;
     List<Armor.Type> armorProfs;
     List<Weapon.Type> weaponProfs;
+    int instrumentsAmount;
     List<string> instrumentProfs;
+    int skillsAmount;
     List<int> skillProfs;
     List<int> savethrowProfs;
-    protected List<string> staticAbility;
-    protected List<string> activeAbility;
 
-    protected PlayersClass(int healthDice, List<Armor.Type> armorProfs, List<Weapon.Type> weaponProfs, List<string> instrumentProfs, List<int> skillProfs, List<int> savethrowProfs)
+    protected PlayersClass(int healthDice, List<Armor.Type> armorProfs, List<Weapon.Type> weaponProfs, int instrumentsAmount, List<string> instrumentProfs, int skillsAmount, List<int> skillProfs, List<int> savethrowProfs) : base()
     {
         this.healthDice = healthDice;
         this.armorProfs = armorProfs;
         this.weaponProfs = weaponProfs;
+        this.instrumentsAmount = instrumentsAmount;
         this.instrumentProfs = instrumentProfs;
+        this.skillsAmount = skillsAmount;
         this.skillProfs = skillProfs;
         this.savethrowProfs = savethrowProfs;
     }
@@ -44,5 +46,15 @@ public abstract class PlayersClass : MonoBehaviour
     public List<int> GetSavethrowProfs()
     {
         return savethrowProfs;
+    }
+
+    public int GetInstrumentsAmount()
+    {
+        return instrumentsAmount;
+    }
+
+    public int GetSkillsAmount()
+    {
+        return skillsAmount;
     }
 }

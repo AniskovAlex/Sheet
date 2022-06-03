@@ -13,7 +13,9 @@ public class Fighter : PlayersClass
     public Fighter(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(10,
         new List<Armor.Type> { Armor.Type.Heavy, Armor.Type.Light, Armor.Type.Medium, Armor.Type.Shield },
         new List<Weapon.Type> { },
+        0,
         new List<string> { },
+        2,
         new List<int> { },
         new List<int> { })
     {
@@ -75,9 +77,21 @@ public class Fighter : PlayersClass
         }
     }
 
+    public Fighter() : base(10,
+        new List<Armor.Type> { Armor.Type.Heavy, Armor.Type.Light, Armor.Type.Medium, Armor.Type.Shield },
+        new List<Weapon.Type> { },
+        0,
+        new List<string> { },
+        2,
+        new List<int> { 0, 1},
+        new List<int> {0,1 })
+    {
+        PB = 2;
+    }
+
     void SecondBreath()
     {
-        GameObject newObject = Instantiate(basicForm, panel.transform);
+        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = "¬торое дыхание";
         form.AddText("1-й уровень, умение воина", FontStyle.Italic);
@@ -87,7 +101,7 @@ public class Fighter : PlayersClass
 
     void ActionSurge(int i)
     {
-        GameObject newObject = Instantiate(basicForm, panel.transform);
+        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = "¬сплеск действий";
         form.AddText("2-й уровень, умение воина", FontStyle.Italic);
