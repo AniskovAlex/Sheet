@@ -4,6 +4,11 @@ using UnityEngine;
 
 public abstract class PlayersClass
 {
+    const string armorProfSaveName = "armorProf_";
+    const string weaponProfSaveName = "weaponProf_";
+    const string saveThrowProfSaveName = "save_";
+    const string classSaveName = "class_";
+
     int healthDice;
     List<Armor.Type> armorProfs;
     List<Weapon.Type> weaponProfs;
@@ -57,4 +62,21 @@ public abstract class PlayersClass
     {
         return skillsAmount;
     }
+
+    public virtual void Save()
+    {
+        foreach (Weapon.Type x in weaponProfs)
+        {
+            PlayerPrefs.SetInt(weaponProfSaveName + x, 1);
+        }
+        foreach (Armor.Type x in armorProfs)
+        {
+            PlayerPrefs.SetInt(armorProfSaveName + x, 1);
+        }
+        foreach (int x in savethrowProfs)
+        {
+            PlayerPrefs.SetInt(saveThrowProfSaveName + x, 1);
+        }
+    }
+
 }

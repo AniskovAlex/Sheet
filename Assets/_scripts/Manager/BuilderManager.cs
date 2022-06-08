@@ -35,6 +35,7 @@ public class BuilderManager : MonoBehaviour
     public InputField armorClass;
     public InputField maxHealth;
     public InputField speed;
+    public ClassDropdown classStat = null;
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
 
     private void Start()
@@ -205,6 +206,10 @@ public class BuilderManager : MonoBehaviour
 
     public void LoadView()
     {
+        if(classStat!= null)
+        {
+            classStat.SaveClass();
+        }
         PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);
     }

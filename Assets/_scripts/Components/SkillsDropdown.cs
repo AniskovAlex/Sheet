@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SkillsDropdown : MonoBehaviour
 {
     public List<string> list;
+    public List<string> excludedList = new List<string>();
     string buf3 = "Пусто";
     public void DropdownChanged()
     {
@@ -16,7 +17,7 @@ public class SkillsDropdown : MonoBehaviour
         if (list.Count <= 0)
             return;
         buf3 = mySelf.captionText.text;
-        List<string> buf = new List<string>();
+        List<string> buf = excludedList;
         foreach (Dropdown x in drops)
         {
             if (x.captionText.text != "Пусто")

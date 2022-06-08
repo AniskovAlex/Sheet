@@ -72,7 +72,7 @@ public class Manager : MonoBehaviour
         _charModifier.TryGetValue(1, out buf);
         UpdateArmorClass(10, buf);
         _charModifier.TryGetValue(0, out buf);
-        Fighter player = new Fighter(2, personalityPanel, basicForm,buf, profMod);
+        Fighter player = new Fighter(1, personalityPanel, basicForm,buf, profMod);
     }
 
     private void Update()
