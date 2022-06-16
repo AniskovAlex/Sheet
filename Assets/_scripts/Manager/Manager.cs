@@ -30,7 +30,7 @@ public class Manager : MonoBehaviour
     }*/
     public InputField playerName;
     public InputField playerClass;
-    public InputField level;
+    public InputField levelInput;
     public List<Box> boxList;
     public List<Skill> skillsList;
     public List<Skill> saveList;
@@ -57,6 +57,7 @@ public class Manager : MonoBehaviour
     int tempHealth = 0;
     int addArmor = 0;
     int AC = 10;
+    int level = 1;
     bool healthStatusChanged = false;
     bool shieldEquip = false;
 
@@ -72,7 +73,7 @@ public class Manager : MonoBehaviour
         _charModifier.TryGetValue(1, out buf);
         UpdateArmorClass(10, buf);
         _charModifier.TryGetValue(0, out buf);
-        Fighter player = new Fighter(1, personalityPanel, basicForm,buf, profMod);
+        Fighter player = new Fighter(level, personalityPanel, basicForm,buf, profMod);
     }
 
     private void Update()
@@ -108,9 +109,9 @@ public class Manager : MonoBehaviour
         }
         playerName.text = PlayerPrefs.GetString(playerSaveName);
         playerClass.text = PlayerPrefs.GetString(classSaveName);
-        profMod = PlayerPrefs.GetInt(levelSaveName);
-        level.text = profMod.ToString();
-        profMod = (profMod - 1) / 4 + 2;
+        level = PlayerPrefs.GetInt(levelSaveName);
+        levelInput.text = level.ToString();
+        profMod = (level - 1) / 4 + 2;
         profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
         maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
         health = PlayerPrefs.GetInt(healthSaveName);
@@ -491,5 +492,11 @@ public class Manager : MonoBehaviour
     {
         PlayerPrefs.Save();
         SceneManager.LoadScene("CharacterBuilder", LoadSceneMode.Single);
+    }
+
+    public void LoadLeveler()
+    {
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("LevelUp", LoadSceneMode.Single);
     }
 }

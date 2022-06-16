@@ -28,7 +28,7 @@ public class ClassDropdown : MonoBehaviour
         switch (mySelf.value)
         {
             case 1:
-                newClass = new Fighter(abilitiesPanel, form, dropdownObject,0);
+                newClass = new Fighter(1 ,abilitiesPanel, form, dropdownObject);
                 break;
         }
         if (newClass != null)
