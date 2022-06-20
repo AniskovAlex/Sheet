@@ -62,7 +62,7 @@ public abstract class PlayerSubClass
             form.AddConsumables(i);
     }
 
-    public void CreatAbility(string caption, string level, List<string> includedList, List<string> excludedList, List<string> discriptionList, int count)
+    public void CreatAbility(string caption, string level, List<(string, string)> includedList, List<string> excludedList, int count)
     {
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
@@ -75,15 +75,18 @@ public abstract class PlayerSubClass
                 GameObject newBattleStyle = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
                 Dropdown buf = newBattleStyle.GetComponent<Dropdown>();
                 Text styleDiscriptionText = form.AddText("");
-                buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList, discriptionList); });
+                buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
 
-                newBattleStyle.GetComponent<SkillsDropdown>().list = includedList;
+                List<string> captionList = new List<string>();
+                foreach ((string, string) x in includedList)
+                    captionList.Add(x.Item1);
+                newBattleStyle.GetComponent<SkillsDropdown>().list = captionList;
                 newBattleStyle.GetComponent<SkillsDropdown>().excludedList = excludedList;
                 List<string> buf1 = new List<string>();
-                foreach (string x in includedList)
+                foreach ((string, string) x in includedList)
                 {
-                    if (!excludedList.Contains(x))
-                        buf1.Add(x);
+                    if (!excludedList.Contains(x.Item1))
+                        buf1.Add(x.Item1);
                 }
                 buf.options.Add(new Dropdown.OptionData("Пусто"));
                 for (int j = 0; j < buf1.Count; j++)
@@ -96,13 +99,20 @@ public abstract class PlayerSubClass
         {
             foreach (string x in excludedList)
             {
-                form.AddText(x, 50, FontStyle.Bold);
-                form.AddText(discriptionList[includedList.IndexOf(x)]);
+                foreach ((string, string) y in includedList)
+                {
+                    if (x == y.Item1)
+                    {
+                        form.AddText(x, 50, FontStyle.Bold);
+                        form.AddText(y.Item2);
+                        break;
+                    }
+                }
             }
         }
     }
 
-    public void CreatAbility(string caption, string level, List<string> includedList, List<string> excludedList, List<string> discriptionList)
+    public void CreatAbility(string caption, string level, List<(string, string)> includedList, List<string> excludedList)
     {
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
@@ -113,15 +123,18 @@ public abstract class PlayerSubClass
             GameObject newBattleStyle = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
             Dropdown buf = newBattleStyle.GetComponent<Dropdown>();
             Text styleDiscriptionText = form.AddText("");
-            buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList, discriptionList); });
+            buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
 
-            newBattleStyle.GetComponent<SkillsDropdown>().list = includedList;
+            List<string> captionList = new List<string>();
+            foreach ((string, string) x in includedList)
+                captionList.Add(x.Item1);
+            newBattleStyle.GetComponent<SkillsDropdown>().list = captionList;
             newBattleStyle.GetComponent<SkillsDropdown>().excludedList = excludedList;
             List<string> buf1 = new List<string>();
-            foreach (string x in includedList)
+            foreach ((string, string) x in includedList)
             {
-                if (!excludedList.Contains(x))
-                    buf1.Add(x);
+                if (!excludedList.Contains(x.Item1))
+                    buf1.Add(x.Item1);
             }
             buf.options.Add(new Dropdown.OptionData("Пусто"));
             for (int j = 0; j < buf1.Count; j++)
@@ -133,26 +146,34 @@ public abstract class PlayerSubClass
         {
             foreach (string x in excludedList)
             {
-                form.AddText(x, 50,FontStyle.Bold);
-                form.AddText(discriptionList[includedList.IndexOf(x)]);
+                foreach ((string, string) y in includedList)
+                {
+                    if (x == y.Item1)
+                    {
+                        form.AddText(x, 50, FontStyle.Bold);
+                        form.AddText(y.Item2);
+                        break;
+                    }
+                }
             }
         }
     }
 
-    void Discription(Dropdown style, Text textField, List<string> includedList, List<string> discriptionList)
+    void Discription(Dropdown style, Text textField, List<(string, string)> includedList)
     {
-        if (includedList.Contains(style.captionText.text))
+        foreach ((string, string) x in includedList)
         {
-            textField.text = discriptionList[includedList.IndexOf(style.captionText.text)];
+            if (x.Item1 == style.captionText.text)
+            {
+                textField.text = x.Item2;
+                return;
+            }
         }
-        else
-        {
-            textField.text = " ";
-        }
+        textField.text = " ";
     }
 
     public virtual void Save()
     {
-        
+
     }
 }

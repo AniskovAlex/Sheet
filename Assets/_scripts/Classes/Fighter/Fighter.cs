@@ -11,6 +11,8 @@ public class Fighter : PlayersClass
     const string levelSaveName = "lvl_";
 
     PlayerSubClass subClass = null;
+    bool upFlag = false;
+
 
     public Fighter(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(10,
         new List<Armor.Type> { },
@@ -22,7 +24,15 @@ public class Fighter : PlayersClass
         new List<int> { },
         level, mainState, panel, basicForm, null, PB, false)
     {
-
+        if (PlayerPrefs.HasKey(FighterSubClassSaveName))
+        {
+            switch (PlayerPrefs.GetInt(FighterSubClassSaveName))
+            {
+                case 0:
+                    subClass = new MasterOfMartialArt(level, panel, basicForm, dropdownForm, mainState, PB);
+                    break;
+            }
+        }
     }
 
     public Fighter(int level, GameObject panel, GameObject basicForm, GameObject dropdownForm) : base(10,
@@ -35,7 +45,15 @@ public class Fighter : PlayersClass
         new List<int> { 0, 1 },
         level, 0, panel, basicForm, dropdownForm, 2, true)
     {
-
+        if (PlayerPrefs.HasKey(FighterSubClassSaveName))
+        {
+            switch (PlayerPrefs.GetInt(FighterSubClassSaveName))
+            {
+                case 0:
+                    subClass = new MasterOfMartialArt(level, panel, basicForm, dropdownForm);
+                    break;
+            }
+        }
     }
 
     public override void ShowAbilities(int level)
@@ -56,20 +74,26 @@ public class Fighter : PlayersClass
                 SubClass();
                 break;
             case 4:
+                AllClassesAbilities.AbilitiesUp(panel, basicForm, dropdownForm, redact);
+                upFlag = true;
                 break;
             case 5:
                 break;
             case 6:
+                if (!upFlag)
+                    AllClassesAbilities.AbilitiesUp(panel, basicForm, dropdownForm, redact);
                 break;
             case 7:
-                SubClass();
                 break;
             case 8:
+                if (!upFlag)
+                    AllClassesAbilities.AbilitiesUp(panel, basicForm, dropdownForm, redact);
                 break;
             case 9:
                 break;
             case 10:
-                SubClass();
+                if (!upFlag)
+                    AllClassesAbilities.AbilitiesUp(panel, basicForm, dropdownForm, redact);
                 break;
             case 11:
                 break;
@@ -80,7 +104,6 @@ public class Fighter : PlayersClass
             case 14:
                 break;
             case 15:
-                SubClass();
                 break;
             case 16:
                 break;
@@ -127,32 +150,41 @@ public class Fighter : PlayersClass
                 battleStyleExcludedList.Add(PlayerPrefs.GetString(FighterBattleStyleSaveName + i));
             }
         }
-        List<string> battleStyleList;
-        List<string> discriptionList = new List<string>();
-        discriptionList.Add("Пока вы держите рукопашное оружие в одной руке, и не используете другого оружия, вы получаете бонус +2 к броскам урона этим оружием.");
-        discriptionList.Add("Если существо, которое вы видите, атакует не вас, а другое существо, находящееся в пределах 5 футов от вас, вы можете реакцией создать помеху его броску атаки. Для этого вы должны использовать щит.");
-        discriptionList.Add("Пока вы носите доспехи, вы получаете бонус +1 к КД.");
-        discriptionList.Add("Если у вас выпало «1» или «2» на кости урона оружия при атаке, которую вы совершали рукопашным оружием, удерживая его двумя руками, то вы можете перебросить эту кость, и должны использовать новый результат, даже если снова выпало «1» или «2». Чтобы воспользоваться этим преимуществом, ваше оружие должно иметь свойство «двуручное» или «универсальное».");
-        discriptionList.Add("Если вы сражаетесь двумя оружиями, вы можете добавить модификатор характеристики к урону от второй атаки.");
-        discriptionList.Add("Вы получаете бонус +2 к броску атаки, когда атакуете дальнобойным оружием.");
-        battleStyleList = new List<string> { "Дуэлянт", "Защита", "Оборона", "Сражение большим оружием", "Сражение двумя оружиями", "Стрельба" };
+        List<(string, string)> battleStyleList = new List<(string, string)>();
+        battleStyleList.Add(("Дуэлянт", "Пока вы держите рукопашное оружие в одной руке, и не используете другого оружия, вы получаете бонус +2 к броскам урона этим оружием."));
+        battleStyleList.Add(("Защита", "Если существо, которое вы видите, атакует не вас, а другое существо, находящееся в пределах 5 футов от вас, вы можете реакцией создать помеху его броску атаки. Для этого вы должны использовать щит."));
+        battleStyleList.Add(("Оборона", "Пока вы носите доспехи, вы получаете бонус +1 к КД."));
+        battleStyleList.Add(("Сражение большим оружием", "Если у вас выпало «1» или «2» на кости урона оружия при атаке, которую вы совершали рукопашным оружием, удерживая его двумя руками, то вы можете перебросить эту кость, и должны использовать новый результат, даже если снова выпало «1» или «2». Чтобы воспользоваться этим преимуществом, ваше оружие должно иметь свойство «двуручное» или «универсальное»."));
+        battleStyleList.Add(("Сражение двумя оружиями", "Если вы сражаетесь двумя оружиями, вы можете добавить модификатор характеристики к урону от второй атаки."));
+        battleStyleList.Add(("Стрельба", "Вы получаете бонус +2 к броску атаки, когда атакуете дальнобойным оружием."));
         if (redact)
-        {  
-            CreatAbility(caption, abilityLevel, battleStyleList, battleStyleExcludedList, discriptionList);
+        {
+            CreatAbility(caption, abilityLevel, battleStyleList, battleStyleExcludedList);
         }
         else
         {
-            CreatAbility(caption, abilityLevel, battleStyleList, battleStyleExcludedList, discriptionList);
+            CreatAbility(caption, abilityLevel, battleStyleList, battleStyleExcludedList);
         }
     }
 
     void SubClass()
     {
-        if(redact)
-            subClass = new MasterOfMartialArt(level, panel, basicForm, dropdownForm);
-        else
-            subClass = new MasterOfMartialArt(level, panel, basicForm, dropdownForm, mainState, PB);
-        Debug.Log(subClass);
+        string caption = "Военский архетип";
+        string abilityLevel = "Разные воины используют разные подходы для совершенствования своих воинских способностей. Воинский архетип отражает выбранный вами подход.";
+        List<(string, string)> subClassList = new List<(string, string)>();
+        subClassList.Add(("Мастер боевых искусств", "Тот, кто выбрал архетип мастера боевых искусств, полагается на техники, выработанные поколениями бойцов. Для такого воина сражение сродни академической задаче, и часто включает вещи, далёкие от боя, вроде кузнечного мастерства или каллиграфии. Не все воины способны впитать уроки истории, теорию и артистизм, отражённые в архетипе мастера боевых искусств, но те, кто смог сделать это, являются отлично подготовленными воинами, обладающими прекрасными навыками и знаниями."));
+        CreatAbility(caption, abilityLevel, subClassList);
+    }
+
+    public override void ChooseSubClass(Dropdown mySelf)
+    {
+        base.ChooseSubClass(mySelf);
+        switch (mySelf.captionText.text)
+        {
+            case "Мастер боевых искусств":
+                subClass = new MasterOfMartialArt(level, panel.GetComponentInChildren<FormCreater>().GetComponentInChildren<Discription>().gameObject, basicForm, dropdownForm);
+                break;
+        }
     }
 
     public override void Save()
@@ -169,6 +201,21 @@ public class Fighter : PlayersClass
             case 1:
                 base.Save();
                 StylesSave();
+                break;
+            case 3:
+                PlayerPrefs.SetInt(FighterSubClassSaveName, 0);
+                break;
+            case 4:
+                AllClassesAbilities.SaveAbilitiesUp();
+                break;
+            case 6:
+                AllClassesAbilities.SaveAbilitiesUp();
+                break;
+            case 8:
+                AllClassesAbilities.SaveAbilitiesUp();
+                break;
+            case 10:
+                AllClassesAbilities.SaveAbilitiesUp();
                 break;
         }
     }

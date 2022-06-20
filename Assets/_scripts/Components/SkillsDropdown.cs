@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SkillsDropdown : MonoBehaviour
 {
-    public List<string> list;
+    public List<string> list = new List<string>();
     public List<string> excludedList = new List<string>();
     string buf3 = "Пусто";
     public void DropdownChanged()
