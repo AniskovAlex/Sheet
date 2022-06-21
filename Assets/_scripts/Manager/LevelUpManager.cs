@@ -32,6 +32,9 @@ public class LevelUpManager : MonoBehaviour
             case 1:
                 newClass = new Fighter(level, abilitiesPanel, form, dropdownObject);
                 break;
+            case 2:
+                newClass = new Rogue(level, abilitiesPanel, form, dropdownObject);
+                break;
         }
     }
 

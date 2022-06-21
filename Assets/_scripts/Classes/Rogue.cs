@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Rogue : PlayersClass
 {
+    const string levelCountSaveName = "lvlCount_";
     const string levelSaveName = "lvl_";
+    const string levelLabelSaveName = "lvlLabel_";
     public Rogue(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(10,
         new List<Armor.Type> { },
         new List<Weapon.Type> { },
@@ -83,11 +85,27 @@ public class Rogue : PlayersClass
     public override void Save()
     {
         Debug.Log(level);
-        PlayerPrefs.SetInt(levelSaveName, level);
+        int count = PlayerPrefs.GetInt(levelCountSaveName);
+        bool flag = false;
+        for (int i = 0; i < count; i++)
+        {
+            if (PlayerPrefs.GetString(levelLabelSaveName + i) == "Плут")
+            {
+                PlayerPrefs.SetInt(levelSaveName + i, level);
+                flag = true;
+                break;
+            }
+        }
         switch (level)
         {
             case 1:
                 base.Save();
+                if (!flag)
+                {
+                    PlayerPrefs.SetString(levelLabelSaveName + count, "Плут");
+                    PlayerPrefs.SetInt(levelSaveName + count, level);
+                    PlayerPrefs.SetInt(levelCountSaveName, count + 1);
+                }
                 break;
         }
     }

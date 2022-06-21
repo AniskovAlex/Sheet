@@ -8,7 +8,10 @@ public class Fighter : PlayersClass
     const string FighterBattleStyleCountSaveName = "FghterBattleStyleCount_";
     const string FighterBattleStyleSaveName = "FghterBattleStyle_";
     const string FighterSubClassSaveName = "FighterSubClass_";
+    const string levelCountSaveName = "lvlCount_";
     const string levelSaveName = "lvl_";
+    const string levelLabelSaveName = "lvlLabel_";
+
 
     PlayerSubClass subClass = null;
     bool upFlag = false;
@@ -190,7 +193,18 @@ public class Fighter : PlayersClass
     public override void Save()
     {
         Debug.Log(level);
-        PlayerPrefs.SetInt(levelSaveName, level);
+        int count = PlayerPrefs.GetInt(levelCountSaveName);
+        bool flag = false;
+        for (int i = 0; i < count; i++)
+        {
+            if (PlayerPrefs.GetString(levelLabelSaveName + i) == "Воин")
+            {
+                PlayerPrefs.SetInt(levelSaveName + i, level);
+                flag = true;
+                break;
+            }
+        }
+
         if (subClass != null)
         {
             subClass.Save();
@@ -200,6 +214,12 @@ public class Fighter : PlayersClass
         {
             case 1:
                 base.Save();
+                if (!flag)
+                {
+                    PlayerPrefs.SetString(levelLabelSaveName + count, "Воин");
+                    PlayerPrefs.SetInt(levelSaveName + count, level);
+                    PlayerPrefs.SetInt(levelCountSaveName, count + 1);
+                }
                 StylesSave();
                 break;
             case 3:

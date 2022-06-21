@@ -12,7 +12,9 @@ public class Manager : MonoBehaviour
     const string skillSaveName = "skill_";
     const string playerSaveName = "name_";
     const string classSaveName = "class_";
+    const string levelCountSaveName = "lvlCount_";
     const string levelSaveName = "lvl_";
+    const string levelLabelSaveName = "lvlLabel_";
     const string saveSaveName = "save_";
     const string maxHealthSaveName = "maxHP_";
     const string healthSaveName = "HP_";
@@ -57,7 +59,7 @@ public class Manager : MonoBehaviour
     int tempHealth = 0;
     int addArmor = 0;
     int AC = 10;
-    int level = 1;
+    int level = 0;
     bool healthStatusChanged = false;
     bool shieldEquip = false;
 
@@ -65,6 +67,7 @@ public class Manager : MonoBehaviour
     {
         UploadData();
         SetAttributes();
+        SetClasses();
         SetSkills();
         SetSave();
         SetAdditional();
@@ -72,8 +75,6 @@ public class Manager : MonoBehaviour
         int buf;
         _charModifier.TryGetValue(1, out buf);
         UpdateArmorClass(10, buf);
-        _charModifier.TryGetValue(0, out buf);
-        Fighter player = new Fighter(level, personalityPanel, basicForm,buf, profMod);
     }
 
     private void Update()
@@ -109,10 +110,6 @@ public class Manager : MonoBehaviour
         }
         playerName.text = PlayerPrefs.GetString(playerSaveName);
         playerClass.text = PlayerPrefs.GetString(classSaveName);
-        level = PlayerPrefs.GetInt(levelSaveName);
-        levelInput.text = level.ToString();
-        profMod = (level - 1) / 4 + 2;
-        profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
         maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
         health = PlayerPrefs.GetInt(healthSaveName);
         tempHealth = PlayerPrefs.GetInt(tempHealthSaveName);
@@ -346,6 +343,42 @@ public class Manager : MonoBehaviour
         int.TryParse(money[x.index].text, out moneyInt);
         PlayerPrefs.SetInt(moneySaveName + x.index, moneyInt);
         PlayerPrefs.Save();
+    }
+
+    void SetClasses()
+    {
+        int count = PlayerPrefs.GetInt(levelCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            if (PlayerPrefs.HasKey(levelSaveName + i))
+            {
+                int classLevel = PlayerPrefs.GetInt(levelSaveName + i);
+                level += classLevel;
+            }
+        }
+        profMod = (level - 1) / 4 + 2;
+        profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
+        for (int i = 0; i < count; i++)
+        {
+            if (PlayerPrefs.HasKey(levelSaveName + i))
+            {
+                int buf;
+                int classLevel = PlayerPrefs.GetInt(levelSaveName + i);
+                string buf1 = PlayerPrefs.GetString(levelLabelSaveName + i);
+                switch (buf1)
+                {
+                    case "Воин":
+                        _charModifier.TryGetValue(0, out buf);
+                        new Fighter(classLevel, personalityPanel, basicForm, buf, profMod);
+                        break;
+                    case "Плут":
+                        _charModifier.TryGetValue(2, out buf);
+                        new Rogue(classLevel, personalityPanel, basicForm, buf, profMod);
+                        break;
+                }
+            }
+        }
+        levelInput.text = level.ToString();
     }
 
     public void MoneyCon()

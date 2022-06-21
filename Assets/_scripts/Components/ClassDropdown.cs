@@ -30,6 +30,9 @@ public class ClassDropdown : MonoBehaviour
             case 1:
                 newClass = new Fighter(1 ,abilitiesPanel, form, dropdownObject);
                 break;
+            case 2:
+                newClass = new Rogue(1, abilitiesPanel, form, dropdownObject);
+                break;
         }
         if (newClass != null)
         {
