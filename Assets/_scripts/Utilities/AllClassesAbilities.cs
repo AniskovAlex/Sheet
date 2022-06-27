@@ -11,6 +11,19 @@ public static class AllClassesAbilities
 
     public static void AbilitiesUp(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact)
     {
+        if (redact)
+        {
+            AttributiesUp(panel, basicForm, dropdownForm, 2, false);
+            AddFeat(panel, basicForm, dropdownForm, redact, true);
+        }
+        else
+        {
+            ShowFeats(panel, basicForm, dropdownForm, redact);
+        }
+    }
+
+    public static void AddFeat(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact, bool bandaged)
+    {
         List<string> excludedList = new List<string>();
         if (PlayerPrefs.HasKey(FeatCountSaveName))
         {
@@ -20,55 +33,168 @@ public static class AllClassesAbilities
                 excludedList.Add(PlayerPrefs.GetString(FeatSaveName + i));
             }
         }
-        List<(string, string)> includedList = new List<(string, string)>();
-        includedList.Add(("Атлетичный", "Вы прошли интенсивную физическую подготовку и получаете следующие преимущества:\n\n-Увеличьте значение Силы или Ловкости на 1 при максимуме 20.\n-Если вы лежите ничком, вставание использует только 5 футов перемещения.\n-Лазание не заставляет вас тратить дополнительное перемещение.\n-Вы можете совершать прыжок в длину или высоту с разбега, переместившись только на 5 футов, а не на 10."));
+        List<(string, string)> includedList = GetFeatsList();
         string caption;
         if (redact)
         {
-            List<string> atributies = new List<string> { "Сила", "Телосложение", "Ловкость", "Интеллект", "Мудрость", "Харизма" };
-            caption = "Повышение зарактеристик";
-            CreatCharacteristicUpper(panel, basicForm, dropdownForm, redact, caption, atributies, 2);
             caption = "Черты";
-            CreatFeat(panel, basicForm, dropdownForm, redact, caption, includedList, excludedList);
+            CreatFeat(panel, basicForm, dropdownForm, redact, caption, includedList, excludedList, bandaged);
         }
-        else
+    }
+
+    public static void ShowFeats(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact)
+    {
+        List<string> excludedList = new List<string>();
+        if (PlayerPrefs.HasKey(FeatCountSaveName))
         {
-            if (excludedList.Count > 0)
+            int styles = PlayerPrefs.GetInt(FeatCountSaveName);
+            for (int i = 0; i < styles; i++)
             {
-                caption = "Черты";
-                CreatFeat(panel, basicForm, dropdownForm, redact, caption, includedList, excludedList);
+                excludedList.Add(PlayerPrefs.GetString(FeatSaveName + i));
+            }
+        }
+        List<(string, string)> includedList = GetFeatsList();
+        if (excludedList.Count > 0)
+        {
+            string caption = "Черты";
+            CreatFeat(panel, basicForm, dropdownForm, redact, caption, includedList, excludedList, false);
+        }
+    }
+
+
+
+
+    static List<(string, string)> GetFeatsList()
+    {
+        List<(string, string)> includedList = new List<(string, string)>();
+        includedList.Add(("Атлетичный", "Вы прошли интенсивную физическую подготовку и получаете следующие преимущества:\n\n-Увеличьте значение Силы или Ловкости на 1 при максимуме 20.\n-Если вы лежите ничком, вставание использует только 5 футов перемещения.\n-Лазание не заставляет вас тратить дополнительное перемещение.\n-Вы можете совершать прыжок в длину или высоту с разбега, переместившись только на 5 футов, а не на 10."));
+        return includedList;
+    }
+
+    public static void AttributiesUp(GameObject panel, GameObject basicForm, GameObject dropdownForm, int i, bool special)
+    {
+        string caption;
+        List<string> atributies = new List<string> { "Сила", "Телосложение", "Ловкость", "Интеллект", "Мудрость", "Харизма" };
+        caption = "Повышение зарактеристик";
+        CreatCharacteristicUpper(panel, basicForm, dropdownForm, caption, atributies, i, special);
+    }
+
+    public static void SetSkills(GameObject panel, GameObject basicForm, GameObject dropdownForm, string caption, List<int> includedList, int count)
+    {
+        List<string> listTransform = new List<string>();
+        foreach (int x in includedList)
+        {
+            switch (x)
+            {
+                case 0:
+                    listTransform.Add("Атлетика");
+                    break;
+                case 1:
+                    listTransform.Add("Акробатика");
+                    break;
+                case 2:
+                    listTransform.Add("Ловкость рук");
+                    break;
+                case 3:
+                    listTransform.Add("Скрытность");
+                    break;
+                case 4:
+                    listTransform.Add("Анализ");
+                    break;
+                case 5:
+                    listTransform.Add("История");
+                    break;
+                case 6:
+                    listTransform.Add("Магия");
+                    break;
+                case 7:
+                    listTransform.Add("Природа");
+                    break;
+                case 8:
+                    listTransform.Add("Религия");
+                    break;
+                case 9:
+                    listTransform.Add("Внимательность");
+                    break;
+                case 10:
+                    listTransform.Add("Выживание");
+                    break;
+                case 11:
+                    listTransform.Add("Медицина");
+                    break;
+                case 12:
+                    listTransform.Add("Проницательность");
+                    break;
+                case 13:
+                    listTransform.Add("Уход за животными");
+                    break;
+                case 14:
+                    listTransform.Add("Выступление");
+                    break;
+                case 15:
+                    listTransform.Add("Запугивание");
+                    break;
+                case 16:
+                    listTransform.Add("Обман");
+                    break;
+                case 17:
+                    listTransform.Add("убеждение");
+                    break;
+
+            }
+        }
+        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
+        FormCreater form = newObject.GetComponent<FormCreater>();
+        newObject.GetComponentInChildren<Text>().text = caption;
+        //form.AddText(level, FontStyle.Italic);
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newCharacteristicChoose = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
+            Dropdown buf = newCharacteristicChoose.GetComponent<Dropdown>();
+
+            newCharacteristicChoose.GetComponent<SkillsDropdown>().list = listTransform;
+            newCharacteristicChoose.GetComponent<SkillsDropdown>().excludedList = PresavedLists.skills;
+            buf.options.Add(new Dropdown.OptionData("Пусто"));
+            for (int j = 0; j < includedList.Count; j++)
+            {
+                buf.options.Add(new Dropdown.OptionData(listTransform[j].ToString()));
             }
         }
     }
 
-    static void CreatCharacteristicUpper(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact, string caption, List<string> includedList, int count)
+    static void CreatCharacteristicUpper(GameObject panel, GameObject basicForm, GameObject dropdownForm, string caption, List<string> includedList, int count, bool special)
     {
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         AttributeUpper attributeUpper = newObject.AddComponent<AttributeUpper>();
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = caption;
         //form.AddText(level, FontStyle.Italic);
-        if (redact)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                GameObject newCharacteristicChoose = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
-                Dropdown buf = newCharacteristicChoose.GetComponent<Dropdown>();
-                Text styleDiscriptionText = form.AddText("");
-                buf.onValueChanged.AddListener(delegate { CharacteristicChecker(newObject.GetComponentInChildren<Discription>().gameObject, attributeUpper, count); Validate(); });
 
-                newCharacteristicChoose.GetComponent<SkillsDropdown>().list = includedList;
-                newCharacteristicChoose.GetComponent<SkillsDropdown>().excludedList = new List<string>();
-                buf.options.Add(new Dropdown.OptionData("Пусто"));
-                for (int j = 0; j < includedList.Count; j++)
-                {
-                    buf.options.Add(new Dropdown.OptionData(includedList[j].ToString()));
-                }
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newCharacteristicChoose = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
+            Dropdown buf = newCharacteristicChoose.GetComponent<Dropdown>();
+            Text styleDiscriptionText = form.AddText("");
+            buf.onValueChanged.AddListener(delegate
+            {
+                CharacteristicChecker(newObject.GetComponentInChildren<Discription>().gameObject, attributeUpper, count, special);
+                if (!special)
+                    Validate();
+            });
+
+            newCharacteristicChoose.GetComponent<SkillsDropdown>().list = includedList;
+            newCharacteristicChoose.GetComponent<SkillsDropdown>().excludedList = new List<string>();
+            buf.options.Add(new Dropdown.OptionData("Пусто"));
+            for (int j = 0; j < includedList.Count; j++)
+            {
+                buf.options.Add(new Dropdown.OptionData(includedList[j].ToString()));
             }
         }
+
     }
 
-    static void CreatFeat(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact, string caption, List<(string, string)> includedList, List<string> excludedList)
+    static void CreatFeat(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact, string caption, List<(string, string)> includedList, List<string> excludedList, bool bandaged)
     {
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         Feat feat = newObject.AddComponent<Feat>();
@@ -84,8 +210,9 @@ public static class AllClassesAbilities
             buf.onValueChanged.AddListener(delegate
             {
                 Discription(buf, styleDiscriptionText, includedList);
-                FeatAttributies(feat, buf, dropdownForm, newObject.GetComponentInChildren<Discription>().gameObject);
-                Validate();
+                FeatAttributies(feat, buf, dropdownForm, newObject.GetComponentInChildren<Discription>().gameObject, bandaged);
+                if (bandaged)
+                    Validate();
             });
             List<string> captionList = new List<string>();
             foreach ((string, string) x in includedList)
@@ -121,7 +248,7 @@ public static class AllClassesAbilities
         }
     }
 
-    static void CharacteristicChecker(GameObject Form, AttributeUpper attributeUpper, int count)
+    static void CharacteristicChecker(GameObject Form, AttributeUpper attributeUpper, int count, bool special)
     {
         Dropdown[] characteristics = Form.GetComponentsInChildren<Dropdown>();
         Weight[] texts = Form.GetComponentsInChildren<Weight>();
@@ -163,11 +290,13 @@ public static class AllClassesAbilities
             index++;
         }
         if (main != null)
-            if (counter != count)
+            if (counter != count && !special)
             {
+
                 texts[buf].GetComponent<Text>().text = "+2";
                 attributeUpper.attributies[buf].Item1 = attrMain;
                 attributeUpper.attributies[buf].Item2 = 2;
+
             }
             else
             {
@@ -190,7 +319,7 @@ public static class AllClassesAbilities
         textField.text = " ";
     }
 
-    static void FeatAttributies(Feat feat, Dropdown dropdown, GameObject choose, GameObject panel)
+    static void FeatAttributies(Feat feat, Dropdown dropdown, GameObject choose, GameObject panel, bool bandaged)
     {
         Dropdown[] buf = panel.GetComponentsInChildren<Dropdown>();
         for (int i = 1; i < buf.Length; i++)
@@ -200,16 +329,21 @@ public static class AllClassesAbilities
         switch (dropdown.captionText.text)
         {
             case "Атлетичный":
-                SetDropdown("Сила", "Ловкость", choose, panel, feat);
+                SetDropdown("Сила", "Ловкость", choose, panel, feat, bandaged);
                 break;
         }
     }
 
-    static void SetDropdown(string item1, string item2, GameObject choose, GameObject panel, Feat feat)
+    static void SetDropdown(string item1, string item2, GameObject choose, GameObject panel, Feat feat, bool bandaged)
     {
         GameObject newGameObject = GameObject.Instantiate(choose, panel.transform);
         Dropdown dropdown = newGameObject.GetComponent<Dropdown>();
-        dropdown.onValueChanged.AddListener(delegate { ChoosenFeatChanged(feat, dropdown); Validate(); });
+        dropdown.onValueChanged.AddListener(delegate
+        {
+            ChoosenFeatChanged(feat, dropdown);
+            if (bandaged)
+                Validate();
+        });
         dropdown.options.Add(new Dropdown.OptionData("Пусто"));
         dropdown.options.Add(new Dropdown.OptionData(item1));
         dropdown.options.Add(new Dropdown.OptionData(item2));
@@ -224,47 +358,50 @@ public static class AllClassesAbilities
     {
         AttributeUpper attr = GameObject.FindObjectOfType<AttributeUpper>();
         Feat feat = GameObject.FindObjectOfType<Feat>();
-        Dropdown[] attrDrop = attr.GetComponentsInChildren<Dropdown>();
-        Dropdown[] featDrop = feat.GetComponentsInChildren<Dropdown>();
-        bool found = false;
-        foreach (Dropdown x in attrDrop)
+        if (attr != null && feat != null)
         {
-            if (x.captionText.text != "Пусто")
+            Dropdown[] attrDrop = attr.GetComponentsInChildren<Dropdown>();
+            Dropdown[] featDrop = feat.GetComponentsInChildren<Dropdown>();
+            bool found = false;
+            foreach (Dropdown x in attrDrop)
             {
+                if (x.captionText.text != "Пусто")
+                {
+                    foreach (Dropdown y in featDrop)
+                    {
+                        y.value = 0;
+                        y.interactable = false;
+                    }
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
                 foreach (Dropdown y in featDrop)
                 {
-                    y.value = 0;
-                    y.interactable = false;
+                    y.interactable = true;
                 }
-                found = true;
-                break;
-            }
-        }
-        if (!found)
-            foreach (Dropdown y in featDrop)
-            {
-                y.interactable = true;
-            }
-        found = false;
+            found = false;
 
-        foreach (Dropdown x in featDrop)
-        {
-            if (x.captionText.text != "Пусто")
+            foreach (Dropdown x in featDrop)
             {
+                if (x.captionText.text != "Пусто")
+                {
+                    foreach (Dropdown y in attrDrop)
+                    {
+                        y.value = 0;
+                        y.interactable = false;
+                    }
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
                 foreach (Dropdown y in attrDrop)
                 {
-                    y.value = 0;
-                    y.interactable = false;
+                    y.interactable = true;
                 }
-                found = true;
-                break;
-            }
         }
-        if (!found)
-            foreach (Dropdown y in attrDrop)
-            {
-                y.interactable = true;
-            }
     }
 
     public static void SaveAbilitiesUp()

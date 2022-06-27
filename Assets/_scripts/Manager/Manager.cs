@@ -365,15 +365,17 @@ public class Manager : MonoBehaviour
                 int buf;
                 int classLevel = PlayerPrefs.GetInt(levelSaveName + i);
                 string buf1 = PlayerPrefs.GetString(levelLabelSaveName + i);
+                GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
+                GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
                 switch (buf1)
                 {
                     case "Воин":
                         _charModifier.TryGetValue(0, out buf);
-                        new Fighter(classLevel, personalityPanel, basicForm, buf, profMod);
+                        new Fighter(classLevel, entrials, basicForm, buf, profMod);
                         break;
                     case "Плут":
                         _charModifier.TryGetValue(2, out buf);
-                        new Rogue(classLevel, personalityPanel, basicForm, buf, profMod);
+                        new Rogue(classLevel, entrials, basicForm, buf, profMod);
                         break;
                 }
             }

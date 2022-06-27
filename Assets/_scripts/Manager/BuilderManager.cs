@@ -210,7 +210,74 @@ public class BuilderManager : MonoBehaviour
         {
             classStat.SaveClass();
         }
+        SaveSkills();
         PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);
+    }
+
+    void SaveSkills()
+    {
+        List<string> list = PresavedLists.skills;
+        foreach (string x in list)
+        {
+            switch (x)
+            {
+                case "Атлетика":
+                    PlayerPrefs.SetInt(skillSaveName + 0, 1);
+                    break;
+                case "Акробатика":
+                    PlayerPrefs.SetInt(skillSaveName + 1, 1);
+                    break;
+                case "Ловкость рук":
+                    PlayerPrefs.SetInt(skillSaveName + 2, 1);
+                    break;
+                case "Скрытность":
+                    PlayerPrefs.SetInt(skillSaveName + 3, 1);
+                    break;
+                case "Анализ":
+                    PlayerPrefs.SetInt(skillSaveName + 4, 1);
+                    break;
+                case "История":
+                    PlayerPrefs.SetInt(skillSaveName + 5, 1);
+                    break;
+                case "Магия":
+                    PlayerPrefs.SetInt(skillSaveName + 6, 1);
+                    break;
+                case "Природа":
+                    PlayerPrefs.SetInt(skillSaveName + 7, 1);
+                    break;
+                case "Религия":
+                    PlayerPrefs.SetInt(skillSaveName + 8, 1);
+                    break;
+                case "Внимательность":
+                    PlayerPrefs.SetInt(skillSaveName + 9, 1);
+                    break;
+                case "Выживание":
+                    PlayerPrefs.SetInt(skillSaveName + 10, 1);
+                    break;
+                case "Медицина":
+                    PlayerPrefs.SetInt(skillSaveName + 11, 1);
+                    break;
+                case "Проницательность":
+                    PlayerPrefs.SetInt(skillSaveName + 12, 1);
+                    break;
+                case "Уход за животными":
+                    PlayerPrefs.SetInt(skillSaveName + 13, 1);
+                    break;
+                case "Выступление":
+                    PlayerPrefs.SetInt(skillSaveName + 14, 1);
+                    break;
+                case "Запугивание":
+                    PlayerPrefs.SetInt(skillSaveName + 15, 1);
+                    break;
+                case "Обман":
+                    PlayerPrefs.SetInt(skillSaveName + 16, 1);
+                    break;
+                case "убеждение":
+                    PlayerPrefs.SetInt(skillSaveName + 17, 1);
+                    break;
+            }
+        }
+        PresavedLists.skills.Clear();
     }
 }

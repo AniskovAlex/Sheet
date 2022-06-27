@@ -16,13 +16,15 @@ public class SkillsDropdown : MonoBehaviour
             return;
         if (list.Count <= 0)
             return;
+        excludedList.Remove(buf3);
         buf3 = mySelf.captionText.text;
         List<string> buf = excludedList;
         foreach (Dropdown x in drops)
         {
-            if (x.captionText.text != "Пусто")
+            if (x.captionText.text != "Пусто" && !excludedList.Contains(x.captionText.text))
                 buf.Add(x.captionText.text);
         }
+        excludedList = buf;
         foreach (Dropdown x in drops)
         {
             if (x != mySelf)

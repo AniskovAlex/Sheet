@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class PlayersClass
+public abstract class PlayersClass : ObjectsBehavior
 {
     const string armorProfSaveName = "armorProf_";
     const string weaponProfSaveName = "weaponProf_";
@@ -21,14 +21,12 @@ public abstract class PlayersClass
 
     protected int level = 0;
     protected int mainState;
-    protected GameObject panel;
-    protected GameObject basicForm;
-    protected GameObject dropdownForm;
+    
     protected int PB;
-    protected bool redact = false;
+    
 
     protected PlayersClass(int healthDice, List<Armor.Type> armorProfs, List<Weapon.Type> weaponProfs, int instrumentsAmount, List<string> instrumentProfs, int skillsAmount, List<int> skillProfs, List<int> savethrowProfs,
-        int level, int mainState, GameObject panel, GameObject basicForm, GameObject dropdownForm, int PB, bool redact) : base()
+        int level, int mainState, GameObject panel, GameObject basicForm, GameObject dropdownForm, int PB, bool redact) : base(panel, basicForm, dropdownForm, redact)
     {
         this.healthDice = healthDice;
         this.armorProfs = armorProfs;
@@ -40,11 +38,7 @@ public abstract class PlayersClass
         this.savethrowProfs = savethrowProfs;
         this.level = level;
         this.mainState = mainState;
-        this.panel = panel;
-        this.basicForm = basicForm;
-        this.dropdownForm = dropdownForm;
         this.PB = PB;
-        this.redact = redact;
 
         if (redact)
         {
@@ -52,6 +46,7 @@ public abstract class PlayersClass
         }
         else
         {
+            ClassDiscription();
             for (int i = 1; i <= level; i++)
             {
                 ShowAbilities(i);
@@ -95,73 +90,6 @@ public abstract class PlayersClass
     public int GetSkillsAmount()
     {
         return skillsAmount;
-    }
-
-    public void CreatAbility(string caption, string level, string discription)
-    {
-        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
-        FormCreater form = newObject.GetComponent<FormCreater>();
-        newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
-        form.AddText(discription);
-    }
-
-    public void CreatAbility(string caption, string level, string discription, int i)
-    {
-        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
-        FormCreater form = newObject.GetComponent<FormCreater>();
-        newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
-        form.AddText(discription);
-        if (!redact)
-            form.AddConsumables(i);
-    }
-
-    public void CreatAbility(string caption, string level, List<(string, string)> includedList, List<string> excludedList)
-    {
-        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
-        FormCreater form = newObject.GetComponent<FormCreater>();
-        newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
-        if (redact)
-        {
-            GameObject newBattleStyle = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
-            Dropdown buf = newBattleStyle.GetComponent<Dropdown>();
-            Text styleDiscriptionText = form.AddText("");
-            buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
-
-            List<string> captionList = new List<string>();
-            foreach ((string, string) x in includedList)
-                captionList.Add(x.Item1);
-            newBattleStyle.GetComponent<SkillsDropdown>().list = captionList;
-            newBattleStyle.GetComponent<SkillsDropdown>().excludedList = excludedList;
-            List<string> buf1 = new List<string>();
-            foreach ((string,string) x in includedList)
-            {
-                if (!excludedList.Contains(x.Item1))
-                    buf1.Add(x.Item1);
-            }
-            buf.options.Add(new Dropdown.OptionData("Пусто"));
-            for (int j = 0; j < buf1.Count; j++)
-            {
-                buf.options.Add(new Dropdown.OptionData(buf1[j].ToString()));
-            }
-        }
-        else
-        {
-            foreach (string x in excludedList)
-            {
-                foreach((string,string) y in includedList)
-                {
-                    if (x == y.Item1)
-                    {
-                        form.AddText(x, 50, FontStyle.Bold);
-                        form.AddText(y.Item2);
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     public void CreatAbility(string caption, string level, List<(string,string)> includedList)
@@ -231,6 +159,11 @@ public abstract class PlayersClass
         {
             MonoBehaviour.Destroy(x.gameObject);
         }
+    }
+
+    public virtual void ClassDiscription()
+    {
+
     }
 
 }
