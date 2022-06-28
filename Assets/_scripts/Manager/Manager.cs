@@ -19,6 +19,7 @@ public class Manager : MonoBehaviour
     const string maxHealthSaveName = "maxHP_";
     const string healthSaveName = "HP_";
     const string tempHealthSaveName = "THP_";
+    const string raceSaveName = "race_";
     //const string armorClassSaveName = "ac_";
     const string speedSaveName = "spd_";
     /*enum atr
@@ -68,6 +69,7 @@ public class Manager : MonoBehaviour
         UploadData();
         SetAttributes();
         SetClasses();
+        SetRaces();
         SetSkills();
         SetSave();
         SetAdditional();
@@ -381,6 +383,19 @@ public class Manager : MonoBehaviour
             }
         }
         levelInput.text = level.ToString();
+    }
+
+    void SetRaces()
+    {
+        GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
+        GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
+        string race = PlayerPrefs.GetString(raceSaveName);
+        switch (race)
+        {
+            case "Человек":
+                new Human(entrials, basicForm);
+                break;
+        }
     }
 
     public void MoneyCon()

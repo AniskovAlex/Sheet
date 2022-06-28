@@ -20,8 +20,16 @@ public class RaceDropdown : MonoBehaviour
         switch (mySelf.value)
         {
             case 1:
-                newRace = new Human(abilitiesPanel, form, dropdownObject, true);
+                newRace = new Human(abilitiesPanel, form, dropdownObject);
                 break;
+        }
+    }
+
+    public void SaveRace()
+    {
+        if (newRace != null)
+        {
+            newRace.Save();
         }
     }
 }

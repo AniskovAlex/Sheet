@@ -82,7 +82,7 @@ public class Fighter : PlayersClass
         {
             case 1:
                 if (redact)
-                    AllClassesAbilities.SetSkills(panel, basicForm, dropdownForm, " ", GetSkillProfs(), 2);
+                    AllClassesAbilities.SetSkills(panel, basicForm, dropdownForm, "Навыки", GetSkillProfs(), 2);
                 BattleStyle();
                 SecondBreath();
                 break;
@@ -245,16 +245,20 @@ public class Fighter : PlayersClass
                 PlayerPrefs.SetInt(FighterSubClassSaveName, 0);
                 break;
             case 4:
-                AllClassesAbilities.SaveAbilitiesUp();
+                AllClassesAbilities.SaveFeat();
+                AllClassesAbilities.SaveAttributies();
                 break;
             case 6:
-                AllClassesAbilities.SaveAbilitiesUp();
+                AllClassesAbilities.SaveFeat();
+                AllClassesAbilities.SaveAttributies();
                 break;
             case 8:
-                AllClassesAbilities.SaveAbilitiesUp();
+                AllClassesAbilities.SaveFeat();
+                AllClassesAbilities.SaveAttributies();
                 break;
             case 10:
-                AllClassesAbilities.SaveAbilitiesUp();
+                AllClassesAbilities.SaveFeat();
+                AllClassesAbilities.SaveAttributies();
                 break;
         }
     }

@@ -42,6 +42,7 @@ public abstract class PlayersClass : ObjectsBehavior
 
         if (redact)
         {
+            ClassDiscription();
             ShowAbilities(level);
         }
         else

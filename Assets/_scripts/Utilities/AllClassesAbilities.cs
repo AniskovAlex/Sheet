@@ -138,7 +138,7 @@ public static class AllClassesAbilities
                     listTransform.Add("Обман");
                     break;
                 case 17:
-                    listTransform.Add("убеждение");
+                    listTransform.Add("Убеждение");
                     break;
 
             }
@@ -158,7 +158,8 @@ public static class AllClassesAbilities
             buf.options.Add(new Dropdown.OptionData("Пусто"));
             for (int j = 0; j < includedList.Count; j++)
             {
-                buf.options.Add(new Dropdown.OptionData(listTransform[j].ToString()));
+                if (!PresavedLists.skills.Contains(listTransform[j]))
+                    buf.options.Add(new Dropdown.OptionData(listTransform[j].ToString()));
             }
         }
     }
@@ -404,19 +405,11 @@ public static class AllClassesAbilities
         }
     }
 
-    public static void SaveAbilitiesUp()
+    public static void SaveFeat()
     {
-        AttributeUpper attr = GameObject.FindObjectOfType<AttributeUpper>();
         Feat feat = GameObject.FindObjectOfType<Feat>();
-        if (feat != null && attr != null)
+        if (feat != null)
         {
-            foreach ((int, int) x in attr.attributies)
-            {
-                if (x.Item1 != -1)
-                {
-                    PlayerPrefs.SetInt(atrSaveName + x.Item1, PlayerPrefs.GetInt(atrSaveName + x.Item1) + x.Item2);
-                }
-            }
             if (feat.attr != -1)
                 PlayerPrefs.SetInt(atrSaveName + feat.attr, PlayerPrefs.GetInt(atrSaveName + feat.attr) + 1);
             string featName = feat.gameObject.GetComponentInChildren<Dropdown>().captionText.text;
@@ -425,6 +418,21 @@ public static class AllClassesAbilities
                 int count = PlayerPrefs.GetInt(FeatCountSaveName);
                 PlayerPrefs.SetString(FeatSaveName + count, featName);
                 PlayerPrefs.SetInt(FeatCountSaveName, count + 1);
+            }
+        }
+    }
+
+    public static void SaveAttributies()
+    {
+        AttributeUpper attr = GameObject.FindObjectOfType<AttributeUpper>();
+        if (attr != null)
+        {
+            foreach ((int, int) x in attr.attributies)
+            {
+                if (x.Item1 != -1)
+                {
+                    PlayerPrefs.SetInt(atrSaveName + x.Item1, PlayerPrefs.GetInt(atrSaveName + x.Item1) + x.Item2);
+                }
             }
         }
     }

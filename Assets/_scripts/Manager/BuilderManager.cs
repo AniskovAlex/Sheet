@@ -36,6 +36,7 @@ public class BuilderManager : MonoBehaviour
     public InputField maxHealth;
     public InputField speed;
     public ClassDropdown classStat = null;
+    public RaceDropdown raceStat = null;
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
 
     private void Start()
@@ -210,6 +211,10 @@ public class BuilderManager : MonoBehaviour
         {
             classStat.SaveClass();
         }
+        if (raceStat!= null)
+        {
+            raceStat.SaveRace();
+        }
         SaveSkills();
         PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);
@@ -273,7 +278,7 @@ public class BuilderManager : MonoBehaviour
                 case "Обман":
                     PlayerPrefs.SetInt(skillSaveName + 16, 1);
                     break;
-                case "убеждение":
+                case "Убеждение":
                     PlayerPrefs.SetInt(skillSaveName + 17, 1);
                     break;
             }
