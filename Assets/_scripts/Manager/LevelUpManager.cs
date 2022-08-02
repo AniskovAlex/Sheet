@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class LevelUpManager : MonoBehaviour
 {
+    string characterName = CharacterCollection.GetName();
+    const string levelCountSaveName = "lvlCount_";
     const string levelSaveName = "lvl_";
+    const string levelLabelSaveName = "lvlLabel_";
     public Dropdown chosenClass;
     public GameObject dropdownObject;
     public GameObject abilitiesPanel;
@@ -20,7 +23,16 @@ public class LevelUpManager : MonoBehaviour
 
     public void ClassChanged()
     {
-        int level = PlayerPrefs.GetInt(levelSaveName) + 1;
+        int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
+        int level = 1;
+        for (int i = 0; i < count; i++)
+        {
+            if (PlayerPrefs.GetString(characterName + levelLabelSaveName + i) == chosenClass.captionText.text)
+            {
+                level = PlayerPrefs.GetInt(characterName + levelSaveName + i) + 1;
+                break;
+            }
+        }
         Debug.Log(level);
         FormCreater[] abilitieForms = abilitiesPanel.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in abilitieForms)
@@ -34,6 +46,9 @@ public class LevelUpManager : MonoBehaviour
                 break;
             case 2:
                 newClass = new Rogue(level, abilitiesPanel, form, dropdownObject);
+                break;
+            case 3:
+                newClass = new Artificer(level, abilitiesPanel, form, dropdownObject);
                 break;
         }
     }

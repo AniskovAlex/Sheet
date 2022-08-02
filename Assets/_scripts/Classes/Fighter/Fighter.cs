@@ -8,9 +8,7 @@ public class Fighter : PlayersClass
     const string FighterBattleStyleCountSaveName = "FghterBattleStyleCount_";
     const string FighterBattleStyleSaveName = "FghterBattleStyle_";
     const string FighterSubClassSaveName = "FighterSubClass_";
-    const string levelCountSaveName = "lvlCount_";
-    const string levelSaveName = "lvl_";
-    const string levelLabelSaveName = "lvlLabel_";
+    
 
 
     PlayerSubClass subClass = null;
@@ -27,9 +25,9 @@ public class Fighter : PlayersClass
         new List<int> { },
         level, mainState, panel, basicForm, null, PB, false)
     {
-        if (PlayerPrefs.HasKey(FighterSubClassSaveName))
+        if (PlayerPrefs.HasKey(characterName + FighterSubClassSaveName))
         {
-            switch (PlayerPrefs.GetInt(FighterSubClassSaveName))
+            switch (PlayerPrefs.GetInt(characterName + FighterSubClassSaveName))
             {
                 case 0:
                     subClass = new MasterOfMartialArt(level, panel, basicForm, dropdownForm, mainState, PB);
@@ -48,9 +46,9 @@ public class Fighter : PlayersClass
         new List<int> { 0, 1 },
         level, 0, panel, basicForm, dropdownForm, 2, true)
     {
-        if (PlayerPrefs.HasKey(FighterSubClassSaveName))
+        if (PlayerPrefs.HasKey(characterName + FighterSubClassSaveName))
         {
-            switch (PlayerPrefs.GetInt(FighterSubClassSaveName))
+            switch (PlayerPrefs.GetInt(characterName + FighterSubClassSaveName))
             {
                 case 0:
                     subClass = new MasterOfMartialArt(level, panel, basicForm, dropdownForm);
@@ -164,12 +162,12 @@ public class Fighter : PlayersClass
         string caption = "Боевой стиль";
         string abilityLevel = "1-й уровень, умение воина";
         List<string> battleStyleExcludedList = new List<string>();
-        if (PlayerPrefs.HasKey(FighterBattleStyleCountSaveName))
+        if (PlayerPrefs.HasKey(characterName + FighterBattleStyleCountSaveName))
         {
-            int styles = PlayerPrefs.GetInt(FighterBattleStyleCountSaveName);
+            int styles = PlayerPrefs.GetInt(characterName + FighterBattleStyleCountSaveName);
             for (int i = 0; i < styles; i++)
             {
-                battleStyleExcludedList.Add(PlayerPrefs.GetString(FighterBattleStyleSaveName + i));
+                battleStyleExcludedList.Add(PlayerPrefs.GetString(characterName + FighterBattleStyleSaveName + i));
             }
         }
         List<(string, string)> battleStyleList = new List<(string, string)>();
@@ -211,14 +209,15 @@ public class Fighter : PlayersClass
 
     public override void Save()
     {
+        base.Save();
         Debug.Log(level);
-        int count = PlayerPrefs.GetInt(levelCountSaveName);
+        int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
         bool flag = false;
         for (int i = 0; i < count; i++)
         {
-            if (PlayerPrefs.GetString(levelLabelSaveName + i) == "Воин")
+            if (PlayerPrefs.GetString(characterName + levelLabelSaveName + i) == "Воин")
             {
-                PlayerPrefs.SetInt(levelSaveName + i, level);
+                PlayerPrefs.SetInt(characterName + levelSaveName + i, level);
                 flag = true;
                 break;
             }
@@ -235,14 +234,14 @@ public class Fighter : PlayersClass
                 base.Save();
                 if (!flag)
                 {
-                    PlayerPrefs.SetString(levelLabelSaveName + count, "Воин");
-                    PlayerPrefs.SetInt(levelSaveName + count, level);
-                    PlayerPrefs.SetInt(levelCountSaveName, count + 1);
+                    PlayerPrefs.SetString(characterName + levelLabelSaveName + count, "Воин");
+                    PlayerPrefs.SetInt(characterName + levelSaveName + count, level);
+                    PlayerPrefs.SetInt(characterName + levelCountSaveName, count + 1);
                 }
                 StylesSave();
                 break;
             case 3:
-                PlayerPrefs.SetInt(FighterSubClassSaveName, 0);
+                PlayerPrefs.SetInt(characterName + FighterSubClassSaveName, 0);
                 break;
             case 4:
                 AllClassesAbilities.SaveFeat();
@@ -267,11 +266,11 @@ public class Fighter : PlayersClass
     {
         Dropdown style = panel.GetComponentInChildren<Dropdown>();
         int count;
-        if (PlayerPrefs.HasKey(FighterBattleStyleCountSaveName))
-            count = PlayerPrefs.GetInt(FighterBattleStyleCountSaveName);
+        if (PlayerPrefs.HasKey(characterName + FighterBattleStyleCountSaveName))
+            count = PlayerPrefs.GetInt(characterName + FighterBattleStyleCountSaveName);
         else
             count = 0;
-        PlayerPrefs.SetInt(FighterBattleStyleCountSaveName, count + 1);
-        PlayerPrefs.SetString(FighterBattleStyleSaveName + count, style.captionText.text);
+        PlayerPrefs.SetInt(characterName + FighterBattleStyleCountSaveName, count + 1);
+        PlayerPrefs.SetString(characterName + FighterBattleStyleSaveName + count, style.captionText.text);
     }
 }

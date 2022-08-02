@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class AttributeUpper : MonoBehaviour
 {
-    public (int, int)[] attributies = new (int,int)[2]; 
+    public (int, int)[] attributies = new (int,int)[3]; 
 }

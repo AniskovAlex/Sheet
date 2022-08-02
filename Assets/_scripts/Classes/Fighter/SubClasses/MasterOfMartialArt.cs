@@ -41,16 +41,15 @@ public class MasterOfMartialArt : PlayerSubClass
         string caption = "Боевое превосходство";
         string abilityLevel = "3-й уровень, умение мастера боевых искусств";
         List<string> battleStyleExcludedList = new List<string>();
-        if (PlayerPrefs.HasKey(MOMABattleSupriorityCountSaveName))
+        if (PlayerPrefs.HasKey(characterName + MOMABattleSupriorityCountSaveName))
         {
-            int styles = PlayerPrefs.GetInt(MOMABattleSupriorityCountSaveName);
+            int styles = PlayerPrefs.GetInt(characterName + MOMABattleSupriorityCountSaveName);
             for (int i = 0; i < styles; i++)
             {
-                battleStyleExcludedList.Add(PlayerPrefs.GetString(MOMABattleSuprioritySaveName + i));
+                battleStyleExcludedList.Add(PlayerPrefs.GetString(characterName + MOMABattleSuprioritySaveName + i));
             }
         }
         List<(string,string)> battleStyleList = new List<(string, string)>();
-        List<string> discriptionList = new List<string>();
         battleStyleList.Add(("Активное уклонение", "При перемещении вы можете потратить одну кость превосходства, совершить её бросок и добавить выпавшее значение к КД, пока не прекратите перемещение."));
         battleStyleList.Add(("Атака с выпадом","Если вы в свой ход совершаете рукопашную атаку оружием, вы можете потратить одну кость превосходства, чтобы увеличить досягаемость этой атаки на 5 футов. В случае попадания вы добавляете кость превосходства к броску урона этой атаки."));
         battleStyleList.Add(("Атака с манёвром","Если вы попадаете по существу атакой оружием, вы можете потратить одну кость превосходства, чтобы один из ваших товарищей смог переместиться в более выгодное положение. Вы добавляете кость превосходства к броску урона этой атаки и выбираете дружественное существо, которое может видеть или слышать вас. Это существо может реакцией переместиться на расстояние до половины своей скорости, не провоцируя при этом атаки от цели вашей атаки."));
@@ -83,6 +82,7 @@ public class MasterOfMartialArt : PlayerSubClass
 
     public override void Save()
     {
+        base.Save();
         switch (level)
         {
             case 3:
@@ -105,15 +105,15 @@ public class MasterOfMartialArt : PlayerSubClass
     {
         Dropdown[] styles = panel.GetComponentsInChildren<Dropdown>();
         int count;
-        if (PlayerPrefs.HasKey(MOMABattleSupriorityCountSaveName))
-            count = PlayerPrefs.GetInt(MOMABattleSupriorityCountSaveName);
+        if (PlayerPrefs.HasKey(characterName + MOMABattleSupriorityCountSaveName))
+            count = PlayerPrefs.GetInt(characterName + MOMABattleSupriorityCountSaveName);
         else
             count = 0;
         foreach (Dropdown x in styles)
         {
-            PlayerPrefs.SetString(MOMABattleSuprioritySaveName + count, x.captionText.text);
+            PlayerPrefs.SetString(characterName + MOMABattleSuprioritySaveName + count, x.captionText.text);
             count++;
         }
-        PlayerPrefs.SetInt(MOMABattleSupriorityCountSaveName, count);
+        PlayerPrefs.SetInt(characterName + MOMABattleSupriorityCountSaveName, count);
     }
 }

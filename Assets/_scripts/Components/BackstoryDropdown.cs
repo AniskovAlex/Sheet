@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClassDropdown : MonoBehaviour
+public class BackstoryDropdown : MonoBehaviour
 {
-
     public Dropdown mySelf;
     public GameObject dropdownObject;
     public GameObject abilitiesPanel;
     public GameObject form;
-    PlayersClass newClass = null;
+    Backstory newBackstory = null;
     public void SetSkills()
     {
         FormCreater[] abilitieForms = abilitiesPanel.GetComponentsInChildren<FormCreater>();
@@ -21,22 +20,16 @@ public class ClassDropdown : MonoBehaviour
         switch (mySelf.value)
         {
             case 1:
-                newClass = new Fighter(1 ,abilitiesPanel, form, dropdownObject);
-                break;
-            case 2:
-                newClass = new Rogue(1, abilitiesPanel, form, dropdownObject);
-                break;
-            case 3:
-                newClass = new Artificer(1, abilitiesPanel, form, dropdownObject);
+                newBackstory = new Artist(abilitiesPanel, form, dropdownObject);
                 break;
         }
     }
 
-    public void SaveClass()
+    public void SaveBackstory()
     {
-        if (newClass != null)
+        if (newBackstory != null)
         {
-            newClass.Save();
+            newBackstory.Save();
         }
     }
 }

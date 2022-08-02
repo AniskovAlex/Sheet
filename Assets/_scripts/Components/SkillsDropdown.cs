@@ -17,7 +17,7 @@ public class SkillsDropdown : MonoBehaviour
             return;
         SkillsDropdown[] buf1 = FindObjectsOfType<SkillsDropdown>();
         List<Dropdown> drops = new List<Dropdown>();
-        foreach(SkillsDropdown x in buf1)
+        foreach (SkillsDropdown x in buf1)
         {
             drops.Add(x.GetComponent<Dropdown>());
         }
@@ -33,6 +33,47 @@ public class SkillsDropdown : MonoBehaviour
         excludedList = buf;
         foreach (Dropdown x in drops)
         {
+            if (x != mySelf && x.GetComponent<SkillsDropdown>().excludedList == excludedList)
+            {
+                string buf2 = x.captionText.text;
+                x.ClearOptions();
+                x.options.Add(new Dropdown.OptionData("Пусто"));
+                if (buf2 == "Пусто")
+                {
+                    x.captionText.text = buf2;
+                    x.value = 0;
+                }
+                int i = 1;
+                foreach (string y in x.GetComponent<SkillsDropdown>().list)
+                {
+                    if (!buf.Contains(y) || buf2 == y)
+                    {
+                        x.options.Add(new Dropdown.OptionData(y));
+                    }
+                    else
+                        i--;
+                    if (buf2 == y)
+                    {
+                        x.captionText.text = buf2;
+                        x.value = i;
+                    }
+                    i++;
+                }
+            }
+        }
+
+    }
+    private void OnDestroy()
+    {
+        excludedList.Remove(buf3);
+        SkillsDropdown[] buf1 = FindObjectsOfType<SkillsDropdown>();
+        List<Dropdown> drops = new List<Dropdown>();
+        foreach (SkillsDropdown x in buf1)
+        {
+            drops.Add(x.GetComponent<Dropdown>());
+        }
+        foreach (Dropdown x in drops)
+        {
 
             string buf2 = x.captionText.text;
             x.ClearOptions();
@@ -43,9 +84,9 @@ public class SkillsDropdown : MonoBehaviour
                 x.value = 0;
             }
             int i = 1;
-            foreach (string y in list)
+            foreach (string y in x.GetComponent<SkillsDropdown>().list)
             {
-                if (!buf.Contains(y) || buf2 == y)
+                if (!excludedList.Contains(y) || buf2 == y)
                 {
                     x.options.Add(new Dropdown.OptionData(y));
                 }

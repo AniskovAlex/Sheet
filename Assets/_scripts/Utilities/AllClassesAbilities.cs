@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public static class AllClassesAbilities
 {
+    const string languageCountSaveName = "languageCount_";
+    const string languageSaveName = "language_";
     const string FeatCountSaveName = "FeatCount_";
     const string FeatSaveName = "Feat_";
     const string atrSaveName = "atr_";
@@ -24,13 +26,14 @@ public static class AllClassesAbilities
 
     public static void AddFeat(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact, bool bandaged)
     {
+        string characterName = CharacterCollection.GetName();
         List<string> excludedList = new List<string>();
-        if (PlayerPrefs.HasKey(FeatCountSaveName))
+        if (PlayerPrefs.HasKey(characterName+FeatCountSaveName))
         {
-            int styles = PlayerPrefs.GetInt(FeatCountSaveName);
+            int styles = PlayerPrefs.GetInt(characterName + FeatCountSaveName);
             for (int i = 0; i < styles; i++)
             {
-                excludedList.Add(PlayerPrefs.GetString(FeatSaveName + i));
+                excludedList.Add(PlayerPrefs.GetString(characterName + FeatSaveName + i));
             }
         }
         List<(string, string)> includedList = GetFeatsList();
@@ -44,13 +47,14 @@ public static class AllClassesAbilities
 
     public static void ShowFeats(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact)
     {
+        string characterName = CharacterCollection.GetName();
         List<string> excludedList = new List<string>();
-        if (PlayerPrefs.HasKey(FeatCountSaveName))
+        if (PlayerPrefs.HasKey(characterName + FeatCountSaveName))
         {
-            int styles = PlayerPrefs.GetInt(FeatCountSaveName);
+            int styles = PlayerPrefs.GetInt(characterName + FeatCountSaveName);
             for (int i = 0; i < styles; i++)
             {
-                excludedList.Add(PlayerPrefs.GetString(FeatSaveName + i));
+                excludedList.Add(PlayerPrefs.GetString(characterName + FeatSaveName + i));
             }
         }
         List<(string, string)> includedList = GetFeatsList();
@@ -160,6 +164,71 @@ public static class AllClassesAbilities
             {
                 if (!PresavedLists.skills.Contains(listTransform[j]))
                     buf.options.Add(new Dropdown.OptionData(listTransform[j].ToString()));
+            }
+        }
+    }
+
+    public static void ChooseLanguage(GameObject panel, GameObject basicForm, GameObject dropdownForm, int i)
+    {
+        string caption = "Языки";
+        List<(string, string)> inclidedList = new List<(string, string)>();
+        inclidedList.Add(("Общий", "Типичный представитель: Люди\nПисьменность: Общая"));
+        inclidedList.Add(("Великаний", "Типичный представитель: Огры, великаны\nПисьменность: Великанья"));
+
+        List<string> excludedList = new List<string>();
+        foreach (PresavedLists.Language x in PresavedLists.languages)
+            switch (x)
+            {
+                case PresavedLists.Language.common:
+                    excludedList.Add("Общий");
+                    break;
+                case PresavedLists.Language.giant:
+                    excludedList.Add("Великаний");
+                    break;
+            }
+        CreatAbility(panel, basicForm, dropdownForm, caption, "", inclidedList, excludedList, i);
+    }
+
+    public static void SaveLanguage()
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName+languageCountSaveName, PresavedLists.languages.Count);
+        int i = 0;
+        foreach (PresavedLists.Language x in PresavedLists.languages)
+        {
+            int buf = x - PresavedLists.Language.giant;
+            PlayerPrefs.SetInt(characterName + languageSaveName + i, buf);
+        }
+    }
+
+    static void CreatAbility(GameObject panel, GameObject basicForm, GameObject dropdownForm, string caption, string level, List<(string, string)> includedList, List<string> excludedList, int count)
+    {
+        GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
+        FormCreater form = newObject.GetComponent<FormCreater>();
+        newObject.GetComponentInChildren<Text>().text = caption;
+        form.AddText(level, FontStyle.Italic);
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newBattleStyle = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
+            Dropdown buf = newBattleStyle.GetComponent<Dropdown>();
+            Text styleDiscriptionText = form.AddText("");
+            buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
+
+            List<string> captionList = new List<string>();
+            foreach ((string, string) x in includedList)
+                captionList.Add(x.Item1);
+            newBattleStyle.GetComponent<SkillsDropdown>().list = captionList;
+            newBattleStyle.GetComponent<SkillsDropdown>().excludedList = excludedList;
+            List<string> buf1 = new List<string>();
+            foreach ((string, string) x in includedList)
+            {
+                if (!excludedList.Contains(x.Item1))
+                    buf1.Add(x.Item1);
+            }
+            buf.options.Add(new Dropdown.OptionData("Пусто"));
+            for (int j = 0; j < buf1.Count; j++)
+            {
+                buf.options.Add(new Dropdown.OptionData(buf1[j].ToString()));
             }
         }
     }
@@ -407,23 +476,25 @@ public static class AllClassesAbilities
 
     public static void SaveFeat()
     {
+        string characterName = CharacterCollection.GetName();
         Feat feat = GameObject.FindObjectOfType<Feat>();
         if (feat != null)
         {
             if (feat.attr != -1)
-                PlayerPrefs.SetInt(atrSaveName + feat.attr, PlayerPrefs.GetInt(atrSaveName + feat.attr) + 1);
+                PlayerPrefs.SetInt(characterName + atrSaveName + feat.attr, PlayerPrefs.GetInt(characterName + atrSaveName + feat.attr) + 1);
             string featName = feat.gameObject.GetComponentInChildren<Dropdown>().captionText.text;
             if (featName != "Пусто")
             {
-                int count = PlayerPrefs.GetInt(FeatCountSaveName);
-                PlayerPrefs.SetString(FeatSaveName + count, featName);
-                PlayerPrefs.SetInt(FeatCountSaveName, count + 1);
+                int count = PlayerPrefs.GetInt(characterName + FeatCountSaveName);
+                PlayerPrefs.SetString(characterName + FeatSaveName + count, featName);
+                PlayerPrefs.SetInt(characterName + FeatCountSaveName, count + 1);
             }
         }
     }
 
     public static void SaveAttributies()
     {
+        string characterName = CharacterCollection.GetName();
         AttributeUpper attr = GameObject.FindObjectOfType<AttributeUpper>();
         if (attr != null)
         {
@@ -431,7 +502,7 @@ public static class AllClassesAbilities
             {
                 if (x.Item1 != -1)
                 {
-                    PlayerPrefs.SetInt(atrSaveName + x.Item1, PlayerPrefs.GetInt(atrSaveName + x.Item1) + x.Item2);
+                    PlayerPrefs.SetInt(characterName + atrSaveName + x.Item1, PlayerPrefs.GetInt(characterName + atrSaveName + x.Item1) + x.Item2);
                 }
             }
         }

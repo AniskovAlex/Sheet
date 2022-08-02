@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Human : Race
 {
-    const string raceSaveName = "race_";
     public Human(GameObject panel, GameObject basicForm, GameObject dropdownForm) : base(panel, basicForm, dropdownForm, true, 30)
     {
 
@@ -14,13 +13,18 @@ public class Human : Race
         AllClassesAbilities.AttributiesUp(panel, basicForm, dropdownForm, 2, true);
         List<int> includedList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
         AllClassesAbilities.SetSkills(panel, basicForm, dropdownForm, "Навык", includedList, 1);
-        languages.Add(Race.Language.common);
-        ChooseLanguage(1);
+        PresavedLists.languages.Add(PresavedLists.Language.common);
+        AllClassesAbilities.ChooseLanguage(panel, basicForm, dropdownForm, 1);
     }
 
     public Human(GameObject panel, GameObject basicForm) : base(panel, basicForm, null, false, 30)
     {
 
+    }
+
+    public override void Erase()
+    {
+        PresavedLists.languages.Remove(PresavedLists.Language.common);
     }
 
     public override void RaceDiscription()
@@ -41,6 +45,6 @@ public class Human : Race
         base.Save();
         AllClassesAbilities.SaveFeat();
         AllClassesAbilities.SaveAttributies();
-        PlayerPrefs.SetString(raceSaveName, "Человек");
+        PlayerPrefs.SetString(characterName + raceSaveName, "Человек");
     }
 }

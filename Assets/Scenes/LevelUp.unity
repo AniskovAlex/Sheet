@@ -1491,6 +1491,10 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: "\u0412\u043E\u0438\u043D"
       m_Image: {fileID: 0}
+    - m_Text: "\u041F\u043B\u0443\u0442"
+      m_Image: {fileID: 0}
+    - m_Text: "\u0418\u0437\u043E\u0431\u0440\u0435\u0442\u0430\u0442\u0435\u043B\u044C"
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1591,7 +1595,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.4855145, y: 1}
+    m_SensorSize: {x: 0.4872579, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

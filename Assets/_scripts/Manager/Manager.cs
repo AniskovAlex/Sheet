@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
+    string characterName = CharacterCollection.GetName();
     const string atrSaveName = "atr_";
     const string moneySaveName = "mon_";
     const string skillSaveName = "skill_";
@@ -22,6 +23,7 @@ public class Manager : MonoBehaviour
     const string raceSaveName = "race_";
     //const string armorClassSaveName = "ac_";
     const string speedSaveName = "spd_";
+    const string backstorySaveName = "backstory_";
     /*enum atr
     {
         Str,
@@ -70,6 +72,7 @@ public class Manager : MonoBehaviour
         SetAttributes();
         SetClasses();
         SetRaces();
+        SetBackstory();
         SetSkills();
         SetSave();
         SetAdditional();
@@ -88,8 +91,8 @@ public class Manager : MonoBehaviour
                 x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
                 x.GetComponentInChildren<Amount>().gameObject.GetComponent<Text>().text = "+" + tempHealth;
             }
-            PlayerPrefs.SetInt(healthSaveName, health);
-            PlayerPrefs.SetInt(tempHealthSaveName, tempHealth);
+            PlayerPrefs.SetInt(characterName + healthSaveName, health);
+            PlayerPrefs.SetInt(characterName + tempHealthSaveName, tempHealth);
             PlayerPrefs.Save();
             healthStatusChanged = false;
         }
@@ -100,7 +103,7 @@ public class Manager : MonoBehaviour
 
         foreach (Box x in boxList)
         {
-            string saveName = atrSaveName + x.index;
+            string saveName = characterName + atrSaveName + x.index;
             if (PlayerPrefs.HasKey(saveName))
             {
                 _charAtr.Add(x.index, PlayerPrefs.GetInt(saveName));
@@ -110,17 +113,17 @@ public class Manager : MonoBehaviour
                 _charAtr.Add(x.index, 10);
             }
         }
-        playerName.text = PlayerPrefs.GetString(playerSaveName);
-        playerClass.text = PlayerPrefs.GetString(classSaveName);
-        maxHealth = PlayerPrefs.GetInt(maxHealthSaveName);
-        health = PlayerPrefs.GetInt(healthSaveName);
-        tempHealth = PlayerPrefs.GetInt(tempHealthSaveName);
+        playerName.text = CharacterCollection.GetName();
+        playerClass.text = PlayerPrefs.GetString(characterName + classSaveName);
+        maxHealth = PlayerPrefs.GetInt(characterName + maxHealthSaveName);
+        health = PlayerPrefs.GetInt(characterName + healthSaveName);
+        tempHealth = PlayerPrefs.GetInt(characterName + tempHealthSaveName);
         foreach (GameObject x in speedObj)
-            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(speedSaveName).ToString();
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = PlayerPrefs.GetInt(characterName + speedSaveName).ToString();
         if (health == 0)
         {
             health = maxHealth;
-            PlayerPrefs.SetInt(healthSaveName, health);
+            PlayerPrefs.SetInt(characterName + healthSaveName, health);
             PlayerPrefs.Save();
         }
         healthStatusChanged = true;
@@ -240,7 +243,7 @@ public class Manager : MonoBehaviour
     {
         foreach (Skill x in skillsList)
         {
-            string skill = skillSaveName + x.index;
+            string skill = characterName + skillSaveName + x.index;
             int atr = x.GetComponentInParent<Box>().index;
             int modifier = 0;
             if (_charModifier.TryGetValue(atr, out modifier))
@@ -278,7 +281,7 @@ public class Manager : MonoBehaviour
     {
         foreach (Skill x in saveList)
         {
-            string save = saveSaveName + x.index;
+            string save = characterName + saveSaveName + x.index;
             int atr = x.GetComponentInParent<Box>().index;
             int modifier = 0;
             _charModifier.TryGetValue(atr, out modifier);
@@ -332,7 +335,7 @@ public class Manager : MonoBehaviour
         foreach (InputField x in money)
         {
             int moneyIndex = money.IndexOf(x);
-            string saveName = moneySaveName + moneyIndex;
+            string saveName = characterName + moneySaveName + moneyIndex;
             if (PlayerPrefs.HasKey(saveName))
             {
                 x.text = PlayerPrefs.GetInt(saveName).ToString();
@@ -343,18 +346,18 @@ public class Manager : MonoBehaviour
     {
         int moneyInt;
         int.TryParse(money[x.index].text, out moneyInt);
-        PlayerPrefs.SetInt(moneySaveName + x.index, moneyInt);
+        PlayerPrefs.SetInt(characterName + moneySaveName + x.index, moneyInt);
         PlayerPrefs.Save();
     }
 
     void SetClasses()
     {
-        int count = PlayerPrefs.GetInt(levelCountSaveName);
+        int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
         for (int i = 0; i < count; i++)
         {
-            if (PlayerPrefs.HasKey(levelSaveName + i))
+            if (PlayerPrefs.HasKey(characterName + levelSaveName + i))
             {
-                int classLevel = PlayerPrefs.GetInt(levelSaveName + i);
+                int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
                 level += classLevel;
             }
         }
@@ -362,11 +365,11 @@ public class Manager : MonoBehaviour
         profModObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + profMod.ToString();
         for (int i = 0; i < count; i++)
         {
-            if (PlayerPrefs.HasKey(levelSaveName + i))
+            if (PlayerPrefs.HasKey(characterName + levelSaveName + i))
             {
                 int buf;
-                int classLevel = PlayerPrefs.GetInt(levelSaveName + i);
-                string buf1 = PlayerPrefs.GetString(levelLabelSaveName + i);
+                int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
+                string buf1 = PlayerPrefs.GetString(characterName + levelLabelSaveName + i);
                 GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
                 GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
                 switch (buf1)
@@ -379,6 +382,10 @@ public class Manager : MonoBehaviour
                         _charModifier.TryGetValue(2, out buf);
                         new Rogue(classLevel, entrials, basicForm, buf, profMod);
                         break;
+                    case "Изобретатель":
+                        _charModifier.TryGetValue(4, out buf);
+                        new Artificer(classLevel, entrials, basicForm, buf, profMod);
+                        break;
                 }
             }
         }
@@ -389,11 +396,27 @@ public class Manager : MonoBehaviour
     {
         GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
         GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
-        string race = PlayerPrefs.GetString(raceSaveName);
+        string race = PlayerPrefs.GetString(characterName + raceSaveName);
         switch (race)
         {
             case "Человек":
                 new Human(entrials, basicForm);
+                break;
+            case "Харенгон":
+                new Harengon(entrials, basicForm, profMod);
+                break;
+        }
+    }
+
+    void SetBackstory()
+    {
+        GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
+        GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
+        string backstory = PlayerPrefs.GetString(characterName + backstorySaveName);
+        switch (backstory)
+        {
+            case "Артист":
+                new Artist(entrials, basicForm);
                 break;
         }
     }
@@ -450,7 +473,7 @@ public class Manager : MonoBehaviour
         {
             x = money[index];
             x.text = m[index].Item1.ToString();
-            string saveName = moneySaveName + index;
+            string saveName = characterName + moneySaveName + index;
             PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
         PlayerPrefs.Save();
@@ -491,7 +514,7 @@ public class Manager : MonoBehaviour
             }
             x = money[index];
             x.text = m[index].Item1.ToString();
-            string saveName = moneySaveName + index;
+            string saveName = characterName + moneySaveName + index;
             PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
         PlayerPrefs.Save();
@@ -538,10 +561,10 @@ public class Manager : MonoBehaviour
         healthStatusChanged = true;
     }
 
-    public void LoadBuilder()
+    public void LoadSelecter()
     {
         PlayerPrefs.Save();
-        SceneManager.LoadScene("CharacterBuilder", LoadSceneMode.Single);
+        SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
     }
 
     public void LoadLeveler()

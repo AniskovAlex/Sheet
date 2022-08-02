@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Rogue : PlayersClass
 {
-    const string levelCountSaveName = "lvlCount_";
-    const string levelSaveName = "lvl_";
-    const string levelLabelSaveName = "lvlLabel_";
     public Rogue(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(10,
         new List<Armor.Type> { },
         new List<Weapon.Type> { },
@@ -85,13 +82,13 @@ public class Rogue : PlayersClass
     public override void Save()
     {
         Debug.Log(level);
-        int count = PlayerPrefs.GetInt(levelCountSaveName);
+        int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
         bool flag = false;
         for (int i = 0; i < count; i++)
         {
-            if (PlayerPrefs.GetString(levelLabelSaveName + i) == "想篁")
+            if (PlayerPrefs.GetString(characterName + levelLabelSaveName + i) == "想篁")
             {
-                PlayerPrefs.SetInt(levelSaveName + i, level);
+                PlayerPrefs.SetInt(characterName + levelSaveName + i, level);
                 flag = true;
                 break;
             }
@@ -102,9 +99,9 @@ public class Rogue : PlayersClass
                 base.Save();
                 if (!flag)
                 {
-                    PlayerPrefs.SetString(levelLabelSaveName + count, "想篁");
-                    PlayerPrefs.SetInt(levelSaveName + count, level);
-                    PlayerPrefs.SetInt(levelCountSaveName, count + 1);
+                    PlayerPrefs.SetString(characterName + levelLabelSaveName + count, "想篁");
+                    PlayerPrefs.SetInt(characterName + levelSaveName + count, level);
+                    PlayerPrefs.SetInt(characterName + levelCountSaveName, count + 1);
                 }
                 break;
         }

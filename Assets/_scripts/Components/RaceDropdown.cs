@@ -22,6 +22,9 @@ public class RaceDropdown : MonoBehaviour
             case 1:
                 newRace = new Human(abilitiesPanel, form, dropdownObject);
                 break;
+            case 2:
+                newRace = new Harengon(abilitiesPanel, form, dropdownObject);
+                break;
         }
     }
 

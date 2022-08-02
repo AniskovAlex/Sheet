@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public abstract class PlayerSubClass : ObjectsBehavior
 {
-
+    protected string characterName = CharacterCollection.GetName();
     protected int level = 0;
     protected int mainState;
     protected int PB;
@@ -40,6 +40,6 @@ public abstract class PlayerSubClass : ObjectsBehavior
 
     public virtual void Save()
     {
-
+        characterName = CharacterCollection.GetName();
     }
 }

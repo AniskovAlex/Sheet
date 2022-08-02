@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class BuilderManager : MonoBehaviour
 {
-
+    string characterName;
     const string atrSaveName = "atr_";
     const string skillSaveName = "skill_";
     const string playerSaveName = "name_";
@@ -16,6 +16,8 @@ public class BuilderManager : MonoBehaviour
     const string maxHealthSaveName = "maxHP_";
     const string armorClassSaveName = "ac_";
     const string speedSaveName = "spd_";
+    const string charactersCountSaveName = "charactersCount_";
+    const string charactersSaveName = "characters_";
     /*enum atr
     {
         Str,
@@ -37,11 +39,12 @@ public class BuilderManager : MonoBehaviour
     public InputField speed;
     public ClassDropdown classStat = null;
     public RaceDropdown raceStat = null;
+    public BackstoryDropdown backstoryStat = null;
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
 
     private void Start()
     {
-        for (int a = 0; a <= 5; a++)
+        /*for (int a = 0; a <= 5; a++)
         {
             if (PlayerPrefs.HasKey(atrSaveName + a))
             {
@@ -107,9 +110,9 @@ public class BuilderManager : MonoBehaviour
         level.text = PlayerPrefs.GetInt(levelSaveName).ToString();
         armorClass.text = PlayerPrefs.GetInt(armorClassSaveName).ToString();
         maxHealth.text = PlayerPrefs.GetInt(maxHealthSaveName).ToString();
-        speed.text = PlayerPrefs.GetInt(speedSaveName).ToString();
+        speed.text = PlayerPrefs.GetInt(speedSaveName).ToString();*/
     }
-
+    /*
     public void DataUpdate(InputField inputField)
     {
         int valueInt;
@@ -193,7 +196,7 @@ public class BuilderManager : MonoBehaviour
             PlayerPrefs.SetInt(speedSaveName, spd);
             Save();
         }
-    }
+    }*/
 
     void Save()
     {
@@ -207,16 +210,39 @@ public class BuilderManager : MonoBehaviour
 
     public void LoadView()
     {
-        if(classStat!= null)
+        if (playerName.text != "")
         {
-            classStat.SaveClass();
+            if (PlayerPrefs.HasKey(charactersCountSaveName))
+            {
+                int count = PlayerPrefs.GetInt(charactersCountSaveName) + 1;
+                PlayerPrefs.SetString(charactersSaveName + count, playerName.text);
+                PlayerPrefs.SetInt(charactersCountSaveName, count);
+            }
+            else
+            {
+                PlayerPrefs.SetInt(charactersCountSaveName, 1);
+                PlayerPrefs.SetString(charactersSaveName + 1, playerName.text);
+            }
+            CharacterCollection.SetName(playerName.text);
+            characterName = CharacterCollection.GetName();
+            if (classStat != null)
+            {
+                classStat.SaveClass();
+            }
+            if (raceStat != null)
+            {
+                raceStat.SaveRace();
+            }
+            if (backstoryStat != null)
+            {
+                backstoryStat.SaveBackstory();
+            }
+            SaveSkills();
+            int buf;
+            int.TryParse(maxHealth.text, out buf);
+            PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
+            PlayerPrefs.Save();
         }
-        if (raceStat!= null)
-        {
-            raceStat.SaveRace();
-        }
-        SaveSkills();
-        PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);
     }
 
@@ -228,58 +254,58 @@ public class BuilderManager : MonoBehaviour
             switch (x)
             {
                 case "Атлетика":
-                    PlayerPrefs.SetInt(skillSaveName + 0, 1);
+                    PlayerPrefs.SetInt(characterName+skillSaveName + 0, 1);
                     break;
                 case "Акробатика":
-                    PlayerPrefs.SetInt(skillSaveName + 1, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 1, 1);
                     break;
                 case "Ловкость рук":
-                    PlayerPrefs.SetInt(skillSaveName + 2, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 2, 1);
                     break;
                 case "Скрытность":
-                    PlayerPrefs.SetInt(skillSaveName + 3, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 3, 1);
                     break;
                 case "Анализ":
-                    PlayerPrefs.SetInt(skillSaveName + 4, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 4, 1);
                     break;
                 case "История":
-                    PlayerPrefs.SetInt(skillSaveName + 5, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 5, 1);
                     break;
                 case "Магия":
-                    PlayerPrefs.SetInt(skillSaveName + 6, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 6, 1);
                     break;
                 case "Природа":
-                    PlayerPrefs.SetInt(skillSaveName + 7, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 7, 1);
                     break;
                 case "Религия":
-                    PlayerPrefs.SetInt(skillSaveName + 8, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 8, 1);
                     break;
                 case "Внимательность":
-                    PlayerPrefs.SetInt(skillSaveName + 9, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 9, 1);
                     break;
                 case "Выживание":
-                    PlayerPrefs.SetInt(skillSaveName + 10, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 10, 1);
                     break;
                 case "Медицина":
-                    PlayerPrefs.SetInt(skillSaveName + 11, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 11, 1);
                     break;
                 case "Проницательность":
-                    PlayerPrefs.SetInt(skillSaveName + 12, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 12, 1);
                     break;
                 case "Уход за животными":
-                    PlayerPrefs.SetInt(skillSaveName + 13, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 13, 1);
                     break;
                 case "Выступление":
-                    PlayerPrefs.SetInt(skillSaveName + 14, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 14, 1);
                     break;
                 case "Запугивание":
-                    PlayerPrefs.SetInt(skillSaveName + 15, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 15, 1);
                     break;
                 case "Обман":
-                    PlayerPrefs.SetInt(skillSaveName + 16, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 16, 1);
                     break;
                 case "Убеждение":
-                    PlayerPrefs.SetInt(skillSaveName + 17, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 17, 1);
                     break;
             }
         }

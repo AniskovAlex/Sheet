@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public abstract class PlayersClass : ObjectsBehavior
 {
+    protected string characterName = CharacterCollection.GetName();
     const string armorProfSaveName = "armorProf_";
     const string weaponProfSaveName = "weaponProf_";
     const string saveThrowProfSaveName = "save_";
-    const string classSaveName = "class_";
+    protected const string levelCountSaveName = "lvlCount_";
+    protected const string levelSaveName = "lvl_";
+    protected const string levelLabelSaveName = "lvlLabel_";
 
     int healthDice;
     List<Armor.Type> armorProfs;
@@ -139,17 +142,18 @@ public abstract class PlayersClass : ObjectsBehavior
 
     public virtual void Save()
     {
+        characterName = CharacterCollection.GetName();
         foreach (Weapon.Type x in weaponProfs)
         {
-            PlayerPrefs.SetInt(weaponProfSaveName + x, 1);
+            PlayerPrefs.SetInt(characterName + weaponProfSaveName + x, 1);
         }
         foreach (Armor.Type x in armorProfs)
         {
-            PlayerPrefs.SetInt(armorProfSaveName + x, 1);
+            PlayerPrefs.SetInt(characterName+armorProfSaveName + x, 1);
         }
         foreach (int x in savethrowProfs)
         {
-            PlayerPrefs.SetInt(saveThrowProfSaveName + x, 1);
+            PlayerPrefs.SetInt(characterName + saveThrowProfSaveName + x, 1);
         }
     }
 
