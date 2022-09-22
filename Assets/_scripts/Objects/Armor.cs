@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Armor
+public class Armor: Item
 {
-    const string ACSaveName = "armorAC_";
+    /*const string ACSaveName = "armorAC_";
     const string ACCapSaveName = "armorACCap_";
     const string StrSaveName = "armorStr_";
     const string StealthSaveName = "armorStealth_";
-    const string TypeSaveName = "armorType_";
+    const string TypeSaveName = "armorType_";*/
 
-    public enum Type
+    public enum ArmorType
     {
         Light,
         Medium,
@@ -18,23 +18,13 @@ public struct Armor
         Shield
     }
 
-    public string label;
     public int AC;
     public int ACCap;
     public int strReq;
     public bool stealthDis;
-    public Type type;
-    public Armor(string label, int AC, int ACCap, int strReq, bool stealthDis, Type type)
-    {
-        this.label = label;
-        this.AC = AC;
-        this.ACCap = ACCap;
-        this.strReq = strReq;
-        this.stealthDis = stealthDis;
-        this.type = type;
-    }
+    public ArmorType armorType;
 
-    public static Armor? LoadArmor(string label)
+    /*public static Armor? LoadArmor(string label)
     {
         if (!PlayerPrefs.HasKey(ACSaveName + label))
             return null;
@@ -72,6 +62,6 @@ public struct Armor
         PlayerPrefs.DeleteKey(StealthSaveName + x);
         PlayerPrefs.DeleteKey(TypeSaveName + x);
         PlayerPrefs.Save();
-    }
+    }*/
 
 }

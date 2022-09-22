@@ -9,8 +9,6 @@ public abstract class Race : ObjectsBehavior
     const string speedSaveName = "spd_";
     protected const string raceSaveName = "race_";
 
-
-
     public enum Size
     {
         little,
@@ -26,7 +24,10 @@ public abstract class Race : ObjectsBehavior
         RaceDiscription();
     }
 
+    protected Race()
+    {
 
+    }
 
     public virtual void RaceDiscription()
     {
@@ -36,6 +37,11 @@ public abstract class Race : ObjectsBehavior
     public virtual void Erase()
     {
 
+    }
+
+    public int GetSpeed()
+    {
+        return speed;
     }
 
     public virtual void Save()

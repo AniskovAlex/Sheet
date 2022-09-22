@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Weapon
+public class Weapon :Item
 {
-    static string dicesSaveName = "weaponDices_";
+    /*static string dicesSaveName = "weaponDices_";
     static string hitDiceSaveName = "weaponHitDice_";
     static string distSaveName = "weaponDist_";
     static string maxDistSaveName = "weaponMaxDist_";
@@ -14,7 +14,7 @@ public struct Weapon
     static string propertieSaveName = "weaponPropertie_";
     static string typeSaveName = "weaponType_";
 
-
+    */
     public enum DamageType
     {
         Slashing,
@@ -37,7 +37,7 @@ public struct Weapon
         Fencing
     }
 
-    public enum Type
+    public enum WeaponType
     {
         CommonMelee,
         CommonDist,
@@ -47,7 +47,6 @@ public struct Weapon
 
     }
 
-    public string label;
     public int dices;
     public int hitDice;
     public int dist;
@@ -55,22 +54,9 @@ public struct Weapon
     public bool magic;
     public DamageType damageType;
     public Properties[] properties;
-    public Type type;
+    public WeaponType weaponType;
 
-    public Weapon(string label, int dices, int hitDice, int dist, int maxDist, bool magic, DamageType damageType, Properties[] properties, Type type)
-    {
-        this.label = label;
-        this.dices = dices;
-        this.hitDice = hitDice;
-        this.dist = dist;
-        this.maxDist = maxDist;
-        this.magic = magic;
-        this.damageType = damageType;
-        this.properties = properties;
-        this.type = type;
-    }
-
-    public static Weapon? LoadWeapon(string label)
+    /*public static Weapon? LoadWeapon(string label)
     {
         if (!PlayerPrefs.HasKey(dicesSaveName + label))
             return null;
@@ -127,5 +113,5 @@ public struct Weapon
         PlayerPrefs.DeleteKey(propertiesCountSaveName + x);
         PlayerPrefs.DeleteKey(typeSaveName + x);
         PlayerPrefs.Save();
-    }
+    }*/
 }

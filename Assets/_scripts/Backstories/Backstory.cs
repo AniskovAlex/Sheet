@@ -12,6 +12,11 @@ public class Backstory : ObjectsBehavior
 
     }
 
+    protected Backstory()
+    {
+
+    }
+
     public virtual void Save()
     {
         characterName = CharacterCollection.GetName();

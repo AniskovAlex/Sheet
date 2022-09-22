@@ -18,6 +18,11 @@ public abstract class ObjectsBehavior
         this.redact = redact;
     }
 
+    protected ObjectsBehavior()
+    {
+
+    }
+
     public void CreatAbility(string caption, string level, string discription)
     {
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);

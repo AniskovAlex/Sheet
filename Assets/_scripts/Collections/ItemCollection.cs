@@ -8,7 +8,7 @@ public class ItemCollection : ScriptableObject
     List<Item> list = new List<Item>();
     static ItemCollection instance;
 
-    void LoadCollection()
+    /*void LoadCollection()
     {
         list.Add(new Item("абак", 2, 2, Item.MType.goldCoin, Item.Type.item));
         list.Add(new Item("алхим. огонь", 50, 1, Item.MType.goldCoin, Item.Type.item));
@@ -158,9 +158,9 @@ public class ItemCollection : ScriptableObject
         list.Add(new Item("длинный лук", 50, 2, Item.MType.goldCoin, Item.Type.weapon));
         list.Add(new Item("духовая трубка", 10, 1, Item.MType.goldCoin, Item.Type.weapon));
         list.Add(new Item("сеть", 1, 0, Item.MType.goldCoin, Item.Type.weapon));
-    } 
+    } */
 
-    public static ItemCollection GetCollection()
+    /*public static ItemCollection GetCollection()
     {
         if (!instance)
         {
@@ -180,5 +180,5 @@ public class ItemCollection : ScriptableObject
     public List<Item> GetList()
     {
         return list;
-    }
+    }*/
 }

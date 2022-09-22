@@ -8,7 +8,7 @@ public class ArmorCollection : ScriptableObject
     List<Armor> list = new List<Armor>();
     static ArmorCollection instance;
 
-    void LoadCollection()
+    /*void LoadCollection()
     {
         list.Add(new Armor("кираса", 14, 2, 0, false, Armor.Type.Medium));
         list.Add(new Armor("стёганый", 11, 0, 0, true, Armor.Type.Light));
@@ -45,5 +45,5 @@ public class ArmorCollection : ScriptableObject
     public List<Armor> GetList()
     {
         return list;
-    }
+    }*/
 }

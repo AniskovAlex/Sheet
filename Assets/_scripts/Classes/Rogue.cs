@@ -5,8 +5,8 @@ using UnityEngine;
 public class Rogue : PlayersClass
 {
     public Rogue(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(10,
-        new List<Armor.Type> { },
-        new List<Weapon.Type> { },
+        new List<Armor.ArmorType> { },
+        new List<Weapon.WeaponType> { },
         0,
         new List<string> { },
         2,
@@ -18,14 +18,19 @@ public class Rogue : PlayersClass
     }
 
     public Rogue(int level, GameObject panel, GameObject basicForm, GameObject dropdownForm) : base(10,
-        new List<Armor.Type> { Armor.Type.Heavy, Armor.Type.Light, Armor.Type.Medium, Armor.Type.Shield },
-        new List<Weapon.Type> { },
+        new List<Armor.ArmorType> {},
+        new List<Weapon.WeaponType> { },
         0,
         new List<string> { },
         2,
         new List<int> { 0, 1, 5, 9, 10, 12, 13, 15 },
         new List<int> { 0, 1 },
         level, 0, panel, basicForm, dropdownForm, 2, true)
+    {
+
+    }
+
+    public Rogue()
     {
 
     }

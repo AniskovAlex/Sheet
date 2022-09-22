@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5951161046581228863}
   - component: {fileID: 4172103242342687493}
   m_Layer: 5
-  m_Name: InputField (1)
+  m_Name: Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 7515276804164390693}
   - component: {fileID: 5438447647905716738}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -809,7 +809,7 @@ GameObject:
   - component: {fileID: 9206601579268942811}
   - component: {fileID: 9058085657139566932}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -918,7 +918,7 @@ GameObject:
   - component: {fileID: 4961587036497866036}
   - component: {fileID: 4995792040235288444}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: Magick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1584,9 +1584,9 @@ GameObject:
   - component: {fileID: 6716958575861031450}
   - component: {fileID: 6716958575861031449}
   - component: {fileID: 6716958575861031448}
-  - component: {fileID: 6129881926172029974}
   - component: {fileID: 2023915929441370380}
   - component: {fileID: 3258000650375255692}
+  - component: {fileID: 4637316750315203549}
   m_Layer: 5
   m_Name: Weapon
   m_TagString: Untagged
@@ -1653,21 +1653,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6129881926172029974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6716958575861031453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
 --- !u!114 &2023915929441370380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1714,6 +1699,25 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &4637316750315203549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6716958575861031453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc9eb07eef00b84eb12b6151f2e992a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  label: {fileID: 6716958575433209790}
+  damage: {fileID: 5366663878046588513}
+  distance: {fileID: 7566992538985814295}
+  type: {fileID: 567000681409124089}
+  properties: {fileID: 2489724617846006609}
+  magick: {fileID: 7946561866599094995}
+  equip: {fileID: 6716958576542516988}
 --- !u!1 &6716958576542516977
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
-using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    string characterName = CharacterCollection.GetName();
-    const string atrSaveName = "atr_";
+    
+    /*const string atrSaveName = "atr_";
     const string moneySaveName = "mon_";
     const string skillSaveName = "skill_";
     const string playerSaveName = "name_";
@@ -39,7 +38,6 @@ public class Manager : MonoBehaviour
     public List<Box> boxList;
     public List<Skill> skillsList;
     public List<Skill> saveList;
-    public List<GameObject> armorClass;
     public List<GameObject> healthObjs;
     public List<GameObject> initiative;
     public GameObject profModObj;
@@ -52,36 +50,30 @@ public class Manager : MonoBehaviour
     public GameObject personalityPanel;
     public GameObject basicForm;
 
-    Dictionary<int, int> _charAtr = new Dictionary<int, int>();
-    Dictionary<int, int> _charModifier = new Dictionary<int, int>();
-    Dictionary<int, int> _charSkill = new Dictionary<int, int>();
     Dictionary<int, int> _charSave = new Dictionary<int, int>();
     int profMod = 0;
     int maxHealth = 0;
     int health = 0;
     int tempHealth = 0;
-    int addArmor = 0;
-    int AC = 10;
     int level = 0;
     bool healthStatusChanged = false;
-    bool shieldEquip = false;
 
     private void Start()
     {
-        UploadData();
-        SetAttributes();
-        SetClasses();
-        SetRaces();
-        SetBackstory();
-        SetSkills();
-        SetSave();
-        SetAdditional();
-        SetMoney();
-        int buf;
-        _charModifier.TryGetValue(1, out buf);
-        UpdateArmorClass(10, buf);
+        //CharacterData.SetCharacterData(new (int, int)[6] {(0,10), (1,10), (2, 10), (3, 10), (4, 10), (5, 10) });
+        //UploadData();
+        //SetAttributes();
+        //SetClasses();
+        //SetRaces();
+        //SetBackstory();
+        //SetSkills();
+        //SetSave();
+        //SetAdditional();
+        //SetMoney();
+        //int buf;
+        //UpdateArmorClass(10, 20);
     }
-
+    /*
     private void Update()
     {
         if (healthStatusChanged)
@@ -97,8 +89,8 @@ public class Manager : MonoBehaviour
             healthStatusChanged = false;
         }
     }
-
-    void UploadData()
+    */
+    /*void UploadData()
     {
 
         foreach (Box x in boxList)
@@ -127,29 +119,14 @@ public class Manager : MonoBehaviour
             PlayerPrefs.Save();
         }
         healthStatusChanged = true;
-    }
+    }*/
 
-    void UploadArmorClass()
-    {
-        int buf = AC + addArmor;
-        foreach (GameObject x in armorClass)
-            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
-    }
-
-    public void UpdateArmorClass(int baseArmor, int dexArmor)
-    {
-        int dex;
-        _charModifier.TryGetValue(1, out dex);
-        if (dexArmor != -1)
-            AC = baseArmor + Mathf.Clamp(dex, -10, dexArmor);
-        else
-            AC = baseArmor;
-        //PlayerPrefs.SetInt(armorClassSaveName, armor);
-        UploadArmorClass();
-    }
-
+    
+    
     public void UpdateEquipment(List<Weapon> list)
     {
+        int strength = CharacterData.GetModifier(0);
+        int dexterity = CharacterData.GetModifier(1);
         while (equipmentPanel.GetComponentInChildren<Box>())
         {
             equipmentPanel.GetComponentInChildren<Box>().DestroyMyself();
@@ -158,21 +135,21 @@ public class Manager : MonoBehaviour
         {
             GameObject newWeapon = Instantiate(hand, equipmentPanel.transform);
             newWeapon.GetComponentInChildren<Label>().GetComponentInChildren<Text>().text = x.label[0].ToString().ToUpper() + x.label.Remove(0, 1);
-            if (x.type != Weapon.Type.Shield)
+            if (x.weaponType != Weapon.WeaponType.Shield)
             {
-                int buf = _charModifier[0] + profMod;
-                int buf1 = _charModifier[0];
+                int buf = strength + profMod;
+                int buf1 = strength;
                 foreach (Weapon.Properties y in x.properties)
                 {
                     if (y == Weapon.Properties.Ammo)
                     {
-                        buf = _charModifier[1] + profMod;
-                        buf1 = _charModifier[1];
+                        buf = dexterity + profMod;
+                        buf1 = dexterity;
                     }
                     if (y == Weapon.Properties.Fencing)
                     {
-                        buf = Mathf.Max(_charModifier[0], _charModifier[1]) + profMod;
-                        buf1 = Mathf.Max(_charModifier[0], _charModifier[1]);
+                        buf = Mathf.Max(strength, dexterity) + profMod;
+                        buf1 = Mathf.Max(strength, dexterity);
                     }
                 }
                 if (buf >= 0)
@@ -203,12 +180,12 @@ public class Manager : MonoBehaviour
             }
             else
             {
-                DestroyImmediate(newWeapon.GetComponentInChildren<MType>().gameObject);
+               /* DestroyImmediate(newWeapon.GetComponentInChildren<MType>().gameObject);
                 shieldEquip = true;
-                addArmor = Mathf.Max(addArmor, x.hitDice);
+                addArmor = Mathf.Max(addArmor, x.hitDice);*/
             }
         }
-        if (!shieldEquip)
+        /*if (!shieldEquip)
         {
             addArmor = 0;
             UpdateArmorClass(AC, 0);
@@ -217,74 +194,66 @@ public class Manager : MonoBehaviour
         {
             UpdateArmorClass(AC, 0);
         }
-        shieldEquip = false;
+        shieldEquip = false;*/
     }
 
-    void SetAttributes()
+    /*void SetAttributes()
     {
         foreach (Box x in boxList)
         {
-            int value;
-            if (_charAtr.TryGetValue(x.index, out value))
-            {
-                x.GetComponentInChildren<Attribute>().gameObject.GetComponent<Text>().text = value.ToString();
-                int modifier = value / 2 - 5;
-                _charModifier.Add(x.index, modifier);
-                string str;
-                if (modifier >= 0)
-                    str = "+" + modifier.ToString();
-                else
-                    str = modifier.ToString();
-                x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = str;
-            }
+            int value = CharacterData.GetAtribute(x.index);
+            x.GetComponentInChildren<Attribute>().gameObject.GetComponent<Text>().text = value.ToString();
+            int modifier = CharacterData.GetModifier(x.index);
+            string str;
+            if (modifier >= 0)
+                str = "+" + modifier.ToString();
+            else
+                str = modifier.ToString();
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = str;
+
         }
-    }
-    void SetSkills()
+    }*/
+    /*void SetSkills()
     {
         foreach (Skill x in skillsList)
         {
             string skill = characterName + skillSaveName + x.index;
             int atr = x.GetComponentInParent<Box>().index;
-            int modifier = 0;
-            if (_charModifier.TryGetValue(atr, out modifier))
+            int modifier = CharacterData.GetModifier(atr);
+            switch (PlayerPrefs.GetInt(skill))
             {
-                switch (PlayerPrefs.GetInt(skill))
-                {
-                    case -1:
-                        modifier += profMod / 2;
-                        break;
-                    case 0:
-                        //x.GetComponentInChildren<Toggle>().isOn = false;
-                        break;
-                    case 1:
-                        modifier += profMod;
-                        //x.GetComponentInChildren<Toggle>().isOn = true;
-                        Debug.Log(x.gameObject.GetComponent<RawImage>().color);
-                        x.gameObject.GetComponent<RawImage>().color = new Color(189 / 225f, 255 / 225f, 169 / 225f);
-                        Debug.Log(x.gameObject.GetComponent<RawImage>().color);
-                        break;
-                    case 2:
-                        x.GetComponent<RawImage>().color = new Color(231 / 225f, 180 / 225f, 255 / 225f);
-                        modifier += profMod * 2;
-                        break;
-                }
+                case -1:
+                    modifier += profMod / 2;
+                    break;
+                case 0:
+                    break;
+                case 1:
+                    modifier += profMod;
+                    Debug.Log(x.gameObject.GetComponent<RawImage>().color);
+                    x.gameObject.GetComponent<RawImage>().color = new Color(189 / 225f, 255 / 225f, 169 / 225f);
+                    Debug.Log(x.gameObject.GetComponent<RawImage>().color);
+                    break;
+                case 2:
+                    x.GetComponent<RawImage>().color = new Color(231 / 225f, 180 / 225f, 255 / 225f);
+                    modifier += profMod * 2;
+                    break;
             }
-            _charSkill.Add(x.index, modifier);
+
+            //_charSkill.Add(x.index, modifier);
             if (modifier >= 0)
                 x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + modifier;
             else
                 x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = modifier.ToString();
         }
-    }
+    }*/
 
-    void SetSave()
+    /*void SetSave()
     {
         foreach (Skill x in saveList)
         {
             string save = characterName + saveSaveName + x.index;
             int atr = x.GetComponentInParent<Box>().index;
-            int modifier = 0;
-            _charModifier.TryGetValue(atr, out modifier);
+            int modifier = CharacterData.GetModifier(atr);
             switch (PlayerPrefs.GetInt(save))
             {
                 case -1:
@@ -306,31 +275,26 @@ public class Manager : MonoBehaviour
             else
                 x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = modifier.ToString();
         }
-    }
+    }*/
 
-    void SetAdditional()
+    /*void SetAdditional()
     {
-        int dex;
-        if (_charModifier.TryGetValue(1, out dex))
-        {
-            if (dex >= 0)
-                foreach (GameObject x in initiative)
-                    x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + dex.ToString();
-            else
-                foreach (GameObject x in initiative)
-                    x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = dex.ToString();
-        }
+        int dex = CharacterData.GetModifier(1); ;
+
+        if (dex >= 0)
+            foreach (GameObject x in initiative)
+                x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + dex.ToString();
         else
             foreach (GameObject x in initiative)
-                x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+0";
-        int passPer;
+                x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = dex.ToString();
+        /*int passPer;
         if (_charSkill.TryGetValue(9, out passPer))
         {
             passPer += 10;
             passPerObj.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = passPer.ToString();
         }
-    }
-    void SetMoney()
+    }*/
+    /*void SetMoney()
     {
         foreach (InputField x in money)
         {
@@ -341,7 +305,8 @@ public class Manager : MonoBehaviour
                 x.text = PlayerPrefs.GetInt(saveName).ToString();
             }
         }
-    }
+    }*/
+    /*
     public void SaveMoney(Box x)
     {
         int moneyInt;
@@ -349,8 +314,8 @@ public class Manager : MonoBehaviour
         PlayerPrefs.SetInt(characterName + moneySaveName + x.index, moneyInt);
         PlayerPrefs.Save();
     }
-
-    void SetClasses()
+    */
+    /*void SetClasses()
     {
         int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
         for (int i = 0; i < count; i++)
@@ -375,24 +340,24 @@ public class Manager : MonoBehaviour
                 switch (buf1)
                 {
                     case "Воин":
-                        _charModifier.TryGetValue(0, out buf);
+                        buf = CharacterData.GetModifier(0);
                         new Fighter(classLevel, entrials, basicForm, buf, profMod);
                         break;
                     case "Плут":
-                        _charModifier.TryGetValue(2, out buf);
+                        buf = CharacterData.GetModifier(2);
                         new Rogue(classLevel, entrials, basicForm, buf, profMod);
                         break;
                     case "Изобретатель":
-                        _charModifier.TryGetValue(4, out buf);
+                        buf = CharacterData.GetModifier(4);
                         new Artificer(classLevel, entrials, basicForm, buf, profMod);
                         break;
                 }
             }
         }
         levelInput.text = level.ToString();
-    }
+    }*/
 
-    void SetRaces()
+    /*void SetRaces()
     {
         GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
         GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
@@ -406,9 +371,9 @@ public class Manager : MonoBehaviour
                 new Harengon(entrials, basicForm, profMod);
                 break;
         }
-    }
+    }*/
 
-    void SetBackstory()
+    /*void SetBackstory()
     {
         GameObject classPanel = GameObject.Instantiate(basicForm, personalityPanel.transform);
         GameObject entrials = classPanel.GetComponentInChildren<Discription>().gameObject;
@@ -419,8 +384,8 @@ public class Manager : MonoBehaviour
                 new Artist(entrials, basicForm);
                 break;
         }
-    }
-
+    }*/
+    /*
     public void MoneyCon()
     {
         List<(int, int)> m = new List<(int, int)>();
@@ -455,9 +420,6 @@ public class Manager : MonoBehaviour
                 else
                 {
                     flag = true;
-                    /*(int, int) buf2 = m[index];
-                    buf2.Item1 = 0;
-                    m[index] = buf2;*/
                 }
             }
             else
@@ -477,7 +439,8 @@ public class Manager : MonoBehaviour
             PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
         PlayerPrefs.Save();
-    }
+    }*/
+    /*
     public void MoneyPlus()
     {
         List<(int, int)> m = new List<(int, int)>();
@@ -518,8 +481,8 @@ public class Manager : MonoBehaviour
             PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
         PlayerPrefs.Save();
-    }
-
+    }*/
+    /*
     public void ChangeHP(int value)
     {
         if (value < 0)
@@ -534,24 +497,24 @@ public class Manager : MonoBehaviour
         else
             health = Mathf.Clamp(health + value, -999, maxHealth);
         healthStatusChanged = true;
-    }
-
+    }*/
+    /*
     public void ConHP(InputField value)
     {
         int buf;
         int.TryParse(value.text, out buf);
         value.text = "";
         ChangeHP(-buf);
-    }
-
+    }*/
+    /*
     public void ProsHP(InputField value)
     {
         int buf;
         int.TryParse(value.text, out buf);
         value.text = "";
         ChangeHP(buf);
-    }
-
+    }*/
+    /*
     public void AddTempHP(InputField value)
     {
         int buf;
@@ -559,17 +522,5 @@ public class Manager : MonoBehaviour
         value.text = "";
         tempHealth = buf;
         healthStatusChanged = true;
-    }
-
-    public void LoadSelecter()
-    {
-        PlayerPrefs.Save();
-        SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
-    }
-
-    public void LoadLeveler()
-    {
-        PlayerPrefs.Save();
-        SceneManager.LoadScene("LevelUp", LoadSceneMode.Single);
-    }
+    }*/
 }

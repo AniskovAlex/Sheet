@@ -14,13 +14,14 @@ public abstract class PlayersClass : ObjectsBehavior
     protected const string levelLabelSaveName = "lvlLabel_";
 
     int healthDice;
-    List<Armor.Type> armorProfs;
-    List<Weapon.Type> weaponProfs;
+    List<Armor.ArmorType> armorProfs;
+    List<Weapon.WeaponType> weaponProfs;
     int instrumentsAmount;
     List<string> instrumentProfs;
     int skillsAmount;
     List<int> skillProfs;
     List<int> savethrowProfs;
+    string name = "Класс";
 
     protected int level = 0;
     protected int mainState;
@@ -28,7 +29,7 @@ public abstract class PlayersClass : ObjectsBehavior
     protected int PB;
     
 
-    protected PlayersClass(int healthDice, List<Armor.Type> armorProfs, List<Weapon.Type> weaponProfs, int instrumentsAmount, List<string> instrumentProfs, int skillsAmount, List<int> skillProfs, List<int> savethrowProfs,
+    protected PlayersClass(int healthDice, List<Armor.ArmorType> armorProfs, List<Weapon.WeaponType> weaponProfs, int instrumentsAmount, List<string> instrumentProfs, int skillsAmount, List<int> skillProfs, List<int> savethrowProfs,
         int level, int mainState, GameObject panel, GameObject basicForm, GameObject dropdownForm, int PB, bool redact) : base(panel, basicForm, dropdownForm, redact)
     {
         this.healthDice = healthDice;
@@ -58,17 +59,22 @@ public abstract class PlayersClass : ObjectsBehavior
         }
     }
 
+    public PlayersClass()
+    {
+
+    }
+
     public virtual void ShowAbilities(int level)
     {
 
     }
 
-    public List<Armor.Type> GetArmorProfs()
+    public List<Armor.ArmorType> GetArmorProfs()
     {
         return armorProfs;
     }
 
-    public List<Weapon.Type> GetWeaponProfs()
+    public List<Weapon.WeaponType> GetWeaponProfs()
     {
         return weaponProfs;
     }
@@ -94,6 +100,11 @@ public abstract class PlayersClass : ObjectsBehavior
     public int GetSkillsAmount()
     {
         return skillsAmount;
+    }
+
+    public string GetName()
+    {
+        return name;
     }
 
     public void CreatAbility(string caption, string level, List<(string,string)> includedList)
@@ -143,11 +154,11 @@ public abstract class PlayersClass : ObjectsBehavior
     public virtual void Save()
     {
         characterName = CharacterCollection.GetName();
-        foreach (Weapon.Type x in weaponProfs)
+        foreach (Weapon.WeaponType x in weaponProfs)
         {
             PlayerPrefs.SetInt(characterName + weaponProfSaveName + x, 1);
         }
-        foreach (Armor.Type x in armorProfs)
+        foreach (Armor.ArmorType x in armorProfs)
         {
             PlayerPrefs.SetInt(characterName+armorProfSaveName + x, 1);
         }

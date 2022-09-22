@@ -16,8 +16,8 @@ public class Fighter : PlayersClass
 
 
     public Fighter(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(10,
-        new List<Armor.Type> { },
-        new List<Weapon.Type> { },
+        new List<Armor.ArmorType> { },
+        new List<Weapon.WeaponType> { },
         0,
         new List<string> { },
         2,
@@ -37,8 +37,8 @@ public class Fighter : PlayersClass
     }
 
     public Fighter(int level, GameObject panel, GameObject basicForm, GameObject dropdownForm) : base(10,
-        new List<Armor.Type> { Armor.Type.Heavy, Armor.Type.Light, Armor.Type.Medium, Armor.Type.Shield },
-        new List<Weapon.Type> { },
+        new List<Armor.ArmorType> { },
+        new List<Weapon.WeaponType> { },
         0,
         new List<string> { },
         2,
@@ -55,6 +55,11 @@ public class Fighter : PlayersClass
                     break;
             }
         }
+    }
+
+    public Fighter()
+    {
+
     }
 
     public override void ClassDiscription()

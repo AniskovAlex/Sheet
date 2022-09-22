@@ -2,24 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Option : MonoBehaviour
 {
-    public InputField input;
-    public DataBase db;
     public Item item;
+    public Action<Item> Chosen;
+
     public void Touch()
     {
-        db.flag = false;
-        db.addItem = item;
-        db.flag1 = true;
-        db.showFoundedItem();
-        //db.DestroyInChil(0); 
+        Chosen(item);
     }
 
     public void DestroyMyself()
     {
         DestroyImmediate(gameObject);
-        //Destroy(gameObject,t);
     }
 }

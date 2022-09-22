@@ -11,7 +11,7 @@ public class Box : MonoBehaviour
 
     public void touch()
     {
-        db.DeleteItem(index);
+        //db.DeleteItem(index);
     }
 
     public void DestroyMyself()

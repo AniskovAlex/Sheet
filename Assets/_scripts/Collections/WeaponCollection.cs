@@ -6,7 +6,7 @@ public class WeaponCollection : ScriptableObject
     List<Weapon> list = new List<Weapon>();
     static WeaponCollection instance;
 
-    void LoadCollection()
+    /*void LoadCollection()
     {
         list.Add(new Weapon("צון", 1, 8, 5, 5, false, Weapon.DamageType.Crushing, new Weapon.Properties[] { }, Weapon.Type.WarMelee));
         list.Add(new Weapon("אנבאכוע, עÿז¸כûי", 1, 10, 100, 400, false, Weapon.DamageType.Piercing, new Weapon.Properties[] {
@@ -177,5 +177,5 @@ public class WeaponCollection : ScriptableObject
     public List<Weapon> GetList()
     {
         return list;
-    }
+    }*/
 }

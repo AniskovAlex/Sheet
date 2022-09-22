@@ -23,6 +23,11 @@ public class Harengon : Race
         Jump(PB);
     }
 
+    public Harengon()
+    {
+
+    }
+
     public override void RaceDiscription()
     {
         FormCreater form = panel.GetComponentInParent<FormCreater>();

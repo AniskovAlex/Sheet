@@ -635,7 +635,7 @@ GameObject:
   - component: {fileID: 2606663560011892000}
   - component: {fileID: 2201389463550558800}
   m_Layer: 5
-  m_Name: Hit Modifier
+  m_Name: Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -885,7 +885,7 @@ GameObject:
   - component: {fileID: 5976894669198617341}
   - component: {fileID: 1843103458750492148}
   - component: {fileID: 6646449302784418453}
-  - component: {fileID: 3611441291455980393}
+  - component: {fileID: 1275062128736676662}
   m_Layer: 5
   m_Name: Hand
   m_TagString: Untagged
@@ -998,7 +998,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &3611441291455980393
+--- !u!114 &1275062128736676662
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1007,12 +1007,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5513564364688220068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a2ed03eb40f5cc4bb1bc6593c4800c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
+  label: {fileID: 435980270685618223}
+  attackBonus: {fileID: 5402105909343938704}
+  hitDices: {fileID: 2637524915746909779}
+  distance: {fileID: 1588342065616385971}
+  damageType: {fileID: 6610118108285310089}
+  magick: {fileID: 2065873121972481906}
 --- !u!1 &5593782035053611578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,7 +1030,7 @@ GameObject:
   - component: {fileID: 3626113341540456353}
   - component: {fileID: 2571591929874467777}
   m_Layer: 5
-  m_Name: Hit DIce
+  m_Name: HitDices
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

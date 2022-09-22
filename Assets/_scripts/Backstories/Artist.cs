@@ -16,6 +16,11 @@ public class Artist : Backstory
         Special();
     }
 
+    public Artist()
+    {
+
+    }
+
     void Special()
     {
         string caption = "Умение: По многочисленным просьбам";

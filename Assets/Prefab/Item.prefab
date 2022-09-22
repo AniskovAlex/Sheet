@@ -901,7 +901,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 50
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 50
     m_Alignment: 4
@@ -922,9 +922,9 @@ GameObject:
   - component: {fileID: 6134561642142820397}
   - component: {fileID: 6134561642142820387}
   - component: {fileID: 6134561642142820396}
-  - component: {fileID: -2472107302645231900}
   - component: {fileID: 2922084976906270070}
   - component: {fileID: 2982625692372222052}
+  - component: {fileID: 853410746496875221}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -951,7 +951,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 477.79, y: 31.88}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6134561642142820387
 CanvasRenderer:
@@ -991,21 +991,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-2472107302645231900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6134561642142820398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
 --- !u!114 &2922084976906270070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,6 +1037,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &853410746496875221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134561642142820398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbb918c99878614298f295db8705363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  label: {fileID: 6134561642532742192}
+  amountField: {fileID: 4082712113697269541}
+  money: {fileID: 6045495180410860656}
+  weight: {fileID: 7348866344076355333}
+  type: {fileID: 6790570725061827229}
 --- !u!1 &6134561642532742194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,9 +1625,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -2472107302645231900}
-        m_TargetAssemblyTypeName: Box, Assembly-CSharp
-        m_MethodName: touch
+      - m_Target: {fileID: 853410746496875221}
+        m_TargetAssemblyTypeName: ItemBox, Assembly-CSharp
+        m_MethodName: RemoveItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

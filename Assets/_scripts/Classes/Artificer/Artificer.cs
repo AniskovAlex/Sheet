@@ -13,8 +13,8 @@ public class Artificer : PlayersClass
 
 
     public Artificer(int level, GameObject panel, GameObject basicForm, int mainState, int PB) : base(8,
-        new List<Armor.Type> { },
-        new List<Weapon.Type> { },
+        new List<Armor.ArmorType> { },
+        new List<Weapon.WeaponType> { },
         0,
         new List<string> { },
         2,
@@ -34,8 +34,8 @@ public class Artificer : PlayersClass
     }
 
     public Artificer(int level, GameObject panel, GameObject basicForm, GameObject dropdownForm) : base(8,
-        new List<Armor.Type> { Armor.Type.Light, Armor.Type.Medium, Armor.Type.Shield },
-        new List<Weapon.Type> { },
+        new List<Armor.ArmorType> { },
+        new List<Weapon.WeaponType> { },
         0,
         new List<string> { },
         2,
@@ -52,6 +52,11 @@ public class Artificer : PlayersClass
                     break;
             }
         }
+    }
+
+    public Artificer()
+    {
+
     }
 
     public override void ClassDiscription()

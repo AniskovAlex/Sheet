@@ -22,6 +22,11 @@ public class Human : Race
 
     }
 
+    public Human()
+    {
+
+    }
+
     public override void Erase()
     {
         PresavedLists.languages.Remove(PresavedLists.Language.common);
