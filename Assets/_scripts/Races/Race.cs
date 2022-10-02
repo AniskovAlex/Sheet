@@ -47,7 +47,7 @@ public abstract class Race : ObjectsBehavior
     public virtual void Save()
     {
         characterName = CharacterCollection.GetName();
-        AllClassesAbilities.SaveLanguage();
+        //AllClassesAbilities.SaveLanguage();
         int buf1 = size - Size.little;
         PlayerPrefs.SetInt(characterName + sizeSaveName, buf1);
         PlayerPrefs.SetInt(characterName + speedSaveName, speed);

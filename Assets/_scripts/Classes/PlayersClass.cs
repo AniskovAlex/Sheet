@@ -25,9 +25,10 @@ public abstract class PlayersClass : ObjectsBehavior
 
     protected int level = 0;
     protected int mainState;
-    
+    protected Ability[] abilities;
+
     protected int PB;
-    
+
 
     protected PlayersClass(int healthDice, List<Armor.ArmorType> armorProfs, List<Weapon.WeaponType> weaponProfs, int instrumentsAmount, List<string> instrumentProfs, int skillsAmount, List<int> skillProfs, List<int> savethrowProfs,
         int level, int mainState, GameObject panel, GameObject basicForm, GameObject dropdownForm, int PB, bool redact) : base(panel, basicForm, dropdownForm, redact)
@@ -44,7 +45,7 @@ public abstract class PlayersClass : ObjectsBehavior
         this.mainState = mainState;
         this.PB = PB;
 
-        if (redact)
+        /*if (redact)
         {
             ClassDiscription();
             ShowAbilities(level);
@@ -56,14 +57,18 @@ public abstract class PlayersClass : ObjectsBehavior
             {
                 ShowAbilities(i);
             }
-        }
+        }*/
     }
 
     public PlayersClass()
     {
-
+        
     }
 
+    protected void LoadAbilities(string pathName)
+    {
+        abilities = FileSaverAndLoader.LoadAbilities(pathName);
+    }
     public virtual void ShowAbilities(int level)
     {
 
@@ -106,7 +111,7 @@ public abstract class PlayersClass : ObjectsBehavior
     {
         return name;
     }
-
+    /*
     public void CreatAbility(string caption, string level, List<(string,string)> includedList)
     {
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
@@ -180,6 +185,13 @@ public abstract class PlayersClass : ObjectsBehavior
     public virtual void ClassDiscription()
     {
 
+    }
+
+    */
+
+    public virtual Ability[] GetAbilities()
+    {
+        return abilities;
     }
 
 }

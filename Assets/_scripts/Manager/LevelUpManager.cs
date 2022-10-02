@@ -57,7 +57,7 @@ public class LevelUpManager : MonoBehaviour
     {
         if (newClass != null)
         {
-            newClass.Save();
+            //newClass.Save();
         }
         PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);

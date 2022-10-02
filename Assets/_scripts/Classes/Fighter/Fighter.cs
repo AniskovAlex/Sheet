@@ -57,12 +57,13 @@ public class Fighter : PlayersClass
         }
     }
 
-    public Fighter()
+    public Fighter() : base()
     {
-
+        LoadAbilities("fighter");
     }
 
-    public override void ClassDiscription()
+
+    /*public override void ClassDiscription()
     {
         FormCreater form = panel.GetComponentInParent<FormCreater>();
         if (form != null)
@@ -77,9 +78,9 @@ public class Fighter : PlayersClass
             formInForm.AddText("Готовые к опасности", 40, FontStyle.Bold);
             formInForm.AddText("Не все члены городской стражи, деревенского ополчения или королевской армии являются воинами. Большинство из них это просто обученные солдаты, обладающие лишь основными воинскими навыками. Солдаты-ветераны, офицеры, обученные телохранители, посвящённые рыцари и похожие персоны, как правило, являются воинами. Некоторые воины чувствуют потребность использовать свою подготовку в качестве искателей приключений. Исследование подземелий, убийство чудовищ, и другая опасная работа, обыденная для искателей приключений, является второй натурой воина, и не так сильно отличается от жизни, оставленной в прошлом. Риск здесь, возможно, и выше, но и награда значительно больше — например, воины в городском дозоре вряд ли могут найти меч язык пламени.");
         }
-    }
+    }*/
 
-    public override void ShowAbilities(int level)
+    /*public override void ShowAbilities(int level)
     {
         switch (level)
         {
@@ -141,7 +142,7 @@ public class Fighter : PlayersClass
             case 20:
                 break;
         }
-    }
+    }*/
 
     void SecondBreath()
     {
@@ -192,7 +193,7 @@ public class Fighter : PlayersClass
         }
     }
 
-    void SubClass()
+    /*void SubClass()
     {
         string caption = "Военский архетип";
         string abilityLevel = "Разные воины используют разные подходы для совершенствования своих воинских способностей. Воинский архетип отражает выбранный вами подход.";
@@ -210,9 +211,9 @@ public class Fighter : PlayersClass
                 subClass = new MasterOfMartialArt(level, panel.GetComponentInChildren<FormCreater>().GetComponentInChildren<Discription>().gameObject, basicForm, dropdownForm);
                 break;
         }
-    }
+    }*/
 
-    public override void Save()
+    /*public override void Save()
     {
         base.Save();
         Debug.Log(level);
@@ -265,7 +266,7 @@ public class Fighter : PlayersClass
                 AllClassesAbilities.SaveAttributies();
                 break;
         }
-    }
+    }*/
 
     void StylesSave()
     {

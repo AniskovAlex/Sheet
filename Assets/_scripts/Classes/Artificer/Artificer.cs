@@ -59,7 +59,7 @@ public class Artificer : PlayersClass
 
     }
 
-    public override void ClassDiscription()
+    /*public override void ClassDiscription()
     {
         FormCreater form = panel.GetComponentInParent<FormCreater>();
         if (form != null)
@@ -208,5 +208,5 @@ public class Artificer : PlayersClass
                 AllClassesAbilities.SaveAttributies();
                 break;
         }
-    }
+    }*/
 }

@@ -28,8 +28,8 @@ public abstract class ObjectsBehavior
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
-        form.AddText(discription);
+       /*form.AddText(level, FontStyle.Italic);
+        form.AddText(discription);*/
     }
 
     public void CreatAbility(string caption, string level, string discription, int i)
@@ -37,10 +37,10 @@ public abstract class ObjectsBehavior
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
+        /*form.AddText(level, FontStyle.Italic);
         form.AddText(discription);
         if (!redact)
-            form.AddConsumables(i);
+            form.AddConsumables(i);*/
     }
 
     public void CreatAbility(string caption, string level, List<(string, string)> includedList, List<string> excludedList, int count)
@@ -48,15 +48,15 @@ public abstract class ObjectsBehavior
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
+        //form.AddText(level, FontStyle.Italic);
         if (redact)
         {
             for (int i = 0; i < count; i++)
             {
                 GameObject newBattleStyle = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
                 Dropdown buf = newBattleStyle.GetComponent<Dropdown>();
-                Text styleDiscriptionText = form.AddText("");
-                buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
+                //Text styleDiscriptionText = form.AddText("");
+                //buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
 
                 List<string> captionList = new List<string>();
                 foreach ((string, string) x in includedList)
@@ -84,8 +84,8 @@ public abstract class ObjectsBehavior
                 {
                     if (x == y.Item1)
                     {
-                        form.AddText(x, 50, FontStyle.Bold);
-                        form.AddText(y.Item2);
+                        /*form.AddText(x, 50, FontStyle.Bold);
+                        form.AddText(y.Item2);*/
                         break;
                     }
                 }
@@ -98,13 +98,13 @@ public abstract class ObjectsBehavior
         GameObject newObject = GameObject.Instantiate(basicForm, panel.transform);
         FormCreater form = newObject.GetComponent<FormCreater>();
         newObject.GetComponentInChildren<Text>().text = caption;
-        form.AddText(level, FontStyle.Italic);
+        //form.AddText(level, FontStyle.Italic);
         if (redact)
         {
             GameObject newBattleStyle = GameObject.Instantiate(dropdownForm, newObject.GetComponentInChildren<Discription>().transform);
             Dropdown buf = newBattleStyle.GetComponent<Dropdown>();
-            Text styleDiscriptionText = form.AddText("");
-            buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
+            //Text styleDiscriptionText = form.AddText("");
+            //buf.onValueChanged.AddListener(delegate { Discription(buf, styleDiscriptionText, includedList); });
 
             List<string> captionList = new List<string>();
             foreach ((string, string) x in includedList)
@@ -131,8 +131,8 @@ public abstract class ObjectsBehavior
                 {
                     if (x == y.Item1)
                     {
-                        form.AddText(x, 50, FontStyle.Bold);
-                        form.AddText(y.Item2);
+                        /*form.AddText(x, 50, FontStyle.Bold);
+                        form.AddText(y.Item2);*/
                         break;
                     }
                 }

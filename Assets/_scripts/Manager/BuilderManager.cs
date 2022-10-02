@@ -227,7 +227,7 @@ public class BuilderManager : MonoBehaviour
             characterName = CharacterCollection.GetName();
             if (classStat != null)
             {
-                classStat.SaveClass();
+                //classStat.SaveClass();
             }
             if (raceStat != null)
             {

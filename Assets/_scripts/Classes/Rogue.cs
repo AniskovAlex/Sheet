@@ -35,7 +35,7 @@ public class Rogue : PlayersClass
 
     }
 
-    public override void ShowAbilities(int level)
+    /*public override void ShowAbilities(int level)
     {
         switch (level)
         {
@@ -110,5 +110,5 @@ public class Rogue : PlayersClass
                 }
                 break;
         }
-    }
+    }*/
 }

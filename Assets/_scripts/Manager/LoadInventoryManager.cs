@@ -39,7 +39,6 @@ public class LoadInventoryManager : MonoBehaviour
         File.WriteAllText("Assets/Resources/items.txt", test);*/
         listItems = JsonConvert.DeserializeObject<List<Item>>(JSONItems);
         listWeapons = JsonConvert.DeserializeObject<List<Weapon>>(JSONWeapons);
-        Debug.Log(listWeapons[0].label);
         listArmors = JsonConvert.DeserializeObject<List<Armor>>(JSONArmors);
         items = listItems.Concat(listWeapons).Concat(listArmors).ToArray();
     }

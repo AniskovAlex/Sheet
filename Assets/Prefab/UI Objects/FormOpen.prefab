@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7782923794519550581}
   - component: {fileID: 7782923794519550583}
   - component: {fileID: 5372851466459967691}
-  - component: {fileID: 1519069079873747033}
   m_Layer: 5
   m_Name: Entrails
   m_TagString: Untagged
@@ -116,21 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0985f1651b48ff48b4a158b55982e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1519069079873747033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7782923794519550579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
 --- !u!1 &7782923795188893721
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,5 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44ce2c6275138044bca77edf4f0740b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 7782923795297616259}
+  charUp: {fileID: 2273543446421981106, guid: 4341b351305d01f4a91dbfe96aefcea4, type: 3}
   consumable: {fileID: 2992546322501763529, guid: 0b7606e15264eb4478235f2a9bedb049, type: 3}
   basicText: {fileID: 2828204978469958744, guid: c4cfe644c06c31048b07e8d8a2386b60, type: 3}

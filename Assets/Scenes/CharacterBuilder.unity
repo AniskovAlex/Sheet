@@ -5628,10 +5628,10 @@ RectTransform:
   m_Father: {fileID: 1857043820}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -5}
+  m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &443098914
 MonoBehaviour:
@@ -7076,10 +7076,10 @@ RectTransform:
   m_Father: {fileID: 1976092653}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -5}
+  m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513866065
 MonoBehaviour:
@@ -15008,13 +15008,13 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1032324478}
-        m_TargetAssemblyTypeName: ClassDropdown, Assembly-CSharp
-        m_MethodName: SetSkills
-        m_Mode: 1
+      - m_Target: {fileID: 1857043824}
+        m_TargetAssemblyTypeName: ClassesAbilities, Assembly-CSharp
+        m_MethodName: ChosenClass
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1032324475}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Dropdown, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -15071,10 +15071,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e235d4fba35dbc45bd2a7ac847b4af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySelf: {fileID: 1032324475}
-  dropdownObject: {fileID: 7314998980547581629, guid: 025712f7298a9f545a90b5e53f54eabd, type: 3}
-  abilitiesPanel: {fileID: 443098912}
-  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!1 &1049961110
 GameObject:
   m_ObjectHideFlags: 0
@@ -16699,7 +16695,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.4857143, y: 1}
+    m_SensorSize: {x: 0.5625, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -22416,8 +22412,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 540, y: 0}
+  m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1565820543
 GameObject:
@@ -26218,10 +26214,10 @@ GameObject:
   - component: {fileID: 1857043820}
   - component: {fileID: 1857043823}
   - component: {fileID: 1857043822}
-  - component: {fileID: 1857043824}
   - component: {fileID: 1857043826}
   - component: {fileID: 1857043825}
   - component: {fileID: 1857043821}
+  - component: {fileID: 1857043824}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -26322,12 +26318,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1857043819}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
+  m_Script: {fileID: 11500000, guid: 384bdd996ccc6c040af30ec571d9df4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
+  content: {fileID: 443098912}
+  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!114 &1857043825
 MonoBehaviour:
   m_ObjectHideFlags: 0

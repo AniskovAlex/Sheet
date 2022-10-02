@@ -12,12 +12,7 @@ public class DataBase : MonoBehaviour
     const string itemSaveName = "itemN_";
     const string itemSaveID = "itemID_";
     const string itemCostSaveName = "itemCost_";
-    const string itemWeightSaveName = "itemW_";
-    const string itemMTypeSaveName = "itemMT_";
-    const string itemTypeSaveName = "itemT_";
     const string itemAmountSaveName = "itemA_";
-    const string armorEquipSaveName = "armorE_";
-    const string weaponEquipSaveName = "weaponE_";
 
     Item[] items;
     int itemsCount;
@@ -73,9 +68,7 @@ public class DataBase : MonoBehaviour
 
 
     public Manager manager;
-    public GameObject item;/*
-    public GameObject armor;
-    public GameObject weapon;*/
+    public GameObject item;
     public GameObject panel;
    
     void AddItemBox(Item x, int amount)
