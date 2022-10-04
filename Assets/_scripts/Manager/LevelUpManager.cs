@@ -42,13 +42,13 @@ public class LevelUpManager : MonoBehaviour
         switch (chosenClass.value)
         {
             case 1:
-                newClass = new Fighter(level, abilitiesPanel, form, dropdownObject);
+                newClass = new Fighter();
                 break;
             case 2:
-                newClass = new Rogue(level, abilitiesPanel, form, dropdownObject);
+                newClass = new Rogue();
                 break;
             case 3:
-                newClass = new Artificer(level, abilitiesPanel, form, dropdownObject);
+                newClass = new Artificer();
                 break;
         }
     }

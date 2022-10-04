@@ -8,7 +8,9 @@ public class Ability
     {
         charUp,
         abilitie,
-        consumable
+        consumable,
+        withChoose,
+        subClass
     }
 
     public string head;
@@ -16,4 +18,6 @@ public class Ability
     public Type type;
 
     public List<(int, string)> discription = new List<(int, string)>();
+
+    public int level;
 }

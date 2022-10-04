@@ -28,11 +28,11 @@ public class ChooseFeat : MonoBehaviour
 
     public void FeatDiscription()
     {
-        Text[] dis = discription.GetComponentsInChildren<Text>();
-        foreach (Text x in dis)
+        Text[] texts = discription.GetComponentsInChildren<Text>();
+        foreach (Text x in texts)
             Destroy(x.gameObject);
-        Dropdown[] di = discription.GetComponentsInChildren<Dropdown>();
-        foreach (Dropdown x in di)
+        Dropdown[] dropdowns = discription.GetComponentsInChildren<Dropdown>();
+        foreach (Dropdown x in dropdowns)
             Destroy(x.gameObject);
         foreach (Feat x in feats)
         {

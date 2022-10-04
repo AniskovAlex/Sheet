@@ -10,6 +10,7 @@ public class ClassesAbilities : MonoBehaviour
 {
     [SerializeField] GameObject content;
     [SerializeField] GameObject form;
+    PlayersClass playersClass = null;
     private void Awake()
     {
         /*List<Ability> listAbilities = new List<Ability>();
@@ -29,7 +30,7 @@ public class ClassesAbilities : MonoBehaviour
 
     public void ChosenClass(Dropdown value)
     {
-        PlayersClass playersClass = null;
+        playersClass = null;
         switch (value.value)
         {
             case 1:
@@ -37,17 +38,34 @@ public class ClassesAbilities : MonoBehaviour
                 break;
         }
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
-        foreach(FormCreater x in opener)
+        foreach (FormCreater x in opener)
         {
             Destroy(x.gameObject);
         }
-        if(playersClass != null)
+        if (playersClass != null)
         {
             Ability[] abilityArr = playersClass.GetAbilities();
-            foreach(Ability x in abilityArr)
+            foreach (Ability x in abilityArr)
             {
                 Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
             }
+        }
+    }
+
+    public void ChosenSubClass(Dropdown value, FormCreater formCreater)
+    {
+        FormCreater buf = formCreater.GetComponentInChildren<Discription>().GetComponentInChildren<FormCreater>();
+        if (buf != null)
+            Destroy(buf.gameObject);
+        if (playersClass != null)
+        {
+            Ability[] abilityArr = playersClass.ChooseSubClass(value.value);
+            if (abilityArr != null)
+                foreach (Ability x in abilityArr)
+                {
+                    if (x.type == Ability.Type.abilitie)
+                        Instantiate(form, formCreater.GetComponentInChildren<Discription>().transform).GetComponent<FormCreater>().CreateAbility(x);
+                }
         }
     }
 }

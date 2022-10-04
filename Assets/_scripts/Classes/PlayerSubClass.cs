@@ -6,40 +6,18 @@ using UnityEngine.UI;
 public abstract class PlayerSubClass : ObjectsBehavior
 {
     protected string characterName = CharacterCollection.GetName();
+    protected Ability[] abilities;
     protected int level = 0;
     protected int mainState;
     protected int PB;
 
-    protected PlayerSubClass(int level, int mainState, GameObject panel, GameObject basicForm, GameObject dropdownForm, int PB, bool redact) : base(panel, basicForm, dropdownForm, redact)
+    protected void LoadAbilities(string pathName)
     {
-        this.level = level;
-        this.mainState = mainState;
-        this.panel = panel;
-        this.basicForm = basicForm;
-        this.dropdownForm = dropdownForm;
-        this.PB = PB;
-        this.redact = redact;
-
-        if (redact)
-        {
-            ShowAbilities(level);
-        }
-        else
-        {
-            for (int i = 1; i <= level; i++)
-            {
-                ShowAbilities(i);
-            }
-        }
+        abilities = FileSaverAndLoader.LoadAbilities("subClasses/"+ pathName);
     }
 
-    public virtual void ShowAbilities(int level)
+    public virtual Ability[] GetAbilities()
     {
-
-    }
-
-    public virtual void Save()
-    {
-        characterName = CharacterCollection.GetName();
+        return abilities;
     }
 }
