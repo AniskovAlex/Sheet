@@ -11,6 +11,8 @@ public class FormCreater : MonoBehaviour
     public GameObject consumable;
     public GameObject basicText;
     GameObject discription;
+    List<(string, string)> list;
+    Ability ability = null;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class FormCreater : MonoBehaviour
 
     public void CreateAbility(Ability ability)
     {
+        this.ability = ability;
         head.text = ability.head;
         switch (ability.type)
         {
@@ -37,6 +40,37 @@ public class FormCreater : MonoBehaviour
                 subClass.options.Add(new Dropdown.OptionData("Пусто"));
                 subClass.onValueChanged.AddListener(delegate { GetComponentInParent<ClassesAbilities>().ChosenSubClass(subClass, this); });
                 subClass.value = ability.discription.Count;
+                break;
+            case Ability.Type.withChoose:
+                if (ability.isUniq)
+                    list = FileSaverAndLoader.LoadList(ability.pathToList);
+                else
+                    list = new List<(string, string)>(ability.list);
+                bool found = false;
+                foreach ((string, List<string>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
+                {
+                    found = true;
+                    list.RemoveAll(g => x.Item2.Contains(g.Item1));
+                }
+                if (!found)
+                    PresavedLists.preLists.Add((ability.listName, new List<string>()));
+                PresavedLists.ChangePing += UpdateOptions;
+                for (int i = 0; i < ability.chooseCount; i++)
+                {
+                    Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                    Text listDis = Instantiate(basicText, discription.transform).GetComponent<Text>();
+                    listDis.text = "";
+                    chooseDrop.GetComponent<DropdownExtend>().text = listDis;
+                    chooseDrop.ClearOptions();
+                    foreach ((string, string) x in list)
+                        chooseDrop.options.Add(new Dropdown.OptionData(x.Item1));
+                    chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                    chooseDrop.onValueChanged.AddListener(delegate
+                    {
+                        ChangeSelected(chooseDrop);
+                    });
+                    chooseDrop.value = ability.list.Length;
+                }
                 break;
         }
     }
@@ -67,41 +101,50 @@ public class FormCreater : MonoBehaviour
         newObjectText.fontStyle = fontStyle;
 
     }
-    /*public Text AddText(string text)
+
+
+
+    void UpdateOptions(string listName)
     {
-        GameObject newObject = Instantiate(basicText, GetComponentInChildren<Discription>().transform);
-        newObject.GetComponent<Text>().text = text;
-        return newObject.GetComponent<Text>();
+        if (listName == ability.listName)
+        {
+            Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
+            if (ability.isUniq)
+                list = FileSaverAndLoader.LoadList(ability.pathToList);
+            else
+                list = new List<(string, string)>(ability.list);
+            foreach ((string, List<string>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
+                list.RemoveAll(g => x.Item2.Contains(g.Item1));
+            foreach (Dropdown x in dropdowns)
+            {
+                x.options.Clear();
+                foreach ((string, string) y in list)
+                    x.options.Add(new Dropdown.OptionData(y.Item1));
+                x.options.Add(new Dropdown.OptionData("Пусто"));
+            }
+        }
     }
 
-    public void AddText(string text, int fontSize, FontStyle fontStyle)
+    void ChangeSelected(Dropdown dropdown)
     {
-        GameObject newObject = Instantiate(basicText, GetComponentInChildren<Discription>().transform);
-        newObject.GetComponent<Text>().text = text;
-        newObject.GetComponent<Text>().fontStyle = fontStyle;
-        newObject.GetComponent<Text>().fontSize = fontSize;
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        foreach ((string, string) x in list)
+            if (x.Item1 == dropdown.captionText.text)
+            {
+                dropdown.GetComponent<DropdownExtend>().text.text = x.Item2;
+                break;
+            }
+        PresavedLists.UpdatePrelist(ability.listName, oldValue, dropdown.captionText.text);
     }
 
-    public void AddText(string text, FontStyle fontStyle)
+    private void OnDestroy()
     {
-        GameObject newObject = Instantiate(basicText, GetComponentInChildren<Discription>().transform);
-        newObject.GetComponent<Text>().text = text;
-        newObject.GetComponent<Text>().fontStyle = fontStyle;
+        if (ability.type == Ability.Type.withChoose)
+        {
+            PresavedLists.ChangePing -= UpdateOptions;
+            foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                PresavedLists.RemoveFromPrelist(ability.listName, x.GetComponent<DropdownExtend>().currentValueText);
+        }
     }
-
-
-    public void AddText(string text, int fontSize)
-    {
-        GameObject newObject = Instantiate(basicText, GetComponentInChildren<Discription>().transform);
-        newObject.GetComponent<Text>().text = text;
-        newObject.GetComponent<Text>().fontSize = fontSize;
-    }
-
-
-
-    public void AddConsumables(int amount)
-    {
-        GameObject newObject = Instantiate(consumable, GetComponentInChildren<Opener>().transform);
-        newObject.GetComponent<ConsumablePanel>().SpawnToggles(amount);
-    }*/
 }

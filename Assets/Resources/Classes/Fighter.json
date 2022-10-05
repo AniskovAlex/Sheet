@@ -1,0 +1,81 @@
+[
+  {
+    "head": "Что-то",
+    "type": 3,
+    "listName": "qwe",
+    "isUniq": 0,
+    "chooseCount": 2,
+    "list": [
+      {
+        "Item1": "0",
+        "Item2": "парап"
+      },
+      {
+        "Item1": "1",
+        "Item2": "grt"
+      },
+      {
+        "Item1": "2",
+        "Item2": "egt"
+      },
+      {
+        "Item1": "3",
+        "Item2": "erg"
+      }
+    ]
+  },
+  {
+    "head": "Специализация",
+    "type": 4,
+    "discription": [
+      {
+        "Item1": 0,
+        "Item2": "Мастер боевых искусств"
+      }
+    ]
+  },
+  {
+    "head": "абак",
+    "type": 1,
+    "discription": [
+      {
+        "Item1": 0,
+        "Item2": "парап"
+      },
+      {
+        "Item1": 1,
+        "Item2": "grt"
+      },
+      {
+        "Item1": 2,
+        "Item2": "egt"
+      },
+      {
+        "Item1": 3,
+        "Item2": "erg"
+      }
+    ]
+  },
+  {
+    "head": "s",
+    "type": 1,
+    "discription": [
+      {
+        "Item1": 4,
+        "Item2": "wrt"
+      },
+      {
+        "Item1": 2,
+        "Item2": "gjt"
+      },
+      {
+        "Item1": 2,
+        "Item2": "egj"
+      },
+      {
+        "Item1": 3,
+        "Item2": "jrg"
+      }
+    ]
+  }
+]

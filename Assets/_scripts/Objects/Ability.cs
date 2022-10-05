@@ -15,9 +15,17 @@ public class Ability
 
     public string head;
 
+    public bool isUniq;
+
+    public int chooseCount;
+    public string pathToList;
+    public string listName;
+
     public Type type;
 
     public List<(int, string)> discription = new List<(int, string)>();
+
+    public (string, string)[] list;
 
     public int level;
 }
