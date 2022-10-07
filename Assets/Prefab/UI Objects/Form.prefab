@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 3535183665479923756}
   - component: {fileID: 3535183665479923757}
   - component: {fileID: 3535183665479923758}
-  - component: {fileID: 4856480426666354656}
+  - component: {fileID: 4279287420307216475}
   m_Layer: 5
   m_Name: Form
   m_TagString: Untagged
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &4856480426666354656
+--- !u!114 &4279287420307216475
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -445,9 +445,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3535183665479923752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44ce2c6275138044bca77edf4f0740b, type: 3}
+  m_Script: {fileID: 11500000, guid: 3809f3299fc4b5440a3a5156f8a150b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 3535183666209784705}
+  headObject: {fileID: 3535183664507750939}
   consumable: {fileID: 2992546322501763529, guid: 0b7606e15264eb4478235f2a9bedb049, type: 3}
   basicText: {fileID: 2828204978469958744, guid: c4cfe644c06c31048b07e8d8a2386b60, type: 3}
 --- !u!1 &3535183666209784707

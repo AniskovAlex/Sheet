@@ -3976,10 +3976,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1168363681}
         m_TargetAssemblyTypeName: MoneyController, Assembly-CSharp
         m_MethodName: SaveMoney
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 164211368}
-          m_ObjectArgumentAssemblyTypeName: Box, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4287,6 +4287,8 @@ GameObject:
   - component: {fileID: 167414102}
   - component: {fileID: 167414105}
   - component: {fileID: 167414104}
+  - component: {fileID: 167414106}
+  - component: {fileID: 167414107}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -4409,6 +4411,30 @@ MonoBehaviour:
   boxs:
   - {fileID: 1066454892}
   - {fileID: 175792870}
+--- !u!114 &167414106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167414101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d807d711da6dd4f86bb8e939fc9217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &167414107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167414101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 367e982868edee149aaa7aeb2c4500bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &171866973
 GameObject:
   m_ObjectHideFlags: 0
@@ -14506,8 +14532,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 167414102}
-        m_TargetAssemblyTypeName: Manager, Assembly-CSharp
+      - m_Target: {fileID: 167414107}
+        m_TargetAssemblyTypeName: LoadSceneManager, Assembly-CSharp
         m_MethodName: LoadSelecter
         m_Mode: 1
         m_Arguments:
@@ -20740,8 +20766,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 167414102}
-        m_TargetAssemblyTypeName: Manager, Assembly-CSharp
+      - m_Target: {fileID: 167414107}
+        m_TargetAssemblyTypeName: LoadSceneManager, Assembly-CSharp
         m_MethodName: LoadLeveler
         m_Mode: 1
         m_Arguments:
@@ -28168,6 +28194,7 @@ GameObject:
   - component: {fileID: 1374571352}
   - component: {fileID: 1374571351}
   - component: {fileID: 1374571353}
+  - component: {fileID: 1374571354}
   m_Layer: 5
   m_Name: Personality
   m_TagString: Untagged
@@ -28259,6 +28286,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1374571354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374571349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c273c6c33832b04394986e75c000bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  form: {fileID: 3535183665479923752, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
+  content: {fileID: 540282349}
 --- !u!1 &1375011777
 GameObject:
   m_ObjectHideFlags: 0
@@ -37848,10 +37889,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1168363681}
         m_TargetAssemblyTypeName: MoneyController, Assembly-CSharp
         m_MethodName: SaveMoney
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 2015593564}
-          m_ObjectArgumentAssemblyTypeName: Box, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -37863,10 +37904,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1168363681}
         m_TargetAssemblyTypeName: MoneyController, Assembly-CSharp
         m_MethodName: SaveMoney
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 2015593564}
-          m_ObjectArgumentAssemblyTypeName: Box, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -38801,10 +38842,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1168363681}
         m_TargetAssemblyTypeName: MoneyController, Assembly-CSharp
         m_MethodName: SaveMoney
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 2059081345}
-          m_ObjectArgumentAssemblyTypeName: Box, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -38816,10 +38857,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1168363681}
         m_TargetAssemblyTypeName: MoneyController, Assembly-CSharp
         m_MethodName: SaveMoney
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 2059081345}
-          m_ObjectArgumentAssemblyTypeName: Box, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

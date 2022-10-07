@@ -19,19 +19,11 @@ public class MoneyController : MonoBehaviour
 
         for(int i = 0;i<money.Count;i++)
         {
-            money[i].text = CharacterData.GetMoney(i).ToString();
+            money[i].text = CharacterData.GetMoney(i).ToString();        
         }
     }
 
     //Временно
-    const string moneySaveName = "mon_";
-    public void SaveMoney(Box x)
-    {
-        int moneyInt;
-        int.TryParse(money[x.index].text, out moneyInt);
-        PlayerPrefs.SetInt(CharacterCollection.GetName() + moneySaveName + x.index, moneyInt);
-        PlayerPrefs.Save();
-    }
 
     public void MoneyCon()
     {
@@ -82,10 +74,8 @@ public class MoneyController : MonoBehaviour
         {
             x = money[index];
             x.text = m[index].Item1.ToString();
-            string saveName = CharacterCollection.GetName() + moneySaveName + index;
-            PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
-        PlayerPrefs.Save();
+        SaveMoney();
     }
 
     public void MoneyPlus()
@@ -124,9 +114,12 @@ public class MoneyController : MonoBehaviour
             }
             x = money[index];
             x.text = m[index].Item1.ToString();
-            string saveName = CharacterCollection.GetName() + moneySaveName + index;
-            PlayerPrefs.SetInt(saveName, m[index].Item1);
         }
-        PlayerPrefs.Save();
+        SaveMoney();
+    }
+
+    public void SaveMoney()
+    {
+        DataSaverAndLoader.SaveMoney(money.ConvertAll<int>(x => int.Parse(x.text)));
     }
 }

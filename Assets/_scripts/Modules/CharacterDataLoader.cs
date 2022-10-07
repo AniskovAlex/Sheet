@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataLoader : MonoBehaviour
+public class CharacterDataLoader : MonoBehaviour
 {
     const string attrSaveName = "atr_";
     const string moneySaveName = "mon_";
@@ -93,6 +93,8 @@ public class DataLoader : MonoBehaviour
                     case "Изобретатель":
                         playersClass = new Artificer();
                         break;
+                    default:
+                        return;
                 }
                 level += classLevel;
                 _classes.Add((classLevel, playersClass));

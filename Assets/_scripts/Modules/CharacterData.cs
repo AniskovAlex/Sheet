@@ -11,7 +11,7 @@ public class CharacterData
     static int[] _money = new int[3];
     static int[] _skills = new int[18];
     static List<(int, PlayersClass)> _classes = new List<(int, PlayersClass)>();
-    static int _level = 0;
+    static int _level = 1;
     static Race _race = null;
     static Backstory _backstory = null;
     static int _maxHP;
@@ -57,7 +57,7 @@ public class CharacterData
 
     public static int GetMoney(int index)
     {
-        if (index > 0 && index < _money.Length)
+        if (index >= 0 && index < _money.Length)
             return _money[index];
         return 0;
     }
@@ -103,7 +103,6 @@ public class CharacterData
     public static void SetCharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, List<(int, PlayersClass)> classes, int level,
         Race race, Backstory backstory, int maxHP, int currentHP, int tempHP)
     {
-        if (instance == null)
-            instance = new CharacterData(charAtr, saves, money, skills, classes, level, race, backstory, maxHP, currentHP, tempHP);
+        instance = new CharacterData(charAtr, saves, money, skills, classes, level, race, backstory, maxHP, currentHP, tempHP);
     }
 }

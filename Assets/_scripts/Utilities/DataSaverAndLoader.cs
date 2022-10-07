@@ -4,6 +4,13 @@ using UnityEngine;
 
 public static class DataSaverAndLoader
 {
+    const string moneySaveName = "mon_";
+    const string levelCountSaveName = "lvlCount_";
+    const string levelSaveName = "lvl_";
+    const string levelLabelSaveName = "lvlLabel_";
+    const string classSubClassSaveName = "subClass_";
+    const string charactersCountSaveName = "charactersCount_";
+    const string charactersSaveName = "characters_";
     const string itemAmountSaveName = "itemA_";
     const string itemsCountSaveName = "itemsCount_";
     const string itemSaveName = "itemN_";
@@ -30,6 +37,80 @@ public static class DataSaverAndLoader
     const string armorEquipSaveName = "armorE_";
     const string weaponEquipSaveName = "weaponE_";
     const string weaponEquipCountSaveName = "weaponECount_";
+
+    public static void SaveCharacter(string characterName)
+    {
+        if (PlayerPrefs.HasKey(charactersCountSaveName))
+        {
+            int count = PlayerPrefs.GetInt(charactersCountSaveName) + 1;
+            PlayerPrefs.SetString(charactersSaveName + count, characterName);
+            PlayerPrefs.SetInt(charactersCountSaveName, count);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(charactersCountSaveName, 1);
+            PlayerPrefs.SetString(charactersSaveName + 1, characterName);
+        }
+    }
+
+    public static void SaveClass(string className)
+    {
+        if (className != "")
+        {
+            string characterName = CharacterCollection.GetName();
+            int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
+            for (int i = 0; i < count; i++)
+            {
+                if (PlayerPrefs.GetString(characterName + levelLabelSaveName + i) == className)
+                {
+                    int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
+                    PlayerPrefs.SetInt(characterName + levelSaveName + i, classLevel + 1);
+                    return;
+                }
+            }
+            PlayerPrefs.SetString(characterName + levelLabelSaveName + count, className);
+            PlayerPrefs.SetInt(characterName + levelSaveName + count, 1);
+            PlayerPrefs.SetInt(characterName + levelCountSaveName, count + 1);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public static void SaveSubClass(PlayersClass playersClass)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + classSubClassSaveName + playersClass.name, playersClass.GetSubClass().GetName());
+        PlayerPrefs.Save();
+    }
+
+    public static string LoadSubClass(PlayersClass playersClass)
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + classSubClassSaveName + playersClass.name);
+    }
+
+    public static void SaveMoney(List<int> money)
+    {
+        money.ForEach(g => PlayerPrefs.SetInt(CharacterCollection.GetName() + moneySaveName + money.IndexOf(g), g));
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveCustomList(string listName ,List<string> list)
+    {
+        list.ForEach(x => PlayerPrefs.SetString(CharacterCollection.GetName() + listName + "Auto_" + list.IndexOf(x), x));
+        PlayerPrefs.SetInt(CharacterCollection.GetName() + listName + "CountAuto_", list.Count);
+        PlayerPrefs.Save();
+    }
+
+    public static List<string> LoadCustom(string listName)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + listName + "CountAuto_");
+        List<string> list = new List<string>();
+        for (int i = 0; i < count; i++)
+            list.Add(PlayerPrefs.GetString(characterName + listName + "Auto_" + i));
+        return list;
+    }
+
     public static void SaveAmountItem(string label, int amount)
     {
         string characterName = CharacterCollection.GetName();

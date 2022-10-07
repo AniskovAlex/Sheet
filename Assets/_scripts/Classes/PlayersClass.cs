@@ -13,6 +13,8 @@ public abstract class PlayersClass : ObjectsBehavior
     protected const string levelSaveName = "lvl_";
     protected const string levelLabelSaveName = "lvlLabel_";
 
+    protected PlayerSubClass subClass = null;
+
     int HD = 0;
     public int healthDice
     {
@@ -88,9 +90,14 @@ public abstract class PlayersClass : ObjectsBehavior
         return abilities;
     }
 
-    public virtual Ability[] ChooseSubClass(int subClasses)
+    public virtual Ability[] ChooseSubClass(string subClasses)
     {
         return null;
+    }
+
+    public virtual PlayerSubClass GetSubClass()
+    {
+        return subClass;
     }
 
 }

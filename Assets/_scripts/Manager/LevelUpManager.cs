@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelUpManager : MonoBehaviour
 {
-    string characterName = CharacterCollection.GetName();
+    string characterName;
     const string levelCountSaveName = "lvlCount_";
     const string levelSaveName = "lvl_";
     const string levelLabelSaveName = "lvlLabel_";
@@ -14,14 +14,15 @@ public class LevelUpManager : MonoBehaviour
     public GameObject dropdownObject;
     public GameObject abilitiesPanel;
     public GameObject form;
-    PlayersClass newClass = null;
+
+    [SerializeField] ClassesAbilities classes;
 
     private void Start()
     {
-
+        characterName = CharacterCollection.GetName();
     }
 
-    public void ClassChanged()
+    /*public void ClassChanged()
     {
         int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
         int level = 1;
@@ -51,14 +52,18 @@ public class LevelUpManager : MonoBehaviour
                 newClass = new Artificer();
                 break;
         }
-    }
+    }*/
 
     public void LoadView()
     {
-        if (newClass != null)
+        characterName = CharacterCollection.GetName();
+        if (classes != null)
         {
-            //newClass.Save();
+            DataSaverAndLoader.SaveClass(classes.GetClass().name);
+            if (classes.GetClass().GetSubClass() != null)
+                DataSaverAndLoader.SaveSubClass(classes.GetClass());
         }
+        PresavedLists.SavePrelists();
         PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);
     }

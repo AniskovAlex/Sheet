@@ -28,4 +28,6 @@ public class Ability
     public (string, string)[] list;
 
     public int level;
+
+    public int consum;
 }

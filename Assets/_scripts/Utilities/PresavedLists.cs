@@ -42,4 +42,9 @@ public static class PresavedLists
         if (ChangePing != null)
             ChangePing(listName);
     }
+
+    static public void SavePrelists()
+    {
+        preLists.ForEach(x => DataSaverAndLoader.SaveCustomList(x.Item1, x.Item2));
+    }
 }

@@ -47,7 +47,8 @@ public class ClassesAbilities : MonoBehaviour
             Ability[] abilityArr = playersClass.GetAbilities();
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
+                if (x.level == CharacterData.GetLevel())
+                    Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
             }
         }
     }
@@ -59,13 +60,18 @@ public class ClassesAbilities : MonoBehaviour
             Destroy(buf.gameObject);
         if (playersClass != null)
         {
-            Ability[] abilityArr = playersClass.ChooseSubClass(value.value);
+            Ability[] abilityArr = playersClass.ChooseSubClass(value.captionText.text);
             if (abilityArr != null)
                 foreach (Ability x in abilityArr)
                 {
-                    if (x.type == Ability.Type.abilitie)
+                    if (x.level == CharacterData.GetLevel())
                         Instantiate(form, formCreater.GetComponentInChildren<Discription>().transform).GetComponent<FormCreater>().CreateAbility(x);
                 }
         }
+    }
+
+    public PlayersClass GetClass()
+    {
+        return playersClass;
     }
 }

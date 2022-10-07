@@ -8,10 +8,9 @@ public class Fighter : PlayersClass
     const string FighterBattleStyleCountSaveName = "FghterBattleStyleCount_";
     const string FighterBattleStyleSaveName = "FghterBattleStyle_";
     const string FighterSubClassSaveName = "FighterSubClass_";
-
-    PlayerSubClass subClass = null;
     public Fighter()
     {
+        name = "Воин";
         LoadAbilities("fighter");
         healthDice = 10;
         armorProfs = new List<Armor.ArmorType>();
@@ -23,11 +22,11 @@ public class Fighter : PlayersClass
         savethrowProfs = new List<int> { 0, 1 };
     }
 
-    public override Ability[] ChooseSubClass(int subClasses)
+    public override Ability[] ChooseSubClass(string subClasses)
     {
         switch (subClasses)
         {
-            case 0:
+            case "Мастер боевых искусств":
                 subClass = new MasterOfMartialArt();
                 break;
             default:
@@ -35,5 +34,4 @@ public class Fighter : PlayersClass
         }
         return subClass.GetAbilities();
     }
-
 }

@@ -16,8 +16,7 @@ public class BuilderManager : MonoBehaviour
     const string maxHealthSaveName = "maxHP_";
     const string armorClassSaveName = "ac_";
     const string speedSaveName = "spd_";
-    const string charactersCountSaveName = "charactersCount_";
-    const string charactersSaveName = "characters_";
+
     /*enum atr
     {
         Str,
@@ -41,6 +40,8 @@ public class BuilderManager : MonoBehaviour
     public RaceDropdown raceStat = null;
     public BackstoryDropdown backstoryStat = null;
     Dictionary<int, int> _charAtr = new Dictionary<int, int>();
+
+    [SerializeField] ClassesAbilities classes;
 
     private void Start()
     {
@@ -212,22 +213,14 @@ public class BuilderManager : MonoBehaviour
     {
         if (playerName.text != "")
         {
-            if (PlayerPrefs.HasKey(charactersCountSaveName))
-            {
-                int count = PlayerPrefs.GetInt(charactersCountSaveName) + 1;
-                PlayerPrefs.SetString(charactersSaveName + count, playerName.text);
-                PlayerPrefs.SetInt(charactersCountSaveName, count);
-            }
-            else
-            {
-                PlayerPrefs.SetInt(charactersCountSaveName, 1);
-                PlayerPrefs.SetString(charactersSaveName + 1, playerName.text);
-            }
+            DataSaverAndLoader.SaveCharacter(playerName.text);
             CharacterCollection.SetName(playerName.text);
             characterName = CharacterCollection.GetName();
             if (classStat != null)
             {
-                //classStat.SaveClass();
+                DataSaverAndLoader.SaveClass(classes.GetClass().name);
+                if (classes.GetClass().GetSubClass() != null)
+                    DataSaverAndLoader.SaveSubClass(classes.GetClass());
             }
             if (raceStat != null)
             {
@@ -241,6 +234,7 @@ public class BuilderManager : MonoBehaviour
             int buf;
             int.TryParse(maxHealth.text, out buf);
             PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
+            PresavedLists.SavePrelists();
             PlayerPrefs.Save();
         }
         SceneManager.LoadScene("view", LoadSceneMode.Single);
@@ -254,7 +248,7 @@ public class BuilderManager : MonoBehaviour
             switch (x)
             {
                 case "Атлетика":
-                    PlayerPrefs.SetInt(characterName+skillSaveName + 0, 1);
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 0, 1);
                     break;
                 case "Акробатика":
                     PlayerPrefs.SetInt(characterName + skillSaveName + 1, 1);

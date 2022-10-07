@@ -1362,6 +1362,7 @@ MonoBehaviour:
   dropdownObject: {fileID: 7314998980547581629, guid: 025712f7298a9f545a90b5e53f54eabd, type: 3}
   abilitiesPanel: {fileID: 1825717557}
   form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
+  classes: {fileID: 1825717558}
 --- !u!4 &1023743616
 Transform:
   m_ObjectHideFlags: 0
@@ -1498,13 +1499,13 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1023743615}
-        m_TargetAssemblyTypeName: LevelUpManager, Assembly-CSharp
-        m_MethodName: ClassChanged
-        m_Mode: 1
+      - m_Target: {fileID: 1825717558}
+        m_TargetAssemblyTypeName: ClassesAbilities, Assembly-CSharp
+        m_MethodName: ChosenClass
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1032324475}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Dropdown, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1595,7 +1596,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.4872579, y: 1}
+    m_SensorSize: {x: 0.5625, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2685,12 +2686,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1825717557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
+  m_Script: {fileID: 11500000, guid: 384bdd996ccc6c040af30ec571d9df4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
+  content: {fileID: 1825717557}
+  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!114 &1825717559
 MonoBehaviour:
   m_ObjectHideFlags: 0

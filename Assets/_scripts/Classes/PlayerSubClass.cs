@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public abstract class PlayerSubClass : ObjectsBehavior
 {
-    protected string characterName = CharacterCollection.GetName();
     protected Ability[] abilities;
     protected int level = 0;
     protected int mainState;
     protected int PB;
+    protected string name;
 
     protected void LoadAbilities(string pathName)
     {
@@ -19,5 +19,10 @@ public abstract class PlayerSubClass : ObjectsBehavior
     public virtual Ability[] GetAbilities()
     {
         return abilities;
+    }
+
+    public string GetName()
+    {
+        return name;
     }
 }
