@@ -28,4 +28,10 @@ public class Character : MonoBehaviour
     {
         return characterName;
     }
+
+    public void DeleteCharacter()
+    {
+        DataSaverAndLoader.DeleteCharacter(characterName);
+        Destroy(gameObject);
+    }
 }

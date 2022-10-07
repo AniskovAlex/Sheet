@@ -216,7 +216,7 @@ public class BuilderManager : MonoBehaviour
             DataSaverAndLoader.SaveCharacter(playerName.text);
             CharacterCollection.SetName(playerName.text);
             characterName = CharacterCollection.GetName();
-            if (classStat != null)
+            if (classes != null)
             {
                 DataSaverAndLoader.SaveClass(classes.GetClass().name);
                 if (classes.GetClass().GetSubClass() != null)
