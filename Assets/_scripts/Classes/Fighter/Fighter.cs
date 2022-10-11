@@ -5,16 +5,11 @@ using UnityEngine.UI;
 
 public class Fighter : PlayersClass
 {
-    const string FighterBattleStyleCountSaveName = "FghterBattleStyleCount_";
-    const string FighterBattleStyleSaveName = "FghterBattleStyle_";
-    const string FighterSubClassSaveName = "FighterSubClass_";
     public Fighter()
     {
         name = "Воин";
         LoadAbilities("fighter");
         healthDice = 10;
-        armorProfs = new List<Armor.ArmorType>();
-        weaponProfs = new List<Weapon.WeaponType>();
         instrumentsAmount = 0;
         instrumentProfs = new List<string>();
         skillsAmount = 2;
@@ -34,4 +29,20 @@ public class Fighter : PlayersClass
         }
         return subClass.GetAbilities();
     }
+
+    public override HashSet<Weapon.WeaponType> GetWeaponProficiency()
+    {
+        return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.WarMelee, Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist, Weapon.WeaponType.WarDist, Weapon.WeaponType.Shield };
+    }
+
+    public override HashSet<Armor.ArmorType> GetArmorProficiency()
+    {
+        return new HashSet<Armor.ArmorType>() { Armor.ArmorType.Heavy, Armor.ArmorType.Light, Armor.ArmorType.Medium, Armor.ArmorType.Shield };
+    }
+
+    public override HashSet<int> GetSaveThrows()
+    {
+        return new HashSet<int> { 0, 1};
+    }
+
 }

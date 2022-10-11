@@ -10,7 +10,9 @@ public class Ability
         abilitie,
         consumable,
         withChoose,
-        subClass
+        subClass,
+        skills,
+        instruments
     }
 
     public string head;
@@ -26,6 +28,8 @@ public class Ability
     public List<(int, string)> discription = new List<(int, string)>();
 
     public (string, string)[] list;
+
+    public HashSet<string> common;
 
     public int level;
 

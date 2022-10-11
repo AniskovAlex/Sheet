@@ -216,11 +216,29 @@ public class BuilderManager : MonoBehaviour
             DataSaverAndLoader.SaveCharacter(playerName.text);
             CharacterCollection.SetName(playerName.text);
             characterName = CharacterCollection.GetName();
+            HashSet<Weapon.BladeType> bladeProf;
+            HashSet<Weapon.WeaponType> weaponProf;
+            HashSet<Armor.ArmorType> armorProf;
+            HashSet<int> saveThrows;
             if (classes != null)
             {
+                bladeProf = classes.GetClass().GetBladeProficiency();
+                if (bladeProf != null)
+                    PresavedLists.bladeTypes.UnionWith(bladeProf);
+
+                weaponProf = classes.GetClass().GetWeaponProficiency();
+                if (weaponProf != null)
+                    PresavedLists.weaponTypes.UnionWith(weaponProf);
+
+                armorProf = classes.GetClass().GetArmorProficiency();
+                if (armorProf != null)
+                    PresavedLists.armorTypes.UnionWith(armorProf);
+
                 DataSaverAndLoader.SaveClass(classes.GetClass().name);
                 if (classes.GetClass().GetSubClass() != null)
                     DataSaverAndLoader.SaveSubClass(classes.GetClass());
+                saveThrows = classes.GetClass().GetSaveThrows();
+                PresavedLists.saveThrows.UnionWith(saveThrows);
             }
             if (raceStat != null)
             {
@@ -234,7 +252,10 @@ public class BuilderManager : MonoBehaviour
             int buf;
             int.TryParse(maxHealth.text, out buf);
             PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
-            PresavedLists.SavePrelists();
+            PresavedLists.SaveProficiency();
+            PresavedLists.SaveInstruments();
+            PresavedLists.SaveCustomPrelists();
+            PresavedLists.saveSaveThrows();
             PlayerPrefs.Save();
         }
         SceneManager.LoadScene("view", LoadSceneMode.Single);
@@ -242,7 +263,7 @@ public class BuilderManager : MonoBehaviour
 
     void SaveSkills()
     {
-        List<string> list = PresavedLists.skills;
+        HashSet<string> list = PresavedLists.skills;
         foreach (string x in list)
         {
             switch (x)

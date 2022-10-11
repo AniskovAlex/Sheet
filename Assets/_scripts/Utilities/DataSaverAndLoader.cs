@@ -10,10 +10,22 @@ public static class DataSaverAndLoader
     const string healthSaveName = "HP_";
     const string tempHealthSaveName = "THP_";
 
+    const string instrumentsSaveName = "instruments_";
+    const string instrumentsCountSaveName = "instrumentsCount_";
+
+    const string saveThrowSaveName = "save_";
+
     const string levelCountSaveName = "lvlCount_";
     const string levelSaveName = "lvl_";
     const string levelLabelSaveName = "lvlLabel_";
     const string classSubClassSaveName = "subClass_";
+
+    const string weaponProficiencySaveName = "weaponProficiency_";
+    const string weaponProficiencyCountSaveName = "weaponProficiencyCount_";
+    const string bladeProficiencySaveName = "bladeProficiency_";
+    const string bladeProficiencyCountSaveName = "bladeProficiencyCount_";
+    const string armorProficiencySaveName = "armorProficiency_";
+    const string armorProficiencyCountSaveName = "armorProficiencyCount_";
 
     const string charactersCountSaveName = "charactersCount_";
     const string charactersSaveName = "characters_";
@@ -41,6 +53,7 @@ public static class DataSaverAndLoader
     const string propertiesCountSaveName = "weaponPropertiesCount_";
     const string propertieSaveName = "weaponPropertie_";
     const string weaponTypeSaveName = "weaponType_";
+    const string bladeTypeSaveName = "weaponBladeType_";
 
     const string armorEquipCountSaveName = "armorECount_";
     const string armorEquipSaveName = "armorE_";
@@ -50,7 +63,6 @@ public static class DataSaverAndLoader
     const string customListCount = "customListCount_";
     const string customList = "customList_";
 
-    //???
     public static void SaveCharacter(string characterName)
     {
         if (PlayerPrefs.HasKey(charactersCountSaveName))
@@ -99,6 +111,86 @@ public static class DataSaverAndLoader
     {
         string characterName = CharacterCollection.GetName();
         return PlayerPrefs.GetString(characterName + classSubClassSaveName + playersClass.name);
+    }
+
+    public static void SaveBladeProficiency(HashSet<Weapon.BladeType> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        if (PlayerPrefs.HasKey(characterName + bladeProficiencyCountSaveName))
+            list.UnionWith(LoadBladeProfiency());
+        int i = 0;
+        foreach (Weapon.BladeType x in list)
+        {
+            PlayerPrefs.SetInt(characterName + bladeProficiencySaveName + i, (int)x);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + bladeProficiencyCountSaveName, list.Count);
+        PlayerPrefs.Save();
+    }
+
+    public static HashSet<Weapon.BladeType> LoadBladeProfiency()
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + bladeProficiencyCountSaveName);
+        HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>();
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(Weapon.BladeType.Sword + PlayerPrefs.GetInt(characterName + bladeProficiencySaveName + i));
+        }
+        return list;
+    }
+
+    public static void SaveWeaponProficiency(HashSet<Weapon.WeaponType> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        if (PlayerPrefs.HasKey(characterName + weaponProficiencyCountSaveName))
+            list.UnionWith(LoadWeaponProfiency());
+        int i = 0;
+        foreach (Weapon.WeaponType x in list)
+        {
+            PlayerPrefs.SetInt(characterName + weaponProficiencySaveName + i, (int)x);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + weaponProficiencyCountSaveName, list.Count);
+        PlayerPrefs.Save();
+    }
+
+    public static HashSet<Weapon.WeaponType> LoadWeaponProfiency()
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + weaponProficiencyCountSaveName);
+        HashSet<Weapon.WeaponType> list = new HashSet<Weapon.WeaponType>();
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(Weapon.WeaponType.CommonMelee + PlayerPrefs.GetInt(characterName + weaponProficiencySaveName + i));
+        }
+        return list;
+    }
+    public static void SaveArmorProficiency(HashSet<Armor.ArmorType> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        if (PlayerPrefs.HasKey(characterName + armorProficiencyCountSaveName))
+            list.UnionWith(LoadArmorProfiency());
+        int i = 0;
+        foreach (Armor.ArmorType x in list)
+        {
+            PlayerPrefs.SetInt(characterName + armorProficiencySaveName + i, (int)x);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + armorProficiencyCountSaveName, list.Count);
+        PlayerPrefs.Save();
+    }
+
+    public static HashSet<Armor.ArmorType> LoadArmorProfiency()
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + armorProficiencyCountSaveName);
+        HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>();
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(Armor.ArmorType.Light + PlayerPrefs.GetInt(characterName + armorProficiencySaveName + i));
+        }
+        return list;
     }
 
     public static void SaveMoney(List<int> money)
@@ -182,6 +274,7 @@ public static class DataSaverAndLoader
                 for (int i = 0; i < weapon.properties.Length; i++)
                     PlayerPrefs.SetInt(characterName + propertieSaveName + item.label + i, (int)weapon.properties[i]);
                 PlayerPrefs.SetInt(characterName + weaponTypeSaveName + item.label, (int)weapon.weaponType);
+                PlayerPrefs.SetInt(characterName + bladeTypeSaveName + item.label, (int)weapon.bladeType);
             }
         }
         else
@@ -219,6 +312,7 @@ public static class DataSaverAndLoader
             else
                 weapon.magic = true;
             weapon.damageType = Weapon.DamageType.Slashing + PlayerPrefs.GetInt(characterName + weaponTypeSaveName + label);
+            weapon.bladeType = Weapon.BladeType.Sword + PlayerPrefs.GetInt(characterName + bladeTypeSaveName + label);
             List<Weapon.Properties> list = new List<Weapon.Properties>();
             int propCount = PlayerPrefs.GetInt(characterName + propertiesCountSaveName + label);
             for (int i = 0; i < propCount; i++)
@@ -492,6 +586,7 @@ public static class DataSaverAndLoader
                             for (int j = 0; j < weapon.properties.Length; j++)
                                 PlayerPrefs.DeleteKey(characterName + propertieSaveName + item.label + j);
                             PlayerPrefs.DeleteKey(characterName + weaponTypeSaveName + item.label);
+                            PlayerPrefs.DeleteKey(characterName + bladeTypeSaveName + item.label);
                         }
                     }
                     else
@@ -566,6 +661,24 @@ public static class DataSaverAndLoader
             PlayerPrefs.DeleteKey(name + armorEquipSaveName + i);
         }
         PlayerPrefs.DeleteKey(name + armorEquipCountSaveName);
+        equipCount = PlayerPrefs.GetInt(name + weaponProficiencyCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + weaponProficiencySaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + weaponProficiencySaveName);
+        equipCount = PlayerPrefs.GetInt(name + bladeProficiencyCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + bladeProficiencySaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + bladeProficiencyCountSaveName);
+        equipCount = PlayerPrefs.GetInt(name + armorProficiencyCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + armorProficiencySaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + armorProficiencyCountSaveName);
         equipCount = PlayerPrefs.GetInt(name + customListCount);
         for (int i = 0; i < equipCount; i++)
         {
@@ -593,5 +706,26 @@ public static class DataSaverAndLoader
         PlayerPrefs.DeleteKey(charactersSaveName + count);
         PlayerPrefs.SetInt(charactersCountSaveName, count - 1);
         PlayerPrefs.Save();
+    }
+
+    public static void SaveInstruments(HashSet<string> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int i = 0;
+        foreach (string x in list)
+        {
+            PlayerPrefs.SetString(characterName + instrumentsSaveName + i, x);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + instrumentsCountSaveName, list.Count);
+    }
+
+    public static void SaveSaveThrows(HashSet<int> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        foreach (int x in list)
+        {
+            PlayerPrefs.SetInt(characterName + saveThrowSaveName + x, 1);
+        }
     }
 }

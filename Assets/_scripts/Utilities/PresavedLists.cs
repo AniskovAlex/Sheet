@@ -11,13 +11,25 @@ public static class PresavedLists
         common
     }
 
-    static public List<Language> languages = new List<Language>();
+    static public HashSet<Language> languages = new HashSet<Language>();
 
-    static public List<string> skills = new List<string>();
+    static public HashSet<Weapon.BladeType> bladeTypes = new HashSet<Weapon.BladeType>();
+
+    static public HashSet<Weapon.WeaponType> weaponTypes = new HashSet<Weapon.WeaponType>();
+
+    static public HashSet<Armor.ArmorType> armorTypes = new HashSet<Armor.ArmorType>();
+
+    static public HashSet<string> skills = new HashSet<string>();
+    
+    static public HashSet<string> instruments = new HashSet<string>();
+
+    static public HashSet<int> saveThrows = new HashSet<int>();
 
     static public List<(string, List<string>)> preLists = new List<(string, List<string>)>();
 
     static public Action<string> ChangePing;
+    static public Action<string> ChangeSkillPing;
+    static public Action<string> ChangeIntrumentsPing;
 
     static public void UpdatePrelist(string listName, string oldValue, string newValue)
     {
@@ -27,6 +39,26 @@ public static class PresavedLists
             x.Item2.Add(newValue);
         }
         ChangePing(listName);
+    }
+
+    static public void UpdateSkills(string oldValue, string newValue)
+    {
+        string forceRemoveSkill = "";
+        if (skills.Contains(newValue))
+            forceRemoveSkill = newValue;
+        skills.Remove(oldValue);
+        skills.Add(newValue);
+        ChangeSkillPing(forceRemoveSkill);
+    }
+
+    static public void UpdateInstruments(string oldValue, string newValue)
+    {
+        string forceRemoveInstruments = "";
+        if (instruments.Contains(newValue))
+            forceRemoveInstruments = newValue;
+        instruments.Remove(oldValue);
+        instruments.Add(newValue);
+        ChangeIntrumentsPing(forceRemoveInstruments);
     }
 
     static public void RemoveFromPrelist(string listName, string value)
@@ -42,9 +74,39 @@ public static class PresavedLists
         if (ChangePing != null)
             ChangePing(listName);
     }
+    static public void RemoveFromSkills(string value)
+    {
+        skills.Remove(value);
+        if (ChangeSkillPing != null)
+            ChangeSkillPing("");
+    }
 
-    static public void SavePrelists()
+    static public void RemoveFromInstruments(string value)
+    {
+        instruments.Remove(value);
+        if (ChangeIntrumentsPing != null)
+            ChangeIntrumentsPing("");
+    }
+
+    static public void SaveProficiency()
+    {
+        DataSaverAndLoader.SaveBladeProficiency(bladeTypes);
+        DataSaverAndLoader.SaveWeaponProficiency(weaponTypes);
+        DataSaverAndLoader.SaveArmorProficiency(armorTypes);
+    }
+
+    static public void SaveInstruments()
+    {
+        DataSaverAndLoader.SaveInstruments(instruments);
+    }
+
+    static public void SaveCustomPrelists()
     {
         preLists.ForEach(x => DataSaverAndLoader.SaveCustomList(x.Item1, x.Item2));
+    }
+
+    static public void saveSaveThrows()
+    {
+        DataSaverAndLoader.SaveSaveThrows(saveThrows);
     }
 }

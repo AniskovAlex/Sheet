@@ -47,8 +47,9 @@ public class HandEquipment : MonoBehaviour
             hitDices.text = weapon.dices + "ך" + weapon.hitDice + "+" + attack;
         else
             hitDices.text = weapon.dices + "ך" + weapon.hitDice + "" + attack;
+        if (CharacterData.GetBladeProficiency().Contains(weapon.bladeType) || CharacterData.GetWeaponProficiency().Contains(weapon.weaponType))
+            attack += CharacterData.GetProficiencyBonus();
 
-        attack += CharacterData.GetProficiencyBonus();
         if (attack > 0)
             attackBonus.text = "+" + attack;
         else
@@ -58,9 +59,9 @@ public class HandEquipment : MonoBehaviour
             distance.text = dist + "פע.";
         else
             distance.text = dist + "/" + maxDist;
-        
+
         magick.isOn = weapon.magic;
-        
+
         switch (weapon.damageType)
         {
             case Weapon.DamageType.Slashing:

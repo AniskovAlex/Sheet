@@ -23,6 +23,9 @@ public class CharacterDataLoader : MonoBehaviour
     int[] _money = new int[3];
     int[] _skills = new int[18];
     List<(int, PlayersClass)> _classes = new List<(int, PlayersClass)>();
+    HashSet<Weapon.BladeType> bladeProficiency = new HashSet<Weapon.BladeType>();
+    HashSet<Weapon.WeaponType> weaponProficiency = new HashSet<Weapon.WeaponType>();
+    HashSet<Armor.ArmorType> armorProficiency = new HashSet<Armor.ArmorType>();
     int level = 0;
     PlayersClass playersClass = null;
     Race race = null;
@@ -42,8 +45,9 @@ public class CharacterDataLoader : MonoBehaviour
         LoadRace();
         LoadBackstory();
         LoadSaves();
+        LoadProficiency();
 
-        CharacterData.SetCharacterData(_attributesArr, _saves, _money, _skills, _classes, level, race, backstory, maxHP, currentHP, tempHP);
+        CharacterData.SetCharacterData(_attributesArr, _saves, _money, _skills, _classes, bladeProficiency, weaponProficiency, armorProficiency, level, race, backstory, maxHP, currentHP, tempHP);
     }
 
     void LoadAttributes()
@@ -131,6 +135,13 @@ public class CharacterDataLoader : MonoBehaviour
         {
             _saves[i] = PlayerPrefs.GetInt(characterName + saveSaveName + i);
         }
+    }
+
+    void LoadProficiency()
+    {
+        bladeProficiency = DataSaverAndLoader.LoadBladeProfiency();
+        weaponProficiency = DataSaverAndLoader.LoadWeaponProfiency();
+        armorProficiency = DataSaverAndLoader.LoadArmorProfiency();
     }
 
     void LoadHP()

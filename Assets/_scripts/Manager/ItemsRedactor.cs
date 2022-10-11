@@ -61,7 +61,7 @@ public class ItemsRedactor : MonoBehaviour
                     newGameObject.GetComponent<Dropdown>().interactable = false;
                     j++;
                 }
-                weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().value = 11;
+                weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().value = (int)weaponItem.bladeType;
                 weaponSet.GetComponentInChildren<Amount>().GetComponent<Dropdown>().interactable = false;
                 flag = true;
             }

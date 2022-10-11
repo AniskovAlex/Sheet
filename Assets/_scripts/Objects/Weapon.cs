@@ -47,6 +47,14 @@ public class Weapon :Item
 
     }
 
+    public enum BladeType
+    {
+        Sword,
+        ShortBow,
+        LongBow,
+        Club
+    }
+
     public int dices;
     public int hitDice;
     public int dist;
@@ -55,6 +63,7 @@ public class Weapon :Item
     public DamageType damageType;
     public Properties[] properties;
     public WeaponType weaponType;
+    public BladeType bladeType;
 
     /*public static Weapon? LoadWeapon(string label)
     {

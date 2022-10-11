@@ -72,6 +72,55 @@ public class FormCreater : MonoBehaviour
                     chooseDrop.value = ability.list.Length;
                 }
                 break;
+            case Ability.Type.skills:
+                if (ability.chooseCount > 0)
+                {
+                    HashSet<string> skillList = ability.common;
+                    skillList.ExceptWith(PresavedLists.skills);
+                    PresavedLists.ChangeSkillPing += UpdateSkillOptions;
+                    for (int i = 0; i < ability.chooseCount; i++)
+                    {
+                        Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                        chooseDrop.ClearOptions();
+                        foreach (string x in skillList)
+                            chooseDrop.options.Add(new Dropdown.OptionData(x));
+                        chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                        chooseDrop.onValueChanged.AddListener(delegate
+                        {
+                            ChangeSkillSelected(chooseDrop);
+                        });
+                        chooseDrop.value = skillList.Count;
+                    }
+                }
+                else
+                    foreach (string x in ability.common)
+                        PresavedLists.UpdateSkills("", x);
+                break;
+            case Ability.Type.instruments:
+                if (ability.chooseCount > 0)
+                {
+                    HashSet<string> instrumentsList = ability.common;
+                    instrumentsList.ExceptWith(PresavedLists.instruments);
+                    PresavedLists.ChangeIntrumentsPing += UpdateInstrumentsOptions;
+                    for (int i = 0; i < ability.chooseCount; i++)
+                    {
+                        Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                        chooseDrop.ClearOptions();
+                        foreach (string x in instrumentsList)
+                            chooseDrop.options.Add(new Dropdown.OptionData(x));
+                        chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                        chooseDrop.onValueChanged.AddListener(delegate
+                        {
+                            ChangeInstrumentsSelected(chooseDrop);
+                        });
+                        chooseDrop.value = instrumentsList.Count;
+                    }
+                }
+                else
+                    foreach (string x in ability.common)
+                        PresavedLists.UpdateInstruments("", x);
+                break;
+
         }
     }
 
@@ -125,6 +174,40 @@ public class FormCreater : MonoBehaviour
         }
     }
 
+    void UpdateSkillOptions(string remove)
+    {
+
+        Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
+        HashSet<string> skillList = ability.common;
+        skillList.ExceptWith(PresavedLists.skills);
+        foreach (Dropdown x in dropdowns)
+        {
+            x.options.Clear();
+            foreach (string y in skillList)
+                x.options.Add(new Dropdown.OptionData(y));
+            x.options.Add(new Dropdown.OptionData("Пусто"));
+            if (x.GetComponent<DropdownExtend>().currentValueText == remove)
+                x.value = x.options.Count - 1;
+        }
+
+    }
+    void UpdateInstrumentsOptions(string remove)
+    {
+
+        Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
+        HashSet<string> instrumentsList = ability.common;
+        instrumentsList.ExceptWith(PresavedLists.skills);
+        foreach (Dropdown x in dropdowns)
+        {
+            x.options.Clear();
+            foreach (string y in instrumentsList)
+                x.options.Add(new Dropdown.OptionData(y));
+            x.options.Add(new Dropdown.OptionData("Пусто"));
+            if (x.GetComponent<DropdownExtend>().currentValueText == remove)
+                x.value = x.options.Count - 1;
+        }
+
+    }
     void ChangeSelected(Dropdown dropdown)
     {
         string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
@@ -138,6 +221,20 @@ public class FormCreater : MonoBehaviour
         PresavedLists.UpdatePrelist(ability.listName, oldValue, dropdown.captionText.text);
     }
 
+    void ChangeSkillSelected(Dropdown dropdown)
+    {
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        PresavedLists.UpdateSkills(oldValue, dropdown.captionText.text);
+    }
+
+    void ChangeInstrumentsSelected(Dropdown dropdown)
+    {
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        PresavedLists.UpdateInstruments(oldValue, dropdown.captionText.text);
+    }
+
     private void OnDestroy()
     {
         if (ability.type == Ability.Type.withChoose)
@@ -145,6 +242,33 @@ public class FormCreater : MonoBehaviour
             PresavedLists.ChangePing -= UpdateOptions;
             foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
                 PresavedLists.RemoveFromPrelist(ability.listName, x.GetComponent<DropdownExtend>().currentValueText);
+            return;
+        }
+        if (ability.type == Ability.Type.skills)
+        {
+            if (ability.chooseCount > 0)
+            {
+                PresavedLists.ChangeSkillPing -= UpdateSkillOptions;
+                foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                    PresavedLists.RemoveFromSkills(x.GetComponent<DropdownExtend>().currentValueText);
+            }
+            else
+                foreach (string x in ability.common)
+                    PresavedLists.RemoveFromSkills(x);
+            return;
+        }
+        if (ability.type == Ability.Type.instruments)
+        {
+            if (ability.chooseCount > 0)
+            {
+                PresavedLists.ChangeSkillPing -= UpdateInstrumentsOptions;
+                foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                    PresavedLists.RemoveFromInstruments(x.GetComponent<DropdownExtend>().currentValueText);
+            }
+            else
+                foreach (string x in ability.common)
+                    PresavedLists.RemoveFromInstruments(x);
+            return;
         }
     }
 }

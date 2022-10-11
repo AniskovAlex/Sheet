@@ -11,6 +11,9 @@ public class CharacterData
     static int[] _money = new int[3];
     static int[] _skills = new int[18];
     static List<(int, PlayersClass)> _classes = new List<(int, PlayersClass)>();
+    static HashSet<Weapon.BladeType> _bladeProficiency = new HashSet<Weapon.BladeType>();
+    static HashSet<Weapon.WeaponType> _weaponProficiency = new HashSet<Weapon.WeaponType>();
+    static HashSet<Armor.ArmorType> _armorProficiency = new HashSet<Armor.ArmorType>();
     static int _level = 1;
     static Race _race = null;
     static Backstory _backstory = null;
@@ -19,15 +22,20 @@ public class CharacterData
     static int _tempHP;
     static int profMod;
 
-    CharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, List<(int, PlayersClass)> classes, int level, Race race, Backstory backstory, int maxHP, int currentHP, int tempHP)
+    CharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, List<(int, PlayersClass)> classes, HashSet<Weapon.BladeType> bladeProf, HashSet<Weapon.WeaponType> weaponProf, HashSet<Armor.ArmorType> armorProf,
+        int level, Race race, Backstory backstory, int maxHP, int currentHP, int tempHP)
     {
         _charAtr = charAtr;
+        _saves = saves;
         _skills = skills;
         _money = money;
         _classes = classes;
         _level = level;
         _race = race;
         _backstory = backstory;
+        _bladeProficiency = bladeProf;
+        _weaponProficiency = weaponProf;
+        _armorProficiency = armorProf;
         _maxHP = maxHP;
         _currentHP = currentHP;
         _tempHP = tempHP;
@@ -50,7 +58,7 @@ public class CharacterData
 
     public static int GetSave(int index)
     {
-        if (index > 0 && index < _saves.Length)
+        if (index >= 0 && index < _saves.Length)
             return _saves[index];
         return 0;
     }
@@ -72,6 +80,21 @@ public class CharacterData
     public static int GetProficiencyBonus()
     {
         return profMod;
+    }
+
+    public static HashSet<Weapon.BladeType> GetBladeProficiency()
+    {
+        return _bladeProficiency;
+    }
+
+    public static HashSet<Weapon.WeaponType> GetWeaponProficiency()
+    {
+        return _weaponProficiency;
+    }
+
+    public static HashSet<Armor.ArmorType> GetArmorProficiency()
+    {
+        return _armorProficiency;
     }
     public static List<(int, PlayersClass)> GetClasses()
     {
@@ -100,9 +123,10 @@ public class CharacterData
         tempHP = _tempHP;
     }
 
-    public static void SetCharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, List<(int, PlayersClass)> classes, int level,
+    public static void SetCharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, 
+        List<(int, PlayersClass)> classes, HashSet<Weapon.BladeType> bladeProf, HashSet<Weapon.WeaponType> weaponProf, HashSet<Armor.ArmorType> armorProf, int level,
         Race race, Backstory backstory, int maxHP, int currentHP, int tempHP)
     {
-        instance = new CharacterData(charAtr, saves, money, skills, classes, level, race, backstory, maxHP, currentHP, tempHP);
+        instance = new CharacterData(charAtr, saves, money, skills, classes, bladeProf, weaponProf, armorProf, level, race, backstory, maxHP, currentHP, tempHP);
     }
 }

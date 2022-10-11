@@ -9,8 +9,6 @@ public class Rogue : PlayersClass
     {
         //LoadAbilities("fighter");
         healthDice = 10;
-        armorProfs = new List<Armor.ArmorType>();
-        weaponProfs = new List<Weapon.WeaponType>();
         instrumentsAmount = 0;
         instrumentProfs = new List<string>();
         skillsAmount = 2;

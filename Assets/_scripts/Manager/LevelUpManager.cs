@@ -63,7 +63,7 @@ public class LevelUpManager : MonoBehaviour
             if (classes.GetClass().GetSubClass() != null)
                 DataSaverAndLoader.SaveSubClass(classes.GetClass());
         }
-        PresavedLists.SavePrelists();
+        PresavedLists.SaveCustomPrelists();
         PlayerPrefs.Save();
         SceneManager.LoadScene("view", LoadSceneMode.Single);
     }

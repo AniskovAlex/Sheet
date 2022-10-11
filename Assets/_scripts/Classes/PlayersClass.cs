@@ -22,20 +22,6 @@ public abstract class PlayersClass : ObjectsBehavior
         protected set { HD = value; }
     }
 
-    List<Armor.ArmorType> AP = new List<Armor.ArmorType>();
-    public List<Armor.ArmorType> armorProfs
-    {
-        get { return AP; }
-        protected set { AP = value; }
-    }
-
-    List<Weapon.WeaponType> WP = new List<Weapon.WeaponType>();
-    public List<Weapon.WeaponType> weaponProfs
-    {
-        get { return WP; }
-        protected set { WP = value; }
-    }
-
     int IA = 0;
     public int instrumentsAmount
     {
@@ -100,4 +86,22 @@ public abstract class PlayersClass : ObjectsBehavior
         return subClass;
     }
 
+    public virtual HashSet<Weapon.WeaponType> GetWeaponProficiency()
+    {
+        return null;
+    }
+
+    public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
+    {
+        return null;
+    }
+    public virtual HashSet<Armor.ArmorType> GetArmorProficiency()
+    {
+        return null;
+    }
+
+    public virtual HashSet<int> GetSaveThrows()
+    {
+        return new HashSet<int>();
+    }
 }

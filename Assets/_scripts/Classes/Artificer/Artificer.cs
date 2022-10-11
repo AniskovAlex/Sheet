@@ -15,8 +15,6 @@ public class Artificer : PlayersClass
 
         //LoadAbilities("fighter");
         healthDice = 8;
-        armorProfs = new List<Armor.ArmorType>();
-        weaponProfs = new List<Weapon.WeaponType>();
         instrumentsAmount = 0;
         instrumentProfs = new List<string>();
         skillsAmount = 2;
