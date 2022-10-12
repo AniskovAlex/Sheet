@@ -5630,8 +5630,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 540, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &443098914
 MonoBehaviour:
@@ -5819,7 +5819,6 @@ GameObject:
   - component: {fileID: 452781104}
   - component: {fileID: 452781103}
   - component: {fileID: 452781102}
-  - component: {fileID: 452781101}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -5849,22 +5848,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &452781101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 452781099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69031693c496bbc40ac6d3461f5eca18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mySelf: {fileID: 452781103}
-  dropdownObject: {fileID: 7314998980547581629, guid: 025712f7298a9f545a90b5e53f54eabd, type: 3}
-  abilitiesPanel: {fileID: 1560921301}
-  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!114 &452781102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5943,13 +5926,13 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 452781101}
-        m_TargetAssemblyTypeName: RaceDropdown, Assembly-CSharp
-        m_MethodName: SetSkills
-        m_Mode: 1
+      - m_Target: {fileID: 1251258737}
+        m_TargetAssemblyTypeName: RaceAbilities, Assembly-CSharp
+        m_MethodName: ChosenRace
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 452781103}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Dropdown, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7078,8 +7061,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 540, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513866065
 MonoBehaviour:
@@ -7296,7 +7279,6 @@ GameObject:
   - component: {fileID: 516903830}
   - component: {fileID: 516903829}
   - component: {fileID: 516903828}
-  - component: {fileID: 516903827}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -7326,22 +7308,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &516903827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516903825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c295c5638bf59094b977bf9e0a9ffee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mySelf: {fileID: 516903829}
-  dropdownObject: {fileID: 7314998980547581629, guid: 025712f7298a9f545a90b5e53f54eabd, type: 3}
-  abilitiesPanel: {fileID: 1976092646}
-  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!114 &516903828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7418,7 +7384,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 516903827}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BackstoryDropdown, Assembly-CSharp
         m_MethodName: SetSkills
         m_Mode: 1
@@ -17835,10 +17801,10 @@ GameObject:
   - component: {fileID: 1251258733}
   - component: {fileID: 1251258739}
   - component: {fileID: 1251258738}
-  - component: {fileID: 1251258737}
   - component: {fileID: 1251258736}
   - component: {fileID: 1251258735}
   - component: {fileID: 1251258734}
+  - component: {fileID: 1251258737}
   m_Layer: 5
   m_Name: Panel (1)
   m_TagString: Untagged
@@ -17944,12 +17910,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1251258732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
+  m_Script: {fileID: 11500000, guid: 77f674e2f88cc4343975d0f1c7b04b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
+  content: {fileID: 1560921301}
+  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!114 &1251258738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20352,10 +20317,9 @@ MonoBehaviour:
   armorClass: {fileID: 485160448}
   maxHealth: {fileID: 1521800674}
   speed: {fileID: 642479489}
-  classStat: {fileID: 1032324478}
-  raceStat: {fileID: 452781101}
-  backstoryStat: {fileID: 516903827}
   classes: {fileID: 1857043824}
+  race: {fileID: 1251258737}
+  backstory: {fileID: 1976092650}
 --- !u!4 &1443659778
 Transform:
   m_ObjectHideFlags: 0
@@ -22413,8 +22377,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 540, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1565820543
 GameObject:
@@ -27911,10 +27875,10 @@ GameObject:
   - component: {fileID: 1976092653}
   - component: {fileID: 1976092652}
   - component: {fileID: 1976092651}
-  - component: {fileID: 1976092650}
   - component: {fileID: 1976092649}
   - component: {fileID: 1976092648}
   - component: {fileID: 1976092647}
+  - component: {fileID: 1976092650}
   m_Layer: 5
   m_Name: Panel (1)
   m_TagString: Untagged
@@ -28000,12 +27964,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1976092646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6c7394b3880141a364bc381786e18, type: 3}
+  m_Script: {fileID: 11500000, guid: ace7ab2264c7dad4189bea46d0a1cd84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
-  db: {fileID: 0}
-  label: 
+  content: {fileID: 513866063}
+  form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
 --- !u!114 &1976092651
 MonoBehaviour:
   m_ObjectHideFlags: 0

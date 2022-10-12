@@ -12,7 +12,8 @@ public class Ability
         withChoose,
         subClass,
         skills,
-        instruments
+        instruments,
+        language
     }
 
     public string head;

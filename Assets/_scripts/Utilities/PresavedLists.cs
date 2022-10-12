@@ -5,13 +5,8 @@ using UnityEngine;
 
 public static class PresavedLists
 {
-    public enum Language
-    {
-        giant,
-        common
-    }
 
-    static public HashSet<Language> languages = new HashSet<Language>();
+    static public HashSet<string> languages = new HashSet<string>();
 
     static public HashSet<Weapon.BladeType> bladeTypes = new HashSet<Weapon.BladeType>();
 
@@ -61,6 +56,16 @@ public static class PresavedLists
         ChangeIntrumentsPing(forceRemoveInstruments);
     }
 
+    static public void UpdateLanguage(string oldValue, string newValue)
+    {
+        string forceRemoveLangugae = "";
+        if (languages.Contains(newValue))
+            forceRemoveLangugae = newValue;
+        languages.Remove(oldValue);
+        languages.Add(newValue);
+        ChangeIntrumentsPing(forceRemoveLangugae);
+    }
+
     static public void RemoveFromPrelist(string listName, string value)
     {
         foreach ((string, List<string>) x in preLists.FindAll(x => x.Item1 == listName))
@@ -98,6 +103,10 @@ public static class PresavedLists
     static public void SaveInstruments()
     {
         DataSaverAndLoader.SaveInstruments(instruments);
+    }
+    static public void SaveLanguage()
+    {
+        DataSaverAndLoader.SaveLanguage(languages);
     }
 
     static public void SaveCustomPrelists()

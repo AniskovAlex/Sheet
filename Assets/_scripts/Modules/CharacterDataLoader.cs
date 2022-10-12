@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CharacterDataLoader : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class CharacterDataLoader : MonoBehaviour
     HashSet<Weapon.BladeType> bladeProficiency = new HashSet<Weapon.BladeType>();
     HashSet<Weapon.WeaponType> weaponProficiency = new HashSet<Weapon.WeaponType>();
     HashSet<Armor.ArmorType> armorProficiency = new HashSet<Armor.ArmorType>();
+    HashSet<string> language = new HashSet<string>();
+    HashSet<string> instruments = new HashSet<string>();
     int level = 0;
     PlayersClass playersClass = null;
     Race race = null;
@@ -46,8 +49,10 @@ public class CharacterDataLoader : MonoBehaviour
         LoadBackstory();
         LoadSaves();
         LoadProficiency();
-
-        CharacterData.SetCharacterData(_attributesArr, _saves, _money, _skills, _classes, bladeProficiency, weaponProficiency, armorProficiency, level, race, backstory, maxHP, currentHP, tempHP);
+        LoadHP();
+        language = DataSaverAndLoader.LoadLanguage();
+        instruments = DataSaverAndLoader.LoadInstruments();
+        CharacterData.SetCharacterData(_attributesArr, _saves, _money, _skills, _classes, language, instruments, bladeProficiency, weaponProficiency, armorProficiency, level, race, backstory, maxHP, currentHP, tempHP);
     }
 
     void LoadAttributes()
@@ -149,5 +154,83 @@ public class CharacterDataLoader : MonoBehaviour
         maxHP = PlayerPrefs.GetInt(characterName + maxHealthSaveName);
         currentHP = PlayerPrefs.GetInt(characterName + healthSaveName);
         tempHP = PlayerPrefs.GetInt(characterName + tempHealthSaveName);
+    }
+
+    public void LoadPrelists()
+    {
+        for (int i = 0; i < 18; i++)
+            if (_skills[i] != 0)
+                switch (i)
+                {
+                    case 0:
+                        PresavedLists.skills.Add("Атлетика");
+                        break;
+                    case 1:
+                        PresavedLists.skills.Add("Акробатика");
+                        break;
+                    case 2:
+                        PresavedLists.skills.Add("Ловкость рук");
+                        break;
+                    case 3:
+                        PresavedLists.skills.Add("Скрытность");
+                        break;
+                    case 4:
+                        PresavedLists.skills.Add("Анализ");
+                        break;
+                    case 5:
+                        PresavedLists.skills.Add("История");
+                        break;
+                    case 6:
+                        PresavedLists.skills.Add("Магия");
+                        break;
+                    case 7:
+                        PresavedLists.skills.Add("Природа");
+                        break;
+                    case 8:
+                        PresavedLists.skills.Add("Религия");
+                        break;
+                    case 9:
+                        PresavedLists.skills.Add("Внимательность");
+                        break;
+                    case 10:
+                        PresavedLists.skills.Add("Выживание");
+                        break;
+                    case 11:
+                        PresavedLists.skills.Add("Медицина");
+                        break;
+                    case 12:
+                        PresavedLists.skills.Add("Проницательность");
+                        break;
+                    case 13:
+                        PresavedLists.skills.Add("Уход за животными");
+                        break;
+                    case 14:
+                        PresavedLists.skills.Add("Выступление");
+                        break;
+                    case 15:
+                        PresavedLists.skills.Add("Запугивание");
+                        break;
+                    case 16:
+                        PresavedLists.skills.Add("Обман");
+                        break;
+                    case 17:
+                        PresavedLists.skills.Add("Убеждение");
+                        break;
+                }
+        foreach ((int, PlayersClass) x in _classes)
+        {
+            Ability[] abilities = x.Item2.GetAbilities();
+            if (x.Item2.GetSubClass() != null)
+                abilities.Concat(x.Item2.GetSubClass().GetAbilities());
+            foreach (Ability y in abilities)
+                if (y.listName != null && y.level <= x.Item1)
+                    PresavedLists.preLists.Add((y.listName, DataSaverAndLoader.LoadCustom(y.listName)));
+        }
+        PresavedLists.armorTypes = armorProficiency;
+        PresavedLists.bladeTypes = bladeProficiency;
+        PresavedLists.weaponTypes = weaponProficiency;
+        PresavedLists.instruments = instruments;
+        PresavedLists.languages = language;
+        PresavedLists.saveThrows.Concat(_saves);
     }
 }

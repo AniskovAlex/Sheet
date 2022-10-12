@@ -7,9 +7,6 @@ using UnityEngine.SceneManagement;
 public class LevelUpManager : MonoBehaviour
 {
     string characterName;
-    const string levelCountSaveName = "lvlCount_";
-    const string levelSaveName = "lvl_";
-    const string levelLabelSaveName = "lvlLabel_";
     public Dropdown chosenClass;
     public GameObject dropdownObject;
     public GameObject abilitiesPanel;
@@ -20,45 +17,34 @@ public class LevelUpManager : MonoBehaviour
     private void Start()
     {
         characterName = CharacterCollection.GetName();
+        GetComponent<CharacterDataLoader>().LoadPrelists();
     }
-
-    /*public void ClassChanged()
-    {
-        int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
-        int level = 1;
-        for (int i = 0; i < count; i++)
-        {
-            if (PlayerPrefs.GetString(characterName + levelLabelSaveName + i) == chosenClass.captionText.text)
-            {
-                level = PlayerPrefs.GetInt(characterName + levelSaveName + i) + 1;
-                break;
-            }
-        }
-        Debug.Log(level);
-        FormCreater[] abilitieForms = abilitiesPanel.GetComponentsInChildren<FormCreater>();
-        foreach (FormCreater x in abilitieForms)
-        {
-            Destroy(x.gameObject);
-        }
-        switch (chosenClass.value)
-        {
-            case 1:
-                newClass = new Fighter();
-                break;
-            case 2:
-                newClass = new Rogue();
-                break;
-            case 3:
-                newClass = new Artificer();
-                break;
-        }
-    }*/
 
     public void LoadView()
     {
         characterName = CharacterCollection.GetName();
         if (classes != null)
         {
+            if(CharacterData.GetLevel(classes.GetClass()) == 0)
+            {
+                HashSet<Weapon.BladeType> bladeProf;
+                HashSet<Weapon.WeaponType> weaponProf;
+                HashSet<Armor.ArmorType> armorProf;
+                bladeProf = classes.GetClass().GetBladeProficiency();
+                if (bladeProf != null)
+                    PresavedLists.bladeTypes.UnionWith(bladeProf);
+
+                weaponProf = classes.GetClass().GetWeaponProficiency();
+                if (weaponProf != null)
+                    PresavedLists.weaponTypes.UnionWith(weaponProf);
+
+                armorProf = classes.GetClass().GetArmorProficiency();
+                if (armorProf != null)
+                    PresavedLists.armorTypes.UnionWith(armorProf);
+                HashSet<int> saveThrows;
+                saveThrows = classes.GetClass().GetSaveThrows();
+                PresavedLists.saveThrows.UnionWith(saveThrows);
+            }
             DataSaverAndLoader.SaveClass(classes.GetClass().name);
             if (classes.GetClass().GetSubClass() != null)
                 DataSaverAndLoader.SaveSubClass(classes.GetClass());

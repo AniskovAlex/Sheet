@@ -120,6 +120,30 @@ public class FormCreater : MonoBehaviour
                     foreach (string x in ability.common)
                         PresavedLists.UpdateInstruments("", x);
                 break;
+            case Ability.Type.language:
+                if (ability.chooseCount > 0)
+                {
+                    HashSet<string> languageList = ability.common;
+                    languageList.ExceptWith(PresavedLists.languages);
+                    PresavedLists.ChangeIntrumentsPing += UpdateLanguageOptions;
+                    for (int i = 0; i < ability.chooseCount; i++)
+                    {
+                        Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                        chooseDrop.ClearOptions();
+                        foreach (string x in languageList)
+                            chooseDrop.options.Add(new Dropdown.OptionData(x));
+                        chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                        chooseDrop.onValueChanged.AddListener(delegate
+                        {
+                            ChangeLanguageSelected(chooseDrop);
+                        });
+                        chooseDrop.value = languageList.Count;
+                    }
+                }
+                else
+                    foreach (string x in ability.common)
+                        PresavedLists.UpdateLanguage("", x);
+                break;
 
         }
     }
@@ -196,11 +220,28 @@ public class FormCreater : MonoBehaviour
 
         Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
         HashSet<string> instrumentsList = ability.common;
-        instrumentsList.ExceptWith(PresavedLists.skills);
+        instrumentsList.ExceptWith(PresavedLists.instruments);
         foreach (Dropdown x in dropdowns)
         {
             x.options.Clear();
             foreach (string y in instrumentsList)
+                x.options.Add(new Dropdown.OptionData(y));
+            x.options.Add(new Dropdown.OptionData("Пусто"));
+            if (x.GetComponent<DropdownExtend>().currentValueText == remove)
+                x.value = x.options.Count - 1;
+        }
+
+    }
+    void UpdateLanguageOptions(string remove)
+    {
+
+        Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
+        HashSet<string> languageList = ability.common;
+        languageList.ExceptWith(PresavedLists.languages);
+        foreach (Dropdown x in dropdowns)
+        {
+            x.options.Clear();
+            foreach (string y in languageList)
                 x.options.Add(new Dropdown.OptionData(y));
             x.options.Add(new Dropdown.OptionData("Пусто"));
             if (x.GetComponent<DropdownExtend>().currentValueText == remove)
@@ -233,6 +274,13 @@ public class FormCreater : MonoBehaviour
         string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         PresavedLists.UpdateInstruments(oldValue, dropdown.captionText.text);
+    }
+
+    void ChangeLanguageSelected(Dropdown dropdown)
+    {
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        PresavedLists.UpdateLanguage(oldValue, dropdown.captionText.text);
     }
 
     private void OnDestroy()

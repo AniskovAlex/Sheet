@@ -10,8 +10,14 @@ public static class DataSaverAndLoader
     const string healthSaveName = "HP_";
     const string tempHealthSaveName = "THP_";
 
+    const string raceSaveName = "race_";
+    const string backstorySaveName = "backstory_";
+
     const string instrumentsSaveName = "instruments_";
     const string instrumentsCountSaveName = "instrumentsCount_";
+
+    const string languageSaveName = "language_";
+    const string languageCountSaveName = "languageCount_";
 
     const string saveThrowSaveName = "save_";
 
@@ -720,6 +726,38 @@ public static class DataSaverAndLoader
         PlayerPrefs.SetInt(characterName + instrumentsCountSaveName, list.Count);
     }
 
+    public static HashSet<string> LoadInstruments()
+    {
+        string characterName = CharacterCollection.GetName();
+        HashSet<string> list = new HashSet<string>();
+        int count = PlayerPrefs.GetInt(characterName + instrumentsCountSaveName);
+        for (int i = 0; i < count; i++)
+            list.Add(PlayerPrefs.GetString(characterName + instrumentsSaveName + i));
+        return list;
+    }
+
+    public static void SaveLanguage(HashSet<string> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int i = 0;
+        foreach (string x in list)
+        {
+            PlayerPrefs.SetString(characterName + languageSaveName + i, x);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + languageCountSaveName, list.Count);
+    }
+
+    public static HashSet<string> LoadLanguage()
+    {
+        string characterName = CharacterCollection.GetName();
+        HashSet<string> list = new HashSet<string>();
+        int count = PlayerPrefs.GetInt(characterName + languageCountSaveName);
+        for (int i = 0; i < count; i++)
+            list.Add(PlayerPrefs.GetString(characterName + languageSaveName + i));
+        return list;
+    }
+
     public static void SaveSaveThrows(HashSet<int> list)
     {
         string characterName = CharacterCollection.GetName();
@@ -727,5 +765,29 @@ public static class DataSaverAndLoader
         {
             PlayerPrefs.SetInt(characterName + saveThrowSaveName + x, 1);
         }
+    }
+
+    public static void SaveRace(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + raceSaveName, value);
+    }
+
+    public static string LoadRace()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + raceSaveName);
+    }
+
+    public static void SaveBackstory(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + backstorySaveName, value);
+    }
+
+    public static string LoadBackstory()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + backstorySaveName);
     }
 }

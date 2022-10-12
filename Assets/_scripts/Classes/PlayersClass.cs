@@ -22,37 +22,6 @@ public abstract class PlayersClass : ObjectsBehavior
         protected set { HD = value; }
     }
 
-    int IA = 0;
-    public int instrumentsAmount
-    {
-        get { return IA; }
-        protected set { IA = value; }
-    }
-
-    List<string> IP = new List<string>();
-    public List<string> instrumentProfs
-    {
-        get { return IP; }
-        protected set { IP = value; }
-    }
-    int SA = 0;
-    public int skillsAmount
-    {
-        get { return SA; }
-        protected set { SA = value; }
-    }
-    List<int> SP = new List<int>();
-    public List<int> skillProfs
-    {
-        get { return SP; }
-        protected set { SP = value; }
-    }
-    List<int> STP = new List<int>();
-    public List<int> savethrowProfs
-    {
-        get { return STP; }
-        protected set { STP = value; }
-    }
     string N = null;
     public string name
     {

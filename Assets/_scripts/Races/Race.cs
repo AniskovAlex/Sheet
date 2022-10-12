@@ -4,10 +4,14 @@ using UnityEngine;
 
 public abstract class Race : ObjectsBehavior
 {
-    protected string characterName = CharacterCollection.GetName();
-    const string sizeSaveName = "size_";
-    const string speedSaveName = "spd_";
-    protected const string raceSaveName = "race_";
+    protected Ability[] abilities;
+
+    string N = null;
+    public string name
+    {
+        get { return N; }
+        protected set { N = value; }
+    }
 
     public enum Size
     {
@@ -16,40 +20,28 @@ public abstract class Race : ObjectsBehavior
         large
     }
 
-    protected Size size;
-    int speed;
-    protected Race(GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact, int speed) : base(panel, basicForm, dropdownForm, redact)
+    public virtual int GetSpeed()
     {
-        this.speed = speed;
-        RaceDiscription();
+        return 30;
     }
 
-    protected Race()
+    public virtual Size GetSize()
     {
-
+        return Size.medium;
     }
 
-    public virtual void RaceDiscription()
+    public bool GetVision()
     {
-
+        return false;
     }
 
-    public virtual void Erase()
+    protected void LoadAbilities(string pathName)
     {
-
+        abilities = FileSaverAndLoader.LoadAbilities("races/" + pathName);
     }
 
-    public int GetSpeed()
+    public virtual Ability[] GetAbilities()
     {
-        return speed;
-    }
-
-    public virtual void Save()
-    {
-        characterName = CharacterCollection.GetName();
-        //AllClassesAbilities.SaveLanguage();
-        int buf1 = size - Size.little;
-        PlayerPrefs.SetInt(characterName + sizeSaveName, buf1);
-        PlayerPrefs.SetInt(characterName + speedSaveName, speed);
+        return abilities;
     }
 }

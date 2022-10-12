@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class Backstory : ObjectsBehavior
 {
-    protected string characterName = CharacterCollection.GetName();
-    protected const string backstorySaveName = "backstory_";
+    protected Ability[] abilities;
 
-    protected Backstory (GameObject panel, GameObject basicForm, GameObject dropdownForm, bool redact) : base(panel, basicForm, dropdownForm, redact)
+    string N = null;
+    public string name
     {
-
+        get { return N; }
+        protected set { N = value; }
     }
 
-    protected Backstory()
+    protected void LoadAbilities(string pathName)
     {
-
+        abilities = FileSaverAndLoader.LoadAbilities("backstories/" + pathName);
     }
 
-    public virtual void Save()
+    public virtual Ability[] GetAbilities()
     {
-        characterName = CharacterCollection.GetName();
+        return abilities;
     }
 }

@@ -14,6 +14,8 @@ public class CharacterData
     static HashSet<Weapon.BladeType> _bladeProficiency = new HashSet<Weapon.BladeType>();
     static HashSet<Weapon.WeaponType> _weaponProficiency = new HashSet<Weapon.WeaponType>();
     static HashSet<Armor.ArmorType> _armorProficiency = new HashSet<Armor.ArmorType>();
+    static HashSet<string> _language = new HashSet<string>();
+    static HashSet<string> _instruments = new HashSet<string>();
     static int _level = 1;
     static Race _race = null;
     static Backstory _backstory = null;
@@ -22,7 +24,7 @@ public class CharacterData
     static int _tempHP;
     static int profMod;
 
-    CharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, List<(int, PlayersClass)> classes, HashSet<Weapon.BladeType> bladeProf, HashSet<Weapon.WeaponType> weaponProf, HashSet<Armor.ArmorType> armorProf,
+    CharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, List<(int, PlayersClass)> classes, HashSet<string> language, HashSet<string> instruments, HashSet<Weapon.BladeType> bladeProf, HashSet<Weapon.WeaponType> weaponProf, HashSet<Armor.ArmorType> armorProf,
         int level, Race race, Backstory backstory, int maxHP, int currentHP, int tempHP)
     {
         _charAtr = charAtr;
@@ -39,6 +41,8 @@ public class CharacterData
         _maxHP = maxHP;
         _currentHP = currentHP;
         _tempHP = tempHP;
+        _language = language;
+        _instruments = instruments;
         profMod = (level - 1) / 4 + 2;
     }
 
@@ -101,9 +105,27 @@ public class CharacterData
         return _classes;
     }
 
+    public static HashSet<string> GetLanguage()
+    {
+        return _language;
+    }
+
+    public static HashSet<string> GetInstruments()
+    {
+        return _instruments;
+    }
+
     public static int GetLevel()
     {
         return _level;
+    }
+
+    public static int GetLevel(PlayersClass playerClass)
+    {
+        foreach ((int, PlayersClass) x in _classes)
+            if (x.Item2 == playerClass)
+                return x.Item1;
+        return 0;
     }
 
     public static Race GetRace()
@@ -123,10 +145,10 @@ public class CharacterData
         tempHP = _tempHP;
     }
 
-    public static void SetCharacterData(int[] charAtr, int[] saves, int[] money, int[] skills, 
-        List<(int, PlayersClass)> classes, HashSet<Weapon.BladeType> bladeProf, HashSet<Weapon.WeaponType> weaponProf, HashSet<Armor.ArmorType> armorProf, int level,
+    public static void SetCharacterData(int[] charAtr, int[] saves, int[] money, int[] skills,
+        List<(int, PlayersClass)> classes, HashSet<string> language, HashSet<string> instruments, HashSet<Weapon.BladeType> bladeProf, HashSet<Weapon.WeaponType> weaponProf, HashSet<Armor.ArmorType> armorProf, int level,
         Race race, Backstory backstory, int maxHP, int currentHP, int tempHP)
     {
-        instance = new CharacterData(charAtr, saves, money, skills, classes, bladeProf, weaponProf, armorProf, level, race, backstory, maxHP, currentHP, tempHP);
+        instance = new CharacterData(charAtr, saves, money, skills, classes, language, instruments, bladeProf, weaponProf, armorProf, level, race, backstory, maxHP, currentHP, tempHP);
     }
 }
