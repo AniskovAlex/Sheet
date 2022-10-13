@@ -64,6 +64,8 @@ public class BuilderManager : MonoBehaviour
             if (race != null)
             {
                 DataSaverAndLoader.SaveRace(race.GetRace().name);
+                if (race.GetRace().GetSubRace() != null)
+                    DataSaverAndLoader.SaveSubRace(race.GetRace());
             }
             if (backstory != null)
             {

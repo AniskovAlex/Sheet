@@ -11,6 +11,7 @@ public static class DataSaverAndLoader
     const string tempHealthSaveName = "THP_";
 
     const string raceSaveName = "race_";
+    const string raceSubRaceSaveName = "subRace_";
     const string backstorySaveName = "backstory_";
 
     const string instrumentsSaveName = "instruments_";
@@ -110,6 +111,13 @@ public static class DataSaverAndLoader
     {
         string characterName = CharacterCollection.GetName();
         PlayerPrefs.SetString(characterName + classSubClassSaveName + playersClass.name, playersClass.GetSubClass().GetName());
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveSubRace(Race playersRace)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + raceSubRaceSaveName + playersRace.name, playersRace.GetSubRace().GetName());
         PlayerPrefs.Save();
     }
 

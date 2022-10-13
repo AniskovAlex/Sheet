@@ -9,6 +9,7 @@ public class ChooseFeat : MonoBehaviour
     [SerializeField] GameObject basicText;
     [SerializeField] GameObject discription;
     [SerializeField] GameObject dropdown;
+    List<string> attrAdd = new List<string>();
 
     Feat[] feats = null;
     // Start is called before the first frame update
@@ -26,6 +27,11 @@ public class ChooseFeat : MonoBehaviour
 
     }
 
+    public Dropdown GetDropdown()
+    {
+        return chosenFeat;
+    }
+
     public void FeatDiscription()
     {
         Text[] texts = discription.GetComponentsInChildren<Text>();
@@ -40,27 +46,26 @@ public class ChooseFeat : MonoBehaviour
             {
                 if (x.attr != null)
                 {
-                    List<string> buf = new List<string>();
                     foreach (int y in x.attr)
                         switch (y)
                         {
                             case 0:
-                                buf.Add("Сила");
+                                attrAdd.Add("Сила");
                                 break;
                             case 1:
-                                buf.Add("Ловкость");
+                                attrAdd.Add("Ловкость");
                                 break;
                             case 2:
-                                buf.Add("Телосложение");
+                                attrAdd.Add("Телосложение");
                                 break;
                             case 3:
-                                buf.Add("Мудрость");
+                                attrAdd.Add("Интеллект");
                                 break;
                             case 4:
-                                buf.Add("Интеллект");
+                                attrAdd.Add("Мудрость");
                                 break;
                             case 5:
-                                buf.Add("Харизма");
+                                attrAdd.Add("Харизма");
                                 break;
                         }
                     if (x.attr.Count > 1)
@@ -68,16 +73,20 @@ public class ChooseFeat : MonoBehaviour
                         SetText((1, "Повысить характеристику"));
                         GameObject newObject = Instantiate(dropdown, discription.transform);
                         List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-                        foreach (string y in buf)
+                        foreach (string y in attrAdd)
                         {
                             list.Add(new Dropdown.OptionData(y));
                         }
                         list.Add(new Dropdown.OptionData("Пусто"));
+                        list.Add(new Dropdown.OptionData("Пусто"));
                         newObject.GetComponent<Dropdown>().options = list;
+                        newObject.GetComponent<Dropdown>().onValueChanged.AddListener(delegate { ChangeSelected(newObject.GetComponent<Dropdown>()); });
+
                     }
                     else
                     {
-                        SetText((1, "Повысить характеристику: "+ buf));
+                        SetText((1, "Повысить характеристику: " + attrAdd));
+                        PresavedLists.UpdateAttrAdd(attrAdd[0]);
                     }
                 }
                 foreach ((int, string) y in x.discription)
@@ -112,5 +121,27 @@ public class ChooseFeat : MonoBehaviour
         newObjectText.fontSize = textSize;
         newObjectText.fontStyle = fontStyle;
 
+    }
+
+    void ChangeSelected(Dropdown dropdown)
+    {
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        attrAdd.Remove(oldValue);
+        if (dropdown.captionText.text != "Пусто")
+            attrAdd.Add(dropdown.captionText.text);
+        PresavedLists.UpdateAttrAdd(oldValue, dropdown.captionText.text);
+    }
+
+    private void OnDestroy()
+    {
+        foreach (string x in attrAdd)
+            PresavedLists.RemoveFromAttrAdd(x);
+    }
+
+    private void OnBecameInvisible()
+    {
+        foreach (string x in attrAdd)
+            PresavedLists.RemoveFromAttrAdd(x);
     }
 }

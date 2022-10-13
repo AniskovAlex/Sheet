@@ -5,16 +5,21 @@ using UnityEngine.UI;
 
 public class CharUp : MonoBehaviour
 {
-    [SerializeField] Dropdown featDropdown;
-    [SerializeField] List<Dropdown> attrDropdowns;
-    [SerializeField] GameObject feat;
-    [SerializeField] GameObject attr;
+    [SerializeField] ChooseFeat feat;
+    [SerializeField] ChooseAttr attr;
     [SerializeField] GameObject text;
 
+    private void Start()
+    {
+        attr.maxValue = 2;
+        attr.SetDropdowns(2);
+        foreach (Dropdown x in attr.GetDropdowns())
+            x.onValueChanged.AddListener(delegate { ChoosedAttr(); });
+    }
 
     public void ChoosedFeat()
     {
-        if (featDropdown.captionText.text == "Пусто")
+        if (feat.GetDropdown().captionText.text == "Пусто")
         {
             attr.gameObject.SetActive(true);
             text.gameObject.SetActive(true);
@@ -29,19 +34,19 @@ public class CharUp : MonoBehaviour
     public void ChoosedAttr()
     {
         bool flag = true;
-        foreach(Dropdown x in attrDropdowns)
+        foreach(Dropdown x in attr.GetDropdowns())
         {
             if (x.captionText.text != "Пусто")
                 flag = false;
         }
         if (flag)
         {
-            feat.SetActive(true);
+            feat.gameObject.SetActive(true);
             text.SetActive(true);
         }
         else
         {
-            feat.SetActive(false);
+            feat.gameObject.SetActive(false);
             text.SetActive(false);
         }
     }

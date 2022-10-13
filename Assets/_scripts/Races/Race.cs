@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Race : ObjectsBehavior
 {
     protected Ability[] abilities;
+    protected SubRace subRace = null;
 
     string N = null;
     public string name
@@ -33,6 +34,16 @@ public abstract class Race : ObjectsBehavior
     public bool GetVision()
     {
         return false;
+    }
+
+    public SubRace GetSubRace()
+    {
+        return subRace;
+    }
+
+    public virtual Ability[] ChooseSubRace(string subRaces)
+    {
+        return null;
     }
 
     protected void LoadAbilities(string pathName)

@@ -20,6 +20,8 @@ public static class PresavedLists
 
     static public HashSet<int> saveThrows = new HashSet<int>();
 
+    static public List<string> attrAdd = new List<string>();
+
     static public List<(string, List<string>)> preLists = new List<(string, List<string>)>();
 
     static public Action<string> ChangePing;
@@ -66,6 +68,19 @@ public static class PresavedLists
         ChangeIntrumentsPing(forceRemoveLangugae);
     }
 
+    static public void UpdateAttrAdd(string newValue)
+    {
+        if(newValue != "Пусто")
+        attrAdd.Add(newValue);
+    }
+
+    static public void UpdateAttrAdd(string oldValue, string newValue)
+    {
+        attrAdd.Remove(oldValue);
+        if (newValue != "Пусто")
+            attrAdd.Add(newValue);
+    }
+
     static public void RemoveFromPrelist(string listName, string value)
     {
         foreach ((string, List<string>) x in preLists.FindAll(x => x.Item1 == listName))
@@ -91,6 +106,11 @@ public static class PresavedLists
         instruments.Remove(value);
         if (ChangeIntrumentsPing != null)
             ChangeIntrumentsPing("");
+    }
+
+    static public void RemoveFromAttrAdd(string value)
+    {
+        attrAdd.Remove(value);
     }
 
     static public void SaveProficiency()

@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class MasterOfMartialArt : PlayerSubClass
 {
-    const string MOMABattleSupriorityCountSaveName = "MOMABattleSupriorityCount_";
-    const string MOMABattleSuprioritySaveName = "MOMABattleSupriority_";
-    bool flagBatSup= false;
-
     public MasterOfMartialArt()
     {
         name = "Мастер боевых искусств";

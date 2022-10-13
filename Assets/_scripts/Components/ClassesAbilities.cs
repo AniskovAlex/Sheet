@@ -47,7 +47,7 @@ public class ClassesAbilities : MonoBehaviour
             Ability[] abilityArr = playersClass.GetAbilities();
             foreach (Ability x in abilityArr)
             {
-                if (x.level == CharacterData.GetLevel(playersClass))
+                if (x.level == CharacterData.GetLevel(playersClass) + 1)
                     Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
             }
         }

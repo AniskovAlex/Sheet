@@ -13,7 +13,8 @@ public class Ability
         subClass,
         skills,
         instruments,
-        language
+        language,
+        subRace
     }
 
     public string head;
