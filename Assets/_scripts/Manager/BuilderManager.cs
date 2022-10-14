@@ -24,6 +24,12 @@ public class BuilderManager : MonoBehaviour
     [SerializeField] ClassesAbilities classes;
     [SerializeField] RaceAbilities race;
     [SerializeField] BackstoryAbilities backstory;
+    [SerializeField] Dropdown alignment;
+    [SerializeField] InputField nature;
+    [SerializeField] InputField ideal;
+    [SerializeField] InputField attachment;
+    [SerializeField] InputField weakness;
+    [SerializeField] InputField backstoryExtend;
 
     public void Del()
     {
@@ -75,6 +81,12 @@ public class BuilderManager : MonoBehaviour
             int buf;
             int.TryParse(maxHealth.text, out buf);
             PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
+            DataSaverAndLoader.SaveAlignment(alignment.value);
+            DataSaverAndLoader.SaveNature(nature.text);
+            DataSaverAndLoader.SaveIdeal(ideal.text);
+            DataSaverAndLoader.SaveAttachment(attachment.text);
+            DataSaverAndLoader.SaveWeakness(weakness.text);
+            DataSaverAndLoader.SaveBackstoryExtend(backstoryExtend.text);
             PresavedLists.SaveProficiency();
             PresavedLists.SaveInstruments();
             PresavedLists.SaveCustomPrelists();

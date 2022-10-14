@@ -6,6 +6,14 @@ public static class DataSaverAndLoader
 {
     const string moneySaveName = "mon_";
 
+    const string alignmentSaveName = "alignment_";
+    const string natureSaveName = "nature_";
+    const string idealSaveName = "ideal_";
+    const string attachmentSaveName = "attachment_";
+    const string weaknessSaveName = "weakness_";
+    const string backstoryExtendSaveName = "backstoryExtend_";
+
+
     const string maxHealthSaveName = "maxHP_";
     const string healthSaveName = "HP_";
     const string tempHealthSaveName = "THP_";
@@ -125,6 +133,12 @@ public static class DataSaverAndLoader
     {
         string characterName = CharacterCollection.GetName();
         return PlayerPrefs.GetString(characterName + classSubClassSaveName + playersClass.name);
+    }
+
+    public static string LoadSubRace(Race playersRace)
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + raceSubRaceSaveName + playersRace.name);
     }
 
     public static void SaveBladeProficiency(HashSet<Weapon.BladeType> list)
@@ -773,6 +787,75 @@ public static class DataSaverAndLoader
         {
             PlayerPrefs.SetInt(characterName + saveThrowSaveName + x, 1);
         }
+    }
+
+    public static void SaveAlignment(int value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + alignmentSaveName, value);
+    }
+
+    public static int LoadAlignment()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetInt(characterName + alignmentSaveName);
+    }
+
+    public static void SaveNature(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + natureSaveName, value);
+    }
+
+    public static string LoadNature()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + natureSaveName);
+    }
+    public static void SaveIdeal(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + idealSaveName, value);
+    }
+
+    public static string LoadIdeal()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + idealSaveName);
+    }
+
+    public static void SaveAttachment(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + attachmentSaveName, value);
+    }
+
+    public static string LoadAttachment()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + attachmentSaveName);
+    }
+    public static void SaveWeakness(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + weaknessSaveName, value);
+    }
+
+    public static string LoadWeakness()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + weaknessSaveName);
+    }
+
+    public static void SaveBackstoryExtend(string value)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetString(characterName + backstoryExtendSaveName, value);
+    }
+    public static string LoadBackstoryExtend()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetString(characterName + backstoryExtendSaveName);
     }
 
     public static void SaveRace(string value)

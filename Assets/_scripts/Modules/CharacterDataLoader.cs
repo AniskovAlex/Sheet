@@ -121,6 +121,9 @@ public class CharacterDataLoader : MonoBehaviour
             case "’аренгон":
                 race = new Harengon();
                 break;
+            case "√ном":
+                race = new Gnome();
+                break;
         }
     }
 
