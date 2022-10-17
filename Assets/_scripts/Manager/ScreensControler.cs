@@ -47,6 +47,8 @@ public class ScreensControler : MonoBehaviour
 
     private void Update()
     {
+        if (GlobalStatus.dragging)
+            return;
         if (Input.GetMouseButtonDown(0))
             if (offSet == null)
             {
