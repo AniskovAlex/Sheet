@@ -45,6 +45,11 @@ public class AttributePointBuy : MonoBehaviour
         Utilities.SetTextSign((attr / 2 - 5), modifier);
     }
 
+    public int GetAttr()
+    {
+        return attr;
+    }
+
     public void UpdateChanges(int value)
     {
         if (value < Mathf.Abs(plus) || attr >= 15)

@@ -44,18 +44,20 @@ public class CharacterData
         _language = language;
         _instruments = instruments;
         profMod = (level - 1) / 4 + 2;
+        for (int i = 0; i < _charAtr.Length; i++)
+            _charModifier[i] = _charAtr[i] / 2 - 5;
     }
 
     public static int GetAtribute(int index)
     {
-        if (index > 0 && index < _charAtr.Length)
+        if (index >= 0 && index < _charAtr.Length)
             return _charAtr[index];
         return 0;
     }
 
     public static int GetModifier(int index)
     {
-        if (index > 0 && index < _charModifier.Length)
+        if (index >= 0 && index < _charModifier.Length)
             return _charModifier[index];
         return 0;
     }
@@ -76,7 +78,7 @@ public class CharacterData
 
     public static int GetSkill(int index)
     {
-        if (index > 0 && index < _skills.Length)
+        if (index >= 0 && index < _skills.Length)
             return _skills[index];
         return 0;
     }

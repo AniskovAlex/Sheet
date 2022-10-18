@@ -13,6 +13,7 @@ public static class DataSaverAndLoader
     const string weaknessSaveName = "weakness_";
     const string backstoryExtendSaveName = "backstoryExtend_";
 
+    const string attrSaveName = "atr_";
 
     const string maxHealthSaveName = "maxHP_";
     const string healthSaveName = "HP_";
@@ -139,6 +140,13 @@ public static class DataSaverAndLoader
     {
         string characterName = CharacterCollection.GetName();
         return PlayerPrefs.GetString(characterName + raceSubRaceSaveName + playersRace.name);
+    }
+
+    public static void SaveAttributes(int[] attr)
+    {
+        string characterName = CharacterCollection.GetName();
+        for (int i = 0; i < attr.Length; i++)
+            PlayerPrefs.SetInt(characterName + attrSaveName + i, attr[i]);
     }
 
     public static void SaveBladeProficiency(HashSet<Weapon.BladeType> list)

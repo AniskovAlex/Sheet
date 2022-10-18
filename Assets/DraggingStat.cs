@@ -90,4 +90,9 @@ public class DraggingStat : MonoBehaviour
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+
+    public int GetAttr()
+    {
+        return sum;
+    }
 }
