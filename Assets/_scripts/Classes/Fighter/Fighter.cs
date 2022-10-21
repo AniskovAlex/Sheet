@@ -39,5 +39,20 @@ public class Fighter : PlayersClass
     {
         return new HashSet<int> { 0, 1};
     }
+    public override List<(List<(int, Item)>, List<(int, Item)>)> GetItems()
+    {
+        List<(List<(int, Item)>, List<(int, Item)>)> list = new List<(List<(int, Item)>, List<(int, Item)>)>();
+        List<(int, Item)> subList1 = new List<(int, Item)>()
+        {
+            (1, new Item("Лист")),
+            (1, new Item("Не лист"))
+        };
+        List<(int, Item)> subList2 = new List<(int, Item)>()
+        {
+            (1, new Item(-2))
+        };
+        list.Add((subList1, subList2));
+        return list;
+    }
 
 }

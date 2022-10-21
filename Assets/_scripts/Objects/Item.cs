@@ -16,4 +16,19 @@ public class Item
     public int cost;
     public int weight;
     public MType mType;
+
+    public Item()
+    {
+
+    }
+
+    public Item(int id)
+    {
+        this.id = id;
+    }
+    public Item(string label)
+    {
+        id = -1;
+        this.label = label;
+    }
 }

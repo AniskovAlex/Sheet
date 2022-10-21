@@ -73,4 +73,9 @@ public abstract class PlayersClass : ObjectsBehavior
     {
         return new HashSet<int>();
     }
+
+    public virtual List<(List<(int, Item)>, List<(int, Item)>)> GetItems()
+    {
+        return null;
+    }
 }
