@@ -75,7 +75,7 @@ public class DataBase : MonoBehaviour
     {
 
         GameObject newItem = Instantiate(item, panel.transform);
-        newItem.GetComponent<ItemBox>().SetItem(x, amount);
+        newItem.GetComponent<ItemBox>().SetItem(x, amount, true);
         
     }
    

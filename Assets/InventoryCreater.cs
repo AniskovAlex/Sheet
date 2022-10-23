@@ -22,6 +22,7 @@ public class InventoryCreater : MonoBehaviour
             returnButton.SetActive(true);
             buyPanel.SetActive(true);
             choosePanel.SetActive(false);
+            buyPanel.GetComponent<BuyInventoryPanel>().SetAdder(classes.GetClass());
             position = 1;
         }
     }

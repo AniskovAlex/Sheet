@@ -78,4 +78,9 @@ public abstract class PlayersClass : ObjectsBehavior
     {
         return null;
     }
+
+    public virtual int GetMoney()
+    {
+        return 0;
+    }
 }

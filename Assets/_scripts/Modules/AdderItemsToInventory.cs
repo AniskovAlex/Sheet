@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdderItemsToInventory : MonoBehaviour
+public class AdderItemsToInventory : MonoBehaviour, IAdder
 {
     [SerializeField] GameObject itemsContainer;
     [SerializeField] GameObject itemObject;
@@ -36,9 +36,9 @@ public class AdderItemsToInventory : MonoBehaviour
 
     }
 
-    void AddNewItem(Item item, int amount)
+    public void AddNewItem(Item item, int amount)
     {
         ItemBox newItemBox = Instantiate(itemObject, itemsContainer.transform).GetComponent<ItemBox>();
-        newItemBox.SetItem(item, amount);
+        newItemBox.SetItem(item, amount, true);
     }
 }

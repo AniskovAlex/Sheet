@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class AddItemButton : MonoBehaviour
 {
-    ItemsRedactor itemsRedactor;
-    AdderItemsToInventory adderItemsToInventory;
+    [SerializeField] ItemsRedactor itemsRedactor;
+    [SerializeField] GameObject adder;
+    IAdder adderItemsToInventory = null;
     // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-        itemsRedactor = gameObject.GetComponentInParent<ItemsRedactor>();
-        adderItemsToInventory = gameObject.GetComponentInParent<AdderItemsToInventory>();
+        adderItemsToInventory = adder.GetComponent<IAdder>();
     }
 
     public void AddItem()

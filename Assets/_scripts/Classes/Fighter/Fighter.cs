@@ -55,4 +55,9 @@ public class Fighter : PlayersClass
         return list;
     }
 
+    public override int GetMoney()
+    {
+        return 10000;
+    }
+
 }
