@@ -25,6 +25,7 @@ public class BuilderManager : MonoBehaviour
     [SerializeField] RaceAbilities race;
     [SerializeField] AttributesCreater attr;
     [SerializeField] BackstoryAbilities backstory;
+    [SerializeField] InventoryCreater inventory;
     [SerializeField] Dropdown alignment;
     [SerializeField] InputField nature;
     [SerializeField] InputField ideal;
@@ -94,6 +95,9 @@ public class BuilderManager : MonoBehaviour
             PresavedLists.SaveCustomPrelists();
             PresavedLists.saveSaveThrows();
             PresavedLists.SaveLanguage();
+            List<(int, Item)> itemList = inventory.GetItems();
+            foreach ((int, Item) x in itemList)
+                DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
             PlayerPrefs.Save();
         }
         SceneManager.LoadScene("view", LoadSceneMode.Single);

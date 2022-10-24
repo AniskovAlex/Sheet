@@ -50,6 +50,14 @@ public class AdderItemToPrelist : MonoBehaviour, IAdder
         AddNewItem(addItem, addAmount);
     }
 
+    public List<(int, Item)> GetItems()
+    {
+        ItemBox[] items = itemsContainer.GetComponentsInChildren<ItemBox>();
+        List<(int, Item)> list = new List<(int, Item)>();
+        foreach (ItemBox x in items)
+            list.Add((x.GetAmount(), x.GetItem()));
+        return list;
+    }
     int GetAbsoluteCost(Item item)
     {
         switch (item.mType)

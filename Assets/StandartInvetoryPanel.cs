@@ -10,6 +10,8 @@ public class StandartInvetoryPanel : MonoBehaviour
     [SerializeField] Dropdown dropdown;
     [SerializeField] Text text;
     [SerializeField] Button button;
+    List<(int, Item)> itemList = new List<(int, Item)>();
+    List<Dropdown> dropdowns = new List<Dropdown>();
     Item[] items = null;
 
     public void SetInventoryChoice(PlayersClass playersClass, Backstory backstory, Item[] items)
@@ -28,6 +30,34 @@ public class StandartInvetoryPanel : MonoBehaviour
             else
                 ShowItems(x.Item1, parent);
         }
+    }
+
+    public List<(int, Item)> GetItems()
+    {
+        foreach (Dropdown x in dropdowns)
+            foreach (Item y in items)
+                if (x.captionText.text == y.label)
+                {
+                    itemList.Add((1, y));
+                    break;
+                }
+        itemList.ForEach(g =>
+        {
+            itemList.ForEach(y =>
+            {
+                if (itemList.IndexOf(g) <= itemList.IndexOf(y));
+                else
+                {
+                    if (g.Item2 == y.Item2)
+                    {
+                        g.Item1 += y.Item1;
+                        itemList.Remove(y);
+
+                    }
+                }
+            });
+        });
+        return itemList;
     }
 
     void ShowList(List<(int, Item)> list, GameObject parent)
@@ -81,6 +111,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                                 Instantiate(text, itemsParent.transform).text = y.label;
                             else
                                 Instantiate(text, itemsParent.transform).text = y.label + " x" + x.Item1;
+                            list.Add((x.Item1, y));
                             break;
                         }
                     break;
@@ -89,12 +120,14 @@ public class StandartInvetoryPanel : MonoBehaviour
                         Instantiate(text, itemsParent.transform).text = x.Item2.label;
                     else
                         Instantiate(text, itemsParent.transform).text = x.Item2.label + " x" + x.Item1;
+                    list.Add(x);
                     break;
                 case -2:
                     Instantiate(text, itemsParent.transform).text = "Воинское оружие";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
                         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
                         foreach (Item y in items)
                         {

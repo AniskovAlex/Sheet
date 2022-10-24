@@ -9,4 +9,9 @@ public class BuyInventoryPanel : MonoBehaviour
     {
         adder.SetCoins(playersClass.GetMoney());
     }
+
+    public List<(int, Item)> GetItems()
+    {
+        return adder.GetItems();
+    }
 }

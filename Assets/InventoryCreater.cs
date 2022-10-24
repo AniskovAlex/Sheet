@@ -47,4 +47,16 @@ public class InventoryCreater : MonoBehaviour
         choosePanel.SetActive(true);
         position = 0;
     }
+
+    public List<(int, Item)> GetItems()
+    {
+        switch (position)
+        {
+            case 1:
+                return buyPanel.GetComponent<BuyInventoryPanel>().GetItems();
+            case 2:
+                return standartPanel.GetComponent<StandartInvetoryPanel>().GetItems();
+        }
+        return null;
+    }
 }

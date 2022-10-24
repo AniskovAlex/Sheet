@@ -34952,6 +34952,7 @@ MonoBehaviour:
   race: {fileID: 1251258737}
   attr: {fileID: 484128985}
   backstory: {fileID: 1976092650}
+  inventory: {fileID: 112030391}
   alignment: {fileID: 362991739}
   nature: {fileID: 944881749}
   ideal: {fileID: 1549980154}
