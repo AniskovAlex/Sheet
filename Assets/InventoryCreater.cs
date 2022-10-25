@@ -59,4 +59,16 @@ public class InventoryCreater : MonoBehaviour
         }
         return null;
     }
+
+    public int[] GetMoney()
+    {
+        switch (position)
+        {
+            case 1:
+                return buyPanel.GetComponent<BuyInventoryPanel>().GetMoney();
+            case 2:
+                return backstory.GetBackstory().GetMoney();
+        }
+        return null;
+    }
 }

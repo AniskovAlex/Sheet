@@ -25,6 +25,11 @@ public class AdderItemToPrelist : MonoBehaviour, IAdder
         coinsText.text = "гл: " + coins[0] + ", ял: " + coins[1] + ", лл: " + coins[2];
     }
 
+    public int[] GetCoins()
+    {
+        return coins;
+    }
+
     public void AddItem(Item addItem, int addAmount)
     {
         ItemBox[] items = itemsContainer.GetComponentsInChildren<ItemBox>();

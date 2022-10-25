@@ -79,6 +79,20 @@ public static class DataSaverAndLoader
     const string customListCount = "customListCount_";
     const string customList = "customList_";
 
+    public static void SaveMaxHealth(int maxHealth)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + maxHealthSaveName, maxHealth);
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveHealth(int health)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + healthSaveName, health);
+        PlayerPrefs.Save();
+    }
+
     public static void SaveCharacter(string characterName)
     {
         if (PlayerPrefs.HasKey(charactersCountSaveName))

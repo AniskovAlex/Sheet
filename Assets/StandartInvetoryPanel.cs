@@ -111,7 +111,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                                 Instantiate(text, itemsParent.transform).text = y.label;
                             else
                                 Instantiate(text, itemsParent.transform).text = y.label + " x" + x.Item1;
-                            list.Add((x.Item1, y));
+                            itemList.Add((x.Item1, y));
                             break;
                         }
                     break;
@@ -120,7 +120,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                         Instantiate(text, itemsParent.transform).text = x.Item2.label;
                     else
                         Instantiate(text, itemsParent.transform).text = x.Item2.label + " x" + x.Item1;
-                    list.Add(x);
+                    itemList.Add(x);
                     break;
                 case -2:
                     Instantiate(text, itemsParent.transform).text = "Воинское оружие";

@@ -14,4 +14,9 @@ public class BuyInventoryPanel : MonoBehaviour
     {
         return adder.GetItems();
     }
+
+    public int[] GetMoney()
+    {
+        return adder.GetCoins();
+    }
 }

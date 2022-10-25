@@ -22,4 +22,9 @@ public class Backstory : ObjectsBehavior
     {
         return abilities;
     }
+
+    public virtual int[] GetMoney()
+    {
+        return null;
+    }
 }

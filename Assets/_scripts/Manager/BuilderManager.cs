@@ -32,6 +32,7 @@ public class BuilderManager : MonoBehaviour
     [SerializeField] InputField attachment;
     [SerializeField] InputField weakness;
     [SerializeField] InputField backstoryExtend;
+    int healthDice = 0;
 
     public void Del()
     {
@@ -51,23 +52,25 @@ public class BuilderManager : MonoBehaviour
             HashSet<int> saveThrows;
             if (classes.GetClass() != null)
             {
-                bladeProf = classes.GetClass().GetBladeProficiency();
+                PlayersClass player = classes.GetClass();
+                bladeProf = player.GetBladeProficiency();
                 if (bladeProf != null)
                     PresavedLists.bladeTypes.UnionWith(bladeProf);
 
-                weaponProf = classes.GetClass().GetWeaponProficiency();
+                weaponProf = player.GetWeaponProficiency();
                 if (weaponProf != null)
                     PresavedLists.weaponTypes.UnionWith(weaponProf);
 
-                armorProf = classes.GetClass().GetArmorProficiency();
+                armorProf = player.GetArmorProficiency();
                 if (armorProf != null)
                     PresavedLists.armorTypes.UnionWith(armorProf);
 
-                DataSaverAndLoader.SaveClass(classes.GetClass().name);
-                if (classes.GetClass().GetSubClass() != null)
+                DataSaverAndLoader.SaveClass(player.name);
+                if (player.GetSubClass() != null)
                     DataSaverAndLoader.SaveSubClass(classes.GetClass());
-                saveThrows = classes.GetClass().GetSaveThrows();
+                saveThrows = player.GetSaveThrows();
                 PresavedLists.saveThrows.UnionWith(saveThrows);
+                healthDice = player.healthDice;
             }
             if (race.GetRace() != null)
             {
@@ -96,8 +99,12 @@ public class BuilderManager : MonoBehaviour
             PresavedLists.saveSaveThrows();
             PresavedLists.SaveLanguage();
             List<(int, Item)> itemList = inventory.GetItems();
-            foreach ((int, Item) x in itemList)
-                DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
+            if (itemList != null)
+                foreach ((int, Item) x in itemList)
+                    DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
+            int[] money = inventory.GetMoney();
+            if (money != null)
+                DataSaverAndLoader.SaveMoney(new List<int>(money));
             PlayerPrefs.Save();
         }
         SceneManager.LoadScene("view", LoadSceneMode.Single);
@@ -105,9 +112,10 @@ public class BuilderManager : MonoBehaviour
 
     void SaveAttr()
     {
-        int[] arr= attr.GetAttributes();
-        foreach(string x in PresavedLists.attrAdd)
-            switch (x){
+        int[] arr = attr.GetAttributes();
+        foreach (string x in PresavedLists.attrAdd)
+            switch (x)
+            {
                 case "Сила":
                     arr[0]++;
                     break;
@@ -127,6 +135,8 @@ public class BuilderManager : MonoBehaviour
                     arr[5]++;
                     break;
             }
+        DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice);
+        DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice);
         DataSaverAndLoader.SaveAttributes(arr);
     }
 

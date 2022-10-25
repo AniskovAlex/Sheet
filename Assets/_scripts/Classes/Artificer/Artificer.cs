@@ -11,4 +11,9 @@ public class Artificer : PlayersClass
         LoadAbilities("Artificer");
         healthDice = 8;
     }
+
+    public override int GetMoney()
+    {
+        return 0;
+    }
 }

@@ -10,4 +10,9 @@ public class Artist : Backstory
         name = "Артист";
         LoadAbilities("Artist");
     }
+
+    public override int[] GetMoney()
+    {
+        return new int[3] { 20, 0, 0 };
+    }
 }
