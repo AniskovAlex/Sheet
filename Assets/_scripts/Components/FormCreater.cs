@@ -84,7 +84,7 @@ public class FormCreater : MonoBehaviour
             case Ability.Type.skills:
                 if (ability.chooseCount > 0)
                 {
-                    HashSet<string> skillList = ability.common;
+                    HashSet<string> skillList = new HashSet<string>(ability.common);
                     skillList.ExceptWith(PresavedLists.skills);
                     PresavedLists.ChangeSkillPing += UpdateSkillOptions;
                     for (int i = 0; i < ability.chooseCount; i++)
@@ -108,7 +108,7 @@ public class FormCreater : MonoBehaviour
             case Ability.Type.instruments:
                 if (ability.chooseCount > 0)
                 {
-                    HashSet<string> instrumentsList = ability.common;
+                    HashSet<string> instrumentsList = new HashSet<string>(ability.common);
                     instrumentsList.ExceptWith(PresavedLists.instruments);
                     PresavedLists.ChangeIntrumentsPing += UpdateInstrumentsOptions;
                     for (int i = 0; i < ability.chooseCount; i++)
@@ -132,9 +132,9 @@ public class FormCreater : MonoBehaviour
             case Ability.Type.language:
                 if (ability.chooseCount > 0)
                 {
-                    HashSet<string> languageList = ability.common;
+                    HashSet<string> languageList = new HashSet<string>(ability.common);
                     languageList.ExceptWith(PresavedLists.languages);
-                    PresavedLists.ChangeIntrumentsPing += UpdateLanguageOptions;
+                    PresavedLists.ChangeLanguagePing += UpdateLanguageOptions;
                     for (int i = 0; i < ability.chooseCount; i++)
                     {
                         Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
@@ -209,9 +209,8 @@ public class FormCreater : MonoBehaviour
 
     void UpdateSkillOptions(string remove)
     {
-
         Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
-        HashSet<string> skillList = ability.common;
+        HashSet<string> skillList = new HashSet<string>(ability.common);
         skillList.ExceptWith(PresavedLists.skills);
         foreach (Dropdown x in dropdowns)
         {
@@ -226,9 +225,8 @@ public class FormCreater : MonoBehaviour
     }
     void UpdateInstrumentsOptions(string remove)
     {
-
         Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
-        HashSet<string> instrumentsList = ability.common;
+        HashSet<string> instrumentsList = new HashSet<string>(ability.common);
         instrumentsList.ExceptWith(PresavedLists.instruments);
         foreach (Dropdown x in dropdowns)
         {
@@ -243,9 +241,8 @@ public class FormCreater : MonoBehaviour
     }
     void UpdateLanguageOptions(string remove)
     {
-
         Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
-        HashSet<string> languageList = ability.common;
+        HashSet<string> languageList = new HashSet<string>(ability.common);
         languageList.ExceptWith(PresavedLists.languages);
         foreach (Dropdown x in dropdowns)
         {
@@ -299,6 +296,7 @@ public class FormCreater : MonoBehaviour
             PresavedLists.ChangePing -= UpdateOptions;
             foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
                 PresavedLists.RemoveFromPrelist(ability.listName, x.GetComponent<DropdownExtend>().currentValueText);
+            if (PresavedLists.ChangePing != null) PresavedLists.ChangePing("");
             return;
         }
         if (ability.type == Ability.Type.skills)
@@ -308,24 +306,43 @@ public class FormCreater : MonoBehaviour
                 PresavedLists.ChangeSkillPing -= UpdateSkillOptions;
                 foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
                     PresavedLists.RemoveFromSkills(x.GetComponent<DropdownExtend>().currentValueText);
+
             }
             else
                 foreach (string x in ability.common)
                     PresavedLists.RemoveFromSkills(x);
+            if (PresavedLists.ChangeSkillPing != null) PresavedLists.ChangeSkillPing("");
             return;
         }
         if (ability.type == Ability.Type.instruments)
         {
             if (ability.chooseCount > 0)
             {
-                PresavedLists.ChangeSkillPing -= UpdateInstrumentsOptions;
+                PresavedLists.ChangeIntrumentsPing -= UpdateInstrumentsOptions;
                 foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
                     PresavedLists.RemoveFromInstruments(x.GetComponent<DropdownExtend>().currentValueText);
             }
             else
                 foreach (string x in ability.common)
                     PresavedLists.RemoveFromInstruments(x);
+            if (PresavedLists.ChangeIntrumentsPing != null) PresavedLists.ChangeIntrumentsPing("");
             return;
         }
+        if (ability.type == Ability.Type.language)
+        {
+            if (ability.chooseCount > 0)
+            {
+                PresavedLists.ChangeLanguagePing -= UpdateLanguageOptions;
+                foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                    PresavedLists.RemoveFromLanguage(x.GetComponent<DropdownExtend>().currentValueText);
+            }
+            else
+                foreach (string x in ability.common)
+                    PresavedLists.RemoveFromLanguage(x);
+            if (PresavedLists.ChangeLanguagePing != null)
+                PresavedLists.ChangeLanguagePing("");
+            return;
+        }
+
     }
 }

@@ -24,7 +24,7 @@ public class RaceAbilities : MonoBehaviour
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in opener)
         {
-            Destroy(x.gameObject);
+            DestroyImmediate(x.gameObject);
         }
         if (playersRace != null)
         {
@@ -40,7 +40,7 @@ public class RaceAbilities : MonoBehaviour
     {
         FormCreater buf = formCreater.GetComponentInChildren<Discription>().GetComponentInChildren<FormCreater>();
         if (buf != null)
-            Destroy(buf.gameObject);
+            DestroyImmediate(buf.gameObject);
         if (playersRace != null)
         {
             Ability[] abilityArr = playersRace.ChooseSubRace(value.captionText.text);

@@ -21,7 +21,7 @@ public class BackstoryAbilities : MonoBehaviour
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in opener)
         {
-            Destroy(x.gameObject);
+            DestroyImmediate(x.gameObject);
         }
         if (playersBackstory != null)
         {

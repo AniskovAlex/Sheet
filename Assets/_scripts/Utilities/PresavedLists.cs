@@ -27,6 +27,7 @@ public static class PresavedLists
     static public Action<string> ChangePing;
     static public Action<string> ChangeSkillPing;
     static public Action<string> ChangeIntrumentsPing;
+    static public Action<string> ChangeLanguagePing;
 
     static public void UpdatePrelist(string listName, string oldValue, string newValue)
     {
@@ -65,7 +66,7 @@ public static class PresavedLists
             forceRemoveLangugae = newValue;
         languages.Remove(oldValue);
         languages.Add(newValue);
-        ChangeIntrumentsPing(forceRemoveLangugae);
+        ChangeLanguagePing(forceRemoveLangugae);
     }
 
     static public void UpdateAttrAdd(string newValue)
@@ -106,6 +107,12 @@ public static class PresavedLists
         instruments.Remove(value);
         if (ChangeIntrumentsPing != null)
             ChangeIntrumentsPing("");
+    }
+    static public void RemoveFromLanguage(string value)
+    {
+        languages.Remove(value);
+        if (ChangeLanguagePing != null)
+            ChangeLanguagePing("");
     }
 
     static public void RemoveFromAttrAdd(string value)

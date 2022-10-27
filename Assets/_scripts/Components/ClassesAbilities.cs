@@ -40,7 +40,7 @@ public class ClassesAbilities : MonoBehaviour
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in opener)
         {
-            Destroy(x.gameObject);
+            DestroyImmediate(x.gameObject);
         }
         if (playersClass != null)
         {
@@ -57,7 +57,7 @@ public class ClassesAbilities : MonoBehaviour
     {
         FormCreater buf = formCreater.GetComponentInChildren<Discription>().GetComponentInChildren<FormCreater>();
         if (buf != null)
-            Destroy(buf.gameObject);
+            DestroyImmediate(buf.gameObject);
         if (playersClass != null)
         {
             Ability[] abilityArr = playersClass.ChooseSubClass(value.captionText.text);
