@@ -48,6 +48,11 @@ public class CharacterData
             _charModifier[i] = _charAtr[i] / 2 - 5;
     }
 
+    public static int[] GetAtribute()
+    {
+        return _charAtr;
+    }
+
     public static int GetAtribute(int index)
     {
         if (index >= 0 && index < _charAtr.Length)
@@ -125,7 +130,7 @@ public class CharacterData
     public static int GetLevel(PlayersClass playerClass)
     {
         foreach ((int, PlayersClass) x in _classes)
-            if (x.Item2 == playerClass)
+            if (x.Item2.name == playerClass.name)
                 return x.Item1;
         return 0;
     }
@@ -145,6 +150,11 @@ public class CharacterData
         maxHP = _maxHP;
         currentHP = _currentHP;
         tempHP = _tempHP;
+    }
+
+    public static int GetMaxHealth()
+    {
+        return _maxHP;
     }
 
     public static void SetCharacterData(int[] charAtr, int[] saves, int[] money, int[] skills,

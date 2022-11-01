@@ -10,6 +10,7 @@ public class ClassesAbilities : MonoBehaviour
 {
     [SerializeField] GameObject content;
     [SerializeField] GameObject form;
+    [SerializeField] GameObject health;
     PlayersClass playersClass = null;
     private void Awake()
     {
@@ -42,12 +43,14 @@ public class ClassesAbilities : MonoBehaviour
         {
             DestroyImmediate(x.gameObject);
         }
+        Instantiate(health, content.transform);
         if (playersClass != null)
         {
             Ability[] abilityArr = playersClass.GetAbilities();
+            int level = CharacterData.GetLevel(playersClass) + 1;
             foreach (Ability x in abilityArr)
             {
-                if (x.level == CharacterData.GetLevel(playersClass) + 1)
+                if (x.level == level)
                     Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
             }
         }

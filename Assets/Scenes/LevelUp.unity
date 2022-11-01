@@ -2704,6 +2704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 1825717557}
   form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
+  health: {fileID: 6253383700909344994, guid: 2ff4fcba92800c342b365f566070f163, type: 3}
 --- !u!114 &1825717559
 MonoBehaviour:
   m_ObjectHideFlags: 0
