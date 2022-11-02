@@ -6,6 +6,9 @@ public static class DataSaverAndLoader
 {
     const string moneySaveName = "mon_";
     const string skillSaveName = "skill_";
+    const string noteSaveName = "note_";
+    const string noteHeadSaveName = "noteHead_";
+    const string noteCountSaveName = "noteCount_";
 
     const string alignmentSaveName = "alignment_";
     const string natureSaveName = "nature_";
@@ -79,6 +82,57 @@ public static class DataSaverAndLoader
 
     const string customListCount = "customListCount_";
     const string customList = "customList_";
+
+    public static void SaveNote(string head, string note)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + noteCountSaveName);
+        PlayerPrefs.SetString(characterName + noteHeadSaveName + count, head);
+        PlayerPrefs.SetString(characterName + noteSaveName + count, note);
+        PlayerPrefs.SetInt(characterName + noteCountSaveName, count + 1);
+    }
+
+    public static List<(string, string)> LoadNotes()
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + noteCountSaveName);
+        List<(string, string)> list = new List<(string, string)>();
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(
+                (
+                PlayerPrefs.GetString(characterName + noteHeadSaveName + i),
+                PlayerPrefs.GetString(characterName + noteSaveName + i)
+                ));
+        }
+        return list;
+    }
+
+    public static void DeleteNotes(int index)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + noteCountSaveName);
+        for (int i = index; i < count - 1; i++)
+        {
+            PlayerPrefs.SetString(characterName + noteHeadSaveName + i, PlayerPrefs.GetString(characterName + noteHeadSaveName + (i + 1)));
+            PlayerPrefs.SetString(characterName + noteSaveName + i, PlayerPrefs.GetString(characterName + noteSaveName + (i + 1)));
+        }
+        PlayerPrefs.DeleteKey(characterName + noteHeadSaveName + count);
+        PlayerPrefs.DeleteKey(characterName + noteSaveName + count);
+        PlayerPrefs.SetInt(characterName + noteCountSaveName, count - 1);
+    }
+
+    public static void DeleteNotes()
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + noteCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            PlayerPrefs.DeleteKey(characterName + noteHeadSaveName + i);
+            PlayerPrefs.DeleteKey(characterName + noteSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(characterName + noteCountSaveName);
+    }
 
     public static void SaveMaxHealth(int maxHealth)
     {
@@ -689,145 +743,6 @@ public static class DataSaverAndLoader
         }
     }
 
-    public static void DeleteCharacter(string name)
-    {
-        int count = PlayerPrefs.GetInt(name + levelCountSaveName);
-        for (int i = 0; i < count; i++)
-        {
-            string className = PlayerPrefs.GetString(name + levelLabelSaveName + i);
-            PlayerPrefs.DeleteKey(name + classSubClassSaveName + className);
-            PlayerPrefs.DeleteKey(name + levelLabelSaveName + i);
-            PlayerPrefs.DeleteKey(name + levelSaveName + i);
-        }
-
-        string raceName = PlayerPrefs.GetString(name + raceSaveName);
-        PlayerPrefs.DeleteKey(name + raceSubRaceSaveName + raceName);
-        PlayerPrefs.DeleteKey(name + raceSaveName);
-
-        PlayerPrefs.DeleteKey(name + levelCountSaveName);
-        PlayerPrefs.DeleteKey(name + healthSaveName);
-        PlayerPrefs.DeleteKey(name + maxHealthSaveName);
-        PlayerPrefs.DeleteKey(name + tempHealthSaveName);
-
-        for (int i = 0; i < 3; i++)
-            PlayerPrefs.DeleteKey(name + moneySaveName + i);
-        int itemsCount = PlayerPrefs.GetInt(name + itemsCountSaveName);
-        for (int i = itemsCount - 1; i >= 0; i--)
-        {
-            int id = PlayerPrefs.GetInt(name + itemSaveID + i);
-            string label = PlayerPrefs.GetString(name + itemSaveName + i);
-            if ((id == -1) && PlayerPrefs.HasKey(name + itemCostSaveName + label))
-            {
-                RemoveItem(LoadSavedItem(label, name), name);
-            }
-            else
-            {
-                PlayerPrefs.DeleteKey(name + itemSaveID + i);
-            }
-        }
-        PlayerPrefs.DeleteKey(name + itemsCountSaveName);
-
-        int equipCount = PlayerPrefs.GetInt(name + weaponEquipCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + weaponEquipSaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + weaponEquipCountSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + armorEquipCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + armorEquipSaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + armorEquipCountSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + weaponProficiencyCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + weaponProficiencySaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + weaponProficiencyCountSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + bladeProficiencyCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + bladeProficiencySaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + bladeProficiencyCountSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + armorProficiencyCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + armorProficiencySaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + armorProficiencyCountSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + customListCount);
-        for (int i = 0; i < equipCount; i++)
-        {
-            count = PlayerPrefs.GetInt(name + PlayerPrefs.GetString(name + customList + i) + "CountAuto_");
-            for (int j = 0; j < count; j++)
-            {
-                PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "Auto_" + j);
-            }
-            PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "CountAuto_");
-            PlayerPrefs.DeleteKey(name + customList + i);
-        }
-        PlayerPrefs.DeleteKey(name + customListCount);
-
-        string buf = "";
-        count = PlayerPrefs.GetInt(charactersCountSaveName);
-        bool flag = false;
-        for (int i = 1; i <= count; i++)
-        {
-            buf = PlayerPrefs.GetString(charactersSaveName + i);
-            if (buf == name || flag)
-            {
-                PlayerPrefs.SetString(charactersSaveName + i, PlayerPrefs.GetString(charactersSaveName + (i + 1)));
-                flag = true;
-            }
-        }
-
-        for (int i = 0; i < 6; i++)
-        {
-            PlayerPrefs.DeleteKey(name + attrSaveName + i);
-            PlayerPrefs.DeleteKey(name + saveThrowSaveName+ i);
-        }
-
-        for (int i = 0; i < 17; i++)
-        {
-            PlayerPrefs.DeleteKey(name + skillSaveName + i);
-        }
-
-        PlayerPrefs.DeleteKey(name + natureSaveName);
-        PlayerPrefs.DeleteKey(name + weaknessSaveName);
-        PlayerPrefs.DeleteKey(name + idealSaveName);
-        PlayerPrefs.DeleteKey(name + attachmentSaveName);
-
-        PlayerPrefs.DeleteKey(name + alignmentSaveName);
-
-        PlayerPrefs.DeleteKey(name + backstorySaveName);
-        PlayerPrefs.DeleteKey(name + backstoryExtendSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + instrumentsCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + instrumentsSaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + instrumentsCountSaveName);
-
-        equipCount = PlayerPrefs.GetInt(name + languageCountSaveName);
-        for (int i = 0; i < equipCount; i++)
-        {
-            PlayerPrefs.DeleteKey(name + languageSaveName + i);
-        }
-        PlayerPrefs.DeleteKey(name + languageCountSaveName);
-
-        PlayerPrefs.DeleteKey(name + count);
-        PlayerPrefs.SetInt(charactersCountSaveName, count - 1);
-        PlayerPrefs.Save();
-
-    }
 
     public static void SaveInstruments(HashSet<string> list)
     {
@@ -973,5 +888,146 @@ public static class DataSaverAndLoader
     {
         string characterName = CharacterCollection.GetName();
         return PlayerPrefs.GetString(characterName + backstorySaveName);
+    }
+    public static void DeleteCharacter(string name)
+    {
+        int count = PlayerPrefs.GetInt(name + levelCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            string className = PlayerPrefs.GetString(name + levelLabelSaveName + i);
+            PlayerPrefs.DeleteKey(name + classSubClassSaveName + className);
+            PlayerPrefs.DeleteKey(name + levelLabelSaveName + i);
+            PlayerPrefs.DeleteKey(name + levelSaveName + i);
+        }
+
+        string raceName = PlayerPrefs.GetString(name + raceSaveName);
+        PlayerPrefs.DeleteKey(name + raceSubRaceSaveName + raceName);
+        PlayerPrefs.DeleteKey(name + raceSaveName);
+
+        PlayerPrefs.DeleteKey(name + levelCountSaveName);
+        PlayerPrefs.DeleteKey(name + healthSaveName);
+        PlayerPrefs.DeleteKey(name + maxHealthSaveName);
+        PlayerPrefs.DeleteKey(name + tempHealthSaveName);
+
+        for (int i = 0; i < 3; i++)
+            PlayerPrefs.DeleteKey(name + moneySaveName + i);
+        int itemsCount = PlayerPrefs.GetInt(name + itemsCountSaveName);
+        for (int i = itemsCount - 1; i >= 0; i--)
+        {
+            int id = PlayerPrefs.GetInt(name + itemSaveID + i);
+            string label = PlayerPrefs.GetString(name + itemSaveName + i);
+            if ((id == -1) && PlayerPrefs.HasKey(name + itemCostSaveName + label))
+            {
+                RemoveItem(LoadSavedItem(label, name), name);
+            }
+            else
+            {
+                PlayerPrefs.DeleteKey(name + itemSaveID + i);
+            }
+        }
+        PlayerPrefs.DeleteKey(name + itemsCountSaveName);
+
+        int equipCount = PlayerPrefs.GetInt(name + weaponEquipCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + weaponEquipSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + weaponEquipCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + armorEquipCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + armorEquipSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + armorEquipCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + weaponProficiencyCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + weaponProficiencySaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + weaponProficiencyCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + bladeProficiencyCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + bladeProficiencySaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + bladeProficiencyCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + armorProficiencyCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + armorProficiencySaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + armorProficiencyCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + customListCount);
+        for (int i = 0; i < equipCount; i++)
+        {
+            count = PlayerPrefs.GetInt(name + PlayerPrefs.GetString(name + customList + i) + "CountAuto_");
+            for (int j = 0; j < count; j++)
+            {
+                PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "Auto_" + j);
+            }
+            PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "CountAuto_");
+            PlayerPrefs.DeleteKey(name + customList + i);
+        }
+        PlayerPrefs.DeleteKey(name + customListCount);
+
+        string buf = "";
+        count = PlayerPrefs.GetInt(charactersCountSaveName);
+        bool flag = false;
+        for (int i = 1; i <= count; i++)
+        {
+            buf = PlayerPrefs.GetString(charactersSaveName + i);
+            if (buf == name || flag)
+            {
+                PlayerPrefs.SetString(charactersSaveName + i, PlayerPrefs.GetString(charactersSaveName + (i + 1)));
+                flag = true;
+            }
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            PlayerPrefs.DeleteKey(name + attrSaveName + i);
+            PlayerPrefs.DeleteKey(name + saveThrowSaveName + i);
+        }
+
+        for (int i = 0; i < 17; i++)
+        {
+            PlayerPrefs.DeleteKey(name + skillSaveName + i);
+        }
+
+        PlayerPrefs.DeleteKey(name + natureSaveName);
+        PlayerPrefs.DeleteKey(name + weaknessSaveName);
+        PlayerPrefs.DeleteKey(name + idealSaveName);
+        PlayerPrefs.DeleteKey(name + attachmentSaveName);
+
+        PlayerPrefs.DeleteKey(name + alignmentSaveName);
+
+        PlayerPrefs.DeleteKey(name + backstorySaveName);
+        PlayerPrefs.DeleteKey(name + backstoryExtendSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + instrumentsCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + instrumentsSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + instrumentsCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + languageCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + languageSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + languageCountSaveName);
+
+        DeleteNotes();
+
+        PlayerPrefs.DeleteKey(name + count);
+        PlayerPrefs.SetInt(charactersCountSaveName, count - 1);
+        PlayerPrefs.Save();
+
     }
 }
