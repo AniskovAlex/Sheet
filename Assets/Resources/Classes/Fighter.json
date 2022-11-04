@@ -1,5 +1,13 @@
 [
   {
+    "head": "Заклы",
+    "type": 9,
+    "level": 1,
+    "chooseCount": 1,
+    "consum": 0,
+    "bufInt": 0
+  },
+  {
     "head": "Что-то",
     "type": 3,
     "level": 5,

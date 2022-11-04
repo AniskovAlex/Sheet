@@ -13,6 +13,9 @@ public class DataBase : MonoBehaviour
     const string itemSaveID = "itemID_";
     const string itemCostSaveName = "itemCost_";
     const string itemAmountSaveName = "itemA_";
+    
+    public GameObject item;
+    public GameObject panel;
 
     Item[] items;
     int itemsCount;
@@ -64,12 +67,6 @@ public class DataBase : MonoBehaviour
         armorInventory.LoadEquited();
     }
 
-
-
-
-    public Manager manager;
-    public GameObject item;
-    public GameObject panel;
    
     void AddItemBox(Item x, int amount)
     {

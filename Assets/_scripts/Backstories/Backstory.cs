@@ -13,6 +13,13 @@ public class Backstory : ObjectsBehavior
         protected set { N = value; }
     }
 
+    int ID = -1;
+    public int id
+    {
+        get { return ID; }
+        protected set { ID = value; }
+    }
+
     protected void LoadAbilities(string pathName)
     {
         abilities = FileSaverAndLoader.LoadAbilities("backstories/" + pathName);

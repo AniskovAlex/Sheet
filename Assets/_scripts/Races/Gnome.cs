@@ -7,15 +7,16 @@ public class Gnome : Race
     // Start is called before the first frame update
     public Gnome()
     {
+        id = 1;
         name = "Гном";
         LoadAbilities("Gnome");
     }
 
-    public override Ability[] ChooseSubRace(string subRaces)
+    public override Ability[] ChooseSubRace(int id)
     {
-        switch (subRaces)
+        switch (id)
         {
-            case "Лесной гном":
+            case 0:
                 subRace = new ForestGnome();
                 break;
             default: return null;

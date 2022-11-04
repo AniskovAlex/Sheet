@@ -8,6 +8,7 @@ public class Harengon : Race
 
     public Harengon()
     {
+        id = 2;
         name = "Харенгон";
         LoadAbilities("Harengon");
     }

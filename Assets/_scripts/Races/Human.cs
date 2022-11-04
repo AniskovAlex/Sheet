@@ -8,6 +8,7 @@ public class Human : Race
 {
     public Human()
     {
+        id = -1;
         name = "Человек";
         LoadAbilities("Human");
     }

@@ -34,6 +34,11 @@ public class BuilderManager : MonoBehaviour
     [SerializeField] InputField backstoryExtend;
     int healthDice = 0;
 
+    private void Awake()
+    {
+        LoadSpellManager.LoadSpells();
+    }
+
     public void Del()
     {
         PlayerPrefs.DeleteAll();
@@ -65,7 +70,7 @@ public class BuilderManager : MonoBehaviour
                 if (armorProf != null)
                     PresavedLists.armorTypes.UnionWith(armorProf);
 
-                DataSaverAndLoader.SaveClass(player.name);
+                DataSaverAndLoader.SaveClass(player.id);
                 if (player.GetSubClass() != null)
                     DataSaverAndLoader.SaveSubClass(classes.GetClass());
                 saveThrows = player.GetSaveThrows();
@@ -74,13 +79,13 @@ public class BuilderManager : MonoBehaviour
             }
             if (race.GetRace() != null)
             {
-                DataSaverAndLoader.SaveRace(race.GetRace().name);
+                DataSaverAndLoader.SaveRace(race.GetRace().id);
                 if (race.GetRace().GetSubRace() != null)
                     DataSaverAndLoader.SaveSubRace(race.GetRace());
             }
             if (backstory.GetBackstory() != null)
             {
-                DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().name);
+                DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().id);
             }
             SaveSkills();
             int buf;

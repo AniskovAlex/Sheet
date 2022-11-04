@@ -14,7 +14,8 @@ public class Ability
         skills,
         instruments,
         language,
-        subRace
+        subRace,
+        spellChoose
     }
 
     public string head;
@@ -36,4 +37,6 @@ public class Ability
     public int level;
 
     public int consum;
+
+    public int bufInt;
 }

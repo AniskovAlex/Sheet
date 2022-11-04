@@ -7,16 +7,17 @@ public class Fighter : PlayersClass
 {
     public Fighter()
     {
+        id = 0;
         name = "Воин";
         LoadAbilities("fighter");
         healthDice = 10;
     }
 
-    public override Ability[] ChooseSubClass(string subClasses)
+    public override Ability[] ChooseSubClass(int subId)
     {
-        switch (subClasses)
+        switch (subId)
         {
-            case "Мастер боевых искусств":
+            case 0:
                 subClass = new MasterOfMartialArt();
                 break;
             default:

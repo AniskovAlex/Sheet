@@ -7,6 +7,7 @@ public class MasterOfMartialArt : PlayerSubClass
 {
     public MasterOfMartialArt()
     {
+        id = 0;
         name = "Мастер боевых искусств";
         LoadAbilities("masterOfMartialArt");
     }

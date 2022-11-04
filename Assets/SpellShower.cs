@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForestGnome : SubRace
+public class SpellShower : MonoBehaviour
 {
     // Start is called before the first frame update
-    public ForestGnome()
+    void Start()
     {
-        id = 0;
-        name = "Лесной гном";
-        LoadAbilities("ForestGnome");
+        
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }

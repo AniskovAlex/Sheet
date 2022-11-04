@@ -7,6 +7,7 @@ public class Artist : Backstory
 
     public Artist()
     {
+        id = 0;
         name = "Артист";
         LoadAbilities("Artist");
     }

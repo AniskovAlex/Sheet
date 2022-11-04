@@ -8,6 +8,7 @@ public class FormCreater : MonoBehaviour
     [SerializeField] Text head;
     [SerializeField] GameObject charUp;
     [SerializeField] GameObject dropdown;
+    [SerializeField] SpellChoose spellChoose;
     public GameObject consumable;
     public GameObject basicText;
     GameObject discription;
@@ -152,6 +153,9 @@ public class FormCreater : MonoBehaviour
                 else
                     foreach (string x in ability.common)
                         PresavedLists.UpdateLanguage("", x);
+                break;
+            case Ability.Type.spellChoose:
+                Instantiate(spellChoose, discription.transform).SetSpells(ability.consum, ability.chooseCount, ability.bufInt);
                 break;
 
         }

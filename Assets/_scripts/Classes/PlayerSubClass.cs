@@ -25,4 +25,11 @@ public abstract class PlayerSubClass
     {
         return name;
     }
+
+    int ID = -1;
+    public int id
+    {
+        get { return ID; }
+        protected set { ID = value; }
+    }
 }

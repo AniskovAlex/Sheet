@@ -1,8 +1,9 @@
-[{
-"id":1,
-"label":"абак",
-"mType":0,
-"cost":2,
-"weight":2,
-}
+[
+  {
+    "id": 1,
+    "label": "абак",
+    "mType": 0,
+    "cost": 2,
+    "weight": 2,
+  }
 ]

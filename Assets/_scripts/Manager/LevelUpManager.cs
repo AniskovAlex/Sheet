@@ -50,7 +50,7 @@ public class LevelUpManager : MonoBehaviour
             HealthUp healthUp = abilitiesPanel.GetComponentInChildren<HealthUp>();
             if (healthUp != null)
                 healthDice = healthUp.GetHealth();
-            DataSaverAndLoader.SaveClass(playersClass.name);
+            DataSaverAndLoader.SaveClass(playersClass.id);
             if (playersClass.GetSubClass() != null)
                 DataSaverAndLoader.SaveSubClass(playersClass);
             SaveAttr();

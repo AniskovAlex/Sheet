@@ -7,7 +7,7 @@ public class Artificer : PlayersClass
 {
     public Artificer()
     {
-
+        id = 1;
         LoadAbilities("Artificer");
         healthDice = 8;
     }

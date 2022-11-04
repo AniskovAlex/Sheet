@@ -5,14 +5,6 @@ using UnityEngine.UI;
 
 public abstract class PlayersClass : ObjectsBehavior
 {
-    protected string characterName = CharacterCollection.GetName();
-    const string armorProfSaveName = "armorProf_";
-    const string weaponProfSaveName = "weaponProf_";
-    const string saveThrowProfSaveName = "save_";
-    protected const string levelCountSaveName = "lvlCount_";
-    protected const string levelSaveName = "lvl_";
-    protected const string levelLabelSaveName = "lvlLabel_";
-
     protected PlayerSubClass subClass = null;
 
     int HD = 0;
@@ -29,6 +21,12 @@ public abstract class PlayersClass : ObjectsBehavior
         protected set { N = value; }
     }
 
+    int ID = -1;
+    public int id
+    {
+        get { return ID; }
+        protected set { ID = value; }
+    }
     protected int level = 0;
     protected int mainState = 0;
     protected Ability[] abilities;
@@ -45,7 +43,7 @@ public abstract class PlayersClass : ObjectsBehavior
         return abilities;
     }
 
-    public virtual Ability[] ChooseSubClass(string subClasses)
+    public virtual Ability[] ChooseSubClass(int subId)
     {
         return null;
     }

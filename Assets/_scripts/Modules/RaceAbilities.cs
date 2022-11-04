@@ -43,7 +43,7 @@ public class RaceAbilities : MonoBehaviour
             DestroyImmediate(buf.gameObject);
         if (playersRace != null)
         {
-            Ability[] abilityArr = playersRace.ChooseSubRace(value.captionText.text);
+            Ability[] abilityArr = playersRace.ChooseSubRace(value.value);
             if (abilityArr != null)
                 foreach (Ability x in abilityArr)
                 {

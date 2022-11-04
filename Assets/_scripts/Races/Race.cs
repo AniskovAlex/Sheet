@@ -14,6 +14,13 @@ public abstract class Race : ObjectsBehavior
         protected set { N = value; }
     }
 
+    int ID = -1;
+    public int id
+    {
+        get { return ID; }
+        protected set { ID = value; }
+    }
+
     public enum Size
     {
         little,
@@ -41,7 +48,7 @@ public abstract class Race : ObjectsBehavior
         return subRace;
     }
 
-    public virtual Ability[] ChooseSubRace(string subRaces)
+    public virtual Ability[] ChooseSubRace(int subId)
     {
         return null;
     }

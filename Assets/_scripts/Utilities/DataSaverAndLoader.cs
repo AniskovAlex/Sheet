@@ -163,22 +163,22 @@ public static class DataSaverAndLoader
         }
     }
 
-    public static void SaveClass(string className)
+    public static void SaveClass(int id)
     {
-        if (className != "")
+        if (id != -1)
         {
             string characterName = CharacterCollection.GetName();
             int count = PlayerPrefs.GetInt(characterName + levelCountSaveName);
             for (int i = 0; i < count; i++)
             {
-                if (PlayerPrefs.GetString(characterName + levelLabelSaveName + i) == className)
+                if (PlayerPrefs.GetInt(characterName + levelLabelSaveName + i) == id)
                 {
                     int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
                     PlayerPrefs.SetInt(characterName + levelSaveName + i, classLevel + 1);
                     return;
                 }
             }
-            PlayerPrefs.SetString(characterName + levelLabelSaveName + count, className);
+            PlayerPrefs.SetInt(characterName + levelLabelSaveName + count, id);
             PlayerPrefs.SetInt(characterName + levelSaveName + count, 1);
             PlayerPrefs.SetInt(characterName + levelCountSaveName, count + 1);
             PlayerPrefs.Save();
@@ -188,27 +188,27 @@ public static class DataSaverAndLoader
     public static void SaveSubClass(PlayersClass playersClass)
     {
         string characterName = CharacterCollection.GetName();
-        PlayerPrefs.SetString(characterName + classSubClassSaveName + playersClass.name, playersClass.GetSubClass().GetName());
+        PlayerPrefs.SetInt(characterName + classSubClassSaveName + playersClass.id, playersClass.GetSubClass().id);
         PlayerPrefs.Save();
     }
 
     public static void SaveSubRace(Race playersRace)
     {
         string characterName = CharacterCollection.GetName();
-        PlayerPrefs.SetString(characterName + raceSubRaceSaveName + playersRace.name, playersRace.GetSubRace().GetName());
+        PlayerPrefs.SetInt(characterName + raceSubRaceSaveName + playersRace.id, playersRace.GetSubRace().id);
         PlayerPrefs.Save();
     }
 
-    public static string LoadSubClass(PlayersClass playersClass)
+    public static int LoadSubClass(PlayersClass playersClass)
     {
         string characterName = CharacterCollection.GetName();
-        return PlayerPrefs.GetString(characterName + classSubClassSaveName + playersClass.name);
+        return PlayerPrefs.GetInt(characterName + classSubClassSaveName + playersClass.id);
     }
 
-    public static string LoadSubRace(Race playersRace)
+    public static int LoadSubRace(Race playersRace)
     {
         string characterName = CharacterCollection.GetName();
-        return PlayerPrefs.GetString(characterName + raceSubRaceSaveName + playersRace.name);
+        return PlayerPrefs.GetInt(characterName + raceSubRaceSaveName + playersRace.id);
     }
 
     public static void SaveAttributes(int[] attr)
@@ -866,28 +866,28 @@ public static class DataSaverAndLoader
         return PlayerPrefs.GetString(characterName + backstoryExtendSaveName);
     }
 
-    public static void SaveRace(string value)
+    public static void SaveRace(int id)
     {
         string characterName = CharacterCollection.GetName();
-        PlayerPrefs.SetString(characterName + raceSaveName, value);
+        PlayerPrefs.SetInt(characterName + raceSaveName, id);
     }
 
-    public static string LoadRace()
+    public static int LoadRace()
     {
         string characterName = CharacterCollection.GetName();
-        return PlayerPrefs.GetString(characterName + raceSaveName);
+        return PlayerPrefs.GetInt(characterName + raceSaveName);
     }
 
-    public static void SaveBackstory(string value)
+    public static void SaveBackstory(int id)
     {
         string characterName = CharacterCollection.GetName();
-        PlayerPrefs.SetString(characterName + backstorySaveName, value);
+        PlayerPrefs.SetInt(characterName + backstorySaveName, id);
     }
 
-    public static string LoadBackstory()
+    public static int LoadBackstory()
     {
         string characterName = CharacterCollection.GetName();
-        return PlayerPrefs.GetString(characterName + backstorySaveName);
+        return PlayerPrefs.GetInt(characterName + backstorySaveName);
     }
     public static void DeleteCharacter(string name)
     {

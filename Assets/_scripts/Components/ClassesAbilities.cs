@@ -63,7 +63,7 @@ public class ClassesAbilities : MonoBehaviour
             DestroyImmediate(buf.gameObject);
         if (playersClass != null)
         {
-            Ability[] abilityArr = playersClass.ChooseSubClass(value.captionText.text);
+            Ability[] abilityArr = playersClass.ChooseSubClass(value.value);
             if (abilityArr != null)
                 foreach (Ability x in abilityArr)
                 {
