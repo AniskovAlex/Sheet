@@ -5,4 +5,5 @@ using UnityEngine;
 public static class GlobalStatus 
 {
     public static bool dragging = false;
+    public static bool popoutMenu = false;
 }

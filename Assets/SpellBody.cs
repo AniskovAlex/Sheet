@@ -12,9 +12,11 @@ public class SpellBody : MonoBehaviour
     [SerializeField] Text components;
     [SerializeField] Text duration;
     [SerializeField] Text discription;
+    Spell _spell;
 
     public void SetSpell(Spell spell)
     {
+        _spell = spell;
         head.text = spell.name;
 
         if (spell.level == 0)
@@ -68,6 +70,9 @@ public class SpellBody : MonoBehaviour
 
         switch (spell.dist)
         {
+            case -1:
+                distance.text = "На себя";
+                break;
             case 0:
                 distance.text = "Касание";
                 break;
@@ -106,6 +111,12 @@ public class SpellBody : MonoBehaviour
             case 2:
                 dur = "1 раунд";
                 break;
+            case 3:
+                dur = "1 минута";
+                break;
+            case 4:
+                dur = "10 минут";
+                break;
         }
         if (spell.concentration)
             duration.text = "Концентрация (" + dur + ")";
@@ -113,5 +124,10 @@ public class SpellBody : MonoBehaviour
             duration.text = dur;
 
         discription.text = spell.discription;
+    }
+
+    public Spell GetSpell()
+    {
+        return _spell;
     }
 }

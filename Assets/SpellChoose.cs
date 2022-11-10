@@ -24,14 +24,14 @@ public class SpellChoose : MonoBehaviour
             {
                 Button button = buf.GetComponent<Button>();
                 if (button != null)
-                    button.onClick.AddListener(delegate { ChangeSection(newSpell); });
+                    button.onClick.AddListener(delegate { ChangeSection(newSpell, classId); });
             }
         }
         leftCount = count;
         leftText.text = leftCount.ToString();
     }
 
-    void ChangeSection(SpellBody spellBody)
+    void ChangeSection(SpellBody spellBody, int id)
     {
         Amount buf = spellBody.GetComponentInChildren<Amount>();
         if (buf == null) return;
@@ -43,6 +43,15 @@ public class SpellChoose : MonoBehaviour
             if (button != null)
                 button.GetComponentInChildren<Text>().text = "+";
             spellBody.transform.parent = choose.transform;
+            int i = 0;
+            foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+            {
+                if (x.Item1 == id)
+                {
+                    PresavedLists.spellKnew[i].Item2.Remove(spellBody.GetSpell().id);
+                }
+                i++;
+            }
             leftCount++;
         }
         else
@@ -51,6 +60,19 @@ public class SpellChoose : MonoBehaviour
             if (button != null)
                 button.GetComponentInChildren<Text>().text = "-";
             spellBody.transform.parent = chosen.transform;
+            int i = 0;
+            bool flag = false;
+            foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+            {
+                if (x.Item1 == id)
+                {
+                    PresavedLists.spellKnew[i].Item2.Add(spellBody.GetSpell().id);
+                    flag = true;
+                }
+                i++;
+            }
+            if (!flag)
+                PresavedLists.spellKnew.Add((id, new HashSet<int>() { spellBody.GetSpell().id }));
             leftCount--;
         }
         spellBody.transform.SetAsLastSibling();

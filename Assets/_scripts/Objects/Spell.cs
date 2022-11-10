@@ -28,10 +28,10 @@ public class Spell
     public Type spellType;
     public int time; // 1 - действие, 2 - реакция
     public string reactionDis;
-    public int dist;
+    public int dist; // -1 - на себя, 0 - касание
     public List<Component> comp;
     public string materialDis;
-    public int duration; // 1 - мгновенное, 2 - 1 раунд
+    public int duration; // 1 - мгновенное, 2 - 1 раунд, 3 - 1 минута, 4 - 10 минут
     public List<int> classes;
     public List<(int, int)> subClasses;
     public string discription;

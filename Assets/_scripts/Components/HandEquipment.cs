@@ -11,6 +11,7 @@ public class HandEquipment : MonoBehaviour
     [SerializeField] Text distance;
     [SerializeField] Text damageType;
     [SerializeField] Toggle magick;
+    int hands = 1;
     Weapon currentWeapon;
 
     public int SetHand(Weapon weapon)
@@ -19,7 +20,6 @@ public class HandEquipment : MonoBehaviour
         int attack = CharacterData.GetModifier(0);
         int dist = weapon.dist;
         int maxDist = weapon.maxDist;
-        int hands = 1;
         string damage = weapon.dices + "ê" + weapon.hitDice;
         foreach (Weapon.Properties x in weapon.properties)
         {
@@ -82,5 +82,10 @@ public class HandEquipment : MonoBehaviour
     public Weapon GetWeapon()
     {
         return currentWeapon;
+    }
+
+    public int GetHands()
+    {
+        return hands;
     }
 }

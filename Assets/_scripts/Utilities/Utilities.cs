@@ -33,4 +33,21 @@ public static class Utilities
             text.text = num.ToString();
     }
 
+    public static int GetMaxSpellLevel(List<(int, PlayersClass)> list)
+    {
+        int spellCellCount = 0;
+        foreach ((int, PlayersClass) x in list)
+            switch (x.Item2.magic)
+            {
+                case 1:
+                    spellCellCount += x.Item1;
+                    break;
+                case 2:
+                    spellCellCount += x.Item1 / 2;
+                    break;
+            }
+        spellCellCount = (spellCellCount + 1) / 2;
+        return Mathf.Clamp(spellCellCount, 0, 9);
+    }
+
 }

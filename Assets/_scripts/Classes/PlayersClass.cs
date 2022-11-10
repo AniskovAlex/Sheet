@@ -27,8 +27,21 @@ public abstract class PlayersClass : ObjectsBehavior
         get { return ID; }
         protected set { ID = value; }
     }
+
+    int M = 0;
+    public int magic
+    {
+        get { return M; }
+        protected set { M = value; }
+    }
     protected int level = 0;
-    protected int mainState = 0;
+    int MS = 0;
+    public int mainState
+    {
+        get { return MS; }
+        protected set { MS = value; }
+    }
+
     protected Ability[] abilities;
 
     protected int PB;
@@ -81,4 +94,5 @@ public abstract class PlayersClass : ObjectsBehavior
     {
         return 0;
     }
+
 }

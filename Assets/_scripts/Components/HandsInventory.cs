@@ -35,6 +35,7 @@ public class HandsInventory : MonoBehaviour
                 if (x.GetWeapon() == weapon)
                 {
                     Destroy(x.gameObject);
+                    currentHands -= x.GetHands();
                     return;
                 }
             }

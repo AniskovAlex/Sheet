@@ -18,6 +18,8 @@ public static class PresavedLists
     
     static public HashSet<string> instruments = new HashSet<string>();
 
+    static public List<(int, HashSet<int>)> spellKnew = new List<(int, HashSet<int>)>();
+
     static public HashSet<int> saveThrows = new HashSet<int>();
 
     static public List<string> attrAdd = new List<string>();
@@ -134,6 +136,12 @@ public static class PresavedLists
     static public void SaveLanguage()
     {
         DataSaverAndLoader.SaveLanguage(languages);
+    }
+
+    static public void SaveSpellKnew()
+    {
+        
+        DataSaverAndLoader.SaveAddSpellKnew(spellKnew);
     }
 
     static public void SaveCustomPrelists()

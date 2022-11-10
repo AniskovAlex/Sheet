@@ -103,6 +103,7 @@ public class BuilderManager : MonoBehaviour
             PresavedLists.SaveCustomPrelists();
             PresavedLists.saveSaveThrows();
             PresavedLists.SaveLanguage();
+            PresavedLists.SaveSpellKnew();
             List<(int, Item)> itemList = inventory.GetItems();
             if (itemList != null)
                 foreach ((int, Item) x in itemList)

@@ -12,10 +12,12 @@ public class WeaponEquipment : MonoBehaviour
     [SerializeField] Text properties;
     [SerializeField] Toggle magick;
     [SerializeField] Toggle equip;
+    HandsInventory _handsInventory;
     Weapon currentWeapon = null;
 
-    public void SetWeapon(Weapon weapon)
+    public void SetWeapon(Weapon weapon, HandsInventory handsInventory)
     {
+        _handsInventory = handsInventory;
         label.text = weapon.label;
         damage.text = weapon.dices + "ê" + weapon.hitDice;
         if (weapon.dist == weapon.maxDist)
@@ -78,11 +80,10 @@ public class WeaponEquipment : MonoBehaviour
             }
         }
         propString.Remove(propString.LastIndexOf(','));
-        HandsInventory hand = FindObjectOfType<HandsInventory>();
-        if (hand != null)
+        if (_handsInventory != null)
             equip.onValueChanged.AddListener(delegate { 
-                hand.NewItemEquiptedOrUnequipted(weapon, equip.isOn);
                 DataSaverAndLoader.WeaponEquipmentChanged(weapon, equip.isOn);
+                _handsInventory.NewItemEquiptedOrUnequipted(weapon, equip.isOn);
             });
         currentWeapon = weapon;
     }
@@ -99,14 +100,13 @@ public class WeaponEquipment : MonoBehaviour
 
     public void ForceEquip()
     {
-        equip.onValueChanged.RemoveListener(delegate
-        {
-            DataSaverAndLoader.WeaponEquipmentChanged(currentWeapon, equip.isOn);
-        });
+        equip.onValueChanged.RemoveAllListeners();
         equip.isOn = true;
+        _handsInventory.NewItemEquiptedOrUnequipted(currentWeapon, equip.isOn);
         equip.onValueChanged.AddListener(delegate
         {
             DataSaverAndLoader.WeaponEquipmentChanged(currentWeapon, equip.isOn);
+            _handsInventory.NewItemEquiptedOrUnequipted(currentWeapon, equip.isOn);
         });
     }
 

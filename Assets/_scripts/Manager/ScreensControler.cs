@@ -49,6 +49,8 @@ public class ScreensControler : MonoBehaviour
     {
         if (GlobalStatus.dragging)
             return;
+        if (GlobalStatus.popoutMenu)
+            return;
         if (Input.GetMouseButtonDown(0))
             if (offSet == null)
             {
@@ -122,10 +124,14 @@ public class ScreensControler : MonoBehaviour
 
         //Touch touch;
     }
+
     public void ChangePanel(GameObject panel)
     {
         switch (panel.name)
         {
+            case "Spells":
+                head.text = "Заклинания";
+                break;
             case "Battle":
                 head.text = "Боевой Экран";
                 break;
@@ -137,6 +143,12 @@ public class ScreensControler : MonoBehaviour
                 break;
             case "Skills":
                 head.text = "Навыки";
+                break;
+            case "Personality":
+                head.text = "Личность";
+                break;
+            case "Notes":
+                head.text = "Записи";
                 break;
         }
         vCam.Follow = panel.transform;

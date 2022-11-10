@@ -7,11 +7,12 @@ public class WeaponInventory : MonoBehaviour
 {
     [SerializeField] GameObject content;
     [SerializeField] GameObject weaponObject;
+    [SerializeField] HandsInventory handsInventory;
 
     public void AddWeapon(Weapon weapon)
     {
         GameObject newWeaponObject = Instantiate(weaponObject, content.transform);
-        newWeaponObject.GetComponent<WeaponEquipment>().SetWeapon(weapon);
+        newWeaponObject.GetComponent<WeaponEquipment>().SetWeapon(weapon, handsInventory);
     }
 
     public void LoadEquited()
@@ -70,10 +71,10 @@ public class WeaponInventory : MonoBehaviour
         WeaponEquipment[] weapons = content.GetComponentsInChildren<WeaponEquipment>();
         foreach (WeaponEquipment x in weapons)
         {
-            Toggle toggle = x.gameObject.GetComponentInChildren<Type>().GetComponent<Toggle>();
-            if (x.GetWeapon() == weapon && toggle.isOn)
+            //Toggle toggle = x.gameObject.GetComponentInChildren<Type>().GetComponent<Toggle>();
+            if (x.GetWeapon() == weapon && x.GetEquipped())
             {
-                toggle.isOn = false;
+                x.Unequip();
                 return;
             }
         }

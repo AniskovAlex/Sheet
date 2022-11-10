@@ -10,6 +10,16 @@ public static class DataSaverAndLoader
     const string noteHeadSaveName = "noteHead_";
     const string noteCountSaveName = "noteCount_";
 
+    const string spellKnewSaveName = "spellKnew_";
+    const string spellClassKnewSaveName = "spellClassKnew_";
+    const string spellClassKnewCountSaveName = "spellClassKnewCount_";
+    const string spellKnewCountSaveName = "spellKnewCount_";
+
+    const string spellPrepareSaveName = "spellPrepare_";
+    const string spellClassPrepareSaveName = "spellClassPrepare_";
+    const string spellClassPrepareCountSaveName = "spellClassPrepareCount_";
+    const string spellPrepareCountSaveName = "spellPrepareCount_";
+
     const string alignmentSaveName = "alignment_";
     const string natureSaveName = "nature_";
     const string idealSaveName = "ideal_";
@@ -338,6 +348,101 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
+    public static void SaveAddSpellKnew(List<(int, HashSet<int>)> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + spellClassKnewCountSaveName);
+        foreach ((int, HashSet<int>) x in list)
+        {
+            int buf = 0;
+            bool flag = false;
+            for (int k = 0; k < count; k++)
+            {
+                buf = PlayerPrefs.GetInt(characterName + spellClassKnewSaveName + k);
+                if (buf == x.Item1)
+                {
+                    flag = true;
+                    buf = k;
+                }
+            }
+            int j;
+            if (flag)
+                j = PlayerPrefs.GetInt(characterName + spellKnewCountSaveName + buf);
+            else
+                j = 0;
+            foreach (int y in x.Item2)
+            {
+                PlayerPrefs.SetInt(characterName + spellKnewSaveName + x.Item1 + j, y);
+                j++;
+            }
+            if (flag)
+            {
+                PlayerPrefs.SetInt(characterName + spellKnewCountSaveName + buf, j);
+                PlayerPrefs.SetInt(characterName + spellClassKnewSaveName + buf, x.Item1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt(characterName + spellKnewCountSaveName + count, j);
+                PlayerPrefs.SetInt(characterName + spellClassKnewSaveName + count, x.Item1);
+                count++;
+            }
+        }
+        PlayerPrefs.SetInt(characterName + spellClassKnewCountSaveName, count);
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveSpellPrepared(List<(int, HashSet<int>)> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = list.Count;
+        int i = 0;
+        foreach ((int, HashSet<int>) x in list)
+        {
+            int j = 0;
+            foreach (int y in x.Item2)
+            {
+                PlayerPrefs.SetInt(characterName + spellPrepareSaveName + x.Item1 + j, y);
+                j++;
+            }
+            PlayerPrefs.SetInt(characterName + spellPrepareCountSaveName + i, j);
+            PlayerPrefs.SetInt(characterName + spellClassPrepareSaveName + i, x.Item1);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + spellClassPrepareCountSaveName, count);
+        PlayerPrefs.Save();
+    }
+
+    public static List<(int, HashSet<int>)> LoadSpellKnew()
+    {
+        string characterName = CharacterCollection.GetName();
+        int classCount = PlayerPrefs.GetInt(characterName + spellClassKnewCountSaveName);
+        List<(int, HashSet<int>)> list = new List<(int, HashSet<int>)>();
+        for (int i = 0; i < classCount; i++)
+        {
+            int count = PlayerPrefs.GetInt(characterName + spellKnewCountSaveName + i);
+            int classId = PlayerPrefs.GetInt(characterName + spellClassKnewSaveName + i);
+            list.Add((classId, new HashSet<int>()));
+            for (int j = 0; j < count; j++)
+                list[i].Item2.Add(PlayerPrefs.GetInt(characterName + spellKnewSaveName + classId + j));
+        }
+        return list;
+    }
+    public static List<(int, HashSet<int>)> LoadSpellPrepared()
+    {
+        string characterName = CharacterCollection.GetName();
+        int classCount = PlayerPrefs.GetInt(characterName + spellClassPrepareCountSaveName);
+        List<(int, HashSet<int>)> list = new List<(int, HashSet<int>)>();
+        for (int i = 0; i < classCount; i++)
+        {
+            int count = PlayerPrefs.GetInt(characterName + spellPrepareCountSaveName + i);
+            int classId = PlayerPrefs.GetInt(characterName + spellClassPrepareSaveName + i);
+            list.Add((classId, new HashSet<int>()));
+            for (int j = 0; j < count; j++)
+                list[i].Item2.Add(PlayerPrefs.GetInt(characterName + spellPrepareSaveName + classId + j));
+        }
+        return list;
+    }
+
     public static bool SaveNewItem(Item item, int itemsCount, int amount)
     {
         string characterName = CharacterCollection.GetName();
@@ -528,16 +633,16 @@ public static class DataSaverAndLoader
                         PlayerPrefs.DeleteKey(characterName + weaponEquipSaveName + i);
                         if (i != equipCount - 1)
                         {
-                            PlayerPrefs.DeleteKey(characterName + weaponEquipSaveName + i);
                             int buf = PlayerPrefs.GetInt(characterName + weaponEquipSaveName + (equipCount - 1));
 
-                            if (buf == 0)
+                            if (buf == -1)
                             {
                                 string buf2 = PlayerPrefs.GetString(characterName + weaponEquipSaveName + (equipCount - 1));
                                 PlayerPrefs.SetString(characterName + weaponEquipSaveName + i, buf2);
                             }
                             else
                                 PlayerPrefs.SetInt(characterName + weaponEquipSaveName + i, buf);
+                            PlayerPrefs.DeleteKey(characterName + weaponEquipSaveName + (equipCount - 1));
 
 
                         }
@@ -557,16 +662,16 @@ public static class DataSaverAndLoader
                         PlayerPrefs.DeleteKey(characterName + weaponEquipSaveName + i);
                         if (i != equipCount - 1)
                         {
-                            PlayerPrefs.DeleteKey(characterName + weaponEquipSaveName + i);
                             int buf = PlayerPrefs.GetInt(characterName + weaponEquipSaveName + (equipCount - 1));
 
-                            if (buf == 0)
+                            if (buf == -1)
                             {
                                 string buf2 = PlayerPrefs.GetString(characterName + weaponEquipSaveName + (equipCount - 1));
                                 PlayerPrefs.SetString(characterName + weaponEquipSaveName + i, buf2);
                             }
                             else
                                 PlayerPrefs.SetInt(characterName + weaponEquipSaveName + i, buf);
+                            PlayerPrefs.DeleteKey(characterName + weaponEquipSaveName + (equipCount - 1));
 
 
                         }

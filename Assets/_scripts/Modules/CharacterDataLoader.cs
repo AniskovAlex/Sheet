@@ -91,15 +91,15 @@ public class CharacterDataLoader : MonoBehaviour
             if (PlayerPrefs.HasKey(characterName + levelSaveName + i))
             {
                 int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
-                switch (PlayerPrefs.GetString(characterName + levelLabelSaveName + i))
+                switch (PlayerPrefs.GetInt(characterName + levelLabelSaveName + i))
                 {
-                    case "Воин":
+                    case 5:
                         playersClass = new Fighter();
                         break;
-                    case "Плут":
+                    case 1:
                         playersClass = new Rogue();
                         break;
-                    case "Изобретатель":
+                    case 2:
                         playersClass = new Artificer();
                         break;
                     default:
