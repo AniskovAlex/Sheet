@@ -24,6 +24,7 @@ public class HealthController : MonoBehaviour
             x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
             x.GetComponentInChildren<Amount>().gameObject.GetComponent<Text>().text = tempHealth.ToString();
         }
+        CharacterData.SetHealth(health, tempHealth);
     }
 
     public void ChangeHP(int value)
@@ -33,12 +34,12 @@ public class HealthController : MonoBehaviour
             tempHealth += value;
             if (tempHealth < 0)
             {
-                health = Mathf.Clamp(health + tempHealth, -999, maxHealth);
+                health = Mathf.Clamp(health + tempHealth, 0, maxHealth);
                 tempHealth = 0;
             }
         }
         else
-            health = Mathf.Clamp(health + value, -999, maxHealth);
+            health = Mathf.Clamp(health + value, 0, maxHealth);
         UpdataHP();
     }
 
@@ -64,6 +65,13 @@ public class HealthController : MonoBehaviour
         int.TryParse(value.text, out buf);
         value.text = "";
         tempHealth = buf;
+        UpdataHP();
+    }
+
+    public void ResetHealth()
+    {
+        health = maxHealth;
+        tempHealth = 0;
         UpdataHP();
     }
 }

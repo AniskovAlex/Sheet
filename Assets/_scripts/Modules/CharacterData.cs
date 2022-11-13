@@ -129,6 +129,7 @@ public class CharacterData
 
     public static int GetLevel(PlayersClass playerClass)
     {
+        if (playerClass == null) return 0;
         foreach ((int, PlayersClass) x in _classes)
             if (x.Item2.name == playerClass.name)
                 return x.Item1;
@@ -150,6 +151,25 @@ public class CharacterData
         maxHP = _maxHP;
         currentHP = _currentHP;
         tempHP = _tempHP;
+    }
+
+    public static int GetCurrentHealth()
+    {
+        return _currentHP;
+    }
+
+    public static void SetHealth(int currentHP,int tempHP)
+    {
+        _currentHP = currentHP;
+        _tempHP = tempHP;
+        DataSaverAndLoader.SaveHealth(currentHP);
+        DataSaverAndLoader.SaveTempHealth(tempHP);
+    }
+
+    public static void SetHealth(int currentHP)
+    {
+        _currentHP = currentHP;
+        DataSaverAndLoader.SaveHealth(currentHP);
     }
 
     public static int GetMaxHealth()

@@ -11,6 +11,13 @@ public class PopoutController : MonoBehaviour
         GlobalStatus.popoutMenu = true;
     }
 
+    public void SetPopout(List<GameObject> list)
+    {
+        gameObject.SetActive(true);
+        foreach (GameObject x in list)
+            Instantiate(x, panel.transform);
+    }
+
     private void OnDisable()
     {
         GlobalStatus.popoutMenu = false;

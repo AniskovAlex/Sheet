@@ -158,6 +158,13 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
+    public static void SaveTempHealth(int tempHealth)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + tempHealthSaveName, tempHealth);
+        PlayerPrefs.Save();
+    }
+
     public static void SaveCharacter(string characterName)
     {
         if (PlayerPrefs.HasKey(charactersCountSaveName))

@@ -244,4 +244,11 @@ public class SpellController : MonoBehaviour
             else
                 spellLevelObjects[i + 1].SetActive(false);
     }
+
+    public void ResetSpellCells()
+    {
+        ConsumablePanel[] consumables = GetComponentsInChildren<ConsumablePanel>();
+        foreach (ConsumablePanel x in consumables)
+            x.Reset();
+    }
 }
