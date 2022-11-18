@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class SpellShower : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] ConsumablePanel consumable;
+    [SerializeField] int level;
+    public void SetCells(int amount,int currentAmount)
     {
-        
+        ConsumablePanel buf = Instantiate(consumable, GetComponentInChildren<Opener>().transform);
+        buf.SpawnToggles(amount, currentAmount);
+        buf.update += UpdateConsum;
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateConsum(int amount)
     {
-        
+        DataSaverAndLoader.SaveCellAmount(level, amount);
     }
 }

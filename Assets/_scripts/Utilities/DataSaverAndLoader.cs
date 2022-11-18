@@ -10,6 +10,11 @@ public static class DataSaverAndLoader
     const string noteHeadSaveName = "noteHead_";
     const string noteCountSaveName = "noteCount_";
 
+    const string cellAmountSaveName = "cellAmount_";
+    const string consumAmountSaveName = "consumAmount_";
+    const string consumAmountNameSaveName = "consumAmountName_";
+    const string consumAmountNameCountSaveName = "consumAmountNameCount_";
+
     const string spellKnewSaveName = "spellKnew_";
     const string spellClassKnewSaveName = "spellClassKnew_";
     const string spellClassKnewCountSaveName = "spellClassKnewCount_";
@@ -92,6 +97,50 @@ public static class DataSaverAndLoader
 
     const string customListCount = "customListCount_";
     const string customList = "customList_";
+
+    public static int[] LoadCellsAmount()
+    {
+        string characterName = CharacterCollection.GetName();
+        int[] arr = new int[9];
+        for (int i = 0; i < 9; i++)
+            arr[i] = PlayerPrefs.GetInt(characterName + cellAmountSaveName + (i + 1));
+        return arr;
+    }
+
+    public static void SaveCellAmount(int level, int amount)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + cellAmountSaveName + level, amount);
+        PlayerPrefs.Save();
+    }
+
+    public static int LoadConsumAmount(string name)
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetInt(characterName + consumAmountSaveName + name);
+    }
+
+    public static void SaveConsumAmount(string name, int amount)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + consumAmountNameCountSaveName);
+        bool flag = true;
+        for (int i = 0; i < count; i++)
+        {
+            if (PlayerPrefs.GetString(characterName + consumAmountNameSaveName + i) == name)
+            {
+                flag = false;
+                break;
+            }
+        }
+        if (flag)
+        {
+            PlayerPrefs.SetString(characterName + consumAmountNameSaveName + count, name);
+            PlayerPrefs.SetInt(characterName + consumAmountNameCountSaveName, count + 1);
+        }
+        PlayerPrefs.SetInt(characterName + consumAmountSaveName + name, amount);
+        PlayerPrefs.Save();
+    }
 
     public static void SaveNote(string head, string note)
     {
@@ -1012,6 +1061,44 @@ public static class DataSaverAndLoader
             PlayerPrefs.DeleteKey(name + levelSaveName + i);
         }
 
+        string buf = "";
+        count = PlayerPrefs.GetInt(name + consumAmountNameCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            buf = PlayerPrefs.GetString(name + consumAmountNameSaveName + i);
+            PlayerPrefs.DeleteKey(name + consumAmountNameSaveName + i);
+            PlayerPrefs.DeleteKey(name + consumAmountSaveName + buf);
+        }
+        PlayerPrefs.DeleteKey(name + consumAmountNameCountSaveName);
+
+        for (int i = 1; i < 10; i++)
+            PlayerPrefs.DeleteKey(name + cellAmountSaveName + i);
+
+        count = PlayerPrefs.GetInt(name + spellClassKnewCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            int countCount = PlayerPrefs.GetInt(name + spellKnewCountSaveName + i);
+            int classId = PlayerPrefs.GetInt(name + spellClassKnewSaveName + i);
+            for (int j = 0; j < countCount; j++)
+                PlayerPrefs.DeleteKey(name + spellKnewSaveName + classId + j);
+            PlayerPrefs.DeleteKey(name + spellClassKnewSaveName + i);
+            PlayerPrefs.DeleteKey(name + spellKnewCountSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + spellClassKnewCountSaveName);
+
+
+        count = PlayerPrefs.GetInt(name + spellClassPrepareCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            int countCount = PlayerPrefs.GetInt(name + spellPrepareCountSaveName + i);
+            int classId = PlayerPrefs.GetInt(name + spellClassPrepareSaveName + i);
+            for (int j = 0; j < countCount; j++)
+                PlayerPrefs.DeleteKey(name + spellPrepareSaveName + classId + j);
+            PlayerPrefs.DeleteKey(name + spellPrepareCountSaveName + i);
+            PlayerPrefs.DeleteKey(name + spellClassPrepareSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + spellClassPrepareCountSaveName);
+
         string raceName = PlayerPrefs.GetString(name + raceSaveName);
         PlayerPrefs.DeleteKey(name + raceSubRaceSaveName + raceName);
         PlayerPrefs.DeleteKey(name + raceSaveName);
@@ -1087,7 +1174,6 @@ public static class DataSaverAndLoader
         }
         PlayerPrefs.DeleteKey(name + customListCount);
 
-        string buf = "";
         count = PlayerPrefs.GetInt(charactersCountSaveName);
         bool flag = false;
         for (int i = 1; i <= count; i++)

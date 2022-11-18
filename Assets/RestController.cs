@@ -9,6 +9,19 @@ public class RestController : MonoBehaviour
     [SerializeField] PopoutController popout;
     [SerializeField] HealthController health;
     [SerializeField] SpellController spell;
+    [SerializeField] GameObject person;
+
+    private void Start()
+    {
+        if(GlobalStatus.needRest)
+        {
+            health.ResetHealth();
+            spell.ResetSpellCells();
+            ConsumablePanel[] consumables = person.GetComponentsInChildren<ConsumablePanel>(true);
+            foreach (ConsumablePanel x in consumables)
+                x.Reset();
+        }
+    }
 
     public void ShortRest()
     {
@@ -20,6 +33,9 @@ public class RestController : MonoBehaviour
         popout.SetPopout(new List<GameObject> { preparePanel.gameObject });
         health.ResetHealth();
         spell.ResetSpellCells();
+        ConsumablePanel[] consumables = person.GetComponentsInChildren<ConsumablePanel>(true);
+        foreach (ConsumablePanel x in consumables)
+            x.Reset();
     }
 
 

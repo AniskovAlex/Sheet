@@ -93,13 +93,13 @@ public class CharacterDataLoader : MonoBehaviour
                 int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
                 switch (PlayerPrefs.GetInt(characterName + levelLabelSaveName + i))
                 {
-                    case 5:
+                    case 2:
                         playersClass = new Fighter();
                         break;
-                    case 1:
+                    case 10:
                         playersClass = new Rogue();
                         break;
-                    case 2:
+                    case 6:
                         playersClass = new Artificer();
                         break;
                     default:

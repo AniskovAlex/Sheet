@@ -7,9 +7,10 @@ public class FormShower : MonoBehaviour
 {
     [SerializeField] Text head;
     [SerializeField] GameObject headObject;
-    [SerializeField] GameObject consumable;
+    [SerializeField] ConsumablePanel consumable;
     [SerializeField] GameObject basicText;
     GameObject discription;
+    Ability _ability;
     void Awake()
     {
         discription = GetComponentInChildren<Discription>().gameObject;
@@ -17,6 +18,7 @@ public class FormShower : MonoBehaviour
 
     public void CreateAbility(Ability ability)
     {
+        _ability = ability;
         head.text = ability.head;
         switch (ability.type)
         {
@@ -24,15 +26,26 @@ public class FormShower : MonoBehaviour
                 foreach ((int, string) x in ability.discription)
                     SetText(x);
                 break;
+            case Ability.Type.charUp:
+            case Ability.Type.instruments:
+            case Ability.Type.language:
+            case Ability.Type.skills:
+            case Ability.Type.spellChoose:
+            case Ability.Type.subRace:
             case Ability.Type.subClass:
                 Destroy(gameObject);
                 break;
             case Ability.Type.withChoose:
                 foreach ((int, string) x in ability.discription)
                     SetText(x);
+                (string, string)[] list;
+                if (ability.isUniq)
+                    list = FileSaverAndLoader.LoadList(ability.pathToList).ToArray();
+                else
+                    list = ability.list;
                 List<string> chosen = DataSaverAndLoader.LoadCustom(ability.listName);
                 foreach (string x in chosen)
-                    foreach ((string, string) y in ability.list)
+                    foreach ((string, string) y in list)
                         if (x == y.Item1)
                         {
                             SetText((2, y.Item1));
@@ -43,9 +56,17 @@ public class FormShower : MonoBehaviour
             case Ability.Type.consumable:
                 foreach ((int, string) x in ability.discription)
                     SetText(x);
-                Instantiate(consumable, headObject.transform).GetComponent<ConsumablePanel>().SpawnToggles(ability.consum);
+                int amount = DataSaverAndLoader.LoadConsumAmount(ability.listName);
+                ConsumablePanel buf = Instantiate(consumable, headObject.transform);
+                buf.SpawnToggles(ability.consum, amount);
+                buf.update += UpdateConsum;
                 break;
         }
+    }
+
+    void UpdateConsum(int count)
+    {
+        DataSaverAndLoader.SaveConsumAmount(_ability.listName, count);
     }
 
     public void SetHead(string text)

@@ -450,7 +450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 3535183666209784705}
   headObject: {fileID: 3535183664507750939}
-  consumable: {fileID: 2992546322501763529, guid: 0b7606e15264eb4478235f2a9bedb049, type: 3}
+  consumable: {fileID: 2992546322501763535, guid: 0b7606e15264eb4478235f2a9bedb049, type: 3}
   basicText: {fileID: 2828204978469958744, guid: c4cfe644c06c31048b07e8d8a2386b60, type: 3}
 --- !u!1 &3535183666209784707
 GameObject:

@@ -8,13 +8,12 @@ public class SpellController : MonoBehaviour
 {
     Spell[] spells;
     [SerializeField] List<GameObject> spellLevelContainerObjects;
-    [SerializeField] List<GameObject> spellLevelHeadObjects;
-    [SerializeField] List<GameObject> spellLevelObjects;
+    [SerializeField] List<SpellShower> spellLevelObjects;
     [SerializeField] SpellBody spellBody;
-    [SerializeField] ConsumablePanel consumable;
     public static Action ReloadSpells;
     public static List<(int, List<Spell>)> spellKnew = new List<(int, List<Spell>)>();
     public static List<(int, List<Spell>)> spellPrepared = new List<(int, List<Spell>)>();
+    int[] currentCells;
 
     private void Start()
     {
@@ -26,6 +25,7 @@ public class SpellController : MonoBehaviour
             Debug.Log("Список заклинаний не загружен!");
             return;
         }
+        currentCells = DataSaverAndLoader.LoadCellsAmount();
         List<(int, HashSet<int>)> spellKnewIdList = DataSaverAndLoader.LoadSpellKnew();
         List<(int, HashSet<int>)> spellPreparedIdList = DataSaverAndLoader.LoadSpellPrepared();
         spellKnew = SetSpell(spellKnewIdList);
@@ -239,10 +239,10 @@ public class SpellController : MonoBehaviour
         for (int i = 0; i < cells.Length; i++)
             if (cells[i] != 0)
             {
-                Instantiate(consumable, spellLevelHeadObjects[i + 1].transform).SpawnToggles(cells[i]);
+                spellLevelObjects[i + 1].SetCells(cells[i], currentCells[i]);
             }
             else
-                spellLevelObjects[i + 1].SetActive(false);
+                spellLevelObjects[i + 1].gameObject.SetActive(false);
     }
 
     public void ResetSpellCells()

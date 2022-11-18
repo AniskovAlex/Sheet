@@ -6,4 +6,5 @@ public static class GlobalStatus
 {
     public static bool dragging = false;
     public static bool popoutMenu = false;
+    public static bool needRest = false;
 }

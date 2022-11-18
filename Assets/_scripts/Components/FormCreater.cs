@@ -26,6 +26,7 @@ public class FormCreater : MonoBehaviour
         head.text = ability.head;
         switch (ability.type)
         {
+            case Ability.Type.consumable:
             case Ability.Type.abilitie:
                 foreach ((int, string) x in ability.discription)
                     SetText(x);
@@ -79,7 +80,7 @@ public class FormCreater : MonoBehaviour
                     {
                         ChangeSelected(chooseDrop);
                     });
-                    chooseDrop.value = ability.list.Length;
+                    chooseDrop.value = list.Count;
                 }
                 break;
             case Ability.Type.skills:

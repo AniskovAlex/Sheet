@@ -7,12 +7,12 @@ public class Fighter : PlayersClass
 {
     public Fighter()
     {
-        id = 5;
+        id = 2;
         name = "Воин";
         LoadAbilities("fighter");
         healthDice = 10;
         mainState = 0;
-        magic = 1;
+        magic = 0;
     }
 
     public override Ability[] ChooseSubClass(int subId)

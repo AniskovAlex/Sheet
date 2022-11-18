@@ -46,6 +46,7 @@ public class BuilderManager : MonoBehaviour
 
     public void LoadView()
     {
+        GlobalStatus.needRest = true;
         if (playerName.text != "")
         {
             DataSaverAndLoader.SaveCharacter(playerName.text);

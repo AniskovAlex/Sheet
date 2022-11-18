@@ -23,6 +23,7 @@ public class LevelUpManager : MonoBehaviour
 
     public void LoadView()
     {
+        GlobalStatus.needRest = true;
         characterName = CharacterCollection.GetName();
         if (classes != null)
         {

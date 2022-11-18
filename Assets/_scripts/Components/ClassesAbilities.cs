@@ -14,19 +14,7 @@ public class ClassesAbilities : MonoBehaviour
     PlayersClass playersClass = null;
     private void Awake()
     {
-        /*List<Ability> listAbilities = new List<Ability>();
-        string JSONAbilities = File.ReadAllText("Assets/Resources/Abilities.txt");
-        /*Abilitie abil = new Abilitie();
-        abil.type = 0;
-        abil.discription.Add((0, "ert"));
-        abil.discription.Add((1, "grt"));
-        abil.discription.Add((2, "egt"));
-        abil.discription.Add((3, "erg"));
-        listAbilities.Add(abil);
-        string wee = JsonConvert.SerializeObject(listAbilities);
-        File.WriteAllText("Assets/Resources/Abilities.txt", wee);
-        listAbilities = JsonConvert.DeserializeObject<List<Ability>>(JSONAbilities);
-        Debug.Log(listAbilities[1].discription[1].Item2);*/
+        Debug.Log(CharacterCollection.GetName());
     }
 
     public void ChosenClass(Dropdown value)
