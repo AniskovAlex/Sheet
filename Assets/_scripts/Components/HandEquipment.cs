@@ -29,8 +29,7 @@ public class HandEquipment : MonoBehaviour
                     attack = Mathf.Max(attack, CharacterData.GetModifier(1));
                     break;
                 case Weapon.Properties.Reach:
-                    dist += 5;
-                    maxDist += 5;
+                    maxDist = dist + 5;
                     break;
                 case Weapon.Properties.TwoHanded:
                     hands = 2;

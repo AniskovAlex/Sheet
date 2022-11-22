@@ -118,8 +118,13 @@ public class WeaponSet : MonoBehaviour
         int.TryParse(dist.text, out newWeapon.dist);
         int.TryParse(maxDist.text, out newWeapon.maxDist);
         newWeapon.magic = magic.isOn;
-        newWeapon.weaponType = Weapon.WeaponType.CommonMelee + type.value;
         newWeapon.bladeType= Weapon.BladeType.Sword + blade.value;
+        switch (newWeapon.bladeType)
+        {
+            default:
+                newWeapon.weaponType = Weapon.WeaponType.CommonMelee;
+                break;
+        }
         List<Weapon.Properties> list = new List<Weapon.Properties>();
         Dropdown[] buf = props.GetComponentsInChildren<Dropdown>();
         if (buf != null)

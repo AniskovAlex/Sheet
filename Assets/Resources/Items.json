@@ -1,9 +1,1283 @@
 [
   {
+    "id": 0,
+    "label": "",
+    "mType": 0,
+    "cost": 0,
+    "weight": 0
+  },
+  {
     "id": 1,
     "label": "абак",
     "mType": 0,
     "cost": 2,
-    "weight": 2,
+    "weight": 2
+  },
+  {
+    "id": 2,
+    "label": "Алхимический огонь (фляга)",
+    "mType": 0,
+    "cost": 50,
+    "weight": 1
+  },
+  {
+    "id": 3,
+    "label": "Блок и лебёдка",
+    "mType": 0,
+    "cost": 1,
+    "weight": 5
+  },
+  {
+    "id": 4,
+    "label": "Арболетный болт",
+    "mType": 2,
+    "cost": 5,
+    "weight": -3
+  },
+  {
+    "id": 5,
+    "label": "Игла для трубки",
+    "mType": 2,
+    "cost": 2,
+    "weight": -3
+  },
+  {
+    "id": 6,
+    "label": "Снаряд для пращи",
+    "mType": 2,
+    "cost": 0,
+    "weight": -3
+  },
+  {
+    "id": 7,
+    "label": "Стрела",
+    "mType": 2,
+    "cost": 5,
+    "weight": -3
+  },
+  {
+    "id": 8,
+    "label": "Бочка",
+    "mType": 0,
+    "cost": 2,
+    "weight": 70
+  },
+  {
+    "id": 9,
+    "label": "Бумага (один лист)",
+    "mType": 1,
+    "cost": 2,
+    "weight": 0
+  },
+  {
+    "id": 10,
+    "label": "Бурдюк",
+    "mType": 1,
+    "cost": 2,
+    "weight": -4
+  },
+  {
+    "id": 11,
+    "label": "Бутылка, стеклянная",
+    "mType": 0,
+    "cost": 2,
+    "weight": 2
+  },
+  {
+    "id": 12,
+    "label": "Ведро",
+    "mType": 2,
+    "cost": 5,
+    "weight": 2
+  },
+  {
+    "id": 13,
+    "label": "Верёвка пеньковая (50 футов)",
+    "mType": 0,
+    "cost": 1,
+    "weight": 10
+  },
+  {
+    "id": 14,
+    "label": "Верёвка шёлковая (50 футов)",
+    "mType": 0,
+    "cost": 10,
+    "weight": 5
+  },
+  {
+    "id": 15,
+    "label": "Весы, торговые",
+    "mType": 0,
+    "cost": 5,
+    "weight": 3
+  },
+  {
+    "id": 16,
+    "label": "Воск",
+    "mType": 1,
+    "cost": 5,
+    "weight": 0
+  },
+  {
+    "id": 17,
+    "label": "Горшок, железный",
+    "mType": 0,
+    "cost": 2,
+    "weight": 10
+  },
+  {
+    "id": 18,
+    "label": "Духи (флакон)",
+    "mType": 0,
+    "cost": 5,
+    "weight": 0
+  },
+  {
+    "id": 19,
+    "label": "Замок",
+    "mType": 0,
+    "cost": 10,
+    "weight": 1
+  },
+  {
+    "id": 20,
+    "label": "Зелье лечения",
+    "mType": 0,
+    "cost": 50,
+    "weight": -1
+  },
+  {
+    "id": 21,
+    "label": "Зкркало, стальное",
+    "mType": 0,
+    "cost": 5,
+    "weight": -1
+  },
+  {
+    "id": 22,
+    "label": "Калтроп",
+    "mType": 2,
+    "cost": 5,
+    "weight": -3
+  },
+  {
+    "id": 23,
+    "label": "Кандалы",
+    "mType": 2,
+    "cost": 0,
+    "weight": 6
+  },
+  {
+    "id": 24,
+    "label": "Кирка, горняцкая",
+    "mType": 0,
+    "cost": 2,
+    "weight": 10
+  },
+  {
+    "id": 25,
+    "label": "Кислота (флакон)",
+    "mType": 0,
+    "cost": 25,
+    "weight": 1
+  },
+  {
+    "id": 26,
+    "label": "Книга",
+    "mType": 0,
+    "cost": 25,
+    "weight": 5
+  },
+  {
+    "id": 27,
+    "label": "Книга заклинаний",
+    "mType": 0,
+    "cost": 50,
+    "weight": 3
+  },
+  {
+    "id": 28,
+    "label": "Колокольчик",
+    "mType": 0,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 29,
+    "label": "Колчан",
+    "mType": 0,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 30,
+    "label": "Кольцо-печатка",
+    "mType": 0,
+    "cost": 5,
+    "weight": 0
+  },
+  {
+    "id": 31,
+    "label": "Комплект для лазания",
+    "mType": 0,
+    "cost": 25,
+    "weight": 12
+  },
+  {
+    "id": 32,
+    "label": "Комплект для рыбалки",
+    "mType": 0,
+    "cost": 1,
+    "weight": 4
+  },
+  {
+    "id": 33,
+    "label": "Комплект целителя",
+    "mType": 0,
+    "cost": 5,
+    "weight": 3
+  },
+  {
+    "id": 34,
+    "label": "Контейнер для арбалетных болтов",
+    "mType": 0,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 35,
+    "label": "Контейнер для карт и свитков",
+    "mType": 0,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 36,
+    "label": "Корзина",
+    "mType": 1,
+    "cost": 4,
+    "weight": 2
+  },
+  {
+    "id": 37,
+    "label": "Кошель",
+    "mType": 1,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 38,
+    "label": "Крюк-кошка",
+    "mType": 0,
+    "cost": 2,
+    "weight": 4
+  },
+  {
+    "id": 39,
+    "label": "Кувшин или графин",
+    "mType": 2,
+    "cost": 2,
+    "weight": 4
+  },
+  {
+    "id": 40,
+    "label": "Лампа",
+    "mType": 1,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 41,
+    "label": "Лестница (10 футов)",
+    "mType": 1,
+    "cost": 1,
+    "weight": 25
+  },
+  {
+    "id": 42,
+    "label": "Ломик",
+    "mType": 0,
+    "cost": 2,
+    "weight": 5
+  },
+  {
+    "id": 43,
+    "label": "Лопата",
+    "mType": 0,
+    "cost": 2,
+    "weight": 5
+  },
+  {
+    "id": 44,
+    "label": "Волшебная палочка",
+    "mType": 0,
+    "cost": 10,
+    "weight": 1
+  },
+  {
+    "id": 45,
+    "label": "Жезл",
+    "mType": 0,
+    "cost": 10,
+    "weight": 2
+  },
+  {
+    "id": 46,
+    "label": "Кристалл",
+    "mType": 0,
+    "cost": 10,
+    "weight": 1
+  },
+  {
+    "id": 47,
+    "label": "Сфера",
+    "mType": 0,
+    "cost": 20,
+    "weight": 3
+  },
+  {
+    "id": 48,
+    "label": "Масло (фляга)",
+    "mType": 1,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 49,
+    "label": "Мел (1 кусочек)",
+    "mType": 2,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 50,
+    "label": "Металлические шарики (1 000 штук в сумке)",
+    "mType": 0,
+    "cost": 1,
+    "weight": 2
+  },
+  {
+    "id": 51,
+    "label": "Мешок",
+    "mType": 2,
+    "cost": 1,
+    "weight": -1
+  },
+  {
+    "id": 52,
+    "label": "Мешочек с компонентами",
+    "mType": 0,
+    "cost": 25,
+    "weight": 2
+  },
+  {
+    "id": 53,
+    "label": "Молот, кузнечный",
+    "mType": 0,
+    "cost": 2,
+    "weight": 10
+  },
+  {
+    "id": 54,
+    "label": "Молоток",
+    "mType": 0,
+    "cost": 1,
+    "weight": 3
+  },
+  {
+    "id": 55,
+    "label": "Мыло",
+    "mType": 2,
+    "cost": 2,
+    "weight": 0
+  },
+  {
+    "id": 56,
+    "label": "Одежда, дорожная",
+    "mType": 0,
+    "cost": 2,
+    "weight": 4
+  },
+  {
+    "id": 57,
+    "label": "Одежда, костюм",
+    "mType": 0,
+    "cost": 5,
+    "weight": 4
+  },
+  {
+    "id": 58,
+    "label": "Одежда, отличная",
+    "mType": 0,
+    "cost": 15,
+    "weight": 6
+  },
+  {
+    "id": 59,
+    "label": "Одеяло",
+    "mType": 1,
+    "cost": 5,
+    "weight": 3
+  },
+  {
+    "id": 60,
+    "label": "Охотничный капкан",
+    "mType": 0,
+    "cost": 5,
+    "weight": 25
+  },
+  {
+    "id": 61,
+    "label": "Палатка, двухместная",
+    "mType": 0,
+    "cost": 2,
+    "weight": 20
+  },
+  {
+    "id": 62,
+    "label": "Пергамент (один лист)",
+    "mType": 1,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 63,
+    "label": "Песочные часы",
+    "mType": 0,
+    "cost": 25,
+    "weight": 1
+  },
+  {
+    "id": 64,
+    "label": "Писчее перо",
+    "mType": 2,
+    "cost": 2,
+    "weight": 0
+  },
+  {
+    "id": 65,
+    "label": "Подзорная труба",
+    "mType": 0,
+    "cost": 1000,
+    "weight": 1
+  },
+  {
+    "id": 66,
+    "label": "Противоядие (флакон)",
+    "mType": 0,
+    "cost": 50,
+    "weight": 0
+  },
+  {
+    "id": 67,
+    "label": "Рацион (1 день)",
+    "mType": 1,
+    "cost": 5,
+    "weight": 2
+  },
+  {
+    "id": 68,
+    "label": "Рюкзак",
+    "mType": 0,
+    "cost": 2,
+    "weight": 5
+  },
+  {
+    "id": 69,
+    "label": "Ряса",
+    "mType": 0,
+    "cost": 1,
+    "weight": 4
+  },
+  {
+    "id": 70,
+    "label": "Свеча",
+    "mType": 2,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 71,
+    "label": "Святая вода (фляга)",
+    "mType": 0,
+    "cost": 25,
+    "weight": 1
+  },
+  {
+    "id": 72,
+    "label": "Амулет",
+    "mType": 0,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 73,
+    "label": "Реликварий",
+    "mType": 0,
+    "cost": 5,
+    "weight": 2
+  },
+  {
+    "id": 74,
+    "label": "Эмблема",
+    "mType": 0,
+    "cost": 5,
+    "weight": 0
+  },
+  {
+    "id": 75,
+    "label": "Сигнальный свисток",
+    "mType": 2,
+    "cost": 5,
+    "weight": 0
+  },
+  {
+    "id": 76,
+    "label": "Спальник",
+    "mType": 0,
+    "cost": 1,
+    "weight": 7
+  },
+  {
+    "id": 77,
+    "label": "Столовый набор",
+    "mType": 1,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 78,
+    "label": "Сундук",
+    "mType": 0,
+    "cost": 5,
+    "weight": 25
+  },
+  {
+    "id": 79,
+    "label": "Таран, портативный",
+    "mType": 0,
+    "cost": 4,
+    "weight": 35
+  },
+  {
+    "id": 80,
+    "label": "Точильный камень",
+    "mType": 2,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 81,
+    "label": "Трутница",
+    "mType": 1,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 82,
+    "label": "Увеличительное стекло",
+    "mType": 0,
+    "cost": 100,
+    "weight": 0
+  },
+  {
+    "id": 83,
+    "label": "Факел",
+    "mType": 2,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 84,
+    "label": "Флакон",
+    "mType": 0,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 85,
+    "label": "Фляга или большая кружка",
+    "mType": 2,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 86,
+    "label": "Веточка омелы",
+    "mType": 0,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 87,
+    "label": "Деревянный посох",
+    "mType": 0,
+    "cost": 5,
+    "weight": 4
+  },
+  {
+    "id": 88,
+    "label": "Тисовая палочка",
+    "mType": 0,
+    "cost": 10,
+    "weight": 1
+  },
+  {
+    "id": 89,
+    "label": "Тотем",
+    "mType": 0,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 90,
+    "label": "Фонарь, закрытый",
+    "mType": 0,
+    "cost": 5,
+    "weight": 2
+  },
+  {
+    "id": 91,
+    "label": "Фонарь, направленный",
+    "mType": 0,
+    "cost": 10,
+    "weight": 2
+  },
+  {
+    "id": 92,
+    "label": "Цепь (10 футов)",
+    "mType": 0,
+    "cost": 5,
+    "weight": 10
+  },
+  {
+    "id": 93,
+    "label": "Чернила (бутылочка 30 грамм)",
+    "mType": 0,
+    "cost": 10,
+    "weight": 0
+  },
+  {
+    "id": 94,
+    "label": "Шест (10 футов)",
+    "mType": 2,
+    "cost": 5,
+    "weight": 7
+  },
+  {
+    "id": 95,
+    "label": "Шип, железный",
+    "mType": 1,
+    "cost": 1,
+    "weight": -1
+  },
+  {
+    "id": 96,
+    "label": "Шлямбур",
+    "mType": 2,
+    "cost": 5,
+    "weight": -2
+  },
+  {
+    "id": 97,
+    "label": "Яд, простой (флакон)",
+    "mType": 0,
+    "cost": 0,
+    "weight": 0
+  },
+  {
+    "id": 98,
+    "label": "Воровские инструменты",
+    "mType": 0,
+    "cost": 25,
+    "weight": 1
+  },
+  {
+    "id": 99,
+    "label": "Драконьи шахматы",
+    "mType": 0,
+    "cost": 1,
+    "weight": -1
+  },
+  {
+    "id": 100,
+    "label": "Карты",
+    "mType": 1,
+    "cost": 5,
+    "weight": 0
+  },
+  {
+    "id": 101,
+    "label": "Кости",
+    "mType": 1,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 102,
+    "label": "Ставка трёх драконов",
+    "mType": 0,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 103,
+    "label": "Инструменты навигатора",
+    "mType": 0,
+    "cost": 25,
+    "weight": 2
+  },
+  {
+    "id": 104,
+    "label": "Инструменты отравителя",
+    "mType": 0,
+    "cost": 50,
+    "weight": 2
+  },
+  {
+    "id": 105,
+    "label": "Инструменты алхимика",
+    "mType": 0,
+    "cost": 50,
+    "weight": 8
+  },
+  {
+    "id": 106,
+    "label": "Инструменты гончара",
+    "mType": 0,
+    "cost": 10,
+    "weight": 3
+  },
+  {
+    "id": 107,
+    "label": "Инструменты жестянщика",
+    "mType": 0,
+    "cost": 50,
+    "weight": 10
+  },
+  {
+    "id": 108,
+    "label": "Инструменты киллиграфа",
+    "mType": 0,
+    "cost": 10,
+    "weight": 5
+  },
+  {
+    "id": 109,
+    "label": "Инструменты каменщика",
+    "mType": 0,
+    "cost": 10,
+    "weight": 8
+  },
+  {
+    "id": 110,
+    "label": "Инструменты картографа",
+    "mType": 0,
+    "cost": 15,
+    "weight": 6
+  },
+  {
+    "id": 111,
+    "label": "Инструменты кожевника",
+    "mType": 0,
+    "cost": 5,
+    "weight": 5
+  },
+  {
+    "id": 112,
+    "label": "Инуструменты кузнеца",
+    "mType": 0,
+    "cost": 20,
+    "weight": 8
+  },
+  {
+    "id": 113,
+    "label": "Инструменты пивовара",
+    "mType": 0,
+    "cost": 20,
+    "weight": 9
+  },
+  {
+    "id": 114,
+    "label": "Инструменты плотника",
+    "mType": 0,
+    "cost": 8,
+    "weight": 6
+  },
+  {
+    "id": 115,
+    "label": "Инструменты повара",
+    "mType": 0,
+    "cost": 1,
+    "weight": 8
+  },
+  {
+    "id": 116,
+    "label": "Иструменты резчика по дереву",
+    "mType": 0,
+    "cost": 1,
+    "weight": 5
+  },
+  {
+    "id": 117,
+    "label": "Инструменты сапожника",
+    "mType": 0,
+    "cost": 5,
+    "weight": 5
+  },
+  {
+    "id": 118,
+    "label": "Инструменты стеклодува",
+    "mType": 0,
+    "cost": 30,
+    "weight": 5
+  },
+  {
+    "id": 119,
+    "label": "Инструменты ткача",
+    "mType": 0,
+    "cost": 1,
+    "weight": 5
+  },
+  {
+    "id": 120,
+    "label": "Инструменты художника",
+    "mType": 0,
+    "cost": 10,
+    "weight": 5
+  },
+  {
+    "id": 121,
+    "label": "Инструменты ювелира",
+    "mType": 0,
+    "cost": 25,
+    "weight": 2
+  },
+  {
+    "id": 122,
+    "label": "Барабан",
+    "mType": 0,
+    "cost": 6,
+    "weight": 3
+  },
+  {
+    "id": 123,
+    "label": "Виола",
+    "mType": 0,
+    "cost": 30,
+    "weight": 1
+  },
+  {
+    "id": 124,
+    "label": "Волынка",
+    "mType": 0,
+    "cost": 30,
+    "weight": 6
+  },
+  {
+    "id": 125,
+    "label": "Лира",
+    "mType": 0,
+    "cost": 30,
+    "weight": 2
+  },
+  {
+    "id": 126,
+    "label": "Лютня",
+    "mType": 0,
+    "cost": 35,
+    "weight": 2
+  },
+  {
+    "id": 127,
+    "label": "Рожок",
+    "mType": 0,
+    "cost": 3,
+    "weight": 2
+  },
+  {
+    "id": 128,
+    "label": "Свирель",
+    "mType": 0,
+    "cost": 12,
+    "weight": 2
+  },
+  {
+    "id": 129,
+    "label": "Флейта",
+    "mType": 0,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 130,
+    "label": "Цимбалы",
+    "mType": 0,
+    "cost": 25,
+    "weight": 10
+  },
+  {
+    "id": 131,
+    "label": "Шалмей",
+    "mType": 0,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 132,
+    "label": "Набор для грима",
+    "mType": 0,
+    "cost": 25,
+    "weight": 3
+  },
+  {
+    "id": 133,
+    "label": "Набор для фальсификации",
+    "mType": 0,
+    "cost": 15,
+    "weight": 5
+  },
+  {
+    "id": 134,
+    "label": "Набор травника",
+    "mType": 0,
+    "cost": 5,
+    "weight": 3
+  },
+  {
+    "id": 135,
+    "label": "Боевой конь",
+    "mType": 0,
+    "cost": 400,
+    "weight": 0
+  },
+  {
+    "id": 136,
+    "label": "Верблюд",
+    "mType": 0,
+    "cost": 50,
+    "weight": 0
+  },
+  {
+    "id": 137,
+    "label": "Лошадь, ездовая",
+    "mType": 0,
+    "cost": 75,
+    "weight": 0
+  },
+  {
+    "id": 138,
+    "label": "Лошадь, тяговая",
+    "mType": 0,
+    "cost": 50,
+    "weight": 0
+  },
+  {
+    "id": 139,
+    "label": "Мастифф",
+    "mType": 0,
+    "cost": 25,
+    "weight": 0
+  },
+  {
+    "id": 140,
+    "label": "Осёл или мул",
+    "mType": 0,
+    "cost": 8,
+    "weight": 0
+  },
+  {
+    "id": 141,
+    "label": "Пони",
+    "mType": 0,
+    "cost": 30,
+    "weight": 0
+  },
+  {
+    "id": 142,
+    "label": "Слон",
+    "mType": 0,
+    "cost": 200,
+    "weight": 0
+  },
+  {
+    "id": 143,
+    "label": "Карета",
+    "mType": 0,
+    "cost": 250,
+    "weight": 100
+  },
+  {
+    "id": 144,
+    "label": "Коляска",
+    "mType": 0,
+    "cost": 100,
+    "weight": 600
+  },
+  {
+    "id": 145,
+    "label": "Сани",
+    "mType": 0,
+    "cost": 20,
+    "weight": 300
+  },
+  {
+    "id": 146,
+    "label": "Седельная сумка",
+    "mType": 0,
+    "cost": 4,
+    "weight": 8
+  },
+  {
+    "id": 147,
+    "label": "Седло военное",
+    "mType": 0,
+    "cost": 20,
+    "weight": 30
+  },
+  {
+    "id": 148,
+    "label": "Седло грузовое",
+    "mType": 0,
+    "cost": 5,
+    "weight": 15
+  },
+  {
+    "id": 149,
+    "label": "Седло ездовое",
+    "mType": 0,
+    "cost": 10,
+    "weight": 25
+  },
+  {
+    "id": 150,
+    "label": "Седло экзотическое",
+    "mType": 0,
+    "cost": 60,
+    "weight": 40
+  },
+  {
+    "id": 151,
+    "label": "Телега",
+    "mType": 0,
+    "cost": 15,
+    "weight": 200
+  },
+  {
+    "id": 152,
+    "label": "Упряжь и уздечка",
+    "mType": 0,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 153,
+    "label": "Фургон",
+    "mType": 0,
+    "cost": 35,
+    "weight": 400
+  },
+  {
+    "id": 154,
+    "label": "Военный корабль",
+    "mType": 0,
+    "cost": 25000,
+    "weight": 0
+  },
+  {
+    "id": 155,
+    "label": "Галера",
+    "mType": 0,
+    "cost": 30000,
+    "weight": 0
+  },
+  {
+    "id": 156,
+    "label": "Килевая лодка",
+    "mType": 0,
+    "cost": 3000,
+    "weight": 0
+  },
+  {
+    "id": 157,
+    "label": "Ладья",
+    "mType": 0,
+    "cost": 10000,
+    "weight": 0
+  },
+  {
+    "id": 158,
+    "label": "Парусный карабль",
+    "mType": 0,
+    "cost": 10000,
+    "weight": 0
+  },
+  {
+    "id": 159,
+    "label": "Шлюпка",
+    "mType": 0,
+    "cost": 50,
+    "weight": 0
+  },
+  {
+    "id": 160,
+    "label": "Пшеница",
+    "mType": 2,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 161,
+    "label": "Мука",
+    "mType": 2,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 162,
+    "label": "Курица",
+    "mType": 2,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 163,
+    "label": "Соль",
+    "mType": 2,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 164,
+    "label": "Железо",
+    "mType": 1,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 165,
+    "label": "Холст (1 кв.м)",
+    "mType": 1,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 166,
+    "label": "Медь",
+    "mType": 1,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 167,
+    "label": "Хлопчатобумажная ткань (1 кв.м)",
+    "mType": 1,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 168,
+    "label": "Имбирь",
+    "mType": 0,
+    "cost": 1,
+    "weight": 1
+  },
+  {
+    "id": 169,
+    "label": "Коза",
+    "mType": 0,
+    "cost": 1,
+    "weight": 0
+  },
+  {
+    "id": 170,
+    "label": "Корица",
+    "mType": 0,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 171,
+    "label": "Перец",
+    "mType": 0,
+    "cost": 2,
+    "weight": 1
+  },
+  {
+    "id": 172,
+    "label": "Овца",
+    "mType": 0,
+    "cost": 2,
+    "weight": 0
+  },
+  {
+    "id": 173,
+    "label": "Гвоздика",
+    "mType": 0,
+    "cost": 3,
+    "weight": 1
+  },
+  {
+    "id": 174,
+    "label": "Свинья",
+    "mType": 0,
+    "cost": 3,
+    "weight": 0
+  },
+  {
+    "id": 175,
+    "label": "Серебро",
+    "mType": 0,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 176,
+    "label": "Льяная ткань (1 кв.м)",
+    "mType": 0,
+    "cost": 5,
+    "weight": 1
+  },
+  {
+    "id": 177,
+    "label": "Шёлк (1 кв.м)",
+    "mType": 0,
+    "cost": 10,
+    "weight": 1
+  },
+  {
+    "id": 178,
+    "label": "Корова",
+    "mType": 0,
+    "cost": 10,
+    "weight": 0
+  },
+  {
+    "id": 179,
+    "label": "Шафран",
+    "mType": 0,
+    "cost": 15,
+    "weight": 1
+  },
+  {
+    "id": 180,
+    "label": "Вол",
+    "mType": 0,
+    "cost": 15,
+    "weight": 0
+  },
+  {
+    "id": 181,
+    "label": "Золото",
+    "mType": 0,
+    "cost": 50,
+    "weight": 1
+  },
+  {
+    "id": 182,
+    "label": "Платина",
+    "mType": 0,
+    "cost": 500,
+    "weight": 1
   }
 ]

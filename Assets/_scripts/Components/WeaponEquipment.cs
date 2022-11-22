@@ -47,25 +47,25 @@ public class WeaponEquipment : MonoBehaviour
                     propString += "Боеприпасы, ";
                     break;
                 case Weapon.Properties.TwoHanded:
-                    propString += "Боеприпасы, ";
+                    propString += "Двуручное, ";
                     break;
                 case Weapon.Properties.Reach:
-                    propString += "Боеприпасы, ";
+                    propString += "ДОсигаемость, ";
                     break;
                 case Weapon.Properties.Distance:
-                    propString += "Боеприпасы, ";
+                    propString += "Дистанционное, ";
                     break;
                 case Weapon.Properties.Light:
-                    propString += "Боеприпасы, ";
+                    propString += "Лёгкое, ";
                     break;
                 case Weapon.Properties.Throwing:
-                    propString += "Боеприпасы, ";
+                    propString += "Метательное, ";
                     break;
                 case Weapon.Properties.Special:
-                    propString += "Боеприпасы, ";
+                    propString += "Особое, ";
                     break;
                 case Weapon.Properties.Reload:
-                    propString += "Боеприпасы, ";
+                    propString += "Перезарядка, ";
                     break;
                 case Weapon.Properties.Heavy:
                     propString += "Тяжёлое, ";

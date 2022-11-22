@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon :Item
+public class Weapon : Item
 {
     /*static string dicesSaveName = "weaponDices_";
     static string hitDiceSaveName = "weaponHitDice_";
@@ -49,10 +49,43 @@ public class Weapon :Item
 
     public enum BladeType
     {
-        Sword,
+        WarStaff,
+        Mace,
+        Club,
+        Dagger,
+        Spear,
+        LightHammer,
+        ThrowingSpear,
+        Stick,
+        HandAxe,
+        Sickle,
+        LightCrossbow,
+        Dart,
         ShortBow,
+        Sling,
+        Halberd,
+        BattlePickaxe,
+        BattleHammer,
+        BattleAxe,
+        Glaive,
+        TwohandedSword,
+        LongSpear,
+        LongSword,
+        Whip,
+        ShortSword,
+        Hammer,
+        Morgenstern,
+        Peak,
+        Rapier,
+        Poleaxe,
+        Scimitar,
+        Trident,
+        Flail,
+        HandedCrossbow,
+        HeavyCrossbow,
         LongBow,
-        Club
+        Pipe,
+        Net
     }
 
     public int dices;
