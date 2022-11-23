@@ -118,7 +118,7 @@ public class WeaponSet : MonoBehaviour
         int.TryParse(dist.text, out newWeapon.dist);
         int.TryParse(maxDist.text, out newWeapon.maxDist);
         newWeapon.magic = magic.isOn;
-        newWeapon.bladeType= Weapon.BladeType.Sword + blade.value;
+        newWeapon.bladeType= Weapon.BladeType.WarStaff + blade.value;
         switch (newWeapon.bladeType)
         {
             default:

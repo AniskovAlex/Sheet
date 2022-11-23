@@ -58,13 +58,13 @@ public class FormCreater : MonoBehaviour
                 else
                     list = new List<(string, string)>(ability.list);
                 bool found = false;
-                foreach ((string, List<string>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
+                foreach ((string, List<int>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
                 {
                     found = true;
-                    list.RemoveAll(g => x.Item2.Contains(g.Item1));
+                    x.Item2.ForEach(k => list.RemoveAt(k));
                 }
                 if (!found)
-                    PresavedLists.preLists.Add((ability.listName, new List<string>()));
+                    PresavedLists.preLists.Add((ability.listName, new List<int>()));
                 PresavedLists.ChangePing += UpdateOptions;
                 for (int i = 0; i < ability.chooseCount; i++)
                 {
@@ -156,7 +156,7 @@ public class FormCreater : MonoBehaviour
                         PresavedLists.UpdateLanguage("", x);
                 break;
             case Ability.Type.spellChoose:
-                Instantiate(spellChoose, discription.transform).SetSpells(ability.consum, ability.chooseCount, ability.bufInt);
+                Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt);
                 break;
 
         }
@@ -200,8 +200,8 @@ public class FormCreater : MonoBehaviour
                 list = FileSaverAndLoader.LoadList(ability.pathToList);
             else
                 list = new List<(string, string)>(ability.list);
-            foreach ((string, List<string>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
-                list.RemoveAll(g => x.Item2.Contains(g.Item1));
+            foreach ((string, List<int>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
+                x.Item2.ForEach(k => list.RemoveAt(k));
             foreach (Dropdown x in dropdowns)
             {
                 x.options.Clear();
@@ -262,15 +262,20 @@ public class FormCreater : MonoBehaviour
     }
     void ChangeSelected(Dropdown dropdown)
     {
-        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        int oldValue = -1;
+        int newValue = -1;
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
-        foreach ((string, string) x in list)
-            if (x.Item1 == dropdown.captionText.text)
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i].Item1 == dropdown.captionText.text)
             {
-                dropdown.GetComponent<DropdownExtend>().text.text = x.Item2;
-                break;
+                dropdown.GetComponent<DropdownExtend>().text.text = list[i].Item2;
+                newValue = i;
             }
-        PresavedLists.UpdatePrelist(ability.listName, oldValue, dropdown.captionText.text);
+            if (dropdown.GetComponent<DropdownExtend>().currentValueText == list[i].Item1)
+                oldValue = i;
+        }
+        PresavedLists.UpdatePrelist(ability.listName, oldValue, newValue);
     }
 
     void ChangeSkillSelected(Dropdown dropdown)
@@ -300,7 +305,16 @@ public class FormCreater : MonoBehaviour
         {
             PresavedLists.ChangePing -= UpdateOptions;
             foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
-                PresavedLists.RemoveFromPrelist(ability.listName, x.GetComponent<DropdownExtend>().currentValueText);
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (dropdown.GetComponent<DropdownExtend>().currentValueText == list[i].Item1)
+                    {
+                        PresavedLists.RemoveFromPrelist(ability.listName, i);
+                        break;
+                    }
+                }
+            }
             if (PresavedLists.ChangePing != null) PresavedLists.ChangePing("");
             return;
         }

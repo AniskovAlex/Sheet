@@ -16,7 +16,7 @@ public class FormShower : MonoBehaviour
         discription = GetComponentInChildren<Discription>().gameObject;
     }
 
-    public void CreateAbility(Ability ability)
+    public void CreateAbility(Ability ability, int level)
     {
         _ability = ability;
         head.text = ability.head;
@@ -43,22 +43,30 @@ public class FormShower : MonoBehaviour
                     list = FileSaverAndLoader.LoadList(ability.pathToList).ToArray();
                 else
                     list = ability.list;
-                List<string> chosen = DataSaverAndLoader.LoadCustom(ability.listName);
-                foreach (string x in chosen)
-                    foreach ((string, string) y in list)
-                        if (x == y.Item1)
-                        {
-                            SetText((2, y.Item1));
-                            SetText((0, y.Item2));
-                            break;
-                        }
+                List<int> chosen = DataSaverAndLoader.LoadCustom(ability.listName);
+                foreach (int x in chosen)
+                {
+                    SetText((2, list[x].Item1));
+                    SetText((0, list[x].Item2));
+                }
                 break;
             case Ability.Type.consumable:
                 foreach ((int, string) x in ability.discription)
                     SetText(x);
                 int amount = DataSaverAndLoader.LoadConsumAmount(ability.listName);
                 ConsumablePanel buf = Instantiate(consumable, headObject.transform);
-                buf.SpawnToggles(ability.consum, amount);
+                int buf2 = 0;
+                if (level > 0)
+                {
+                    foreach ((int, int) x in ability.consum)
+                        if (x.Item1 <= level)
+                        {
+                            buf2 = x.Item2;
+                        }
+                    buf.SpawnToggles(buf2, amount);
+                }
+                else
+                    buf.SpawnToggles(ability.consum[0].Item2, amount);
                 buf.update += UpdateConsum;
                 break;
         }

@@ -48,7 +48,7 @@ public abstract class PlayersClass : ObjectsBehavior
 
     protected void LoadAbilities(string pathName)
     {
-        abilities = FileSaverAndLoader.LoadAbilities("classes/" + pathName);
+        abilities = FileSaverAndLoader.LoadAbilities("Classes/" + pathName);
     }
 
     public virtual Ability[] GetAbilities()

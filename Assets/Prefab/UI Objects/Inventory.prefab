@@ -1698,6 +1698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6517856f084705041acde421d66552ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  searchCount: 5
   itemCollection: {fileID: 0}
   searchObject: {fileID: 1953724392597443511, guid: a6ead0ab8d993894f8976b511914bb85, type: 3}
   searchedItems: {fileID: 1126258005709220282}
@@ -3055,11 +3056,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cecfee03ba63584ebe5e53438d70920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: {fileID: 0}
-  AC: {fileID: 0}
-  ACCap: {fileID: 0}
-  strReq: {fileID: 0}
-  dis: {fileID: 0}
+  type: {fileID: 1126258005454206382}
+  AC: {fileID: 1126258004924632228}
+  ACCap: {fileID: 1126258005115716807}
+  strReq: {fileID: 1126258005513422282}
+  dis: {fileID: 1126258004710758403}
 --- !u!1 &1126258004574744737
 GameObject:
   m_ObjectHideFlags: 0

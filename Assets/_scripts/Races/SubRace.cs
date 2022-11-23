@@ -16,7 +16,7 @@ public class SubRace
 
     protected void LoadAbilities(string pathName)
     {
-        abilities = FileSaverAndLoader.LoadAbilities("subRaces/" + pathName);
+        abilities = FileSaverAndLoader.LoadAbilities("SubRaces/" + pathName);
     }
 
     public virtual Ability[] GetAbilities()

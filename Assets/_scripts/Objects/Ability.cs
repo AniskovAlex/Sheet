@@ -36,7 +36,10 @@ public class Ability
 
     public int level;
 
-    public int consum;
+    public (int, int)[] consum;
 
     public int bufInt;
+    public int buf2Int;
+
+    public bool changeRule;
 }

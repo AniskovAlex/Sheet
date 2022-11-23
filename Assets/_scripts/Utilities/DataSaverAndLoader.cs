@@ -306,7 +306,7 @@ public static class DataSaverAndLoader
         HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>();
         for (int i = 0; i < count; i++)
         {
-            list.Add(Weapon.BladeType.Sword + PlayerPrefs.GetInt(characterName + bladeProficiencySaveName + i));
+            list.Add(Weapon.BladeType.WarStaff + PlayerPrefs.GetInt(characterName + bladeProficiencySaveName + i));
         }
         return list;
     }
@@ -370,9 +370,9 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
-    public static void SaveCustomList(string listName, List<string> list)
+    public static void SaveCustomList(string listName, List<int> list)
     {
-        list.ForEach(x => PlayerPrefs.SetString(CharacterCollection.GetName() + listName + "Auto_" + list.IndexOf(x), x));
+        list.ForEach(x => PlayerPrefs.SetInt(CharacterCollection.GetName() + listName + "Auto_" + list.IndexOf(x), x));
         PlayerPrefs.SetInt(CharacterCollection.GetName() + listName + "CountAuto_", list.Count);
         int count = PlayerPrefs.GetInt(CharacterCollection.GetName() + customListCount);
         PlayerPrefs.SetString(CharacterCollection.GetName() + customList + count, listName);
@@ -380,13 +380,13 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
-    public static List<string> LoadCustom(string listName)
+    public static List<int> LoadCustom(string listName)
     {
         string characterName = CharacterCollection.GetName();
         int count = PlayerPrefs.GetInt(characterName + listName + "CountAuto_");
-        List<string> list = new List<string>();
+        List<int> list = new List<int>();
         for (int i = 0; i < count; i++)
-            list.Add(PlayerPrefs.GetString(characterName + listName + "Auto_" + i));
+            list.Add(PlayerPrefs.GetInt(characterName + listName + "Auto_" + i));
         return list;
     }
 
@@ -588,7 +588,7 @@ public static class DataSaverAndLoader
             else
                 weapon.magic = true;
             weapon.damageType = Weapon.DamageType.Slashing + PlayerPrefs.GetInt(characterName + weaponTypeSaveName + label);
-            weapon.bladeType = Weapon.BladeType.Sword + PlayerPrefs.GetInt(characterName + bladeTypeSaveName + label);
+            weapon.bladeType = Weapon.BladeType.WarStaff + PlayerPrefs.GetInt(characterName + bladeTypeSaveName + label);
             List<Weapon.Properties> list = new List<Weapon.Properties>();
             int propCount = PlayerPrefs.GetInt(characterName + propertiesCountSaveName + label);
             for (int i = 0; i < propCount; i++)

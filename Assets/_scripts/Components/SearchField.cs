@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class SearchField : MonoBehaviour
 {
     bool flag = false;
-    
-   
+    public int searchCount = 5;
+
     [SerializeField] GameObject itemCollection;
     [SerializeField] GameObject searchObject;
     [SerializeField] GameObject searchedItems;
@@ -30,10 +30,13 @@ public class SearchField : MonoBehaviour
             List<Item> searchList = new List<Item>();
             foreach (Item x in items)
             {
-                if (x.label.Contains(s))
+                string buf = x.label.ToLower();
+                if (buf.Contains(s))
                     searchList.Add(x);
             }
-            for (int i = 0; i < searchList.Count && i < 5; i++)
+            Sorts sorts = new Sorts(s);
+            searchList.Sort(sorts.Compare);
+            for (int i = 0; i < searchList.Count && i < searchCount; i++)
             {
                 GameObject b = Instantiate(searchObject, searchedItems.transform);
                 b.GetComponentInChildren<Text>().text = searchList[i].label[0].ToString().ToUpper() + searchList[i].label.Remove(0, 1);
@@ -47,7 +50,7 @@ public class SearchField : MonoBehaviour
 
     }
 
-    
+
 
     public void ShowFoundedItem(Item item)
     {

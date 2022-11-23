@@ -55,7 +55,7 @@ public abstract class Race : ObjectsBehavior
 
     protected void LoadAbilities(string pathName)
     {
-        abilities = FileSaverAndLoader.LoadAbilities("races/" + pathName);
+        abilities = FileSaverAndLoader.LoadAbilities("Races/" + pathName);
     }
 
     public virtual Ability[] GetAbilities()

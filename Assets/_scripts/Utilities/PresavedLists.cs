@@ -15,7 +15,7 @@ public static class PresavedLists
     static public HashSet<Armor.ArmorType> armorTypes = new HashSet<Armor.ArmorType>();
 
     static public HashSet<string> skills = new HashSet<string>();
-    
+
     static public HashSet<string> instruments = new HashSet<string>();
 
     static public List<(int, HashSet<int>)> spellKnew = new List<(int, HashSet<int>)>();
@@ -24,19 +24,20 @@ public static class PresavedLists
 
     static public List<string> attrAdd = new List<string>();
 
-    static public List<(string, List<string>)> preLists = new List<(string, List<string>)>();
+    static public List<(string, List<int>)> preLists = new List<(string, List<int>)>();
 
     static public Action<string> ChangePing;
     static public Action<string> ChangeSkillPing;
     static public Action<string> ChangeIntrumentsPing;
     static public Action<string> ChangeLanguagePing;
 
-    static public void UpdatePrelist(string listName, string oldValue, string newValue)
+    static public void UpdatePrelist(string listName, int oldValue, int newValue)
     {
-        foreach ((string, List<string>) x in preLists.FindAll(x => x.Item1 == listName))
+        foreach ((string, List<int>) x in preLists.FindAll(x => x.Item1 == listName))
         {
             x.Item2.Remove(oldValue);
-            x.Item2.Add(newValue);
+            if (newValue >= 0)
+                x.Item2.Add(newValue);
         }
         ChangePing(listName);
     }
@@ -73,8 +74,8 @@ public static class PresavedLists
 
     static public void UpdateAttrAdd(string newValue)
     {
-        if(newValue != "Пусто")
-        attrAdd.Add(newValue);
+        if (newValue != "Пусто")
+            attrAdd.Add(newValue);
     }
 
     static public void UpdateAttrAdd(string oldValue, string newValue)
@@ -84,9 +85,9 @@ public static class PresavedLists
             attrAdd.Add(newValue);
     }
 
-    static public void RemoveFromPrelist(string listName, string value)
+    static public void RemoveFromPrelist(string listName, int value)
     {
-        foreach ((string, List<string>) x in preLists.FindAll(x => x.Item1 == listName))
+        foreach ((string, List<int>) x in preLists.FindAll(x => x.Item1 == listName))
         {
             x.Item2.Remove(value);
             if (x.Item2.Count <= 0)
@@ -140,7 +141,7 @@ public static class PresavedLists
 
     static public void SaveSpellKnew()
     {
-        
+
         DataSaverAndLoader.SaveAddSpellKnew(spellKnew);
     }
 

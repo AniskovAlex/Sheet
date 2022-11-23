@@ -41,11 +41,15 @@ public class HandEquipment : MonoBehaviour
             }
 
         }
+        hitDices.text = weapon.dices + "ê" + weapon.hitDice;
 
-        if (attack > 0)
-            hitDices.text = weapon.dices + "ê" + weapon.hitDice + "+" + attack;
-        else
-            hitDices.text = weapon.dices + "ê" + weapon.hitDice + "" + attack;
+        if (attack != 0)
+        {
+            if (attack >= 0)
+                hitDices.text += "+" + attack;
+            else
+                hitDices.text += attack;
+        }
         if (CharacterData.GetBladeProficiency().Contains(weapon.bladeType) || CharacterData.GetWeaponProficiency().Contains(weapon.weaponType))
             attack += CharacterData.GetProficiencyBonus();
 

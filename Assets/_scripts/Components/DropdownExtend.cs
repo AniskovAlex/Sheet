@@ -6,5 +6,6 @@ using UnityEngine.UI;
 public class DropdownExtend : MonoBehaviour
 {
     public string currentValueText = "";
+    //public int currentValueInt = 0;
     public Text text;
 }

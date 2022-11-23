@@ -9,7 +9,7 @@ public class Fighter : PlayersClass
     {
         id = 2;
         name = "Воин";
-        LoadAbilities("fighter");
+        LoadAbilities("Fighter");
         healthDice = 10;
         mainState = 0;
         magic = 0;
@@ -19,7 +19,7 @@ public class Fighter : PlayersClass
     {
         switch (subId)
         {
-            case 0:
+            case 1:
                 subClass = new MasterOfMartialArt();
                 break;
             default:

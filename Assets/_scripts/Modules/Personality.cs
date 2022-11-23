@@ -46,7 +46,7 @@ public class Personality : MonoBehaviour
                     foreach (Ability x in abilityArr)
                     {
                         if (x.level <= playersClass.Item1)
-                            Instantiate(form, classBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x);
+                            Instantiate(form, classBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, playersClass.Item1);
                     }
                 }
             }
@@ -66,17 +66,17 @@ public class Personality : MonoBehaviour
             }
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x);
+                Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0);
             }
         }
         backstory = CharacterData.GetBackstory();
-        if(backstory != null)
+        if (backstory != null)
         {
             backstoryObject.GetComponent<FormShower>().SetHead(backstory.name);
             Ability[] abilityArr = backstory.GetAbilities();
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, backstoryObject.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x);
+                Instantiate(form, backstoryObject.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0);
             }
         }
     }
@@ -130,7 +130,7 @@ public class Personality : MonoBehaviour
         foreach (Weapon.BladeType x in CharacterData.GetBladeProficiency())
             switch (x)
             {
-                case Weapon.BladeType.Sword:
+                case Weapon.BladeType.WarStaff:
                     weaponProficiancy.text += " длинный меч,";
                     break;
                 case Weapon.BladeType.ShortBow:

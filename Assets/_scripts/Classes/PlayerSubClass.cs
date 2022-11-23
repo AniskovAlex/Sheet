@@ -13,7 +13,7 @@ public abstract class PlayerSubClass
 
     protected void LoadAbilities(string pathName)
     {
-        abilities = FileSaverAndLoader.LoadAbilities("subClasses/"+ pathName);
+        abilities = FileSaverAndLoader.LoadAbilities("SubClasses/"+ pathName);
     }
 
     public virtual Ability[] GetAbilities()

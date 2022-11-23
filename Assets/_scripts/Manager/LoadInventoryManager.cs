@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
 
@@ -13,9 +12,9 @@ public class LoadInventoryManager : MonoBehaviour
         List<Item> listItems = new List<Item>();
         List<Weapon> listWeapons = new List<Weapon>();
         List<Armor> listArmors = new List<Armor>();
-        string JSONItems = File.ReadAllText("Assets/Resources/items.json");
-        string JSONWeapons = File.ReadAllText("Assets/Resources/weapons.json");
-        string JSONArmors = File.ReadAllText("Assets/Resources/armors.json");
+        string JSONItems = FileSaverAndLoader.LoadFile("Items");
+        string JSONWeapons = FileSaverAndLoader.LoadFile("Weapons");
+        string JSONArmors = FileSaverAndLoader.LoadFile("Armors");
         /*wep.cost = 1;
         wep.damageType = Weapon.DamageType.Crushing;
         wep.dices = 1;

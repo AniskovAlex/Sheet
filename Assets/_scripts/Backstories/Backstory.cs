@@ -22,7 +22,7 @@ public class Backstory : ObjectsBehavior
 
     protected void LoadAbilities(string pathName)
     {
-        abilities = FileSaverAndLoader.LoadAbilities("backstories/" + pathName);
+        abilities = FileSaverAndLoader.LoadAbilities("Backstories/" + pathName);
     }
 
     public virtual Ability[] GetAbilities()
