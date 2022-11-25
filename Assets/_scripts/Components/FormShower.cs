@@ -70,6 +70,8 @@ public class FormShower : MonoBehaviour
                 buf.update += UpdateConsum;
                 break;
         }
+        if (ability.changeRule)
+            RuleChanger();
     }
 
     void UpdateConsum(int count)
@@ -112,5 +114,28 @@ public class FormShower : MonoBehaviour
         newObjectText.fontSize = textSize;
         newObjectText.fontStyle = fontStyle;
 
+    }
+
+    void RuleChanger()
+    {
+        if(_ability.listName == "BattleStyles")
+        {
+            List<int> list = DataSaverAndLoader.LoadCustom(_ability.listName);
+            foreach(int x in list)
+            {
+                switch (x)
+                {
+                    case 0:
+                        GlobalStatus.duelist = true;
+                        break;
+                    case 2:
+                        GlobalStatus.defence = true;
+                        break;
+                    case 5:
+                        GlobalStatus.archer = true;
+                        break;
+                }
+            }
+        }
     }
 }

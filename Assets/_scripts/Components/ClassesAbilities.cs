@@ -54,7 +54,7 @@ public class ClassesAbilities : MonoBehaviour
             if (abilityArr != null)
                 foreach (Ability x in abilityArr)
                 {
-                    if (x.level == CharacterData.GetLevel(playersClass))
+                    if (x.level == CharacterData.GetLevel(playersClass) + 1)
                         Instantiate(form, formCreater.GetComponentInChildren<Discription>().transform).GetComponent<FormCreater>().CreateAbility(x);
                 }
         }

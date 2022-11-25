@@ -42,7 +42,7 @@ public class Personality : MonoBehaviour
                     Ability[] abilitieSubClassArr = playersClass.Item2.ChooseSubClass(DataSaverAndLoader.LoadSubClass(playersClass.Item2));
                     Ability[] abilityArr = playersClass.Item2.GetAbilities();
                     if (abilitieSubClassArr != null)
-                        abilityArr.Concat(abilitieSubClassArr).ToArray();
+                        abilityArr = abilityArr.Concat(abilitieSubClassArr).ToArray();
                     foreach (Ability x in abilityArr)
                     {
                         if (x.level <= playersClass.Item1)

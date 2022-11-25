@@ -80,6 +80,20 @@ public abstract class PlayersClass : ObjectsBehavior
         return null;
     }
 
+    public virtual HashSet<Weapon.WeaponType> GetSubWeaponProficiency()
+    {
+        return GetWeaponProficiency();
+    }
+
+    public virtual HashSet<Weapon.BladeType> GetSubBladeProficiency()
+    {
+        return GetBladeProficiency();
+    }
+    public virtual HashSet<Armor.ArmorType> GetSubArmorProficiency()
+    {
+        return GetArmorProficiency();
+    }
+
     public virtual HashSet<int> GetSaveThrows()
     {
         return new HashSet<int>();

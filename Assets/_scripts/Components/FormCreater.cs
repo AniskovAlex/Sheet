@@ -37,20 +37,22 @@ public class FormCreater : MonoBehaviour
             case Ability.Type.subClass:
                 Dropdown subClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
                 subClass.ClearOptions();
+                subClass.options.Add(new Dropdown.OptionData("Пусто"));
                 foreach (string x in ability.common)
                     subClass.options.Add(new Dropdown.OptionData(x));
                 subClass.options.Add(new Dropdown.OptionData("Пусто"));
                 subClass.onValueChanged.AddListener(delegate { GetComponentInParent<ClassesAbilities>().ChosenSubClass(subClass, this); });
-                subClass.value = ability.discription.Count;
+                subClass.value = 0;
                 break;
             case Ability.Type.subRace:
                 Dropdown subRace = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
                 subRace.ClearOptions();
+                subRace.options.Add(new Dropdown.OptionData("Пусто"));
                 foreach (string x in ability.common)
                     subRace.options.Add(new Dropdown.OptionData(x));
                 subRace.options.Add(new Dropdown.OptionData("Пусто"));
                 subRace.onValueChanged.AddListener(delegate { GetComponentInParent<RaceAbilities>().ChosenSubRace(subRace, this); });
-                subRace.value = ability.common.Count;
+                subRace.value = 0;
                 break;
             case Ability.Type.withChoose:
                 if (ability.isUniq)

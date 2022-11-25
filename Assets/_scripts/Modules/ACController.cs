@@ -20,6 +20,8 @@ public class ACController : MonoBehaviour
     void UploadArmorClass()
     {
         int buf = AC + addArmor;
+        if (shieldEquip)
+            buf += 2;
         foreach (GameObject x in boxs)
             x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
     }
@@ -33,9 +35,15 @@ public class ACController : MonoBehaviour
                 AC = armor.AC + Mathf.Clamp(dex, -10, armor.ACCap);
             else
                 AC = armor.AC;
+            if (GlobalStatus.defence)
+                addArmor += 1;
         }
         else
+        {
             AC = naturalArmor + dex;
+            if (GlobalStatus.defence)
+                addArmor -= 1;
+        }
         UploadArmorClass();
     }
 }

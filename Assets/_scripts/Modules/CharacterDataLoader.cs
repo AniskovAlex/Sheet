@@ -40,7 +40,7 @@ public class CharacterDataLoader : MonoBehaviour
     private void Awake()
     {
         characterName = CharacterCollection.GetName();
-
+        GlobalStatus.ResetRuleChanger();
         LoadAttributes();
         LoadMoney();
         LoadSkills();

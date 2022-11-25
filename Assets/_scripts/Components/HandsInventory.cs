@@ -26,10 +26,19 @@ public class HandsInventory : MonoBehaviour
                     weaponInventory.RemoveEquippedWeapon(secondHands[0].GetWeapon());
                 }
             }
+            if (GlobalStatus.duelist)
+            {
+                foreach (HandEquipment x in secondHands)
+                {
+                    if (x != handEquipment)
+                        x.ReDamage();
+                }
+            }
         }
         else
         {
             HandEquipment[] secondHands = hands.GetComponentsInChildren<HandEquipment>();
+
             foreach (HandEquipment x in secondHands)
             {
                 if (x.GetWeapon() == weapon)
@@ -40,5 +49,10 @@ public class HandsInventory : MonoBehaviour
                 }
             }
         }
+    }
+
+    public int GetHands()
+    {
+        return currentHands;
     }
 }

@@ -41,14 +41,31 @@ public class HandEquipment : MonoBehaviour
             }
 
         }
-        hitDices.text = weapon.dices + "ê" + weapon.hitDice;
+        hitDices.text = damage;
+        int addDamage = 0;
 
-        if (attack != 0)
+        if (GlobalStatus.archer && (weapon.weaponType == Weapon.WeaponType.CommonDist || weapon.weaponType == Weapon.WeaponType.WarDist))
+            addDamage += 2;
+
+        if (GlobalStatus.duelist && hands == 1)
         {
-            if (attack >= 0)
-                hitDices.text += "+" + attack;
+            HandsInventory handsInventory = GetComponentInParent<HandsInventory>();
+            HandEquipment[] secondHands = handsInventory.GetComponentsInChildren<HandEquipment>();
+            bool flag = true;
+            foreach (HandEquipment x in secondHands)
+                if (x.gameObject.transform != transform)
+                    if (x.currentWeapon.weaponType != Weapon.WeaponType.Shield)
+                        flag = false;
+            if (flag)
+                addDamage += 2;
+        }
+
+        if ((attack + addDamage) != 0)
+        {
+            if ((attack + addDamage) >= 0)
+                hitDices.text += "+" + (attack + addDamage);
             else
-                hitDices.text += attack;
+                hitDices.text += (attack + addDamage);
         }
         if (CharacterData.GetBladeProficiency().Contains(weapon.bladeType) || CharacterData.GetWeaponProficiency().Contains(weapon.weaponType))
             attack += CharacterData.GetProficiencyBonus();
@@ -90,5 +107,64 @@ public class HandEquipment : MonoBehaviour
     public int GetHands()
     {
         return hands;
+    }
+
+    public void ReDamage()
+    {
+        int attack = CharacterData.GetModifier(0);
+        int addDamage = 0;
+        string damage = currentWeapon.dices + "ê" + currentWeapon.hitDice;
+
+        foreach (Weapon.Properties x in currentWeapon.properties)
+        {
+            switch (x)
+            {
+                case Weapon.Properties.Fencing:
+                    attack = Mathf.Max(attack, CharacterData.GetModifier(1));
+                    break;
+                case Weapon.Properties.Universal:
+                    damage += "(" + (currentWeapon.hitDice + 2) + ")";
+                    break;
+
+            }
+
+        }
+        hitDices.text = damage;
+
+        if (GlobalStatus.archer && (currentWeapon.weaponType == Weapon.WeaponType.CommonDist || currentWeapon.weaponType == Weapon.WeaponType.WarDist))
+            addDamage += 2;
+
+        if (GlobalStatus.duelist && hands == 1)
+        {
+            HandsInventory handsInventory = GetComponentInParent<HandsInventory>();
+            HandEquipment[] secondHands = handsInventory.GetComponentsInChildren<HandEquipment>();
+            bool flag = true;
+            foreach (HandEquipment x in secondHands)
+                if (x.gameObject.transform != transform)
+                    if (x.currentWeapon.weaponType != Weapon.WeaponType.Shield)
+                        flag = false;
+            if (flag)
+                addDamage += 2;
+        }
+
+        if ((attack + addDamage) != 0)
+        {
+            if ((attack + addDamage) >= 0)
+                hitDices.text += "+" + (attack + addDamage);
+            else
+                hitDices.text += (attack + addDamage);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GlobalStatus.duelist)
+        {
+            HandsInventory handsInventory = GetComponentInParent<HandsInventory>();
+            if (handsInventory == null) return;
+            HandEquipment[] secondHands = handsInventory.GetComponentsInChildren<HandEquipment>();
+            foreach (HandEquipment x in secondHands)
+                x.ReDamage();
+        }
     }
 }

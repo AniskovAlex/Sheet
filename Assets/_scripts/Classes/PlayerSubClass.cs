@@ -26,6 +26,11 @@ public abstract class PlayerSubClass
         return name;
     }
 
+    public virtual int GetMagic()
+    {
+        return 0;
+    }
+
     int ID = -1;
     public int id
     {
