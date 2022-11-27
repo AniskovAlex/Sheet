@@ -27,15 +27,16 @@ public class Spell
     public int level;
     public Type spellType;
     public int time; // 1 - действие, 2 - реакци€, 3 - 1 час, 4 - бонусное, 5 - 1 минута
-                     // 6 - 10 мин
+                     // 6 - 10 мин, 7 - 12 часов
     public string reactionDis;
-    public int dist; // -1 - на себ€, 0 - касание, -2 - особа€
+    public int dist; // -1 - на себ€, 0 - касание, -2 - особа€, -3 - в пределах видимости, -4 - 1 мил€
     public string distDis; 
     public List<Component> comp;
     public string materialDis;
     public int duration; // 1 - мгновенное, 2 - 1 раунд, 3 - 1 минута, 
                          // 4 - 10 минут, 5 - 10 дней, 6 - 1 час, 7 - 24 часа, 8 - 8 часов
-                         // 9 - пока не рассеетс€
+                         // 9 - пока не рассеетс€, 10 - 2 часа, 11 - 7 дней, 12 - пока не рассеетс€ или не сработает
+                         // 13 - 30 дней
     public List<int> classes; // 0 - бард, 3 - волшебник, 4 - друид, 5 - жрец, 6 - изобретатель, 
                               // 7 - колдун, 8 - паладин, 11 - следопыт, 12 - чародей
     public List<(int, int)> subClasses;
