@@ -33,7 +33,10 @@ public class ClassesAbilities : MonoBehaviour
         Instantiate(health, content.transform);
         if (playersClass != null)
         {
+            Ability[] abilitieSubClassArr = playersClass.ChooseSubClass(DataSaverAndLoader.LoadSubClass(playersClass));
             Ability[] abilityArr = playersClass.GetAbilities();
+            if (abilityArr != null && abilitieSubClassArr != null)
+                abilityArr = abilityArr.Concat(playersClass.GetSubClass().GetAbilities()).ToArray();
             int level = CharacterData.GetLevel(playersClass) + 1;
             foreach (Ability x in abilityArr)
             {

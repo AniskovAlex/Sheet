@@ -8,7 +8,7 @@ public class MysticalKnight : PlayerSubClass
     {
         id = 2;
         name = "Мистический рыцарь";
-        LoadAbilities("MasterOfMartialArt");
+        LoadAbilities("MysticalKnight");
     }
     public override int GetMagic()
     {

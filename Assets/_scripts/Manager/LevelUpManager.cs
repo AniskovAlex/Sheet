@@ -55,6 +55,12 @@ public class LevelUpManager : MonoBehaviour
             if (playersClass.GetSubClass() != null)
                 DataSaverAndLoader.SaveSubClass(playersClass);
             SaveAttr();
+            PresavedLists.SaveProficiency();
+            PresavedLists.SaveInstruments();
+            PresavedLists.SaveCustomPrelists();
+            PresavedLists.saveSaveThrows();
+            PresavedLists.SaveLanguage();
+            PresavedLists.SaveSpellKnew();
         }
         PresavedLists.SaveCustomPrelists();
         PlayerPrefs.Save();
