@@ -60,6 +60,12 @@ public class CharacterData
         return 0;
     }
 
+    public static void AddAtribute(int index, int add)
+    {
+        if (index >= 0 && index < _charAtr.Length)
+            _charAtr[index] += add;
+    }
+
     public static int GetModifier(int index)
     {
         if (index >= 0 && index < _charModifier.Length)
@@ -86,6 +92,13 @@ public class CharacterData
         if (index >= 0 && index < _skills.Length)
             return _skills[index];
         return 0;
+    }
+
+    public static int GetSpeed()
+    {
+        if (_race != null)
+            return _race.GetSpeed();
+        else return 0;
     }
 
     public static int GetProficiencyBonus()
@@ -134,6 +147,15 @@ public class CharacterData
             if (x.Item2.name == playerClass.name)
                 return x.Item1;
         return 0;
+    }
+
+    public static int GetMagic()
+    {
+        int magic = 0;
+        foreach ((int, PlayersClass) x in _classes)
+            if (x.Item2.magic > 0)
+                magic += 1 / x.Item2.magic;
+        return magic;
     }
 
     public static Race GetRace()

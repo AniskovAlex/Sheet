@@ -1,21 +1,5 @@
 [
   {
-    "id": -1,
-    "name": "",
-    "level": 0,
-    "spellType": 0,
-    "time": 0,
-    "reactionDis": "",
-    "dist": 0,
-    "comp": [],
-    "materialDis": "",
-    "duration": 0,
-    "classes": [],
-    "discription": "",
-    "concentration": false,
-    "ritual": false
-  },
-  {
     "id": 0,
     "name": "Адское возмездие",
     "level": 1,

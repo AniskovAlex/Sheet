@@ -37,4 +37,18 @@ public abstract class PlayerSubClass
         get { return ID; }
         protected set { ID = value; }
     }
+
+    public virtual HashSet<Weapon.WeaponType> GetWeaponProficiency()
+    {
+        return null;
+    }
+
+    public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
+    {
+        return null;
+    }
+    public virtual HashSet<Armor.ArmorType> GetArmorProficiency()
+    {
+        return null;
+    }
 }

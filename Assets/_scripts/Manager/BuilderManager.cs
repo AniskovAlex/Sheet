@@ -89,6 +89,7 @@ public class BuilderManager : MonoBehaviour
                 DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().id);
             }
             SaveSkills();
+            SaveCompetence();
             int buf;
             int.TryParse(maxHealth.text, out buf);
             PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
@@ -211,5 +212,71 @@ public class BuilderManager : MonoBehaviour
             }
         }
         PresavedLists.skills.Clear();
+    }
+
+    void SaveCompetence()
+    {
+        HashSet<string> list = PresavedLists.competence;
+        foreach (string x in list)
+        {
+            switch (x)
+            {
+                case "Атлетика":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 0, 2);
+                    break;
+                case "Акробатика":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 1, 2);
+                    break;
+                case "Ловкость рук":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 2, 2);
+                    break;
+                case "Скрытность":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 3, 2);
+                    break;
+                case "Анализ":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 4, 2);
+                    break;
+                case "История":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 5, 2);
+                    break;
+                case "Магия":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 6, 2);
+                    break;
+                case "Природа":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 7, 2);
+                    break;
+                case "Религия":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 8, 2);
+                    break;
+                case "Внимательность":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 9, 2);
+                    break;
+                case "Выживание":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 10, 2);
+                    break;
+                case "Медицина":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 11, 2);
+                    break;
+                case "Проницательность":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 12, 2);
+                    break;
+                case "Уход за животными":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 13, 2);
+                    break;
+                case "Выступление":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 14, 2);
+                    break;
+                case "Запугивание":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 15, 2);
+                    break;
+                case "Обман":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 16, 2);
+                    break;
+                case "Убеждение":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 17, 2);
+                    break;
+            }
+        }
+        PresavedLists.competence.Clear();
     }
 }

@@ -10,6 +10,10 @@ public static class GlobalStatus
     public static bool duelist = false;
     public static bool defence = false;
     public static bool archer = false;
+    public static bool allHandy = false;
+    public static bool barbarianDefence = false;
+    public static bool barbatianFastMove = false;
+    public static bool wildChampion = false;
     public static void ResetRuleChanger()
     {
         duelist = false;

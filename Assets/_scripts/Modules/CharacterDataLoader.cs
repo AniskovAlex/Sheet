@@ -93,8 +93,23 @@ public class CharacterDataLoader : MonoBehaviour
                 int classLevel = PlayerPrefs.GetInt(characterName + levelSaveName + i);
                 switch (PlayerPrefs.GetInt(characterName + levelLabelSaveName + i))
                 {
+                    case 0:
+                        playersClass = new Bard();
+                        break;
+                    case 1:
+                        playersClass = new Barbarian();
+                        break;
                     case 2:
                         playersClass = new Fighter();
+                        break;
+                    case 3:
+                        playersClass = new Wizard();
+                        break;
+                    case 4:
+                        playersClass = new Druid();
+                        break;
+                    case 5:
+                        playersClass = new Cleric();
                         break;
                     case 10:
                         playersClass = new Rogue();

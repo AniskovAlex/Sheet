@@ -15,7 +15,8 @@ public class Ability
         instruments,
         language,
         subRace,
-        spellChoose
+        spellChoose,
+        competence
     }
 
     public string head;
@@ -30,7 +31,7 @@ public class Ability
 
     public List<(int, string)> discription = new List<(int, string)>();
 
-    public (string, string)[] list;
+    public (int ,string, string)[] list;
 
     public HashSet<string> common;
 

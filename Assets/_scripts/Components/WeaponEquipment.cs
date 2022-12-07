@@ -79,6 +79,7 @@ public class WeaponEquipment : MonoBehaviour
 
             }
         }
+        if(properties.text!=null&& properties.text != "")
         properties.text = propString.Remove(propString.LastIndexOf(','));
         if (_handsInventory != null)
             equip.onValueChanged.AddListener(delegate

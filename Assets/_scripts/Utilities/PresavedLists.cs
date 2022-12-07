@@ -15,6 +15,7 @@ public static class PresavedLists
     static public HashSet<Armor.ArmorType> armorTypes = new HashSet<Armor.ArmorType>();
 
     static public HashSet<string> skills = new HashSet<string>();
+    static public HashSet<string> competence = new HashSet<string>();
 
     static public HashSet<string> instruments = new HashSet<string>();
 
@@ -28,6 +29,7 @@ public static class PresavedLists
 
     static public Action<string> ChangePing;
     static public Action<string> ChangeSkillPing;
+    static public Action<string> ChangeCompetencePing;
     static public Action<string> ChangeIntrumentsPing;
     static public Action<string> ChangeLanguagePing;
 
@@ -39,7 +41,8 @@ public static class PresavedLists
             if (newValue >= 0)
                 x.Item2.Add(newValue);
         }
-        ChangePing(listName);
+        if (ChangePing != null)
+            ChangePing(listName);
     }
 
     static public void UpdateSkills(string oldValue, string newValue)
@@ -49,7 +52,19 @@ public static class PresavedLists
             forceRemoveSkill = newValue;
         skills.Remove(oldValue);
         skills.Add(newValue);
-        ChangeSkillPing(forceRemoveSkill);
+        if (ChangeSkillPing != null)
+            ChangeSkillPing(forceRemoveSkill);
+    }
+
+    static public void UpdateCompentence(string oldValue, string newValue)
+    {
+        string forceRemoveSkill = "";
+        if (competence.Contains(newValue))
+            forceRemoveSkill = newValue;
+        competence.Remove(oldValue);
+        competence.Add(newValue);
+        if (ChangeCompetencePing != null)
+            ChangeCompetencePing(forceRemoveSkill);
     }
 
     static public void UpdateInstruments(string oldValue, string newValue)
@@ -59,7 +74,8 @@ public static class PresavedLists
             forceRemoveInstruments = newValue;
         instruments.Remove(oldValue);
         instruments.Add(newValue);
-        ChangeIntrumentsPing(forceRemoveInstruments);
+        if (ChangeIntrumentsPing != null)
+            ChangeIntrumentsPing(forceRemoveInstruments);
     }
 
     static public void UpdateLanguage(string oldValue, string newValue)
@@ -69,7 +85,8 @@ public static class PresavedLists
             forceRemoveLangugae = newValue;
         languages.Remove(oldValue);
         languages.Add(newValue);
-        ChangeLanguagePing(forceRemoveLangugae);
+        if (ChangeLanguagePing != null)
+            ChangeLanguagePing(forceRemoveLangugae);
     }
 
     static public void UpdateAttrAdd(string newValue)
@@ -103,6 +120,13 @@ public static class PresavedLists
         skills.Remove(value);
         if (ChangeSkillPing != null)
             ChangeSkillPing("");
+    }
+
+    static public void RemoveFromCompetence(string value)
+    {
+        competence.Remove(value);
+        if (ChangeCompetencePing != null)
+            ChangeCompetencePing("");
     }
 
     static public void RemoveFromInstruments(string value)

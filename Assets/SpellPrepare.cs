@@ -17,8 +17,24 @@ public class SpellPrepare : MonoBehaviour
         head.text = playerClass.name;
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
-        list = list.FindAll(g => (g.level <= Utilities.GetMaxSpellLevel(CharacterData.GetClasses())) && (g.classes.Contains(playerClass.id)) && g.level > 0);
-        SpellController.spellKnew.ForEach(g => list = list.Except(g.Item2).ToList());
+        if (playerClass.id != 3)
+            list = list.FindAll(g => (g.level <= Utilities.GetMaxSpellLevel(CharacterData.GetClasses())) && (g.classes.Contains(playerClass.id)) && g.level > 0);
+        else
+            foreach ((int, List<Spell>) x in SpellController.spellKnew)
+            {
+                if (x.Item1 == 3)
+                {
+                    list = x.Item2;
+                    break;
+                }
+            }
+        foreach ((int, List<Spell>) x in SpellController.spellKnew)
+        {
+            if (x.Item1 != 3)
+            {
+                SpellController.spellKnew.ForEach(g => list = list.Except(g.Item2).ToList());
+            }
+        }
         SpellController.spellPrepared.ForEach(g => list = list.Except(g.Item2).ToList());
         foreach (Spell x in list)
         {
@@ -96,7 +112,10 @@ public class SpellPrepare : MonoBehaviour
             int i = 0;
             foreach ((int, List<Spell>) x in SpellController.spellPrepared)
             {
-                SpellController.spellPrepared[i].Item2.Add(spellBody.GetSpell());
+                if (x.Item1 == id)
+                {
+                    SpellController.spellPrepared[i].Item2.Add(spellBody.GetSpell());
+                }
                 i++;
             }
             leftCount--;

@@ -17,18 +17,23 @@ public class StandartInvetoryPanel : MonoBehaviour
     public void SetInventoryChoice(PlayersClass playersClass, Backstory backstory, Item[] items)
     {
         this.items = items;
-        List<(List<(int, Item)>, List<(int, Item)>)> list = playersClass.GetItems();
-        foreach ((List<(int, Item)>, List<(int, Item)>) x in list)
+        List<List<List<(int, Item)>>> list = playersClass.GetItems();
+        foreach (List<List<(int, Item)>> x in list)
         {
             GameObject parent = Instantiate(ObjectPanel, transform);
-            if (x.Item2 != null)
+            int i = 1;
+            foreach (List<(int, Item)> y in x)
             {
-                ShowList(x.Item1, parent);
-                Instantiate(text, parent.transform).text = "или";
-                ShowList(x.Item2, parent);
+                if (x.Count > 1)
+                {
+                    ShowList(y, parent);
+                    if (i != x.Count)
+                        Instantiate(text, parent.transform).text = "или";
+                }
+                else
+                    ShowItems(y, parent);
+                i++;
             }
-            else
-                ShowItems(x.Item1, parent);
         }
     }
 
@@ -45,7 +50,7 @@ public class StandartInvetoryPanel : MonoBehaviour
         {
             itemList.ForEach(y =>
             {
-                if (itemList.IndexOf(g) <= itemList.IndexOf(y));
+                if (itemList.IndexOf(g) <= itemList.IndexOf(y)) ;
                 else
                 {
                     if (g.Item2 == y.Item2)
@@ -89,6 +94,48 @@ public class StandartInvetoryPanel : MonoBehaviour
                         Instantiate(text, itemsParent.transform).text = "Воинское оружие";
                     else
                         Instantiate(text, itemsParent.transform).text = "Воинское оружие" + " x" + x.Item1;
+                    break;
+                case -3:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Простое оружие";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Простое оружие" + " x" + x.Item1;
+                    break;
+                case -4:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Музыкальные инструменты";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Музыкальные инструменты" + " x" + x.Item1;
+                    break;
+                case -5:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Воинское рукопашное оружие";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Воинское рукопашное оружие" + " x" + x.Item1;
+                    break;
+                case -6:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Магическая фокусировка";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Магическая фокусировка" + " x" + x.Item1;
+                    break;
+                case -7:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Простое рукопашное оружие";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Простое рукопашное оружие" + " x" + x.Item1;
+                    break;
+                case -8:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Фокусировка друида";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Фокусировка друида" + " x" + x.Item1;
+                    break;
+                case -9:
+                    if (x.Item1 <= 1)
+                        Instantiate(text, itemsParent.transform).text = "Священный символ";
+                    else
+                        Instantiate(text, itemsParent.transform).text = "Священный символ" + " x" + x.Item1;
                     break;
             }
         }
@@ -138,6 +185,142 @@ public class StandartInvetoryPanel : MonoBehaviour
                                     options.Add(new Dropdown.OptionData(y.label));
 
                             }
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -3:
+                    Instantiate(text, itemsParent.transform).text = "Простое оружие";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+                            if (y is Weapon)
+                            {
+                                Weapon weapon = y as Weapon;
+                                if (weapon.weaponType == Weapon.WeaponType.CommonDist || weapon.weaponType == Weapon.WeaponType.CommonMelee)
+                                    options.Add(new Dropdown.OptionData(y.label));
+
+                            }
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -4:
+                    Instantiate(text, itemsParent.transform).text = "Музыкальный инструмент";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+                            if (y.id >= 122 && y.id <= 131)
+                                options.Add(new Dropdown.OptionData(y.label));
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -5:
+                    Instantiate(text, itemsParent.transform).text = "Воинское рукопашное оружие";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+                            if (y is Weapon)
+                            {
+                                Weapon weapon = y as Weapon;
+                                if (weapon.weaponType == Weapon.WeaponType.WarMelee)
+                                    options.Add(new Dropdown.OptionData(y.label));
+
+                            }
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -6:
+                    Instantiate(text, itemsParent.transform).text = "Магическая фокусировка";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+
+                            if (y.id >= 44 && y.id <= 47)
+                                options.Add(new Dropdown.OptionData(y.label));
+
+
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -7:
+                    Instantiate(text, itemsParent.transform).text = "Простое рукопашное оружие";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+                            if (y is Weapon)
+                            {
+                                Weapon weapon = y as Weapon;
+                                if (weapon.weaponType == Weapon.WeaponType.CommonMelee)
+                                    options.Add(new Dropdown.OptionData(y.label));
+
+                            }
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -8:
+                    Instantiate(text, itemsParent.transform).text = "Фокусировка друида";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+
+                            if (y.id >= 86 && y.id <= 89)
+                                options.Add(new Dropdown.OptionData(y.label));
+
+
+                        }
+                        options.Add(new Dropdown.OptionData("Пусто"));
+                        newItem.options = options;
+                    }
+                    break;
+                case -9:
+                    Instantiate(text, itemsParent.transform).text = "Священный символ";
+                    for (int i = 0; i < x.Item1; i++)
+                    {
+                        Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
+                        dropdowns.Add(newItem);
+                        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                        foreach (Item y in items)
+                        {
+
+                            if (y.id >= 72 && y.id <= 74)
+                                options.Add(new Dropdown.OptionData(y.label));
+
+
                         }
                         options.Add(new Dropdown.OptionData("Пусто"));
                         newItem.options = options;

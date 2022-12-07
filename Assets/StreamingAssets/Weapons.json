@@ -1,21 +1,5 @@
 [
   {
-    "id": 0,
-    "label": "",
-    "mType": 0,
-    "cost": 0,
-    "weight": 0,
-    "dices": 1,
-    "hitDice": 1,
-    "dist": 5,
-    "maxDist": 5,
-    "magic": false,
-    "damageType": 0,
-    "weaponType": 0,
-    "bladeType": 0,
-    "properties": []
-  },
-  {
     "id": 196,
     "label": "Боевой посох",
     "mType": 1,

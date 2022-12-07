@@ -34,7 +34,16 @@ public abstract class PlayersClass : ObjectsBehavior
         get { return M; }
         protected set { M = value; }
     }
+
+    int MC = 0;
+    public int magicChange
+    {
+        get { return MC; }
+        protected set { MC = value; }
+    }
+
     protected int level = 0;
+
     int MS = 0;
     public int mainState
     {
@@ -68,15 +77,21 @@ public abstract class PlayersClass : ObjectsBehavior
 
     public virtual HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
+        if (subClass != null)
+            return subClass.GetWeaponProficiency();
         return null;
     }
 
     public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
     {
+        if (subClass != null)
+            return subClass.GetBladeProficiency(); ;
         return null;
     }
     public virtual HashSet<Armor.ArmorType> GetArmorProficiency()
     {
+        if (subClass != null)
+            return subClass.GetArmorProficiency();
         return null;
     }
 
@@ -99,7 +114,7 @@ public abstract class PlayersClass : ObjectsBehavior
         return new HashSet<int>();
     }
 
-    public virtual List<(List<(int, Item)>, List<(int, Item)>)> GetItems()
+    public virtual List<List<List<(int, Item)>>> GetItems()
     {
         return null;
     }

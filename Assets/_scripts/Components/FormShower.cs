@@ -16,7 +16,7 @@ public class FormShower : MonoBehaviour
         discription = GetComponentInChildren<Discription>().gameObject;
     }
 
-    public void CreateAbility(Ability ability, int level)
+    public void CreateAbility(Ability ability, int level, PlayersClass playersClass)
     {
         _ability = ability;
         head.text = ability.head;
@@ -38,7 +38,7 @@ public class FormShower : MonoBehaviour
             case Ability.Type.withChoose:
                 foreach ((int, string) x in ability.discription)
                     SetText(x);
-                (string, string)[] list;
+                (int, string, string)[] list;
                 if (ability.isUniq)
                     list = FileSaverAndLoader.LoadList(ability.pathToList).ToArray();
                 else
@@ -46,8 +46,13 @@ public class FormShower : MonoBehaviour
                 List<int> chosen = DataSaverAndLoader.LoadCustom(ability.listName);
                 foreach (int x in chosen)
                 {
-                    SetText((2, list[x].Item1));
-                    SetText((0, list[x].Item2));
+                    foreach ((int, string, string) y in list)
+                    {
+                        if (y.Item1 != x) continue;
+                        SetText((2, list[x].Item2));
+                        SetText((0, list[x].Item3));
+                        break;
+                    }
                 }
                 break;
             case Ability.Type.consumable:
@@ -62,11 +67,27 @@ public class FormShower : MonoBehaviour
                         if (x.Item1 <= level)
                         {
                             buf2 = x.Item2;
+                            switch (x.Item2)
+                            {
+                                default:
+                                    buf2 = x.Item2;
+                                    break;
+                                case -1:
+                                    if (playersClass != null)
+                                        buf2 = Mathf.Clamp(CharacterData.GetModifier(playersClass.mainState), 1, 10);
+                                    break;
+
+                            }
                         }
                     buf.SpawnToggles(buf2, amount);
                 }
-                else
-                    buf.SpawnToggles(ability.consum[0].Item2, amount);
+                else return;
+                if (ability.isUniq)
+                {
+                    RestController restController = FindObjectOfType<RestController>();
+                    if (restController != null)
+                        restController.AddShortRest(ability.bufInt, buf);
+                }
                 buf.update += UpdateConsum;
                 break;
         }
@@ -118,24 +139,42 @@ public class FormShower : MonoBehaviour
 
     void RuleChanger()
     {
-        if(_ability.listName == "BattleStyles")
+        switch (_ability.listName)
         {
-            List<int> list = DataSaverAndLoader.LoadCustom(_ability.listName);
-            foreach(int x in list)
-            {
-                switch (x)
+            case "BattleStyles":
+                List<int> list = DataSaverAndLoader.LoadCustom(_ability.listName);
+                foreach (int x in list)
                 {
-                    case 0:
-                        GlobalStatus.duelist = true;
-                        break;
-                    case 2:
-                        GlobalStatus.defence = true;
-                        break;
-                    case 5:
-                        GlobalStatus.archer = true;
-                        break;
+                    switch (x)
+                    {
+                        case 0:
+                            GlobalStatus.duelist = true;
+                            break;
+                        case 2:
+                            GlobalStatus.defence = true;
+                            break;
+                        case 5:
+                            GlobalStatus.archer = true;
+                            break;
+                    }
                 }
-            }
+                break;
+            case "AllHandy":
+                GlobalStatus.allHandy = true;
+                break;
+            case "BarbarianDefence":
+                GlobalStatus.barbarianDefence = true;
+                break;
+            case "BarbatianFastMove":
+                GlobalStatus.barbatianFastMove = true;
+                break;
+            case "WildChampion":
+                {
+                    GlobalStatus.wildChampion = true;
+                    CharacterData.AddAtribute(0, 4);
+                    CharacterData.AddAtribute(2, 4);
+                    break;
+                }
         }
     }
 }

@@ -63,10 +63,10 @@ public static class FileSaverAndLoader
         return listAbilities.ToArray();
     }
 
-    public static List<(string, string)> LoadList(string pathName)
+    public static List<(int, string, string)> LoadList(string pathName)
     {
         pathName = pathName[0].ToString().ToUpper() + pathName.Remove(0,1);
-        List<(string, string)> list = new List<(string, string)>();
+        List<(int, string, string)> list = new List<(int, string, string)>();
         string path = Path.Combine(Application.streamingAssetsPath, pathName + ".json");
         string JSONAbilities = "";
         if (Application.platform == RuntimePlatform.Android)
@@ -79,7 +79,7 @@ public static class FileSaverAndLoader
         else
             JSONAbilities = File.ReadAllText(path);
 
-        list = JsonConvert.DeserializeObject<List<(string, string)>>(JSONAbilities);
+        list = JsonConvert.DeserializeObject<List<(int, string, string)>>(JSONAbilities);
         return list;
     }
 

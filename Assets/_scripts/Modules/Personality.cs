@@ -46,7 +46,7 @@ public class Personality : MonoBehaviour
                     foreach (Ability x in abilityArr)
                     {
                         if (x.level <= playersClass.Item1)
-                            Instantiate(form, classBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, playersClass.Item1);
+                            Instantiate(form, classBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, playersClass.Item1, playersClass.Item2);
                     }
                 }
             }
@@ -66,7 +66,7 @@ public class Personality : MonoBehaviour
             }
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0);
+                Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0,null);
             }
         }
         backstory = CharacterData.GetBackstory();
@@ -76,7 +76,7 @@ public class Personality : MonoBehaviour
             Ability[] abilityArr = backstory.GetAbilities();
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, backstoryObject.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0);
+                Instantiate(form, backstoryObject.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0,null);
             }
         }
     }

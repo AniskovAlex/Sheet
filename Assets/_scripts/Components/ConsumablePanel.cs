@@ -51,4 +51,31 @@ public class ConsumablePanel : MonoBehaviour
         }
         update(list.Length);
     }
+
+    public void Reset(int add)
+    {
+        Toggle[] list = GetComponentsInChildren<Toggle>();
+        int count = 0;
+        foreach (Toggle x in list)
+        {
+            if (!x.isOn)
+            {
+                if (add > 0)
+                {
+                    add--;
+                    x.isOn = true;
+                    count++;
+                }
+                else
+                    if (add == -1)
+                {
+                    x.isOn = true;
+                    count++;
+                }
+            }
+            else
+                count++;
+        }
+        update(count);
+    }
 }

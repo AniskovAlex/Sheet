@@ -21,6 +21,11 @@ public class SkillSetter : MonoBehaviour
                     modifier += CharacterData.GetProficiencyBonus() / 2;
                     break;
                 case 0:
+                    if (GlobalStatus.allHandy)
+                    {
+                        modifier += CharacterData.GetProficiencyBonus() / 2;
+                        x.gameObject.GetComponent<RawImage>().color = new Color(192 / 225f, 192 / 225f, 255 / 225f);
+                    }
                     break;
                 case 1:
                     modifier += CharacterData.GetProficiencyBonus();

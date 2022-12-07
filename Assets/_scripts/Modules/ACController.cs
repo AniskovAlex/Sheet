@@ -24,6 +24,7 @@ public class ACController : MonoBehaviour
             buf += 2;
         foreach (GameObject x in boxs)
             x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
+        addArmor = 0;
     }
 
     public void UpdateArmorClass(Armor armor, bool equip)
@@ -32,14 +33,16 @@ public class ACController : MonoBehaviour
         if (equip)
         {
             if (armor.ACCap != -1)
-                AC = armor.AC + Mathf.Clamp(dex, -10, armor.ACCap);
+                AC = armor.AC + Mathf.Clamp(dex, -10, armor.ACCap) + addArmor;
             else
-                AC = armor.AC;
+                AC = armor.AC + addArmor;
             if (GlobalStatus.defence)
                 addArmor += 1;
         }
         else
         {
+            if (GlobalStatus.barbarianDefence)
+                addArmor += CharacterData.GetModifier(2);
             AC = naturalArmor + dex;
             if (GlobalStatus.defence)
                 addArmor -= 1;

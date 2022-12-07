@@ -10,9 +10,9 @@ public class PassivePerception : MonoBehaviour
     {
         int prof = CharacterData.GetSkill(9);
         int PB = CharacterData.GetProficiencyBonus();
-        int modifier = CharacterData.GetAtribute(3) + Utilities.GetSkillProfModifier(prof, PB);
+        int modifier = CharacterData.GetModifier(3) + Utilities.GetSkillProfModifier(prof, PB);
         Text text = GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>();
-        Utilities.SetTextSign(modifier, text);
+        text.text = (10 + modifier).ToString();
     }
 
 }

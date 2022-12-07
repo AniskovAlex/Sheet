@@ -1503,7 +1503,17 @@ MonoBehaviour:
     m_Options:
     - m_Text: "\u041F\u0443\u0441\u0442\u043E"
       m_Image: {fileID: 0}
+    - m_Text: "\u0411\u0430\u0440\u0434"
+      m_Image: {fileID: 0}
+    - m_Text: "\u0412\u0430\u0440\u0432\u0430\u0440"
+      m_Image: {fileID: 0}
     - m_Text: "\u0412\u043E\u0438\u043D"
+      m_Image: {fileID: 0}
+    - m_Text: "\u0412\u043E\u043B\u0448\u0435\u0431\u043D\u0438\u043A"
+      m_Image: {fileID: 0}
+    - m_Text: "\u0414\u0440\u0443\u0438\u0434"
+      m_Image: {fileID: 0}
+    - m_Text: "\u0416\u0440\u0435\u0446"
       m_Image: {fileID: 0}
     - m_Text: "\u041F\u043B\u0443\u0442"
       m_Image: {fileID: 0}
@@ -2727,6 +2737,7 @@ MonoBehaviour:
   content: {fileID: 1818054100}
   form: {fileID: 7782923796027374122, guid: b0c9fa18a737eda4fa0deda4ca2b2bdc, type: 3}
   health: {fileID: 6253383700909344994, guid: 2ff4fcba92800c342b365f566070f163, type: 3}
+  spellChoose: {fileID: 4111328236255930724, guid: 7b1c0a1b32354f545b86879ae99a1937, type: 3}
 --- !u!114 &1799828207
 MonoBehaviour:
   m_ObjectHideFlags: 0

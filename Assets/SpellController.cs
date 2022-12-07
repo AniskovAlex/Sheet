@@ -77,9 +77,16 @@ public class SpellController : MonoBehaviour
                 Destroy(x.transform.GetChild(i).gameObject);
         spellKnew.ForEach(g =>
         {
-            foreach (Spell x in g.Item2)
-                if (x.level >= 0 && x.level <= 9)
-                    Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
+            if (g.Item1 != 3)
+            {
+                foreach (Spell x in g.Item2)
+                    if (x.level >= 0 && x.level <= 9)
+                        Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
+            }
+            else
+                foreach (Spell x in g.Item2)
+                    if (x.level == 0)
+                        Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
         });
         spellPrepared.ForEach(g =>
         {

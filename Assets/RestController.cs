@@ -10,10 +10,11 @@ public class RestController : MonoBehaviour
     [SerializeField] HealthController health;
     [SerializeField] SpellController spell;
     [SerializeField] GameObject person;
+    List<(int, ConsumablePanel)> shortRestRestore = new List<(int, ConsumablePanel)>();
 
     private void Start()
     {
-        if(GlobalStatus.needRest)
+        if (GlobalStatus.needRest)
         {
             health.ResetHealth();
             spell.ResetSpellCells();
@@ -23,9 +24,17 @@ public class RestController : MonoBehaviour
         }
     }
 
+    public void AddShortRest(int count, ConsumablePanel consumablePanel)
+    {
+        shortRestRestore.Add((count, consumablePanel));
+    }
+
     public void ShortRest()
     {
-        popout.SetPopout(new List<GameObject> { restore.gameObject });
+        foreach ((int, ConsumablePanel) x in shortRestRestore)
+            x.Item2.Reset(x.Item1);
+        List<GameObject> list = new List<GameObject> { restore.gameObject };
+        popout.SetPopout(list);
     }
 
     public void LongRest()
