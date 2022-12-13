@@ -27,6 +27,24 @@ public class ChooseAttr : MonoBehaviour
 
         }
     }
+    public void SetDropdowns(int count, List<string> exclude)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newObject = Instantiate(dropdown, gameObject.transform);
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            attrs.ExceptWith(exclude);
+            foreach (string y in attrs)
+            {
+                list.Add(new Dropdown.OptionData(y));
+            }
+            list.Add(new Dropdown.OptionData("Пусто"));
+            list.Add(new Dropdown.OptionData("Пусто"));
+            newObject.GetComponent<Dropdown>().options = list;
+            newObject.GetComponent<Dropdown>().onValueChanged.AddListener(delegate { ChangeSelected(newObject.GetComponent<Dropdown>()); });
+
+        }
+    }
 
     public Dropdown[] GetDropdowns()
     {
@@ -42,7 +60,7 @@ public class ChooseAttr : MonoBehaviour
             attrAdd.Add(dropdown.captionText.text);
         if (attrAdd.FindAll(g => g == dropdown.captionText.text).Count >= maxValue)
             attrs.Remove(dropdown.captionText.text);
-        if (attrAdd.FindAll(g => g == oldValue).Count < maxValue)
+        if ((oldValue != "" && oldValue != "Пусто") && attrAdd.FindAll(g => g == oldValue).Count < maxValue)
             attrs.Add(oldValue);
         List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
         foreach (string y in attrs)
@@ -52,7 +70,14 @@ public class ChooseAttr : MonoBehaviour
         list.Add(new Dropdown.OptionData("Пусто"));
         list.Add(new Dropdown.OptionData("Пусто"));
         foreach (Dropdown x in GetDropdowns())
-            x.GetComponent<Dropdown>().options = list;
+        {
+            x.onValueChanged.RemoveAllListeners();
+            string buf = x.captionText.text;
+            x.options = list;
+            x.value = x.options.Count - 1;
+            x.captionText.text = buf;
+            x.onValueChanged.AddListener(delegate { ChangeSelected(x); });
+        }
         PresavedLists.UpdateAttrAdd(oldValue, dropdown.captionText.text);
     }
 

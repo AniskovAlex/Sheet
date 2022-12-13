@@ -25,6 +25,8 @@ public static class PresavedLists
 
     static public List<string> attrAdd = new List<string>();
 
+    static public List<string> items = new List<string>();
+
     static public List<(string, List<int>)> preLists = new List<(string, List<int>)>();
 
     static public Action<string> ChangePing;

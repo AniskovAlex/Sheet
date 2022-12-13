@@ -32,10 +32,11 @@ public class SpellPrepare : MonoBehaviour
         {
             if (x.Item1 != 3)
             {
-                SpellController.spellKnew.ForEach(g => list = list.Except(g.Item2).ToList());
+                list = list.Except(x.Item2).ToList();
             }
         }
         SpellController.spellPrepared.ForEach(g => list = list.Except(g.Item2).ToList());
+        
         foreach (Spell x in list)
         {
             SpellBody newSpell = Instantiate(spellBody, choose.transform);
@@ -48,6 +49,7 @@ public class SpellPrepare : MonoBehaviour
                     button.onClick.AddListener(delegate { ChangeSection(newSpell, playerClass.id); });
             }
         }
+        
         List<Spell> preparedList = SpellController.spellPrepared.Find(g => g.Item1 == playerClass.id).Item2;
         int preparedCount = 0;
         if (preparedList != null)

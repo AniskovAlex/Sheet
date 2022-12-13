@@ -23,14 +23,16 @@ public class FormShower : MonoBehaviour
         switch (ability.type)
         {
             case Ability.Type.abilitie:
-                foreach ((int, string) x in ability.discription)
-                    SetText(x);
                 break;
-            case Ability.Type.charUp:
             case Ability.Type.instruments:
             case Ability.Type.language:
-            case Ability.Type.skills:
             case Ability.Type.spellChoose:
+            case Ability.Type.skills:
+                if(ability.chooseCount!=0)
+                    Destroy(gameObject);
+                break;
+            case Ability.Type.attr:
+            case Ability.Type.charUp:
             case Ability.Type.subRace:
             case Ability.Type.subClass:
                 Destroy(gameObject);
@@ -91,6 +93,8 @@ public class FormShower : MonoBehaviour
                 buf.update += UpdateConsum;
                 break;
         }
+        foreach ((int, string) x in ability.discription)
+            SetText(x);
         if (ability.changeRule)
             RuleChanger();
     }
@@ -118,11 +122,11 @@ public class FormShower : MonoBehaviour
         switch (preText.Item1)
         {
             default:
-            case 0:
+            case 1:
                 textSize = 40;
                 fontStyle = FontStyle.Normal;
                 break;
-            case 1:
+            case 3:
                 textSize = 40;
                 fontStyle = FontStyle.Italic;
                 break;
@@ -169,12 +173,22 @@ public class FormShower : MonoBehaviour
                 GlobalStatus.barbatianFastMove = true;
                 break;
             case "WildChampion":
-                {
-                    GlobalStatus.wildChampion = true;
-                    CharacterData.AddAtribute(0, 4);
-                    CharacterData.AddAtribute(2, 4);
-                    break;
-                }
+                GlobalStatus.wildChampion = true;
+                CharacterData.AddAtribute(0, 4);
+                CharacterData.AddAtribute(2, 4);
+                break;
+            case "MonkDefence":
+                GlobalStatus.monkDefence = true;
+                break;
+            case "MonkWeapon":
+                GlobalStatus.monkWeapon = true;
+                break;
+            case "MonkSpeed":
+                GlobalStatus.monkSpeed = true;
+                break;
+            case "DiamondSoul":
+                GlobalStatus.dimondSoul = true;
+                break;
         }
     }
 }

@@ -52,9 +52,29 @@ public class SpellChoose : MonoBehaviour
         else
         {
             if (level != -1)
+            {
                 list = list.FindAll(g => (g.level == level) && (g.classes.Contains(classId)));
+            }
             else
-                list = list.FindAll(g => (g.level <= levelCul) && (g.level > 0) && (g.classes.Contains(classId)));
+            {
+                if (classId == 7)
+                {
+                    List<(int, PlayersClass)> listBuf = CharacterData.GetClasses();
+                    int classLevel = 0;
+                    HashSet<int> bufSet = new HashSet<int>();
+                    foreach ((int, PlayersClass) x in listBuf)
+                    {
+                        if (x.Item2.id != classId) continue;
+                        classLevel = (Mathf.Clamp(x.Item1 + 1, 1, 10) + 1) / 2;
+                        PlayerSubClass bufSub = x.Item2.GetSubClass();
+                        if (bufSub == null) break;
+                        bufSet = bufSub.GetSpells(level + 1);
+                    }
+                    list = list.FindAll(g => (g.level <= classLevel) && ((g.classes.Contains(classId)) || bufSet.Contains(g.id)));
+                }
+                else
+                    list = list.FindAll(g => (g.level <= levelCul) && (g.level > 0) && (g.classes.Contains(classId)));
+            }
         }
         foreach (Spell x in list)
         {
@@ -65,7 +85,10 @@ public class SpellChoose : MonoBehaviour
             {
                 Button button = buf.GetComponent<Button>();
                 if (button != null)
-                    button.onClick.AddListener(delegate { ChangeSection(newSpell, classId); });
+                    button.onClick.AddListener(delegate
+                    {
+                        ChangeSection(newSpell, classId);
+                    });
             }
         }
         leftCount = count;

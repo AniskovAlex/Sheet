@@ -18,9 +18,13 @@ public class HandEquipment : MonoBehaviour
     {
         label.text = weapon.label;
         int attack = CharacterData.GetModifier(0);
+        if (weapon.weaponType == Weapon.WeaponType.CommonDist || weapon.weaponType == Weapon.WeaponType.WarDist)
+            attack = CharacterData.GetModifier(1);
         int dist = weapon.dist;
         int maxDist = weapon.maxDist;
         string damage = weapon.dices + "ê" + weapon.hitDice;
+        if(GlobalStatus.monkWeapon && (weapon.weaponType == Weapon.WeaponType.CommonMelee || weapon.bladeType == Weapon.BladeType.ShortSword ))
+            attack = Mathf.Max(attack, CharacterData.GetModifier(1));
         foreach (Weapon.Properties x in weapon.properties)
         {
             switch (x)

@@ -458,6 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 7782923795297616259}
   charUp: {fileID: 2273543446421981106, guid: 4341b351305d01f4a91dbfe96aefcea4, type: 3}
+  attrUp: {fileID: 5979259308716549807, guid: 14c5db9a0d699a243a76a3b4547c0cdf, type: 3}
   dropdown: {fileID: 4351009399508083464, guid: 1b285bf9da813a64b9b8a1607a1b18dd, type: 3}
   spellChoose: {fileID: 4111328236255930724, guid: 7b1c0a1b32354f545b86879ae99a1937, type: 3}
   consumable: {fileID: 2992546322501763529, guid: 0b7606e15264eb4478235f2a9bedb049, type: 3}

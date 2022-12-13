@@ -31,6 +31,16 @@ public abstract class PlayerSubClass
         return 0;
     }
 
+    public virtual HashSet<int> GetSpells()
+    {
+        return null;
+    }
+
+    public virtual HashSet<int> GetSpells(int level)
+    {
+        return null;
+    }
+
     int ID = -1;
     public int id
     {

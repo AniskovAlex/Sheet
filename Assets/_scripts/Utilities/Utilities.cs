@@ -1,10 +1,26 @@
 using System.Collections;
+using System.Diagnostics;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public static class Utilities
 {
+    static Stopwatch stopwatch = new Stopwatch();
+
+    public static void StartTimer()
+    {
+        stopwatch.Start();
+    }
+
+    public static void StopTimer()
+    {
+        stopwatch.Stop();
+        System.TimeSpan time = stopwatch.Elapsed;
+        UnityEngine.Debug.Log("Время кода: " + time.Milliseconds + "mc");
+        stopwatch.Reset();
+    }
+
     public static int GetSkillProfModifier(int skillProf, int PB)
     {
         int modifier = 0;

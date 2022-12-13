@@ -15,7 +15,10 @@ public class SaveSetter : MonoBehaviour
         {
             int atr = x.GetComponentInParent<Box>().index;
             int modifier = CharacterData.GetModifier(atr);
-            switch (CharacterData.GetSave(x.index))
+            int index = CharacterData.GetSave(x.index);
+            if (GlobalStatus.dimondSoul && index < 2)
+                index = 1;
+            switch (index)
             {
                 case -1:
                     modifier += CharacterData.GetProficiencyBonus() / 2;

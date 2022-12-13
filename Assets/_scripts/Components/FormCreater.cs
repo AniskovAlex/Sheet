@@ -7,6 +7,7 @@ public class FormCreater : MonoBehaviour
 {
     [SerializeField] Text head;
     [SerializeField] GameObject charUp;
+    [SerializeField] ChooseAttr attrUp;
     [SerializeField] GameObject dropdown;
     [SerializeField] SpellChoose spellChoose;
     public GameObject consumable;
@@ -34,8 +35,6 @@ public class FormCreater : MonoBehaviour
         {
             case Ability.Type.consumable:
             case Ability.Type.abilitie:
-                foreach ((int, string) x in ability.discription)
-                    SetText(x);
                 break;
             case Ability.Type.charUp:
                 Instantiate(charUp, discription.transform);
@@ -187,13 +186,14 @@ public class FormCreater : MonoBehaviour
                         PresavedLists.UpdateLanguage("", x);
                 break;
             case Ability.Type.spellChoose:
-                SpellChoose buf = GetComponentInParent<ClassesAbilities>().GetComponentInChildren<SpellChoose>();
                 if (ability.chooseCount == 0)
                 {
                     if (ability.common != null)
                     {
                         bool flag = false;
-                        foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+                        List<(int, HashSet<int>)> list;
+                        list = PresavedLists.spellKnew;
+                        foreach ((int, HashSet<int>) x in list)
                             if (x.Item1 == ability.buf2Int)
                             {
                                 foreach ((int, int) y in ability.consum)
@@ -205,11 +205,12 @@ public class FormCreater : MonoBehaviour
                             (int, HashSet<int>) add = (ability.buf2Int, new HashSet<int>());
                             foreach ((int, int) y in ability.consum)
                                 add.Item2.Add(y.Item1);
-                            PresavedLists.spellKnew.Add(add);
+                            list.Add(add);
                         }
                     }
                     break;
                 }
+                SpellChoose buf = GetComponentInParent<ClassesAbilities>().GetComponentInChildren<SpellChoose>();
                 if (buf != null && buf.changeable && ability.bufInt != 0)
                 {
                     buf.SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt);
@@ -218,8 +219,39 @@ public class FormCreater : MonoBehaviour
                 else
                     Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt);
                 break;
-
+            case Ability.Type.attr:
+                if (ability.chooseCount == 0)
+                    foreach (string x in ability.common)
+                        PresavedLists.attrAdd.Add(x);
+                else
+                {
+                    ChooseAttr attr = Instantiate(attrUp, discription.transform);
+                    attr.maxValue = ability.bufInt;
+                    attr.SetDropdowns(ability.chooseCount, ability.common);
+                }
+                break;
+            case Ability.Type.item:
+                if (ability.chooseCount > 0)
+                {
+                    HashSet<string> list = new HashSet<string>(ability.common);
+                    for (int i = 0; i < ability.chooseCount; i++)
+                    {
+                        Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                        chooseDrop.ClearOptions();
+                        foreach (string x in list)
+                            chooseDrop.options.Add(new Dropdown.OptionData(x));
+                        chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                        chooseDrop.onValueChanged.AddListener(delegate
+                        {
+                            ChangeItemSelected(chooseDrop);
+                        });
+                        chooseDrop.value = list.Count;
+                    }
+                }
+                break;
         }
+        foreach ((int, string) x in ability.discription)
+            SetText(x);
     }
 
     void SetText((int, string) preText)
@@ -230,11 +262,11 @@ public class FormCreater : MonoBehaviour
         switch (preText.Item1)
         {
             default:
-            case 0:
+            case 1:
                 textSize = 40;
                 fontStyle = FontStyle.Normal;
                 break;
-            case 1:
+            case 3:
                 textSize = 40;
                 fontStyle = FontStyle.Italic;
                 break;
@@ -372,6 +404,15 @@ public class FormCreater : MonoBehaviour
         PresavedLists.UpdateLanguage(oldValue, dropdown.captionText.text);
     }
 
+    void ChangeItemSelected(Dropdown dropdown)
+    {
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        if (oldValue == dropdown.captionText.text) return;
+        PresavedLists.items.Remove(oldValue);
+        PresavedLists.items.Add(dropdown.captionText.text);
+    }
+
     private void OnDestroy()
     {
         if (ability == null) return;
@@ -462,6 +503,20 @@ public class FormCreater : MonoBehaviour
                         break;
                     }
             }
+            return;
+        }
+        if (ability.type == Ability.Type.attr)
+        {
+            if (ability.chooseCount == 0)
+                foreach (string x in ability.common)
+                    PresavedLists.attrAdd.Remove(x);
+            return;
+        }
+        if (ability.type == Ability.Type.item)
+        {
+            if (ability.chooseCount == 0)
+                foreach (string x in ability.common)
+                    PresavedLists.items.Remove(x);
             return;
         }
 

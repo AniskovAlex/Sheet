@@ -34,4 +34,9 @@ public class Backstory : ObjectsBehavior
     {
         return null;
     }
+
+    public virtual List<(int, Item)> GetItems()
+    {
+        return null;
+    }
 }

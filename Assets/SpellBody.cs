@@ -7,22 +7,19 @@ public class SpellBody : MonoBehaviour
 {
     [SerializeField] Text head;
     [SerializeField] Text headCaption;
-    [SerializeField] Text time;
-    [SerializeField] Text distance;
-    [SerializeField] Text components;
-    [SerializeField] Text duration;
-    [SerializeField] Text discription;
+    [SerializeField] Text body;
+
     Spell _spell;
 
     public void SetSpell(Spell spell)
     {
         _spell = spell;
-        head.text = spell.name;
+        head.text += spell.name;
 
         if (spell.level == 0)
-            headCaption.text = "Заговор, ";
+            headCaption.text += "Заговор, ";
         else
-            headCaption.text = spell.level + "уровень, ";
+            headCaption.text += spell.level + " уровень, ";
 
         switch (spell.spellType)
         {
@@ -55,52 +52,55 @@ public class SpellBody : MonoBehaviour
         if (spell.ritual)
             headCaption.text += " (ритуал)";
 
+        string text = "<b>Время:</b> ";
         switch (spell.time)
         {
             default:
             case 1:
-                time.text = "1 действие";
+                text += "1 действие";
                 break;
             case 2:
-                time.text = "1 реакция";
+                text += "1 реакция";
                 if (spell.reactionDis != null)
-                    time.text += ", " + spell.reactionDis;
+                    text += ", " + spell.reactionDis;
                 break;
         }
+
+        text += "\n<b>Дистанция:</b> ";
 
         switch (spell.dist)
         {
             case -1:
-                distance.text = "На себя";
+                text += "На себя";
                 break;
             case 0:
-                distance.text = "Касание";
+                text += "Касание";
                 break;
             default:
-                distance.text = spell.dist + " фт.";
+                text += spell.dist + " фт.";
                 break;
         }
-
+        text += "\n<b>Компоненты:</b> ";
         foreach (Spell.Component x in spell.comp)
         {
             switch (x)
             {
                 case Spell.Component.V:
-                    components.text += "В";
+                    text += "В";
                     break;
                 case Spell.Component.S:
-                    components.text += "С";
+                    text += "С";
                     break;
                 case Spell.Component.M:
-                    components.text += "М";
+                    text += "М";
                     if (spell.materialDis != null)
-                        components.text += "(" + spell.materialDis + ")";
+                        text += "(" + spell.materialDis + ")";
                     break;
             }
-            components.text += ", ";
+            text += ", ";
         }
-        components.text.Remove(components.text.Length - 2);
-
+        text.Remove(text.Length - 2);
+        text += "\n<b>Длительность:</b> ";
         string dur;
         switch (spell.duration)
         {
@@ -119,11 +119,12 @@ public class SpellBody : MonoBehaviour
                 break;
         }
         if (spell.concentration)
-            duration.text = "Концентрация (" + dur + ")";
+            text += "Концентрация (" + dur + ")";
         else
-            duration.text = dur;
-
-        discription.text = spell.discription;
+            text += dur;
+        text += "\n<b>Описание:</b>\n";
+        text += spell.discription;
+        body.text = text;
     }
 
     public Spell GetSpell()

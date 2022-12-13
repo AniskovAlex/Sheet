@@ -111,14 +111,24 @@ public class CharacterDataLoader : MonoBehaviour
                     case 5:
                         playersClass = new Cleric();
                         break;
+                    case 7:
+                        playersClass = new Warlock();
+                        break;
+                    case 8:
+                        playersClass = new Monk();
+                        break;
+                    case 9:
+                        playersClass = new Paladin();
+                        break;
                     case 10:
                         playersClass = new Rogue();
                         break;
-                    case 6:
-                        playersClass = new Artificer();
+                    case 11:
+                        playersClass = new Ranger();
                         break;
-                    default:
-                        return;
+                    case 12:
+                        playersClass = new Sorcerer();
+                        break;
                 }
                 level += classLevel;
                 _classes.Add((classLevel, playersClass));
@@ -128,15 +138,9 @@ public class CharacterDataLoader : MonoBehaviour
 
     void LoadRace()
     {
-        switch (PlayerPrefs.GetString(characterName + raceSaveName))
+        switch (PlayerPrefs.GetInt(characterName + raceSaveName))
         {
-            case "Человек":
-                race = new Human();
-                break;
-            case "Харенгон":
-                race = new Harengon();
-                break;
-            case "Гном":
+            case 0:
                 race = new Gnome();
                 break;
         }

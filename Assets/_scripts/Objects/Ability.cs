@@ -16,12 +16,15 @@ public class Ability
         language,
         subRace,
         spellChoose,
-        competence
+        competence,
+        attr,
+        item
     }
 
     public string head;
 
     public bool isUniq;
+    public bool hide;
 
     public int chooseCount;
     public string pathToList;
@@ -33,7 +36,7 @@ public class Ability
 
     public (int ,string, string)[] list;
 
-    public HashSet<string> common;
+    public List<string> common;
 
     public int level;
 

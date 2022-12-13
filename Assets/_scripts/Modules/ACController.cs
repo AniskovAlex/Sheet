@@ -42,7 +42,9 @@ public class ACController : MonoBehaviour
         else
         {
             if (GlobalStatus.barbarianDefence)
-                addArmor += CharacterData.GetModifier(2);
+                addArmor = Mathf.Max(addArmor, CharacterData.GetModifier(2));
+            if (GlobalStatus.monkDefence)
+                addArmor = Mathf.Max(addArmor, CharacterData.GetModifier(4));
             AC = naturalArmor + dex;
             if (GlobalStatus.defence)
                 addArmor -= 1;

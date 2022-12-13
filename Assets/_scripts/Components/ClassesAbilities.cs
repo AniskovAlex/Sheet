@@ -40,6 +40,24 @@ public class ClassesAbilities : MonoBehaviour
             case 6:
                 playersClass = new Cleric();
                 break;
+            case 7:
+                playersClass = new Warlock();
+                break;
+            case 8:
+                playersClass = new Monk();
+                break;
+            case 9:
+                playersClass = new Paladin();
+                break;
+            case 10:
+                playersClass = new Rogue();
+                break;
+            case 11:
+                playersClass = new Ranger();
+                break;
+            case 12:
+                playersClass = new Sorcerer();
+                break;
         }
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in opener)

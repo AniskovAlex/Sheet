@@ -46,22 +46,17 @@ public class StandartInvetoryPanel : MonoBehaviour
                     itemList.Add((1, y));
                     break;
                 }
-        itemList.ForEach(g =>
-        {
-            itemList.ForEach(y =>
-            {
-                if (itemList.IndexOf(g) <= itemList.IndexOf(y)) ;
-                else
-                {
-                    if (g.Item2 == y.Item2)
-                    {
-                        g.Item1 += y.Item1;
-                        itemList.Remove(y);
+        for (int i = 0; i < itemList.Count; i++)
 
-                    }
+            for (int j = i + 1; j < itemList.Count; j++)
+                if (itemList[j].Item2.id != -1 && itemList[i].Item2 == itemList[j].Item2)
+                {
+                    (int, Item) buf = (itemList[i].Item1 + itemList[j].Item1, itemList[i].Item2);
+                    itemList.RemoveAt(i);
+                    itemList.Insert(i, buf);
+                    itemList.RemoveAt(j);
+                    j--;
                 }
-            });
-        });
         return itemList;
     }
 

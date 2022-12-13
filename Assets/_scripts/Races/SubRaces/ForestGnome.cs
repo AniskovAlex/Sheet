@@ -7,7 +7,7 @@ public class ForestGnome : SubRace
     // Start is called before the first frame update
     public ForestGnome()
     {
-        id = 0;
+        id = 1;
         name = "Лесной гном";
         LoadAbilities("ForestGnome");
     }

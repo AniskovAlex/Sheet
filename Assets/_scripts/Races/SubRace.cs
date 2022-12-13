@@ -28,5 +28,13 @@ public class SubRace
     {
         return name;
     }
+    public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
+    {
+        return null;
+    }
+    public virtual HashSet<Armor.ArmorType> GetArmorProficiency()
+    {
+        return null;
+    }
 }
 

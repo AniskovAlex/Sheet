@@ -60,6 +60,17 @@ public class InventoryCreater : MonoBehaviour
         return null;
     }
 
+    public Item[] GetItemsList()
+    {
+        return items;
+    }
+
+    public bool isStandart()
+    {
+        if (position == 1) return false;
+        return true;
+    }
+
     public int[] GetMoney()
     {
         switch (position)

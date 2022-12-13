@@ -16,7 +16,9 @@ public class SpellPreparePopup : MonoBehaviour
             {
                 SpellPrepare buf = Instantiate(spellPrepare, transform);
                 objList.Add(buf);
-                buf.SetSpells(x.Item2, x.Item1);
+                
+                buf.SetSpells(x.Item2, x.Item1); 
+                
             }
     }
 

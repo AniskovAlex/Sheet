@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -101,150 +100,165 @@ public class SpellController : MonoBehaviour
         List<(int, PlayersClass)> playerClasses = CharacterData.GetClasses();
         int[] cells = new int[9];
         int levelAbs = 0;
+        int warAbs = 0;
+        int warLevel = 0;
         foreach ((int, PlayersClass) x in playerClasses)
         {
-            if (x.Item2.magic != 0)
+            if (x.Item2.magic > 0)
             {
                 levelAbs += (x.Item1 + (x.Item2.magic - 1)) / (x.Item2.magic);
             }
-
+            if (x.Item2.magic == -1)
+            {
+                if (x.Item1 == 1)
+                    warAbs += 1;
+                if (x.Item1 >= 2 && x.Item1 < 10)
+                    warAbs += 2;
+                if (x.Item1 >= 11 && x.Item1 < 16)
+                    warAbs += 3;
+                if (x.Item1 >= 17)
+                    warAbs += 4;
+                warLevel = (Mathf.Clamp(x.Item1 + 1, 1, 10) + 1) / 2;
+                cells[warLevel] += warAbs;
+            }
         }
         switch (levelAbs)
         {
             case 1:
-                cells[0] = 2;
+                cells[0] += 2;
                 break;
             case 2:
-                cells[0] = 3;
+                cells[0] += 3;
                 break;
             case 3:
-                cells[0] = 4;
-                cells[1] = 2;
+                cells[0] += 4;
+                cells[1] += 2;
                 break;
             case 4:
-                cells[0] = 4;
-                cells[1] = 3;
+                cells[0] += 4;
+                cells[1] += 3;
                 break;
             case 5:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[3] = 2;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[3] += 2;
                 break;
             case 6:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
                 break;
             case 7:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 1;
                 break;
             case 8:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 2;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 2;
                 break;
             case 9:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 1;
                 break;
             case 10:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 2;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 2;
                 break;
             case 11:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 2;
-                cells[5] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 2;
+                cells[5] += 1;
                 break;
             case 12:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 2;
-                cells[5] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 2;
+                cells[5] += 1;
                 break;
             case 13:
             case 14:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 2;
-                cells[5] = 1;
-                cells[6] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 2;
+                cells[5] += 1;
+                cells[6] += 1;
                 break;
             case 15:
             case 16:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 2;
-                cells[5] = 1;
-                cells[6] = 1;
-                cells[7] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 2;
+                cells[5] += 1;
+                cells[6] += 1;
+                cells[7] += 1;
                 break;
             case 17:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 2;
-                cells[5] = 1;
-                cells[6] = 1;
-                cells[7] = 1;
-                cells[8] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 2;
+                cells[5] += 1;
+                cells[6] += 1;
+                cells[7] += 1;
+                cells[8] += 1;
                 break;
             case 18:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 3;
-                cells[5] = 1;
-                cells[6] = 1;
-                cells[7] = 1;
-                cells[8] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 3;
+                cells[5] += 1;
+                cells[6] += 1;
+                cells[7] += 1;
+                cells[8] += 1;
                 break;
             case 19:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 3;
-                cells[5] = 2;
-                cells[6] = 1;
-                cells[7] = 1;
-                cells[8] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 3;
+                cells[5] += 2;
+                cells[6] += 1;
+                cells[7] += 1;
+                cells[8] += 1;
                 break;
             case 20:
-                cells[0] = 4;
-                cells[1] = 3;
-                cells[2] = 3;
-                cells[3] = 3;
-                cells[4] = 3;
-                cells[5] = 2;
-                cells[6] = 2;
-                cells[7] = 1;
-                cells[8] = 1;
+                cells[0] += 4;
+                cells[1] += 3;
+                cells[2] += 3;
+                cells[3] += 3;
+                cells[4] += 3;
+                cells[5] += 2;
+                cells[6] += 2;
+                cells[7] += 1;
+                cells[8] += 1;
                 break;
         }
+        int cellMax = Math.Max(warLevel, Utilities.GetMaxSpellLevel(playerClasses));
         for (int i = 0; i < cells.Length; i++)
-            if (cells[i] != 0)
+            if (i + 1 <= cellMax)
             {
                 spellLevelObjects[i + 1].SetCells(cells[i], currentCells[i]);
             }

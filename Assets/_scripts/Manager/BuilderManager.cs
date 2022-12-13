@@ -82,12 +82,40 @@ public class BuilderManager : MonoBehaviour
             {
                 DataSaverAndLoader.SaveRace(race.GetRace().id);
                 if (race.GetRace().GetSubRace() != null)
+                {
                     DataSaverAndLoader.SaveSubRace(race.GetRace());
+                    if (race.GetRace().GetBladeProficiency() != null)
+                        PresavedLists.bladeTypes.UnionWith(race.GetRace().GetBladeProficiency());
+                }
             }
+            List<(int, Item)> itemList = inventory.GetItems();
             if (backstory.GetBackstory() != null)
             {
                 DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().id);
+                if (inventory.isStandart())
+                {
+                    List<(int, Item)> bufItems = backstory.GetBackstory().GetItems();
+                    if (bufItems != null)
+                        itemList.AddRange(bufItems);
+                    if (PresavedLists.items != null)
+                        foreach (Item x in inventory.GetItemsList())
+                            if (PresavedLists.items.Contains(x.label))
+                            {
+                                for(int i =0;i< itemList.Count;i++)
+                                    if(x.id == itemList[i].Item2.id)
+                                    {
+                                        (int, Item) bufItem = (itemList[i].Item1 + 1, itemList[i].Item2);
+                                        itemList.RemoveAt(i);
+                                        itemList.Insert(i, bufItem);
+                                        break;
+                                    }
+                            }
+
+                }
             }
+            if (itemList != null)
+                foreach ((int, Item) x in itemList)
+                    DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
             SaveSkills();
             SaveCompetence();
             int buf;
@@ -106,10 +134,6 @@ public class BuilderManager : MonoBehaviour
             PresavedLists.saveSaveThrows();
             PresavedLists.SaveLanguage();
             PresavedLists.SaveSpellKnew();
-            List<(int, Item)> itemList = inventory.GetItems();
-            if (itemList != null)
-                foreach ((int, Item) x in itemList)
-                    DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
             int[] money = inventory.GetMoney();
             if (money != null)
                 DataSaverAndLoader.SaveMoney(new List<int>(money));

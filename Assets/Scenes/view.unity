@@ -23943,7 +23943,7 @@ MonoBehaviour:
   - {fileID: 896136266}
   - {fileID: 51374403}
   - {fileID: 961007145}
-  spellBody: {fileID: 308874142055799750, guid: c501f48e35db2574492bd17c633a3a0d, type: 3}
+  spellBody: {fileID: 4577940857966972834, guid: c7cc7a2c1f74b61448b3bfaf3fe6934d, type: 3}
 --- !u!114 &1149338450
 MonoBehaviour:
   m_ObjectHideFlags: 0

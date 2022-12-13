@@ -149,6 +149,14 @@ public class CharacterData
         return 0;
     }
 
+    public static int GetLevel(int id)
+    {
+        foreach ((int, PlayersClass) x in _classes)
+            if (x.Item2.id == id)
+                return x.Item1;
+        return 0;
+    }
+
     public static int GetMagic()
     {
         int magic = 0;

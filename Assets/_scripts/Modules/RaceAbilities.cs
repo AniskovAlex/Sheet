@@ -15,16 +15,31 @@ public class RaceAbilities : MonoBehaviour
         switch (value.value)
         {
             case 1:
-                playersRace = new Human();
+                playersRace = new Gnome();
                 break;
             case 2:
-                playersRace = new Gnome();
+                playersRace = new Dwarf();
+                break;
+            case 3:
+                playersRace = new Dragonborn();
+                break;
+            case 4:
+                playersRace = new HalfOrc();
+                break;
+            case 5:
+                playersRace = new Halfling();
+                break;
+            case 6:
+                playersRace = new HalfElf();
+                break;
+            case 7:
+                playersRace = new Human();
                 break;
         }
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in opener)
         {
-            DestroyImmediate(x.gameObject);
+            Destroy(x.gameObject);
         }
         if (playersRace != null)
         {
@@ -38,9 +53,10 @@ public class RaceAbilities : MonoBehaviour
 
     public void ChosenSubRace(Dropdown value, FormCreater formCreater)
     {
-        FormCreater buf = formCreater.GetComponentInChildren<Discription>().GetComponentInChildren<FormCreater>();
-        if (buf != null)
-            DestroyImmediate(buf.gameObject);
+        FormCreater[] buf = formCreater.GetComponentInChildren<Discription>().GetComponentsInChildren<FormCreater>();
+        for (int i = buf.Length - 1; i >= 0; i--)
+            if (buf[i] != null)
+                DestroyImmediate(buf[i].gameObject);
         if (playersRace != null)
         {
             Ability[] abilityArr = playersRace.ChooseSubRace(value.value);

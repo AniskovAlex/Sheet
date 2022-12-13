@@ -37,7 +37,18 @@ public abstract class Race : ObjectsBehavior
     {
         return Size.medium;
     }
-
+    public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
+    {
+        if (subRace != null)
+            return subRace.GetBladeProficiency(); ;
+        return null;
+    }
+    public virtual HashSet<Armor.ArmorType> GetArmorProficiency()
+    {
+        if (subRace != null)
+            return subRace.GetArmorProficiency();
+        return null;
+    }
     public bool GetVision()
     {
         return false;

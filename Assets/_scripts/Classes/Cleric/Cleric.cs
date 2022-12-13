@@ -57,6 +57,11 @@ public class Cleric : PlayersClass
         return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonDist, Weapon.WeaponType.CommonMelee};
     }
 
+    public override HashSet<Weapon.WeaponType> GetSubWeaponProficiency()
+    {
+        return null;
+    }
+
     public override HashSet<int> GetSaveThrows()
     {
         return new HashSet<int> { 3, 5 };

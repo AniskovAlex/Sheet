@@ -61,7 +61,7 @@ public class Personality : MonoBehaviour
             Ability[] abilityArr = race.GetAbilities();
             if (abilitieSubRaceArr != null)
             {
-                abilityArr.Concat(abilitieSubRaceArr).ToArray();
+                abilityArr = abilityArr.Concat(abilitieSubRaceArr).ToArray();
                 RaceName.text += "(" + race.GetSubRace().GetName() + ")";
             }
             foreach (Ability x in abilityArr)
