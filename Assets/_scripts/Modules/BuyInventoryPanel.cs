@@ -7,7 +7,7 @@ public class BuyInventoryPanel : MonoBehaviour
     [SerializeField] AdderItemToPrelist adder;
     public void SetAdder(PlayersClass playersClass)
     {
-        adder.SetCoins(playersClass.GetMoney());
+        adder.SetCoins(playersClass.GetMoney()*100);
     }
 
     public List<(int, Item)> GetItems()

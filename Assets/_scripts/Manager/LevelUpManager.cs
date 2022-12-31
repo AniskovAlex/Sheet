@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class LevelUpManager : MonoBehaviour
     public GameObject dropdownObject;
     public GameObject abilitiesPanel;
     public GameObject form;
-    const string skillSaveName = "skill_";
+    const string skillSaveName = "@skill_";
     int healthDice = 0;
 
     [SerializeField] ClassesAbilities classes;
@@ -57,16 +58,27 @@ public class LevelUpManager : MonoBehaviour
             if (playersClass.GetSubClass() != null)
                 DataSaverAndLoader.SaveSubClass(playersClass);
             SaveAttr();
+            SaveSkills();
             SaveCompetence();
             PresavedLists.SaveProficiency();
             PresavedLists.SaveInstruments();
-            PresavedLists.SaveCustomPrelists();
+            PresavedLists.SaveInstrumentsComp();
             PresavedLists.saveSaveThrows();
             PresavedLists.SaveLanguage();
             PresavedLists.SaveSpellKnew();
+            PresavedLists.SaveCustomPrelists();
+            PresavedLists.SaveFeats();
         }
-        PresavedLists.SaveCustomPrelists();
+        if (PresavedLists.spellMaster != null || PresavedLists.spellMaster.Count > 0)
+        {
+            HashSet<int> buf = DataSaverAndLoader.LoadSpellMaster();
+            if (buf != null)
+                DataSaverAndLoader.SaveSpellMaster(new HashSet<int>(buf.Concat(PresavedLists.spellMaster).ToList()));
+            else
+                DataSaverAndLoader.SaveSpellMaster(PresavedLists.spellMaster);
+        }
         PlayerPrefs.Save();
+
         SceneManager.LoadScene("view", LoadSceneMode.Single);
     }
 
@@ -97,11 +109,77 @@ public class LevelUpManager : MonoBehaviour
                     break;
             }
         int currentHealth = CharacterData.GetMaxHealth();
+        int addHealth = DataSaverAndLoader.LoadAddHealth();
         if (buf / 2 < arr[2] / 2)
             healthDice += ((arr[2] / 2) - (buf / 2)) * CharacterData.GetLevel();
-        DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice + currentHealth);
-        DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice + currentHealth);
+        DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice + currentHealth + addHealth);
+        DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice + currentHealth + addHealth);
         DataSaverAndLoader.SaveAttributes(arr);
+    }
+    void SaveSkills()
+    {
+        HashSet<string> list = PresavedLists.skills;
+        foreach (string x in list)
+        {
+            switch (x)
+            {
+                case "Атлетика":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 0, 1);
+                    break;
+                case "Акробатика":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 1, 1);
+                    break;
+                case "Ловкость рук":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 2, 1);
+                    break;
+                case "Скрытность":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 3, 1);
+                    break;
+                case "Анализ":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 4, 1);
+                    break;
+                case "История":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 5, 1);
+                    break;
+                case "Магия":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 6, 1);
+                    break;
+                case "Природа":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 7, 1);
+                    break;
+                case "Религия":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 8, 1);
+                    break;
+                case "Внимательность":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 9, 1);
+                    break;
+                case "Выживание":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 10, 1);
+                    break;
+                case "Медицина":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 11, 1);
+                    break;
+                case "Проницательность":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 12, 1);
+                    break;
+                case "Уход за животными":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 13, 1);
+                    break;
+                case "Выступление":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 14, 1);
+                    break;
+                case "Запугивание":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 15, 1);
+                    break;
+                case "Обман":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 16, 1);
+                    break;
+                case "Убеждение":
+                    PlayerPrefs.SetInt(characterName + skillSaveName + 17, 1);
+                    break;
+            }
+        }
+        PresavedLists.skills.Clear();
     }
 
     void SaveCompetence()
@@ -164,6 +242,9 @@ public class LevelUpManager : MonoBehaviour
                     break;
                 case "Убеждение":
                     PlayerPrefs.SetInt(characterName + skillSaveName + 17, 2);
+                    break;
+                case "Воровские инстурменты":
+                    PresavedLists.compInstruments.Add(x);
                     break;
             }
         }

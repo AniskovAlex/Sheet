@@ -18,7 +18,8 @@ public class Ability
         spellChoose,
         competence,
         attr,
-        item
+        item,
+        feat
     }
 
     public string head;
@@ -34,7 +35,7 @@ public class Ability
 
     public List<(int, string)> discription = new List<(int, string)>();
 
-    public (int ,string, string)[] list;
+    public (int ,string, string, int)[] list;
 
     public List<string> common;
 
@@ -46,4 +47,5 @@ public class Ability
     public int buf2Int;
 
     public bool changeRule;
+    public bool change;
 }

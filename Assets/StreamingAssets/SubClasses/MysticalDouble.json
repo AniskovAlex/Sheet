@@ -41,6 +41,110 @@
     "chooseCount": 1
   },
   {
+    "head": "Изучение заклинания иллюзии",
+    "type": 9,
+    "level": 3,
+    "buf2Int": 3,
+    "bufInt": -6,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания очарования",
+    "type": 9,
+    "level": 3,
+    "buf2Int": 3,
+    "bufInt": -7,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 3,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 4,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 7,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 8,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 10,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 11,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 13,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 14,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 16,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания иллюзии или очарования",
+    "type": 9,
+    "level": 19,
+    "buf2Int": 3,
+    "bufInt": -8,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 20,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
     "head": "Улучшенная волшебная рука",
     "type": 1,
     "level": 3,

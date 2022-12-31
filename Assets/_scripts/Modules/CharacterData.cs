@@ -80,6 +80,12 @@ public class CharacterData
         return 0;
     }
 
+    public static void AddSave(int index)
+    {
+        if (index >= 0 && index < _saves.Length)
+            _saves[index] = 1;
+    }
+
     public static int GetMoney(int index)
     {
         if (index >= 0 && index < _money.Length)
@@ -120,6 +126,7 @@ public class CharacterData
     {
         return _armorProficiency;
     }
+
     public static List<(int, PlayersClass)> GetClasses()
     {
         return _classes;

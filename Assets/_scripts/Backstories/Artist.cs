@@ -18,7 +18,7 @@ public class Artist : Backstory
         {
             (1, new Item("Подарок от поклонницы")),
             (1, new Item(57)),
-            (1, new Item(37)),
+            (1, new Item(37))
         };
     }
 

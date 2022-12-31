@@ -5,18 +5,18 @@ using System.Linq;
 
 public class CharacterDataLoader : MonoBehaviour
 {
-    const string attrSaveName = "atr_";
-    const string moneySaveName = "mon_";
-    const string skillSaveName = "skill_";
-    const string levelCountSaveName = "lvlCount_";
-    const string levelSaveName = "lvl_";
-    const string levelLabelSaveName = "lvlLabel_";
-    const string saveSaveName = "save_";
-    const string maxHealthSaveName = "maxHP_";
-    const string healthSaveName = "HP_";
-    const string tempHealthSaveName = "THP_";
-    const string raceSaveName = "race_";
-    const string backstorySaveName = "backstory_";
+    const string attrSaveName = "@atr_";
+    const string moneySaveName = "@mon_";
+    const string skillSaveName = "@skill_";
+    const string levelCountSaveName = "@lvlCount_";
+    const string levelSaveName = "@lvl_";
+    const string levelLabelSaveName = "@lvlLabel_";
+    const string saveSaveName = "@save_";
+    const string maxHealthSaveName = "@maxHP_";
+    const string healthSaveName = "@HP_";
+    const string tempHealthSaveName = "@THP_";
+    const string raceSaveName = "@race_";
+    const string backstorySaveName = "@backstory_";
 
     string characterName;
     int[] _attributesArr = new int[6];
@@ -39,6 +39,7 @@ public class CharacterDataLoader : MonoBehaviour
 
     private void Awake()
     {
+        PresavedLists.ResetAll();
         characterName = CharacterCollection.GetName();
         GlobalStatus.ResetRuleChanger();
         LoadAttributes();
@@ -50,6 +51,7 @@ public class CharacterDataLoader : MonoBehaviour
         LoadSaves();
         LoadProficiency();
         LoadHP();
+        LoadFeats();
         language = DataSaverAndLoader.LoadLanguage();
         instruments = DataSaverAndLoader.LoadInstruments();
         CharacterData.SetCharacterData(_attributesArr, _saves, _money, _skills, _classes, language, instruments, bladeProficiency, weaponProficiency, armorProficiency, level, race, backstory, maxHP, currentHP, tempHP);
@@ -131,6 +133,7 @@ public class CharacterDataLoader : MonoBehaviour
                         break;
                 }
                 level += classLevel;
+                playersClass.ChooseSubClass(DataSaverAndLoader.LoadSubClass(playersClass));
                 _classes.Add((classLevel, playersClass));
             }
         }
@@ -143,15 +146,75 @@ public class CharacterDataLoader : MonoBehaviour
             case 0:
                 race = new Gnome();
                 break;
+            case 1:
+                race = new Dwarf();
+                break;
+            case 2:
+                race = new Dragonborn();
+                break;
+            case 3:
+                race = new HalfOrc();
+                break;
+            case 4:
+                race = new Halfling();
+                break;
+            case 5:
+                race = new HalfElf();
+                break;
+            case 6:
+                race = new Tiefling();
+                break;
+            case 7:
+                race = new Human();
+                break;
+            case 8:
+                race = new Elf();
+                break;
         }
     }
 
     void LoadBackstory()
     {
-        switch (PlayerPrefs.GetString(characterName + backstorySaveName))
+        switch (PlayerPrefs.GetInt(characterName + backstorySaveName))
         {
-            case "Артист":
+            case 0:
                 backstory = new Artist();
+                break;
+            case 1:
+                backstory = new Waif();
+                break;
+            case 2:
+                backstory = new Noble();
+                break;
+            case 3:
+                backstory = new GuildArtiser();
+                break;
+            case 4:
+                backstory = new Sailor();
+                break;
+            case 5:
+                backstory = new Sage();
+                break;
+            case 6:
+                backstory = new PeoplesHero();
+                break;
+            case 7:
+                backstory = new Hermit();
+                break;
+            case 8:
+                backstory = new Criminal();
+                break;
+            case 9:
+                backstory = new Acolyte();
+                break;
+            case 10:
+                backstory = new Soldier();
+                break;
+            case 11:
+                backstory = new Foreigner();
+                break;
+            case 12:
+                backstory = new Charlatan();
                 break;
         }
     }
@@ -178,67 +241,88 @@ public class CharacterDataLoader : MonoBehaviour
         tempHP = PlayerPrefs.GetInt(characterName + tempHealthSaveName);
     }
 
+    void LoadFeats()
+    {
+        List<int> list = DataSaverAndLoader.LoadFeats();
+        foreach (int x in list)
+            foreach (Feat y in FileSaverAndLoader.LoadFeats())
+            {
+                if (y.id == x)
+                {
+                    PresavedLists.feats.Add(y);
+                    break;
+                }
+            }
+    } 
+
     public void LoadPrelists()
     {
+        string name = "";
         for (int i = 0; i < 18; i++)
             if (_skills[i] != 0)
+            {
                 switch (i)
                 {
                     case 0:
-                        PresavedLists.skills.Add("Атлетика");
+                        name = "Атлетика";
                         break;
                     case 1:
-                        PresavedLists.skills.Add("Акробатика");
+                        name = "Акробатика";
                         break;
                     case 2:
-                        PresavedLists.skills.Add("Ловкость рук");
+                        name = "Ловкость рук";
                         break;
                     case 3:
-                        PresavedLists.skills.Add("Скрытность");
+                        name = "Скрытность";
                         break;
                     case 4:
-                        PresavedLists.skills.Add("Анализ");
+                        name = "Анализ";
                         break;
                     case 5:
-                        PresavedLists.skills.Add("История");
+                        name = "История";
                         break;
                     case 6:
-                        PresavedLists.skills.Add("Магия");
+                        name = "Магия";
                         break;
                     case 7:
-                        PresavedLists.skills.Add("Природа");
+                        name = "Природа";
                         break;
                     case 8:
-                        PresavedLists.skills.Add("Религия");
+                        name = "Религия";
                         break;
                     case 9:
-                        PresavedLists.skills.Add("Внимательность");
+                        name = "Внимательность";
                         break;
                     case 10:
-                        PresavedLists.skills.Add("Выживание");
+                        name = "Выживание";
                         break;
                     case 11:
-                        PresavedLists.skills.Add("Медицина");
+                        name = "Медицина";
                         break;
                     case 12:
-                        PresavedLists.skills.Add("Проницательность");
+                        name = "Проницательность";
                         break;
                     case 13:
-                        PresavedLists.skills.Add("Уход за животными");
+                        name = "Уход за животными";
                         break;
                     case 14:
-                        PresavedLists.skills.Add("Выступление");
+                        name = "Выступление";
                         break;
                     case 15:
-                        PresavedLists.skills.Add("Запугивание");
+                        name = "Запугивание";
                         break;
                     case 16:
-                        PresavedLists.skills.Add("Обман");
+                        name = "Обман";
                         break;
                     case 17:
-                        PresavedLists.skills.Add("Убеждение");
+                        name = "Убеждение";
                         break;
                 }
+                if (_skills[i] == 1)
+                    PresavedLists.skills.Add(name);
+                else
+                    PresavedLists.competence.Add(name);
+            }
         foreach ((int, PlayersClass) x in _classes)
         {
             Ability[] abilities = x.Item2.GetAbilities();
@@ -254,5 +338,6 @@ public class CharacterDataLoader : MonoBehaviour
         PresavedLists.instruments = instruments;
         PresavedLists.languages = language;
         PresavedLists.saveThrows.Concat(_saves);
+        PresavedLists.compInstruments = DataSaverAndLoader.LoadInstrumentsComp();
     }
 }

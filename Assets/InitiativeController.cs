@@ -9,6 +9,8 @@ public class InitiativeController : MonoBehaviour
     int add = 0;
     void Start()
     {
+        if (GlobalStatus.alert)
+            add += 5;
         foreach (GameObject x in boxs)
         {
             Utilities.SetTextSign(CharacterData.GetModifier(1) + add, x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>());

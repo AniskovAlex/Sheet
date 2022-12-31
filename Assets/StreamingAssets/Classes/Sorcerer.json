@@ -10,7 +10,7 @@
     "head": "Происхождение чародея",
     "type": 4,
     "level": 1,
-    "common": [ "НАследик драконьей крови", "Дикая магия" ]
+    "common": [ "Наследик драконьей крови", "Дикая магия" ]
   },
   {
     "head": "Заговоры",
@@ -153,6 +153,7 @@
     "type": 2,
     "level": 2,
     "listName": "SorcererUnit",
+    "changeRule": true,
     "consum": [
       {
         "Item1": 2,
@@ -447,6 +448,8 @@
     "head": "Чародейское восстановление",
     "type": 1,
     "level": 20,
+    "listName": "SorcererRegain",
+    "changeRule": true,
     "discription": [
       {
         "Item1": 1,

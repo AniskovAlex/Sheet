@@ -7,9 +7,8 @@ using UnityEngine.SceneManagement;
 public class BuilderManager : MonoBehaviour
 {
     string characterName;
-    const string skillSaveName = "skill_";
-    const string maxHealthSaveName = "maxHP_";
-
+    const string skillSaveName = "@skill_";
+    const string maxHealthSaveName = "@maxHP_";
 
     public List<Box> boxList;
     public List<Skill> skillList;
@@ -94,22 +93,32 @@ public class BuilderManager : MonoBehaviour
                 DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().id);
                 if (inventory.isStandart())
                 {
+                    if (itemList == null)
+                        itemList = new List<(int, Item)>();
                     List<(int, Item)> bufItems = backstory.GetBackstory().GetItems();
                     if (bufItems != null)
                         itemList.AddRange(bufItems);
                     if (PresavedLists.items != null)
+                    {
+                        bool flag = false;
                         foreach (Item x in inventory.GetItemsList())
+                        {
                             if (PresavedLists.items.Contains(x.label))
                             {
-                                for(int i =0;i< itemList.Count;i++)
-                                    if(x.id == itemList[i].Item2.id)
+                                for (int i = 0; i < itemList.Count; i++)
+                                    if (x.id == itemList[i].Item2.id)
                                     {
                                         (int, Item) bufItem = (itemList[i].Item1 + 1, itemList[i].Item2);
                                         itemList.RemoveAt(i);
                                         itemList.Insert(i, bufItem);
                                         break;
                                     }
+                                PresavedLists.items.Remove(x.label);
                             }
+                        }
+                        foreach (string x in PresavedLists.items)
+                            itemList.Add((1, new Item(x)));
+                    }
 
                 }
             }
@@ -130,10 +139,12 @@ public class BuilderManager : MonoBehaviour
             SaveAttr();
             PresavedLists.SaveProficiency();
             PresavedLists.SaveInstruments();
+            PresavedLists.SaveInstrumentsComp();
             PresavedLists.SaveCustomPrelists();
             PresavedLists.saveSaveThrows();
             PresavedLists.SaveLanguage();
             PresavedLists.SaveSpellKnew();
+            PresavedLists.SaveFeats();
             int[] money = inventory.GetMoney();
             if (money != null)
                 DataSaverAndLoader.SaveMoney(new List<int>(money));
@@ -167,8 +178,11 @@ public class BuilderManager : MonoBehaviour
                     arr[5]++;
                     break;
             }
-        DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice);
-        DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice);
+        int addHealth = DataSaverAndLoader.LoadAddHealth();
+        DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth);
+        DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth);
+        if (PresavedLists.addHealth > 0)
+            DataSaverAndLoader.SaveAddHealth(PresavedLists.addHealth + addHealth);
         DataSaverAndLoader.SaveAttributes(arr);
     }
 
@@ -298,6 +312,9 @@ public class BuilderManager : MonoBehaviour
                     break;
                 case "Убеждение":
                     PlayerPrefs.SetInt(characterName + skillSaveName + 17, 2);
+                    break;
+                case "Воровские инстурменты":
+                    PresavedLists.compInstruments.Add(x);
                     break;
             }
         }

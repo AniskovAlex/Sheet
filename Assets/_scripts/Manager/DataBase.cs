@@ -8,11 +8,11 @@ using System.IO;
 public class DataBase : MonoBehaviour
 {
     string characterName;
-    const string itemsCountSaveName = "itemsCount_";
-    const string itemSaveName = "itemN_";
-    const string itemSaveID = "itemID_";
-    const string itemCostSaveName = "itemCost_";
-    const string itemAmountSaveName = "itemA_";
+    const string itemsCountSaveName = "@itemsCount_";
+    const string itemSaveName = "@itemN_";
+    const string itemSaveID = "@itemID_";
+    const string itemCostSaveName = "@itemCost_";
+    const string itemAmountSaveName = "@itemA_";
     
     public GameObject item;
     public GameObject panel;

@@ -203,6 +203,24 @@
     "type": 3,
     "level": 2,
     "chooseCount": 1,
+    "consum": [
+      {
+        "Item1": 0,
+        "Item2": -1
+      },
+      {
+        "Item1": 2,
+        "Item2": -1
+      },
+      {
+        "Item1": 4,
+        "Item2": -1
+      },
+      {
+        "Item1": 5,
+        "Item2": -1
+      }
+    ],
     "isUniq": true,
     "pathToList": "BattleStyles",
     "listName": "BattleStyles",
@@ -275,16 +293,16 @@
   {
     "head": "Изучение заклинаний",
     "type": 9,
-    "level": 3,
-    "buf2Int": 17,
+    "level": 17,
+    "buf2Int": 11,
     "bufInt": -1,
     "chooseCount": 1
   },
   {
     "head": "Изучение заклинаний",
     "type": 9,
-    "level": 3,
-    "buf2Int": 19,
+    "level": 19,
+    "buf2Int": 11,
     "bufInt": -1,
     "chooseCount": 1
   },

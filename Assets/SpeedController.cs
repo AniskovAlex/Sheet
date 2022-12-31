@@ -9,12 +9,17 @@ public class SpeedController : MonoBehaviour
     int add = 0;
     void Start()
     {
+        int speed = CharacterData.GetSpeed();
+        if (GlobalStatus.fastFeet)
+            speed = 35;
         if (GlobalStatus.barbatianFastMove)
+            add += 10;
+        if (GlobalStatus.mobile)
             add += 10;
         if (GlobalStatus.monkSpeed)
         { 
             int level = CharacterData.GetLevel(8);
-            if (level >= 2)
+            if (level >= 2 && level <= 5)
                 add += 10;
             if (level >= 6 && level <= 9)
                 add += 15; 
@@ -27,7 +32,7 @@ public class SpeedController : MonoBehaviour
         }
         foreach (GameObject x in boxs)
         {
-            Utilities.SetTextSign(CharacterData.GetSpeed() + add, x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>());
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = (speed + add).ToString();
         }
     }
 }

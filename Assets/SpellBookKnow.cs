@@ -10,6 +10,7 @@ public class SpellBookKnow : MonoBehaviour
     [SerializeField] GameObject choose;
     [SerializeField] GameObject chosen;
     [SerializeField] Text head;
+    List<Spell> spellKnew = new List<Spell>();
     private void Start()
     {
         head.text = "Книга заклинаний";
@@ -35,6 +36,7 @@ public class SpellBookKnow : MonoBehaviour
             }
         foreach (Spell x in list)
         {
+            if (x.level == 0) continue;
             SpellBody newSpell = Instantiate(spellBody, choose.transform);
             newSpell.SetSpell(x);
             Amount buf = newSpell.GetComponentInChildren<Amount>();
@@ -49,6 +51,7 @@ public class SpellBookKnow : MonoBehaviour
         {
             foreach (Spell x in knewList)
             {
+                if (x.level == 0) continue;
                 SpellBody newSpell = Instantiate(spellBody, chosen.transform);
                 newSpell.SetSpell(x);
                 Amount buf = newSpell.GetComponentInChildren<Amount>();
@@ -82,7 +85,7 @@ public class SpellBookKnow : MonoBehaviour
             {
                 if (x.Item1 == id)
                 {
-                    SpellController.spellKnew[i].Item2.Remove(spellBody.GetSpell());
+                    spellKnew.Remove(spellBody.GetSpell());
                 }
                 i++;
             }
@@ -95,7 +98,8 @@ public class SpellBookKnow : MonoBehaviour
             int i = 0;
             foreach ((int, List<Spell>) x in SpellController.spellKnew)
             {
-                SpellController.spellKnew[i].Item2.Add(spellBody.GetSpell());
+                if (x.Item1 == id)
+                    spellKnew.Add(spellBody.GetSpell());
                 i++;
             }
         }
@@ -104,7 +108,10 @@ public class SpellBookKnow : MonoBehaviour
 
     private void OnDestroy()
     {
-        DataSaverAndLoader.SaveAddSpellKnew(SpellController.GetSpellsId(SpellController.spellKnew));
+        HashSet<int> buf = new HashSet<int>();
+        foreach(Spell x in spellKnew)
+            buf.Add(x.id);
+        DataSaverAndLoader.SaveAddSpellKnew(new List<(int, HashSet<int>)>() { (3,buf) });
         SpellController.ReloadSpells();
     }
 }

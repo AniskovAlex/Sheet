@@ -10,12 +10,15 @@ public class FormCreater : MonoBehaviour
     [SerializeField] ChooseAttr attrUp;
     [SerializeField] GameObject dropdown;
     [SerializeField] SpellChoose spellChoose;
+    [SerializeField] ChooseFeat featChoose;
     public GameObject consumable;
     public GameObject basicText;
     GameObject discription;
-    List<(int, string, string)> list;
-    List<(int, string, string)> constList;
+    List<(int, string, string, int)> list;
+    List<(int, string, string, int)> constList;
     Ability ability = null;
+    bool bufFlag = false;
+    bool bufFlag1 = false;
 
     private void Awake()
     {
@@ -27,14 +30,149 @@ public class FormCreater : MonoBehaviour
         head.text = name;
     }
 
+    public void RemoveHead()
+    {
+        head.transform.parent.gameObject.SetActive(false);
+    }
+
     public void CreateAbility(Ability ability)
     {
+        SpellChoose newSpellChoose = null;
         this.ability = ability;
         head.text = ability.head;
+        foreach ((int, string) x in ability.discription)
+            SetText(x);
         switch (ability.type)
         {
             case Ability.Type.consumable:
+                switch (ability.listName)
+                {
+                    case "SpecialSpells":
+                        Instantiate(spellChoose, discription.transform).SetSpells(3, 2, -5, 3);
+                        break;
+                    case "shifter":
+                        bool flag = false;
+                        foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+                            if (x.Item1 == 3)
+                            {
+                                x.Item2.Add(98);
+                                flag = true;
+                            }
+                        if (!flag)
+                            PresavedLists.spellKnew.Add((3, new HashSet<int> { 98 }));
+                        break;
+                    case "Arcanum6":
+                        newSpellChoose = Instantiate(spellChoose, discription.transform);
+                        newSpellChoose.SetSpells(7, 1, 6, 7);
+                        newSpellChoose.blocked = true;
+                        break;
+                    case "Arcanum7":
+                        newSpellChoose = Instantiate(spellChoose, discription.transform);
+                        newSpellChoose.SetSpells(7, 1, 7, 7);
+                        newSpellChoose.blocked = true;
+                        break;
+                    case "Arcanum8":
+                        newSpellChoose = Instantiate(spellChoose, discription.transform);
+                        newSpellChoose.SetSpells(7, 1, 8, 7);
+                        newSpellChoose.blocked = true;
+                        break;
+                    case "Arcanum9":
+                        newSpellChoose = Instantiate(spellChoose, discription.transform);
+                        newSpellChoose.SetSpells(7, 1, 9, 7);
+                        newSpellChoose.blocked = true;
+                        break;
+                    case "DedicatedToMagic":
+                        Dropdown DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                        DedicatedClass.ClearOptions();
+                        DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
+                        foreach ((int, string, string, int) x in ability.list)
+                            DedicatedClass.options.Add(new Dropdown.OptionData(x.Item2));
+                        DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
+                        DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); });
+                        DedicatedClass.value = 0;
+                        break;
+                }
+                break;
             case Ability.Type.abilitie:
+                if (ability.changeRule)
+                    switch (ability.listName)
+                    {
+                        case "DwarfHold":
+                            PresavedLists.addHealth += 1;
+                            break;
+                        case "LightlyArmored":
+                            if (PresavedLists.armorTypes.Contains(Armor.ArmorType.Light))
+                                bufFlag = true;
+                            PresavedLists.armorTypes.Add(Armor.ArmorType.Light);
+                            break;
+                        case "ModeratelyArmored":
+                            if (PresavedLists.armorTypes.Contains(Armor.ArmorType.Medium))
+                                bufFlag = true;
+                            if (PresavedLists.armorTypes.Contains(Armor.ArmorType.Shield))
+                                bufFlag1 = true;
+                            PresavedLists.armorTypes.Add(Armor.ArmorType.Medium);
+                            PresavedLists.armorTypes.Add(Armor.ArmorType.Shield);
+                            break;
+                        case "HeavilyArmored":
+                            if (PresavedLists.armorTypes.Contains(Armor.ArmorType.Heavy))
+                                bufFlag = true;
+                            PresavedLists.armorTypes.Add(Armor.ArmorType.Heavy);
+                            break;
+                        case "Tough":
+                            PresavedLists.addHealth += 2;
+                            PresavedLists.addMaxHealth += CharacterData.GetLevel() + 1;
+                            break;
+                        case "RitualCaster":
+                            Dropdown DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                            DedicatedClass.ClearOptions();
+                            DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
+                            foreach ((int, string, string, int) x in ability.list)
+                                DedicatedClass.options.Add(new Dropdown.OptionData(x.Item2));
+                            DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
+                            DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); });
+                            DedicatedClass.value = 0;
+                            break;
+                        case "Skilled":
+                            HashSet<string> skillList = new HashSet<string>(ability.common);
+                            foreach ((int, string, string, int) x in ability.list)
+                                skillList.Add(x.Item2);
+                            skillList.ExceptWith(PresavedLists.instruments);
+                            skillList.ExceptWith(PresavedLists.skills);
+                            PresavedLists.ChangeSkillPing += UpdateSkillOptions;
+                            PresavedLists.ChangeIntrumentsPing += UpdateInstrumentsOptions;
+                            for (int i = 0; i < ability.chooseCount; i++)
+                            {
+                                Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                                chooseDrop.ClearOptions();
+                                foreach (string x in skillList)
+                                    chooseDrop.options.Add(new Dropdown.OptionData(x));
+                                chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                                chooseDrop.onValueChanged.AddListener(delegate
+                                {
+                                    ChangeSkillSelected(chooseDrop);
+                                    ChangeInstrumentsSelected(chooseDrop);
+                                });
+                                chooseDrop.value = skillList.Count;
+                            }
+                            break;
+                        case "WeaponMaster":
+                            List<(int, string, string, int)> weaponList = new List<(int, string, string, int)>(ability.list);
+                            WeaponRemove(weaponList);
+                            for (int i = 0; i < ability.chooseCount; i++)
+                            {
+                                Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                                chooseDrop.ClearOptions();
+                                foreach ((int, string, string, int) x in weaponList)
+                                    chooseDrop.options.Add(new Dropdown.OptionData(x.Item2));
+                                chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
+                                chooseDrop.onValueChanged.AddListener(delegate
+                                {
+                                    ChangeWeaponBladeSelected(chooseDrop);
+                                });
+                                chooseDrop.value = weaponList.Count;
+                            }
+                            break;
+                    }
                 break;
             case Ability.Type.charUp:
                 Instantiate(charUp, discription.transform);
@@ -63,10 +201,11 @@ public class FormCreater : MonoBehaviour
                 if (ability.isUniq)
                     constList = FileSaverAndLoader.LoadList(ability.pathToList);
                 else
-                    constList = new List<(int, string, string)>(ability.list);
-                list = new List<(int, string, string)>(constList);
+                    constList = new List<(int, string, string, int)>(ability.list);
+                list = new List<(int, string, string, int)>(constList);
                 bool found = false;
                 foreach ((string, List<int>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
+                {
                     foreach (int y in x.Item2)
                     {
                         for (int i = 0; i < list.Count; i++)
@@ -76,8 +215,22 @@ public class FormCreater : MonoBehaviour
                                 break;
                             }
                     }
+                    found = true;
+                }
                 if (!found)
-                    PresavedLists.preLists.Add((ability.listName, new List<int>()));
+                    PresavedLists.preLists.Add((ability.listName, DataSaverAndLoader.LoadCustom(ability.listName)));
+                if (ability.chooseCount == 0)
+                {
+                    foreach ((string, List<int>) x in PresavedLists.preLists)
+                        if (x.Item1 == ability.listName)
+                        {
+                            foreach ((int, int) y in ability.consum)
+                                x.Item2.Add(y.Item1);
+                            return;
+
+                        }
+                }
+                SelectFromList(list);
                 PresavedLists.ChangePing += UpdateOptions;
                 for (int i = 0; i < ability.chooseCount; i++)
                 {
@@ -86,7 +239,7 @@ public class FormCreater : MonoBehaviour
                     listDis.text = "";
                     chooseDrop.GetComponent<DropdownExtend>().text = listDis;
                     chooseDrop.ClearOptions();
-                    foreach ((int, string, string) x in list)
+                    foreach ((int, string, string, int) x in list)
                         chooseDrop.options.Add(new Dropdown.OptionData(x.Item2));
                     chooseDrop.options.Add(new Dropdown.OptionData("Пусто"));
                     chooseDrop.onValueChanged.AddListener(delegate
@@ -101,6 +254,7 @@ public class FormCreater : MonoBehaviour
                 {
                     HashSet<string> skillList = new HashSet<string>(ability.common);
                     skillList.ExceptWith(PresavedLists.skills);
+                    skillList.ExceptWith(PresavedLists.competence);
                     PresavedLists.ChangeSkillPing += UpdateSkillOptions;
                     for (int i = 0; i < ability.chooseCount; i++)
                     {
@@ -122,7 +276,12 @@ public class FormCreater : MonoBehaviour
                 break;
             case Ability.Type.competence:
                 HashSet<string> skillCompList = PresavedLists.skills;
+                skillCompList.ExceptWith(PresavedLists.competence);
+                if (ability.isUniq)
+                    skillCompList.Add("Воровские инстурменты");
+                skillCompList.ExceptWith(PresavedLists.compInstruments);
                 PresavedLists.ChangeCompetencePing += UpdateCompetenceOptions;
+                PresavedLists.ChangeSkillPing += UpdateCompetenceOptions;
                 for (int i = 0; i < ability.chooseCount; i++)
                 {
                     Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
@@ -186,23 +345,50 @@ public class FormCreater : MonoBehaviour
                         PresavedLists.UpdateLanguage("", x);
                 break;
             case Ability.Type.spellChoose:
+                ClassesAbilities classesAbilities = GetComponentInParent<ClassesAbilities>();
                 if (ability.chooseCount == 0)
                 {
-                    if (ability.common != null)
+                    if (ability.isUniq)
+                    {
+                        bool flag = false;
+                        foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+                            if (ability.consum.Length > 0 && x.Item2.Contains(ability.consum[0].Item1))
+                                flag = true;
+                        if (flag)
+                        {
+                            Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, 1, ability.bufInt, classesAbilities.GetClass().id);
+                            break;
+                        }
+                    }
+                    if (ability.consum != null)
                     {
                         bool flag = false;
                         List<(int, HashSet<int>)> list;
                         list = PresavedLists.spellKnew;
                         foreach ((int, HashSet<int>) x in list)
-                            if (x.Item1 == ability.buf2Int)
+                            if (classesAbilities == null && x.Item1 == -1)
                             {
                                 foreach ((int, int) y in ability.consum)
                                     x.Item2.Add(y.Item1);
                                 flag = true;
                             }
+                            else
+                            {
+                                if (x.Item1 == classesAbilities.GetClass().id)
+                                {
+                                    foreach ((int, int) y in ability.consum)
+                                        x.Item2.Add(y.Item1);
+                                    flag = true;
+                                }
+                            }
                         if (!flag)
                         {
-                            (int, HashSet<int>) add = (ability.buf2Int, new HashSet<int>());
+                            int addClassId = 0;
+                            if (classesAbilities != null)
+                                addClassId = classesAbilities.GetClass().id;
+                            else
+                                addClassId = -1;
+                            (int, HashSet<int>) add = (addClassId, new HashSet<int>());
                             foreach ((int, int) y in ability.consum)
                                 add.Item2.Add(y.Item1);
                             list.Add(add);
@@ -210,14 +396,34 @@ public class FormCreater : MonoBehaviour
                     }
                     break;
                 }
-                SpellChoose buf = GetComponentInParent<ClassesAbilities>().GetComponentInChildren<SpellChoose>();
-                if (buf != null && buf.changeable && ability.bufInt != 0)
+                SpellChoose buf = classesAbilities.GetComponentInChildren<SpellChoose>();
+                if (classesAbilities.GetClass().id == 2 || classesAbilities.GetClass().id == 10)
                 {
-                    buf.SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt);
-                    Destroy(gameObject);
+                    switch (ability.bufInt)
+                    {
+                        default:
+                            Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, classesAbilities.GetClass().id);
+                            break;
+                        case -4:
+                            SpellChoose bufMyf1 = Instantiate(spellChoose, discription.transform);
+                            bufMyf1.SetSpells(ability.buf2Int, ability.chooseCount, -2, classesAbilities.GetClass().id);
+                            bufMyf1.multAdd = true;
+                            bufMyf1 = Instantiate(spellChoose, discription.transform);
+                            bufMyf1.SetSpells(ability.buf2Int, ability.chooseCount, -3, classesAbilities.GetClass().id);
+                            bufMyf1.multAdd = true;
+                            break;
+                        case -8:
+                            SpellChoose bufMyf2 = Instantiate(spellChoose, discription.transform);
+                            bufMyf2.SetSpells(ability.buf2Int, ability.chooseCount, -6, classesAbilities.GetClass().id);
+                            bufMyf2.multAdd = true;
+                            bufMyf2 = Instantiate(spellChoose, discription.transform);
+                            bufMyf2.SetSpells(ability.buf2Int, ability.chooseCount, -7, classesAbilities.GetClass().id);
+                            bufMyf2.multAdd = true;
+                            break;
+                    }
                 }
                 else
-                    Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt);
+                    Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, classesAbilities.GetClass().id);
                 break;
             case Ability.Type.attr:
                 if (ability.chooseCount == 0)
@@ -249,9 +455,11 @@ public class FormCreater : MonoBehaviour
                     }
                 }
                 break;
+            case Ability.Type.feat:
+                Instantiate(featChoose, discription.transform);
+                break;
         }
-        foreach ((int, string) x in ability.discription)
-            SetText(x);
+
     }
 
     void SetText((int, string) preText)
@@ -288,7 +496,7 @@ public class FormCreater : MonoBehaviour
         if (listName == ability.listName)
         {
             Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
-            list = new List<(int, string, string)>(constList);
+            list = new List<(int, string, string, int)>(constList);
             foreach ((string, List<int>) x in PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName))
                 foreach (int y in x.Item2)
                 {
@@ -299,10 +507,11 @@ public class FormCreater : MonoBehaviour
                             break;
                         }
                 }
+            SelectFromList(list);
             foreach (Dropdown x in dropdowns)
             {
                 x.options.Clear();
-                foreach ((int, string, string) y in list)
+                foreach ((int, string, string, int) y in list)
                     x.options.Add(new Dropdown.OptionData(y.Item2));
                 x.options.Add(new Dropdown.OptionData(x.captionText.text));
                 x.value = x.options.Count - 1;
@@ -313,20 +522,36 @@ public class FormCreater : MonoBehaviour
     void UpdateSkillOptions(string remove)
     {
         HashSet<string> skillList = new HashSet<string>(ability.common);
+        if (ability.listName == "Skilled")
+        {
+            foreach ((int, string, string, int) x in ability.list)
+                skillList.Add(x.Item2);
+            skillList.ExceptWith(PresavedLists.instruments);
+        }
         skillList.ExceptWith(PresavedLists.skills);
+        skillList.ExceptWith(PresavedLists.competence);
         ChangeDropdownOptions(skillList, remove);
     }
 
     void UpdateCompetenceOptions(string remove)
     {
         HashSet<string> skillList = PresavedLists.skills;
+        if (ability.isUniq)
+            skillList.Add("Воровские инстурменты");
         skillList.ExceptWith(PresavedLists.competence);
+        skillList.ExceptWith(PresavedLists.compInstruments);
         ChangeDropdownOptions(skillList, remove);
 
     }
     void UpdateInstrumentsOptions(string remove)
     {
         HashSet<string> instrumentsList = new HashSet<string>(ability.common);
+        if (ability.listName == "Skilled")
+        {
+            foreach ((int, string, string, int) x in ability.list)
+                instrumentsList.Add(x.Item2);
+            instrumentsList.ExceptWith(PresavedLists.skills);
+        }
         instrumentsList.ExceptWith(PresavedLists.instruments);
         ChangeDropdownOptions(instrumentsList, remove);
 
@@ -375,10 +600,16 @@ public class FormCreater : MonoBehaviour
 
     void ChangeSkillSelected(Dropdown dropdown)
     {
+        if (ability.listName == "Skilled")
+        {
+            if (!ability.common.Contains(dropdown.captionText.text)) return;
+        }
         string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         if (oldValue == dropdown.captionText.text) return;
         PresavedLists.UpdateSkills(oldValue, dropdown.captionText.text);
+        if (ability.isUniq && ability.listName == "KnowledgeDivine")
+            PresavedLists.UpdateCompentence(oldValue, dropdown.captionText.text);
     }
     void ChangeCompetenceSelected(Dropdown dropdown)
     {
@@ -390,6 +621,13 @@ public class FormCreater : MonoBehaviour
 
     void ChangeInstrumentsSelected(Dropdown dropdown)
     {
+        if (ability.listName == "Skilled")
+        {
+            bool flag = false;
+            foreach ((int, string, string, int) x in ability.list)
+                if (dropdown.captionText.text == x.Item2) flag = true;
+            if (!flag) return;
+        }
         string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         if (oldValue == dropdown.captionText.text) return;
@@ -413,11 +651,45 @@ public class FormCreater : MonoBehaviour
         PresavedLists.items.Add(dropdown.captionText.text);
     }
 
+    void ChangeWeaponBladeSelected(Dropdown dropdown)
+    {
+        string oldValue = dropdown.GetComponent<DropdownExtend>().currentValueText;
+        dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
+        if (oldValue == dropdown.captionText.text) return;
+        foreach ((int, string, string, int) x in ability.list)
+            if (dropdown.captionText.text == x.Item2)
+            {
+                PresavedLists.bladeTypes.Add(Weapon.BladeType.WarStaff + x.Item1);
+                break;
+            }
+        List<(int, string, string, int)> weaponList = new List<(int, string, string, int)>(ability.list);
+        WeaponRemove(weaponList);
+        Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
+        foreach (Dropdown x in dropdowns)
+        {
+            x.ClearOptions();
+            foreach ((int, string, string, int) y in weaponList)
+                x.options.Add(new Dropdown.OptionData(y.Item2));
+            string currentValue = x.GetComponent<DropdownExtend>().currentValueText;
+            x.options.Add(new Dropdown.OptionData(currentValue));
+            x.value = x.options.Count - 1;
+            if (x.GetComponent<DropdownExtend>().currentValueText == dropdown.captionText.text)
+                x.value = x.options.Count - 1;
+        }
+
+    }
+
     private void OnDestroy()
     {
         if (ability == null) return;
         if (ability.type == Ability.Type.withChoose)
         {
+            if (ability.chooseCount == 0)
+            {
+                foreach ((int, int) x in ability.consum)
+                    PresavedLists.RemoveFromPrelist(ability.listName, x.Item1);
+                return;
+            }
             PresavedLists.ChangePing -= UpdateOptions;
             foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
             {
@@ -450,10 +722,15 @@ public class FormCreater : MonoBehaviour
         }
         if (ability.type == Ability.Type.competence)
         {
-
-            PresavedLists.ChangeCompetencePing -= UpdateCompetenceOptions;
+            if (ability.chooseCount > 0)
+            {
+                PresavedLists.ChangeCompetencePing -= UpdateCompetenceOptions;
             foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
                 PresavedLists.RemoveFromCompetence(x.GetComponent<DropdownExtend>().currentValueText);
+            }
+            else
+                foreach (string x in ability.common)
+                    PresavedLists.RemoveFromCompetence(x);
 
             if (PresavedLists.ChangeCompetencePing != null) PresavedLists.ChangeCompetencePing("");
             return;
@@ -514,11 +791,253 @@ public class FormCreater : MonoBehaviour
         }
         if (ability.type == Ability.Type.item)
         {
-            if (ability.chooseCount == 0)
+            if (ability.chooseCount == 0 && PresavedLists.items != null && ability.common != null)
                 foreach (string x in ability.common)
                     PresavedLists.items.Remove(x);
             return;
         }
+        if (ability.type == Ability.Type.abilitie)
+        {
+            if (ability.listName == "DwarfHold")
+                DataSaverAndLoader.SaveAddHealth(DataSaverAndLoader.LoadAddHealth() - 1);
+            if (ability.listName == "LightlyArmored")
+                if (!bufFlag)
+                    PresavedLists.armorTypes.Remove(Armor.ArmorType.Light);
+            if (ability.listName == "ModeratelyArmored")
+            {
+                if (!bufFlag)
+                    PresavedLists.armorTypes.Remove(Armor.ArmorType.Medium);
+                if (!bufFlag1)
+                    PresavedLists.armorTypes.Remove(Armor.ArmorType.Shield);
 
+            }
+            if (ability.listName == "HeavilyArmored")
+            {
+                if (!bufFlag)
+                    PresavedLists.armorTypes.Remove(Armor.ArmorType.Heavy);
+            }
+            if (ability.listName == "Skilled")
+            {
+                PresavedLists.ChangeIntrumentsPing -= UpdateInstrumentsOptions;
+                PresavedLists.ChangeSkillPing -= UpdateSkillOptions;
+                if (dropdown.GetComponent<DropdownExtend>() == null) return;
+                foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                {
+                    for (int i = 0; i < ability.list.Length; i++)
+                    {
+                        if (dropdown.GetComponent<DropdownExtend>().currentValueText == ability.list[i].Item2)
+                        {
+                            PresavedLists.instruments.Remove(ability.list[i].Item2);
+                            break;
+                        }
+                    }
+                    if (ability.common.Contains(dropdown.GetComponent<DropdownExtend>().currentValueText))
+                    {
+                        PresavedLists.skills.Remove(dropdown.GetComponent<DropdownExtend>().currentValueText);
+                        break;
+                    }
+                }
+                if (PresavedLists.ChangeSkillPing != null) PresavedLists.ChangeSkillPing("");
+                if (PresavedLists.ChangeIntrumentsPing != null) PresavedLists.ChangeIntrumentsPing("");
+                return;
+            }
+            if (ability.listName == "WeaponMaster")
+            {
+                foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                    foreach ((int, string, string, int) y in ability.list)
+                    {
+                        if (y.Item2 == x.GetComponent<DropdownExtend>().currentValueText)
+                        {
+                            PresavedLists.bladeTypes.Remove(Weapon.BladeType.WarStaff + y.Item1);
+                            break;
+                        }
+                    }
+                return;
+            }
+        }
+    }
+
+    void SelectFromList(List<(int, string, string, int)> list)
+    {
+        ClassesAbilities classesAbilities = GetComponentInParent<ClassesAbilities>();
+        PlayersClass playersClass = null;
+        int level = -1;
+        if (classesAbilities != null)
+            playersClass = classesAbilities.GetClass();
+        if (playersClass != null)
+            foreach ((int, PlayersClass) x in CharacterData.GetClasses())
+                if (x.Item2.id == playersClass.id)
+                    level = x.Item1 + 1;
+        switch (ability.listName)
+        {
+            case "Appeals":
+                bool flag = false;
+                int item = -1;
+                foreach ((string, List<int>) x in PresavedLists.preLists)
+                    if (x.Item1 == "ItemOfContract")
+                    {
+                        if (x.Item2.Count > 0)
+                        {
+                            flag = true;
+                            item = x.Item2[0];
+                        }
+                    }
+                for (int i = 0; i < list.Count; i++)
+                    switch (list[i].Item4)
+                    {
+                        default:
+                            if (level < 0) break;
+                            if (level < list[i].Item4)
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -1:
+                            if (!flag || item != 0)
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -2:
+                            if (!flag || item != 1)
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -3:
+                            if (!flag || item != 2)
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -4:
+                            bool flag1 = false;
+                            foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+                                if (x.Item2.Contains(139))
+                                    flag1 = true;
+                            foreach((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
+                                if (x.Item2.Contains(139))
+                                    flag1 = true;
+                            if (!flag1)
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -5:
+                            if (!flag || !(item == 1 && level >= 5))
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -6:
+                            if (!flag || !(item == 1 && level >= 12))
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                        case -7:
+                            if (!flag || !(item == 2 && level >= 15))
+                            {
+                                list.RemoveAt(i);
+                                i--;
+                            }
+                            break;
+                    }
+                break;
+            case "ElementalPractice":
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (level < 0) break;
+                    if (level < list[i].Item4)
+                    {
+                        list.RemoveAt(i);
+                        i--;
+                    }
+                }
+                break;
+            case "BattleStyles":
+                if (ability.consum == null || ability.consum.Length <= 0) break;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    bool flagList = true; ;
+                    foreach ((int, int) x in ability.consum)
+                    {
+                        if (x.Item1 == list[i].Item1)
+                        {
+                            flagList = false;
+                            break;
+                        }
+                    }
+                    if (flagList)
+                    {
+                        list.RemoveAt(i);
+                        i--;
+                    }
+                }
+                break;
+        }
+    }
+
+    void DedicatedMagic(Dropdown dropdown)
+    {
+        SpellChoose[] spells = discription.GetComponentsInChildren<SpellChoose>();
+        bool flag = false;
+        if (ability.listName == "RitualCaster")
+            flag = true;
+        for (int i = 0; i < spells.Length; i++)
+            Destroy(spells[i].gameObject);
+        foreach ((int, string, string, int) x in ability.list)
+            if (x.Item2 == dropdown.captionText.text)
+            {
+                if (!flag)
+                    Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, 1, -1);
+                else
+                    Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, -9, -1);
+                break;
+            }
+    }
+
+    void WeaponRemove(List<(int, string, string, int)> weaponList)
+    {
+        for (int i = 0; i < weaponList.Count; i++)
+        {
+            if (PresavedLists.weaponTypes.Contains(Weapon.WeaponType.CommonMelee) && weaponList[i].Item1 <= 9)
+            {
+                weaponList.RemoveAt(i);
+                i--;
+                continue;
+            }
+            if (PresavedLists.weaponTypes.Contains(Weapon.WeaponType.CommonDist) && weaponList[i].Item1 >= 10 && weaponList[i].Item1 <= 13)
+            {
+                weaponList.RemoveAt(i);
+                i--;
+                continue;
+            }
+            if (PresavedLists.weaponTypes.Contains(Weapon.WeaponType.WarMelee) && weaponList[i].Item1 >= 14 && weaponList[i].Item1 <= 31)
+            {
+                weaponList.RemoveAt(i);
+                i--;
+                continue;
+            }
+            if (PresavedLists.weaponTypes.Contains(Weapon.WeaponType.WarDist) && weaponList[i].Item1 >= 32)
+            {
+                weaponList.RemoveAt(i);
+                i--;
+                continue;
+            }
+            if (PresavedLists.bladeTypes.Contains(Weapon.BladeType.WarStaff + weaponList[i].Item1))
+            {
+                weaponList.RemoveAt(i);
+                i--;
+                continue;
+            }
+        }
     }
 }

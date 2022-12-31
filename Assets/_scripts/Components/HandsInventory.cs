@@ -12,9 +12,9 @@ public class HandsInventory : MonoBehaviour
     int currentHands = 0;
     public void NewItemEquiptedOrUnequipted(Weapon weapon, bool toggle)
     {
+        HandEquipment[] secondHands = hands.GetComponentsInChildren<HandEquipment>();
         if (toggle == true)
         {
-            HandEquipment[] secondHands = hands.GetComponentsInChildren<HandEquipment>();
             GameObject newHand = Instantiate(handObject, hands.transform);
             HandEquipment handEquipment = newHand.GetComponent<HandEquipment>();
             if (handEquipment != null)
@@ -34,20 +34,29 @@ public class HandsInventory : MonoBehaviour
                         x.ReDamage();
                 }
             }
+            
         }
         else
         {
-            HandEquipment[] secondHands = hands.GetComponentsInChildren<HandEquipment>();
-
             foreach (HandEquipment x in secondHands)
             {
                 if (x.GetWeapon() == weapon)
                 {
                     Destroy(x.gameObject);
                     currentHands -= x.GetHands();
-                    return;
+                    break; ;
                 }
             }
+        }
+        if (GlobalStatus.dealWielder)
+        {
+            secondHands = hands.GetComponentsInChildren<HandEquipment>();
+            ACController aC = FindObjectOfType<ACController>();
+            if (secondHands.Length == 2 && currentHands == 2)
+                aC.duelDefence = true;
+            else
+                aC.duelDefence = false;
+            aC.UploadArmorClass();
         }
     }
 

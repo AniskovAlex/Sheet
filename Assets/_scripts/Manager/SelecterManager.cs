@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class SelecterManager : MonoBehaviour
 {
     
-    const string charactersCountSaveName = "charactersCount_";
-    const string charactersSaveName = "characters_";
+    const string charactersCountSaveName = "@charactersCount_";
+    const string charactersSaveName = "@characters_";
 
     public GameObject panel;
     public GameObject prefab;

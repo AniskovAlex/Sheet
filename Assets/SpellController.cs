@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpellController : MonoBehaviour
 {
@@ -12,7 +13,11 @@ public class SpellController : MonoBehaviour
     public static Action ReloadSpells;
     public static List<(int, List<Spell>)> spellKnew = new List<(int, List<Spell>)>();
     public static List<(int, List<Spell>)> spellPrepared = new List<(int, List<Spell>)>();
+    public static List<Spell> spellMaster = new List<Spell>();
     int[] currentCells;
+    int[] maxCells;
+    int warAbs = 0;
+    int warLevel = 0;
 
     private void Start()
     {
@@ -27,11 +32,28 @@ public class SpellController : MonoBehaviour
         currentCells = DataSaverAndLoader.LoadCellsAmount();
         List<(int, HashSet<int>)> spellKnewIdList = DataSaverAndLoader.LoadSpellKnew();
         List<(int, HashSet<int>)> spellPreparedIdList = DataSaverAndLoader.LoadSpellPrepared();
+        HashSet<int> spellMasterIdList = DataSaverAndLoader.LoadSpellMaster();
+        foreach (int x in spellMasterIdList)
+        {
+            foreach (Spell y in spells)
+                if (y.id == x)
+                {
+                    spellMaster.Add(y);
+                    break;
+                }
+        }
         spellKnew = SetSpell(spellKnewIdList);
         spellPrepared = SetSpell(spellPreparedIdList);
         InitSpells();
-        ReloadSpells = InitSpells;
+        ReloadSpells = RespellKnew;
+        ReloadSpells += InitSpells;
         InitSpellCells();
+    }
+
+    void RespellKnew()
+    {
+        List<(int, HashSet<int>)> spellKnewIdList = DataSaverAndLoader.LoadSpellKnew();
+        spellKnew = SetSpell(spellKnewIdList);
     }
 
     List<(int, List<Spell>)> SetSpell(List<(int, HashSet<int>)> list)
@@ -80,7 +102,10 @@ public class SpellController : MonoBehaviour
             {
                 foreach (Spell x in g.Item2)
                     if (x.level >= 0 && x.level <= 9)
+                    {
                         Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
+                        Debug.Log(spellLevelContainerObjects[x.level].GetComponentsInChildren<SpellBody>().Length);
+                    }
             }
             else
                 foreach (Spell x in g.Item2)
@@ -93,6 +118,17 @@ public class SpellController : MonoBehaviour
                 if (x.level >= 0 && x.level <= 9)
                     Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
         });
+        foreach (Spell x in spellMaster)
+            if (x.level == 3)
+                Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
+    }
+
+    public static void SaveSpellMaster()
+    {
+        HashSet<int> list = new HashSet<int>();
+        foreach (Spell x in spellMaster)
+            list.Add(x.id);
+        DataSaverAndLoader.SaveSpellMaster(list);
     }
 
     void InitSpellCells()
@@ -100,8 +136,6 @@ public class SpellController : MonoBehaviour
         List<(int, PlayersClass)> playerClasses = CharacterData.GetClasses();
         int[] cells = new int[9];
         int levelAbs = 0;
-        int warAbs = 0;
-        int warLevel = 0;
         foreach ((int, PlayersClass) x in playerClasses)
         {
             if (x.Item2.magic > 0)
@@ -118,8 +152,8 @@ public class SpellController : MonoBehaviour
                     warAbs += 3;
                 if (x.Item1 >= 17)
                     warAbs += 4;
-                warLevel = (Mathf.Clamp(x.Item1 + 1, 1, 10) + 1) / 2;
-                cells[warLevel] += warAbs;
+                warLevel = (Mathf.Clamp(x.Item1, 1, 10) + 1) / 2;
+                cells[warLevel - 1] += warAbs;
             }
         }
         switch (levelAbs)
@@ -256,20 +290,63 @@ public class SpellController : MonoBehaviour
                 cells[8] += 1;
                 break;
         }
+        maxCells = cells;
         int cellMax = Math.Max(warLevel, Utilities.GetMaxSpellLevel(playerClasses));
         for (int i = 0; i < cells.Length; i++)
-            if (i + 1 <= cellMax)
+        {
+            if (i + 1 <= cellMax || (spellLevelContainerObjects[i + 1].GetComponentsInChildren<SpellBody>().Length > 0))
             {
                 spellLevelObjects[i + 1].SetCells(cells[i], currentCells[i]);
+                int buf = i;
+                spellLevelObjects[i + 1].GetComponentInChildren<ConsumablePanel>().GetComponentInChildren<Button>().onClick.AddListener(delegate { updateCurrentCell(buf); });
+                if (GlobalStatus.sorcererUnit && i + 1 <= 5)
+                    spellLevelObjects[i + 1].GetComponentInChildren<ConsumablePanel>().SpawnResetButton();
             }
             else
                 spellLevelObjects[i + 1].gameObject.SetActive(false);
+        }
+    }
+
+    void updateCurrentCell(int level)
+    {
+        currentCells[level] = Mathf.Clamp(currentCells[level] - 1, 0, 99);
     }
 
     public void ResetSpellCells()
     {
         ConsumablePanel[] consumables = GetComponentsInChildren<ConsumablePanel>();
         foreach (ConsumablePanel x in consumables)
-            x.Reset();
+        {
+            x.ResetToggels();
+            currentCells = maxCells;
+        }
     }
+
+    public void ResetWarSpellCells()
+    {
+        ConsumablePanel[] consumables = GetComponentsInChildren<ConsumablePanel>();
+        consumables[warLevel - 1].ResetToggels(warAbs);
+        currentCells[warLevel - 1] = Mathf.Clamp(warAbs + currentCells[warLevel], 0, maxCells[warLevel]);
+    }
+
+    public void ResetSpellCell(int cellid, int add)
+    {
+        ConsumablePanel[] consumables = GetComponentsInChildren<ConsumablePanel>();
+        if (cellid < consumables.Length)
+        {
+            consumables[cellid].ResetToggels(add);
+            currentCells[cellid] += add;
+        }
+    }
+
+    public int[] GetCellsCurrent()
+    {
+        return currentCells;
+    }
+
+    public int[] GetCellsMax()
+    {
+        return maxCells;
+    }
+
 }

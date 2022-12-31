@@ -33,7 +33,13 @@ public class RaceAbilities : MonoBehaviour
                 playersRace = new HalfElf();
                 break;
             case 7:
+                playersRace = new Tiefling();
+                break;
+            case 8:
                 playersRace = new Human();
+                break;
+            case 9:
+                playersRace = new Elf();
                 break;
         }
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();

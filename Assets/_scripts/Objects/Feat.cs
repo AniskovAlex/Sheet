@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Feat
 {
-    public string head;
-    public List<(int, string)> discription = new List<(int, string)>();
+    public int id;
+    public Ability ability;
     public List<int> attr;
+    public bool mul;
+    public int req;
 }

@@ -4,99 +4,109 @@ using UnityEngine;
 
 public static class DataSaverAndLoader
 {
-    const string moneySaveName = "mon_";
-    const string skillSaveName = "skill_";
-    const string noteSaveName = "note_";
-    const string noteHeadSaveName = "noteHead_";
-    const string noteCountSaveName = "noteCount_";
+    const string featSaveName = "@feat_";
+    const string featCountSaveName = "@featCount_";
 
-    const string cellAmountSaveName = "cellAmount_";
-    const string consumAmountSaveName = "consumAmount_";
-    const string consumAmountNameSaveName = "consumAmountName_";
-    const string consumAmountNameCountSaveName = "consumAmountNameCount_";
+    const string moneySaveName = "@mon_";
+    const string skillSaveName = "@skill_";
+    const string noteSaveName = "@note_";
+    const string noteHeadSaveName = "@noteHead_";
+    const string noteCountSaveName = "@noteCount_";
 
-    const string spellKnewSaveName = "spellKnew_";
-    const string spellClassKnewSaveName = "spellClassKnew_";
-    const string spellClassKnewCountSaveName = "spellClassKnewCount_";
-    const string spellKnewCountSaveName = "spellKnewCount_";
+    const string cellAmountSaveName = "@cellAmount_";
+    const string consumAmountSaveName = "@consumAmount_";
+    const string consumAmountNameSaveName = "@consumAmountName_";
+    const string consumAmountNameCountSaveName = "@consumAmountNameCount_";
 
-    const string spellPrepareSaveName = "spellPrepare_";
-    const string spellClassPrepareSaveName = "spellClassPrepare_";
-    const string spellClassPrepareCountSaveName = "spellClassPrepareCount_";
-    const string spellPrepareCountSaveName = "spellPrepareCount_";
+    const string spellKnewSaveName = "@spellKnew_";
+    const string spellClassKnewSaveName = "@spellClassKnew_";
+    const string spellClassKnewCountSaveName = "@spellClassKnewCount_";
+    const string spellKnewCountSaveName = "@spellKnewCount_";
 
-    const string alignmentSaveName = "alignment_";
-    const string natureSaveName = "nature_";
-    const string idealSaveName = "ideal_";
-    const string attachmentSaveName = "attachment_";
-    const string weaknessSaveName = "weakness_";
-    const string backstoryExtendSaveName = "backstoryExtend_";
+    const string spellMasterSaveName = "@spellMaster_";
+    const string spellMasterCountSaveName = "@spellMasterCount_";
 
-    const string attrSaveName = "atr_";
+    const string spellPrepareSaveName = "@spellPrepare_";
+    const string spellClassPrepareSaveName = "@spellClassPrepare_";
+    const string spellClassPrepareCountSaveName = "@spellClassPrepareCount_";
+    const string spellPrepareCountSaveName = "@spellPrepareCount_";
 
-    const string maxHealthSaveName = "maxHP_";
-    const string healthSaveName = "HP_";
-    const string tempHealthSaveName = "THP_";
+    const string alignmentSaveName = "@alignment_";
+    const string natureSaveName = "@nature_";
+    const string idealSaveName = "@ideal_";
+    const string attachmentSaveName = "@attachment_";
+    const string weaknessSaveName = "@weakness_";
+    const string backstoryExtendSaveName = "@backstoryExtend_";
 
-    const string raceSaveName = "race_";
-    const string raceSubRaceSaveName = "subRace_";
-    const string backstorySaveName = "backstory_";
+    const string attrSaveName = "@atr_";
 
-    const string instrumentsSaveName = "instruments_";
-    const string instrumentsCountSaveName = "instrumentsCount_";
+    const string maxHealthSaveName = "@maxHP_";
+    const string healthSaveName = "@HP_";
+    const string tempHealthSaveName = "@THP_";
+    const string addHealthSaveName = "@ATHP_";
 
-    const string languageSaveName = "language_";
-    const string languageCountSaveName = "languageCount_";
+    const string raceSaveName = "@race_";
+    const string raceSubRaceSaveName = "@subRace_";
+    const string backstorySaveName = "@backstory_";
 
-    const string saveThrowSaveName = "save_";
+    const string instrumentsSaveName = "@instruments_";
+    const string instrumentsCountSaveName = "@instrumentsCount_";
 
-    const string levelCountSaveName = "lvlCount_";
-    const string levelSaveName = "lvl_";
-    const string levelLabelSaveName = "lvlLabel_";
-    const string classSubClassSaveName = "subClass_";
+    const string instrumentsCompSaveName = "@instrumentsComp_";
+    const string instrumentsCompCountSaveName = "@instrumentsCompCount_";
 
-    const string weaponProficiencySaveName = "weaponProficiency_";
-    const string weaponProficiencyCountSaveName = "weaponProficiencyCount_";
-    const string bladeProficiencySaveName = "bladeProficiency_";
-    const string bladeProficiencyCountSaveName = "bladeProficiencyCount_";
-    const string armorProficiencySaveName = "armorProficiency_";
-    const string armorProficiencyCountSaveName = "armorProficiencyCount_";
+    const string languageSaveName = "@language_";
+    const string languageCountSaveName = "@languageCount_";
 
-    const string charactersCountSaveName = "charactersCount_";
-    const string charactersSaveName = "characters_";
+    const string saveThrowSaveName = "@save_";
 
-    const string itemAmountSaveName = "itemA_";
-    const string itemsCountSaveName = "itemsCount_";
-    const string itemSaveName = "itemN_";
-    const string itemSaveID = "itemID_";
-    const string itemCostSaveName = "itemCost_";
-    const string itemWeightSaveName = "itemW_";
-    const string itemMTypeSaveName = "itemMT_";
+    const string levelCountSaveName = "@lvlCount_";
+    const string levelSaveName = "@lvl_";
+    const string levelLabelSaveName = "@lvlLabel_";
+    const string classSubClassSaveName = "@subClass_";
 
-    const string aCSaveName = "armorAC_";
-    const string aCCapSaveName = "armorACCap_";
-    const string strSaveName = "armorStr_";
-    const string stealthSaveName = "armorStealth_";
-    const string armorTypeSaveName = "armorType_";
+    const string weaponProficiencySaveName = "@weaponProficiency_";
+    const string weaponProficiencyCountSaveName = "@weaponProficiencyCount_";
+    const string bladeProficiencySaveName = "@bladeProficiency_";
+    const string bladeProficiencyCountSaveName = "@bladeProficiencyCount_";
+    const string armorProficiencySaveName = "@armorProficiency_";
+    const string armorProficiencyCountSaveName = "@armorProficiencyCount_";
 
-    const string dicesSaveName = "weaponDices_";
-    const string hitDiceSaveName = "weaponHitDice_";
-    const string distSaveName = "weaponDist_";
-    const string maxDistSaveName = "weaponMaxDist_";
-    const string magicSaveName = "weaponMagicDice_";
-    const string damageTypeSaveName = "weaponDamageType_";
-    const string propertiesCountSaveName = "weaponPropertiesCount_";
-    const string propertieSaveName = "weaponPropertie_";
-    const string weaponTypeSaveName = "weaponType_";
-    const string bladeTypeSaveName = "weaponBladeType_";
+    const string charactersCountSaveName = "@charactersCount_";
+    const string charactersSaveName = "@characters_";
 
-    const string armorEquipCountSaveName = "armorECount_";
-    const string armorEquipSaveName = "armorE_";
-    const string weaponEquipSaveName = "weaponE_";
-    const string weaponEquipCountSaveName = "weaponECount_";
+    const string itemAmountSaveName = "@itemA_";
+    const string itemsCountSaveName = "@itemsCount_";
+    const string itemSaveName = "@itemN_";
+    const string itemSaveID = "@itemID_";
+    const string itemCostSaveName = "@itemCost_";
+    const string itemWeightSaveName = "@itemW_";
+    const string itemMTypeSaveName = "@itemMT_";
 
-    const string customListCount = "customListCount_";
-    const string customList = "customList_";
+    const string aCSaveName = "@armorAC_";
+    const string aCCapSaveName = "@armorACCap_";
+    const string strSaveName = "@armorStr_";
+    const string stealthSaveName = "@armorStealth_";
+    const string armorTypeSaveName = "@armorType_";
+
+    const string dicesSaveName = "@weaponDices_";
+    const string hitDiceSaveName = "@weaponHitDice_";
+    const string distSaveName = "@weaponDist_";
+    const string maxDistSaveName = "@weaponMaxDist_";
+    const string magicSaveName = "@weaponMagicDice_";
+    const string damageTypeSaveName = "@weaponDamageType_";
+    const string propertiesCountSaveName = "@weaponPropertiesCount_";
+    const string propertieSaveName = "@weaponPropertie_";
+    const string weaponTypeSaveName = "@weaponType_";
+    const string bladeTypeSaveName = "@weaponBladeType_";
+
+    const string armorEquipCountSaveName = "@armorECount_";
+    const string armorEquipSaveName = "@armorE_";
+    const string weaponEquipSaveName = "@weaponE_";
+    const string weaponEquipCountSaveName = "@weaponECount_";
+
+    const string customListCount = "@customListCount_";
+    const string customList = "@customList_";
 
     public static int[] LoadCellsAmount()
     {
@@ -212,6 +222,19 @@ public static class DataSaverAndLoader
         string characterName = CharacterCollection.GetName();
         PlayerPrefs.SetInt(characterName + tempHealthSaveName, tempHealth);
         PlayerPrefs.Save();
+    }
+
+    public static void SaveAddHealth(int health)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + addHealthSaveName, health);
+        PlayerPrefs.Save();
+    }
+
+    public static int LoadAddHealth()
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetInt(characterName + addHealthSaveName);
     }
 
     public static void SaveCharacter(string characterName)
@@ -364,6 +387,30 @@ public static class DataSaverAndLoader
         return list;
     }
 
+    public static void SaveFeats(List<Feat> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int i = 0;
+        foreach (Feat x in list)
+        {
+            PlayerPrefs.SetInt(characterName + featSaveName + i, x.id);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + featCountSaveName, i);
+    }
+
+    public static List<int> LoadFeats()
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + featCountSaveName);
+        List<int> list = new List<int>();
+        for (int i = 0; i < count; i++)
+        {
+            list.Add(PlayerPrefs.GetInt(characterName + featSaveName + i));
+        }
+        return list;
+    }
+
     public static void SaveMoney(List<int> money)
     {
         money.ForEach(g => PlayerPrefs.SetInt(CharacterCollection.GetName() + moneySaveName + money.IndexOf(g), g));
@@ -372,21 +419,28 @@ public static class DataSaverAndLoader
 
     public static void SaveCustomList(string listName, List<int> list)
     {
-        list.ForEach(x => PlayerPrefs.SetInt(CharacterCollection.GetName() + listName + "Auto_" + list.IndexOf(x), x));
-        PlayerPrefs.SetInt(CharacterCollection.GetName() + listName + "CountAuto_", list.Count);
-        int count = PlayerPrefs.GetInt(CharacterCollection.GetName() + customListCount);
-        PlayerPrefs.SetString(CharacterCollection.GetName() + customList + count, listName);
-        PlayerPrefs.SetInt(CharacterCollection.GetName() + customListCount, count + 1);
+        string characterName = CharacterCollection.GetName();
+        list.ForEach(x => PlayerPrefs.SetInt(characterName + listName + "@Auto_" + list.IndexOf(x), x));
+        PlayerPrefs.SetInt(characterName + listName + "@CountAuto_", list.Count);
+        int count = PlayerPrefs.GetInt(characterName + customListCount);
+        for (int i = 0; i < count; i++)
+            if (PlayerPrefs.GetString(characterName + customList + i) == listName)
+            {
+                PlayerPrefs.Save();
+                return;
+            }
+        PlayerPrefs.SetString(characterName + customList + count, listName);
+        PlayerPrefs.SetInt(characterName + customListCount, count + 1);
         PlayerPrefs.Save();
     }
 
     public static List<int> LoadCustom(string listName)
     {
         string characterName = CharacterCollection.GetName();
-        int count = PlayerPrefs.GetInt(characterName + listName + "CountAuto_");
+        int count = PlayerPrefs.GetInt(characterName + listName + "@CountAuto_");
         List<int> list = new List<int>();
         for (int i = 0; i < count; i++)
-            list.Add(PlayerPrefs.GetInt(characterName + listName + "Auto_" + i));
+            list.Add(PlayerPrefs.GetInt(characterName + listName + "@Auto_" + i));
         return list;
     }
 
@@ -447,6 +501,47 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
+    public static void DeleteSpellKnew(int classId, int spellId)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + spellClassKnewCountSaveName);
+        int i;
+        for (i = 0; i < count; i++)
+            if (PlayerPrefs.GetInt(characterName + spellClassKnewSaveName + i) == classId)
+                break;
+        int countSpell = PlayerPrefs.GetInt(characterName + spellKnewCountSaveName + i);
+        for (int j = 0; j < countSpell; j++)
+            if (PlayerPrefs.GetInt(characterName + spellKnewSaveName + classId + j) == spellId)
+            {
+                for (int k = j; k < countSpell - 1; k++)
+                {
+                    PlayerPrefs.SetInt(characterName + spellKnewSaveName + classId + k, PlayerPrefs.GetInt(characterName + spellKnewSaveName + classId + (k + 1)));
+                }
+                PlayerPrefs.DeleteKey(characterName + spellKnewSaveName + classId + countSpell);
+                countSpell--;
+                PlayerPrefs.SetInt(characterName + spellKnewCountSaveName + i, countSpell);
+                break;
+            }
+        PlayerPrefs.Save();
+
+    }
+
+    public static void SaveSpellMaster(HashSet<int> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        List<int> bufList = new List<int>(list);
+        int count = list.Count;
+        int i = 0;
+        foreach (int x in bufList)
+        {
+            PlayerPrefs.SetInt(characterName + spellMasterSaveName + i, bufList[i]);
+            i++;
+        }
+        if (count != 0)
+            PlayerPrefs.SetInt(characterName + spellMasterCountSaveName, count);
+        PlayerPrefs.Save();
+    }
+
     public static void SaveSpellPrepared(List<(int, HashSet<int>)> list)
     {
         string characterName = CharacterCollection.GetName();
@@ -483,6 +578,19 @@ public static class DataSaverAndLoader
         }
         return list;
     }
+
+    public static HashSet<int> LoadSpellMaster()
+    {
+        string characterName = CharacterCollection.GetName();
+        int classCount = PlayerPrefs.GetInt(characterName + spellMasterCountSaveName);
+        HashSet<int> list = new HashSet<int>();
+        for (int i = 0; i < classCount; i++)
+        {
+            list.Add(PlayerPrefs.GetInt(characterName + spellMasterSaveName + i));
+        }
+        return list;
+    }
+
     public static List<(int, HashSet<int>)> LoadSpellPrepared()
     {
         string characterName = CharacterCollection.GetName();
@@ -927,6 +1035,28 @@ public static class DataSaverAndLoader
         return list;
     }
 
+    public static void SaveInstrumentsComp(HashSet<string> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int i = 0;
+        foreach (string x in list)
+        {
+            PlayerPrefs.SetString(characterName + instrumentsCompSaveName + i, x);
+            i++;
+        }
+        PlayerPrefs.SetInt(characterName + instrumentsCompCountSaveName, list.Count);
+    }
+
+    public static HashSet<string> LoadInstrumentsComp()
+    {
+        string characterName = CharacterCollection.GetName();
+        HashSet<string> list = new HashSet<string>();
+        int count = PlayerPrefs.GetInt(characterName + instrumentsCompCountSaveName);
+        for (int i = 0; i < count; i++)
+            list.Add(PlayerPrefs.GetString(characterName + instrumentsCompSaveName + i));
+        return list;
+    }
+
     public static void SaveLanguage(HashSet<string> list)
     {
         string characterName = CharacterCollection.GetName();
@@ -1107,6 +1237,7 @@ public static class DataSaverAndLoader
         PlayerPrefs.DeleteKey(name + healthSaveName);
         PlayerPrefs.DeleteKey(name + maxHealthSaveName);
         PlayerPrefs.DeleteKey(name + tempHealthSaveName);
+        PlayerPrefs.DeleteKey(name + addHealthSaveName);
 
         for (int i = 0; i < 3; i++)
             PlayerPrefs.DeleteKey(name + moneySaveName + i);
@@ -1122,6 +1253,7 @@ public static class DataSaverAndLoader
             else
             {
                 PlayerPrefs.DeleteKey(name + itemSaveID + i);
+                PlayerPrefs.DeleteKey(name + itemAmountSaveName + id);
             }
         }
         PlayerPrefs.DeleteKey(name + itemsCountSaveName);
@@ -1164,12 +1296,12 @@ public static class DataSaverAndLoader
         equipCount = PlayerPrefs.GetInt(name + customListCount);
         for (int i = 0; i < equipCount; i++)
         {
-            count = PlayerPrefs.GetInt(name + PlayerPrefs.GetString(name + customList + i) + "CountAuto_");
+            count = PlayerPrefs.GetInt(name + PlayerPrefs.GetString(name + customList + i) + "@CountAuto_");
             for (int j = 0; j < count; j++)
             {
-                PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "Auto_" + j);
+                PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "@Auto_" + j);
             }
-            PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "CountAuto_");
+            PlayerPrefs.DeleteKey(name + PlayerPrefs.GetString(name + customList + i) + "@CountAuto_");
             PlayerPrefs.DeleteKey(name + customList + i);
         }
         PlayerPrefs.DeleteKey(name + customListCount);
@@ -1213,6 +1345,13 @@ public static class DataSaverAndLoader
             PlayerPrefs.DeleteKey(name + instrumentsSaveName + i);
         }
         PlayerPrefs.DeleteKey(name + instrumentsCountSaveName);
+
+        equipCount = PlayerPrefs.GetInt(name + instrumentsCompCountSaveName);
+        for (int i = 0; i < equipCount; i++)
+        {
+            PlayerPrefs.DeleteKey(name + instrumentsCompSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + instrumentsCompCountSaveName);
 
         equipCount = PlayerPrefs.GetInt(name + languageCountSaveName);
         for (int i = 0; i < equipCount; i++)

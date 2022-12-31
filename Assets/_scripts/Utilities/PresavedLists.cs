@@ -5,6 +5,10 @@ using UnityEngine;
 
 public static class PresavedLists
 {
+    static public int addHealth = 0;
+    static public int addMaxHealth = 0;
+
+    static public List<Feat> feats = new List<Feat>();
 
     static public HashSet<string> languages = new HashSet<string>();
 
@@ -18,9 +22,10 @@ public static class PresavedLists
     static public HashSet<string> competence = new HashSet<string>();
 
     static public HashSet<string> instruments = new HashSet<string>();
+    static public HashSet<string> compInstruments = new HashSet<string>();
 
     static public List<(int, HashSet<int>)> spellKnew = new List<(int, HashSet<int>)>();
-
+    static public HashSet<int> spellMaster = new HashSet<int>();
     static public HashSet<int> saveThrows = new HashSet<int>();
 
     static public List<string> attrAdd = new List<string>();
@@ -160,6 +165,11 @@ public static class PresavedLists
     {
         DataSaverAndLoader.SaveInstruments(instruments);
     }
+
+    static public void SaveInstrumentsComp()
+    {
+        DataSaverAndLoader.SaveInstrumentsComp(compInstruments);
+    }
     static public void SaveLanguage()
     {
         DataSaverAndLoader.SaveLanguage(languages);
@@ -171,6 +181,12 @@ public static class PresavedLists
         DataSaverAndLoader.SaveAddSpellKnew(spellKnew);
     }
 
+    static public void SaveFeats()
+    {
+        DataSaverAndLoader.SaveFeats(feats);
+
+    }
+
     static public void SaveCustomPrelists()
     {
         preLists.ForEach(x => DataSaverAndLoader.SaveCustomList(x.Item1, x.Item2));
@@ -179,5 +195,43 @@ public static class PresavedLists
     static public void saveSaveThrows()
     {
         DataSaverAndLoader.SaveSaveThrows(saveThrows);
+    }
+
+    static public void ResetAll()
+    {
+        addHealth = 0;
+        addMaxHealth = 0;
+
+        feats = new List<Feat>();
+
+        languages = new HashSet<string>();
+
+        bladeTypes = new HashSet<Weapon.BladeType>();
+
+        weaponTypes = new HashSet<Weapon.WeaponType>();
+
+        armorTypes = new HashSet<Armor.ArmorType>();
+
+        skills = new HashSet<string>();
+        competence = new HashSet<string>();
+
+        instruments = new HashSet<string>();
+        compInstruments = new HashSet<string>();
+
+        spellKnew = new List<(int, HashSet<int>)>();
+        spellMaster = new HashSet<int>();
+        saveThrows = new HashSet<int>();
+
+        attrAdd = new List<string>();
+
+        items = new List<string>();
+
+        preLists = new List<(string, List<int>)>();
+
+        ChangePing = null;
+        ChangeSkillPing = null;
+        ChangeCompetencePing = null;
+        ChangeIntrumentsPing = null;
+        ChangeLanguagePing = null;
     }
 }

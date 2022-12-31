@@ -20,6 +20,8 @@
     "head": "Второе дыхание",
     "type": 2,
     "level": 1,
+    "isUniq": true,
+    "listName": "secondWind",
     "consum": [
       {
         "Item1": 1,
@@ -40,6 +42,7 @@
   {
     "head": "Всплеск действий",
     "type": 2,
+    "isUniq": true,
     "listName": "actionSurge",
     "level": 2,
     "consum": [

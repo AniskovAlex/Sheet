@@ -35,6 +35,11 @@ public abstract class PlayersClass : ObjectsBehavior
         protected set { M = value; }
     }
 
+    public void SetMagic(int add)
+    {
+        magic = add;
+    }
+
     int MC = 0;
     public int magicChange
     {
@@ -123,5 +128,50 @@ public abstract class PlayersClass : ObjectsBehavior
     {
         return 0;
     }
+
+    public static PlayersClass GetPlayersClassByID(int id)
+    {
+        PlayersClass playersClass = null;
+        switch (id)
+        {
+            case 1:
+                playersClass = new Bard();
+                break;
+            case 2:
+                playersClass = new Barbarian();
+                break;
+            case 3:
+                playersClass = new Fighter();
+                break;
+            case 4:
+                playersClass = new Wizard();
+                break;
+            case 5:
+                playersClass = new Druid();
+                break;
+            case 6:
+                playersClass = new Cleric();
+                break;
+            case 7:
+                playersClass = new Warlock();
+                break;
+            case 8:
+                playersClass = new Monk();
+                break;
+            case 9:
+                playersClass = new Paladin();
+                break;
+            case 10:
+                playersClass = new Rogue();
+                break;
+            case 11:
+                playersClass = new Ranger();
+                break;
+            case 12:
+                playersClass = new Sorcerer();
+                break;
+        }
+        return playersClass;
+    } 
 
 }

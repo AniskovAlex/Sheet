@@ -17,12 +17,14 @@ public class Fighter : PlayersClass
 
     public override Ability[] ChooseSubClass(int subId)
     {
+        magicChange = 0;
         switch (subId)
         {
             case 1:
                 subClass = new MasterOfMartialArt();
                 break;
             case 2:
+                magicChange = 1;
                 subClass = new MysticalKnight();
                 break;
             case 3:

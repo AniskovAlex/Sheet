@@ -39,6 +39,7 @@ public class SpellPrepare : MonoBehaviour
         
         foreach (Spell x in list)
         {
+            if (x.level == 0) continue;
             SpellBody newSpell = Instantiate(spellBody, choose.transform);
             newSpell.SetSpell(x);
             Amount buf = newSpell.GetComponentInChildren<Amount>();
@@ -56,6 +57,7 @@ public class SpellPrepare : MonoBehaviour
         {
             foreach (Spell x in preparedList)
             {
+                if (x.level == 0) continue;
                 SpellBody newSpell = Instantiate(spellBody, chosen.transform);
                 newSpell.SetSpell(x);
                 Amount buf = newSpell.GetComponentInChildren<Amount>();

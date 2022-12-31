@@ -11,6 +11,7 @@ public class FormShower : MonoBehaviour
     [SerializeField] GameObject basicText;
     GameObject discription;
     Ability _ability;
+    ConsumablePanel consum;
     void Awake()
     {
         discription = GetComponentInChildren<Discription>().gameObject;
@@ -20,27 +21,40 @@ public class FormShower : MonoBehaviour
     {
         _ability = ability;
         head.text = ability.head;
+        foreach ((int, string) x in ability.discription)
+            SetText(x);
         switch (ability.type)
         {
             case Ability.Type.abilitie:
+                switch (ability.bufInt)
+                {
+                    case 1:
+                        FormShower[] forms = transform.parent.GetComponentsInChildren<FormShower>();
+                        foreach (FormShower x in forms)
+                        {
+                            if (x.GetAbility() != null && x.GetAbility().listName == _ability.listName)
+                                if (x.GetConsumablePanel() != null)
+                                    x.GetConsumablePanel().SpawnResetButton();
+                        }
+                        break;
+                }
                 break;
             case Ability.Type.instruments:
             case Ability.Type.language:
             case Ability.Type.spellChoose:
             case Ability.Type.skills:
-                if(ability.chooseCount!=0)
+                if (ability.chooseCount != 0)
                     Destroy(gameObject);
                 break;
             case Ability.Type.attr:
             case Ability.Type.charUp:
             case Ability.Type.subRace:
             case Ability.Type.subClass:
+            case Ability.Type.feat:
                 Destroy(gameObject);
                 break;
             case Ability.Type.withChoose:
-                foreach ((int, string) x in ability.discription)
-                    SetText(x);
-                (int, string, string)[] list;
+                (int, string, string, int)[] list;
                 if (ability.isUniq)
                     list = FileSaverAndLoader.LoadList(ability.pathToList).ToArray();
                 else
@@ -48,7 +62,7 @@ public class FormShower : MonoBehaviour
                 List<int> chosen = DataSaverAndLoader.LoadCustom(ability.listName);
                 foreach (int x in chosen)
                 {
-                    foreach ((int, string, string) y in list)
+                    foreach ((int, string, string, int) y in list)
                     {
                         if (y.Item1 != x) continue;
                         SetText((2, list[x].Item2));
@@ -58,10 +72,8 @@ public class FormShower : MonoBehaviour
                 }
                 break;
             case Ability.Type.consumable:
-                foreach ((int, string) x in ability.discription)
-                    SetText(x);
                 int amount = DataSaverAndLoader.LoadConsumAmount(ability.listName);
-                ConsumablePanel buf = Instantiate(consumable, headObject.transform);
+                consum = Instantiate(consumable, headObject.transform);
                 int buf2 = 0;
                 if (level > 0)
                 {
@@ -81,22 +93,44 @@ public class FormShower : MonoBehaviour
 
                             }
                         }
-                    buf.SpawnToggles(buf2, amount);
+                    consum.SpawnToggles(buf2, amount);
                 }
                 else return;
                 if (ability.isUniq)
                 {
                     RestController restController = FindObjectOfType<RestController>();
                     if (restController != null)
-                        restController.AddShortRest(ability.bufInt, buf);
+                        restController.AddShortRest(ability.bufInt, consum);
                 }
-                buf.update += UpdateConsum;
+                consum.update += UpdateConsum;
+                if (ability.changeRule)
+                    switch (ability.listName)
+                    {
+                        case "SaveMovement":
+                            consum.SpawnResetButton();
+                            break;
+                        case "MysteryMaster":
+                            consum.SpawnResetWarCellsButton();
+                            break;
+                    }
                 break;
+
         }
-        foreach ((int, string) x in ability.discription)
-            SetText(x);
+
         if (ability.changeRule)
             RuleChanger();
+        if (ability.hide)
+            Destroy(gameObject);
+    }
+
+    public Ability GetAbility()
+    {
+        return _ability;
+    }
+
+    public ConsumablePanel GetConsumablePanel()
+    {
+        return consum;
     }
 
     void UpdateConsum(int count)
@@ -143,6 +177,7 @@ public class FormShower : MonoBehaviour
 
     void RuleChanger()
     {
+        FormShower[] forms;
         switch (_ability.listName)
         {
             case "BattleStyles":
@@ -188,6 +223,90 @@ public class FormShower : MonoBehaviour
                 break;
             case "DiamondSoul":
                 GlobalStatus.dimondSoul = true;
+                break;
+            case "SpellMaster":
+                GlobalStatus.spellMaster = true;
+                break;
+            case "sourceOfInpiration":
+                forms = transform.parent.GetComponentsInChildren<FormShower>();
+                foreach (FormShower x in forms)
+                {
+                    if (x.GetAbility() != null && x.GetAbility().listName == "bardInsiper")
+                        if (x.GetConsumablePanel() != null)
+                        {
+                            RestController restController = FindObjectOfType<RestController>();
+                            if (restController != null)
+                                restController.AddShortRest(1, x.GetConsumablePanel());
+                        }
+                }
+                break;
+            case "SlipperyMind":
+                CharacterData.AddSave(4);
+                break;
+            case "SorcererUnit":
+                GlobalStatus.sorcererUnit = true;
+                break;
+            case "SorcererRegain":
+                forms = transform.parent.GetComponentsInChildren<FormShower>();
+                foreach (FormShower x in forms)
+                {
+                    if (x.GetAbility() != null && x.GetAbility().listName == "SorcererUnit")
+                        if (x.GetConsumablePanel() != null)
+                        {
+                            RestController restController = FindObjectOfType<RestController>();
+                            if (restController != null)
+                                restController.AddShortRest(4, x.GetConsumablePanel());
+                        }
+                }
+                break;
+            case "FastFeet":
+                GlobalStatus.fastFeet = true;
+                break;
+            case "Alert":
+                GlobalStatus.alert = true;
+                break;
+            case "Observant":
+                GlobalStatus.observant = true;
+                break;
+            case "FightingTechniques":
+                forms = transform.parent.GetComponentsInChildren<FormShower>();
+                bool flag = false;
+                foreach (FormShower x in forms)
+                {
+                    if (x.GetAbility() != null && x.GetAbility().listName == "DiceOfSuprim")
+                        if (x.GetConsumablePanel() != null)
+                        {
+                            x.GetConsumablePanel().SpawnToggles(1);
+                            flag = true;
+                        }
+                }
+                if (!flag) {
+                    Ability diceOfSuprim = new Ability();
+                    diceOfSuprim.head = "Кости превосходства";
+                    diceOfSuprim.type = Ability.Type.consumable;
+                    diceOfSuprim.level = 1;
+                    diceOfSuprim.isUniq = true;
+                    diceOfSuprim.listName = "DiceOfSuprim";
+                    diceOfSuprim.discription.Add((1, "У вас есть четыре кости превосходства. Это кости к6. Кости превосходства тратятся при использовании. Вы восполняете все потраченные кости в конце короткого или продолжительного отдыха."));
+                    diceOfSuprim.discription.Add((1, "Спасброски. Некоторые из ваших приёмов требуют от цели спасброска, чтобы избежать эффекта приёма. Сложность такого спасброска рассчитывается следующим образом:"));
+                    diceOfSuprim.discription.Add((3, "Сложность спасброска приёма = 8 + ваш бонус мастерства + ваш модификатор Силы или Ловкости (на ваш выбор)."));
+                    diceOfSuprim.consum = new (int, int)[1];
+                    diceOfSuprim.consum[0].Item1 = 1;
+                    diceOfSuprim.consum[0].Item2 = 1;
+                    Instantiate(gameObject, transform.parent).GetComponent<FormShower>().CreateAbility(diceOfSuprim, 1, null);
+                } 
+                break;
+            case "DealWielder":
+                GlobalStatus.dealWielder = true;
+                break;
+            case "MediumArmorMaster":
+                GlobalStatus.mediumArmorMaster = true;
+                break;
+            case "Durable":
+                GlobalStatus.durable = true;
+                break;
+            case "Mobile":
+                GlobalStatus.mobile = true;
                 break;
         }
     }

@@ -56,6 +56,24 @@
     "type": 3,
     "level": 2,
     "chooseCount": 1,
+    "consum": [
+      {
+        "Item1": 0,
+        "Item2": -1
+      },
+      {
+        "Item1": 1,
+        "Item2": -1
+      },
+      {
+        "Item1": 2,
+        "Item2": -1
+      },
+      {
+        "Item1": 3,
+        "Item2": -1
+      }
+    ],
     "isUniq": true,
     "pathToList": "BattleStyles",
     "listName": "BattleStyles",

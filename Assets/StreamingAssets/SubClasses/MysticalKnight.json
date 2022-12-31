@@ -22,6 +22,110 @@
     "chooseCount": 1
   },
   {
+    "head": "Изучение заклинания ограждения",
+    "type": 9,
+    "level": 3,
+    "buf2Int": 3,
+    "bufInt": -2,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания воплощения",
+    "type": 9,
+    "level": 3,
+    "buf2Int": 3,
+    "bufInt": -3,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 3,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 4,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 7,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 8,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 10,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 11,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 13,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 14,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 16,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания ограждения или воплощения",
+    "type": 9,
+    "level": 19,
+    "buf2Int": 3,
+    "bufInt": -4,
+    "chooseCount": 1
+  },
+  {
+    "head": "Изучение заклинания",
+    "type": 9,
+    "level": 20,
+    "buf2Int": 3,
+    "bufInt": -1,
+    "chooseCount": 1
+  },
+  {
     "head": "Связь с оружием",
     "type": 1,
     "level": 3,

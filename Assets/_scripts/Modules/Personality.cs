@@ -28,8 +28,6 @@ public class Personality : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadPersonInformation();
-        LoadProficiancy();
         classes = CharacterData.GetClasses();
         foreach ((int, PlayersClass) playersClass in classes)
             if (playersClass.Item2 != null)
@@ -39,8 +37,10 @@ public class Personality : MonoBehaviour
                 classBody.GetComponent<FormShower>().SetHead(playersClass.Item2.name);
                 if (playersClass.Item2 != null)
                 {
-                    Ability[] abilitieSubClassArr = playersClass.Item2.ChooseSubClass(DataSaverAndLoader.LoadSubClass(playersClass.Item2));
                     Ability[] abilityArr = playersClass.Item2.GetAbilities();
+                    Ability[] abilitieSubClassArr = null;
+                    if (playersClass.Item2.GetSubClass() != null)
+                        abilitieSubClassArr = playersClass.Item2.GetSubClass().GetAbilities();
                     if (abilitieSubClassArr != null)
                         abilityArr = abilityArr.Concat(abilitieSubClassArr).ToArray();
                     foreach (Ability x in abilityArr)
@@ -66,7 +66,7 @@ public class Personality : MonoBehaviour
             }
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0,null);
+                Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 1, null);
             }
         }
         backstory = CharacterData.GetBackstory();
@@ -76,9 +76,12 @@ public class Personality : MonoBehaviour
             Ability[] abilityArr = backstory.GetAbilities();
             foreach (Ability x in abilityArr)
             {
-                Instantiate(form, backstoryObject.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 0,null);
+                Instantiate(form, backstoryObject.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 1, null);
             }
         }
+        loadFeats();
+        LoadPersonInformation();
+        LoadProficiancy();
     }
 
     void LoadPersonInformation()
@@ -115,40 +118,155 @@ public class Personality : MonoBehaviour
             switch (x)
             {
                 case Weapon.WeaponType.CommonMelee:
-                    weaponProficiancy.text += " простое рукопашное,";
+                    weaponProficiancy.text += " Простое рукопашное,";
                     break;
                 case Weapon.WeaponType.CommonDist:
-                    weaponProficiancy.text += " простое дальнобойное,";
+                    weaponProficiancy.text += " Простое дальнобойное,";
                     break;
                 case Weapon.WeaponType.WarMelee:
-                    weaponProficiancy.text += " воинское рукопашное,";
+                    weaponProficiancy.text += " Воинское рукопашное,";
                     break;
                 case Weapon.WeaponType.WarDist:
-                    weaponProficiancy.text += " воинское дальнобойное,";
+                    weaponProficiancy.text += " Воинское дальнобойное,";
                     break;
             }
         foreach (Weapon.BladeType x in CharacterData.GetBladeProficiency())
             switch (x)
             {
                 case Weapon.BladeType.WarStaff:
-                    weaponProficiancy.text += " длинный меч,";
+                    weaponProficiancy.text += " Боевой посох,";
+                    break;
+                case Weapon.BladeType.Mace:
+                    weaponProficiancy.text += " Булава,";
+                    break;
+                case Weapon.BladeType.Club:
+                    weaponProficiancy.text += " Дубинка,";
+                    break;
+                case Weapon.BladeType.Dagger:
+                    weaponProficiancy.text += " Кинжал,";
+                    break;
+                case Weapon.BladeType.Spear:
+                    weaponProficiancy.text += " Копьё,";
+                    break;
+                case Weapon.BladeType.LightHammer:
+                    weaponProficiancy.text += " Лёгкий молот,";
+                    break;
+                case Weapon.BladeType.ThrowingSpear:
+                    weaponProficiancy.text += " Метательное копьё,";
+                    break;
+                case Weapon.BladeType.HandAxe:
+                    weaponProficiancy.text += " Ручной топор,";
+                    break;
+                case Weapon.BladeType.Sickle:
+                    weaponProficiancy.text += " Серп,";
+                    break;
+                case Weapon.BladeType.LightCrossbow:
+                    weaponProficiancy.text += " Лёгкий арбалет,";
+                    break;
+                case Weapon.BladeType.Dart:
+                    weaponProficiancy.text += " Дротик,";
+                    break;
+                case Weapon.BladeType.Stick:
+                    weaponProficiancy.text += " Палица,";
                     break;
                 case Weapon.BladeType.ShortBow:
-                    weaponProficiancy.text += " короткий лук,";
+                    weaponProficiancy.text += " Короткий лук,";
+                    break;
+                case Weapon.BladeType.Sling:
+                    weaponProficiancy.text += " Праща,";
+                    break;
+                case Weapon.BladeType.Halberd:
+                    weaponProficiancy.text += " Алебарда,";
+                    break;
+                case Weapon.BladeType.BattlePickaxe:
+                    weaponProficiancy.text += " Боевая кирка,";
+                    break;
+                case Weapon.BladeType.BattleHammer:
+                    weaponProficiancy.text += " Боевой молот,";
+                    break;
+                case Weapon.BladeType.BattleAxe:
+                    weaponProficiancy.text += " Боевой топор,";
+                    break;
+                case Weapon.BladeType.Glaive:
+                    weaponProficiancy.text += " Глефа,";
+                    break;
+                case Weapon.BladeType.TwohandedSword:
+                    weaponProficiancy.text += " Двуручный меч,";
+                    break;
+                case Weapon.BladeType.LongSpear:
+                    weaponProficiancy.text += " Длинное копьё,";
+                    break;
+                case Weapon.BladeType.LongSword:
+                    weaponProficiancy.text += " Длинный меч,";
+                    break;
+                case Weapon.BladeType.Whip:
+                    weaponProficiancy.text += " Кнут,";
+                    break;
+                case Weapon.BladeType.ShortSword:
+                    weaponProficiancy.text += " Короткий меч,";
+                    break;
+                case Weapon.BladeType.Hammer:
+                    weaponProficiancy.text += " Молот,";
+                    break;
+                case Weapon.BladeType.Morgenstern:
+                    weaponProficiancy.text += " Моргенштерн,";
+                    break;
+                case Weapon.BladeType.Peak:
+                    weaponProficiancy.text += " Пика,";
+                    break;
+                case Weapon.BladeType.Rapier:
+                    weaponProficiancy.text += " Рапира,";
+                    break;
+                case Weapon.BladeType.Poleaxe:
+                    weaponProficiancy.text += " Секира,";
+                    break;
+                case Weapon.BladeType.Scimitar:
+                    weaponProficiancy.text += " Скимитар,";
+                    break;
+                case Weapon.BladeType.Trident:
+                    weaponProficiancy.text += " Трезубец,";
+                    break;
+                case Weapon.BladeType.Flail:
+                    weaponProficiancy.text += " Цеп,";
+                    break;
+                case Weapon.BladeType.HandedCrossbow:
+                    weaponProficiancy.text += " Ручной арбалет,";
+                    break;
+                case Weapon.BladeType.HeavyCrossbow:
+                    weaponProficiancy.text += " Тяжёлый арбалет,";
                     break;
                 case Weapon.BladeType.LongBow:
                     weaponProficiancy.text += " длинный лук,";
                     break;
-                case Weapon.BladeType.Club:
-                    weaponProficiancy.text += " дубинка,";
+                case Weapon.BladeType.Pipe:
+                    weaponProficiancy.text += " Духовая трубка,";
+                    break;
+                case Weapon.BladeType.Net:
+                    weaponProficiancy.text += " Сеть,";
                     break;
             }
         weaponProficiancy.text.Remove(weaponProficiancy.text.Length - 1);
         foreach (string x in CharacterData.GetInstruments())
-            instrumentProficiancy.text += " " + x + ",";
+        {
+            instrumentProficiancy.text += " " + x;
+            if (PresavedLists.compInstruments.Contains(x))
+                instrumentProficiancy.text += "*";
+            instrumentProficiancy.text += ",";
+        }
         instrumentProficiancy.text.Remove(instrumentProficiancy.text.Length - 1);
         foreach (string x in CharacterData.GetLanguage())
             language.text += " " + x + ",";
         language.text.Remove(language.text.Length - 1);
+    }
+    void loadFeats()
+    {
+        List<Feat> feats = PresavedLists.feats;
+        if (feats == null || feats.Count == 0) return;
+        GameObject featsBody = Instantiate(form, content.transform);
+        featsBody.GetComponent<FormShower>().SetHead("Черты");
+        foreach (Feat y in feats)
+        {
+            Instantiate(form, featsBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(y.ability, 1, null);
+        }
     }
 }

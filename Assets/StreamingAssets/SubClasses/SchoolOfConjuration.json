@@ -27,8 +27,16 @@
   },
   {
     "head": "Безопасное перемещение",
-    "type": 1,
+    "type": 2,
     "level": 6,
+    "consum": [
+      {
+        "Item1": 1,
+        "Item2": -1
+      }
+    ],
+    "listName": "SaveMovement",
+    "changeRule": true,
     "discription": [
       {
         "Item1": 1,

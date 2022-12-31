@@ -28,7 +28,10 @@ public class RestoreHealthPanel : MonoBehaviour
     {
         if (count > 0)
         {
-            healthRestore += Mathf.Clamp(Random.Range(1, playersClass.healthDice + 1) + CharacterData.GetModifier(2), 1, 999);
+            int addMin = 1;
+            if (GlobalStatus.durable)
+                addMin = Mathf.Clamp(CharacterData.GetModifier(2) * 2, 2, 999);
+            healthRestore += Mathf.Clamp(Random.Range(1, playersClass.healthDice + 1) + CharacterData.GetModifier(2), addMin, 999);
             healthText.text = Mathf.Clamp(currrentHealth + healthRestore, 0, maxHealth) + "/" + maxHealth;
         }
     }

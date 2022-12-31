@@ -12,8 +12,17 @@
   },
   {
     "head": "Улучшенная малая иллюзия",
-    "type": 1,
+    "type": 9,
     "level": 2,
+    "buf2Int": 3,
+    "isUniq": true,
+    "chooseCount": 0,
+    "consum": [
+      {
+        "Item1": 125,
+        "Item2": -1
+      }
+    ],
     "discription": [
       {
         "Item1": 1,

@@ -16,6 +16,7 @@ public class Rogue : PlayersClass
 
     public override Ability[] ChooseSubClass(int subId)
     {
+        magicChange = 0;
         switch (subId)
         {
             case 1:
@@ -25,6 +26,7 @@ public class Rogue : PlayersClass
                 subClass = new Assassin();
                 break;
             case 3:
+                magicChange = 1;
                 subClass = new MysticalDouble();
                 break;
             default:
@@ -38,12 +40,12 @@ public class Rogue : PlayersClass
 
     public override HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
-        return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist};
+        return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist };
     }
 
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
-        return new HashSet<Weapon.BladeType>() {Weapon.BladeType.HandedCrossbow, Weapon.BladeType.LongSword, Weapon.BladeType.Rapier, Weapon.BladeType.ShortSword};
+        return new HashSet<Weapon.BladeType>() { Weapon.BladeType.HandedCrossbow, Weapon.BladeType.LongSword, Weapon.BladeType.Rapier, Weapon.BladeType.ShortSword };
     }
 
     public override HashSet<Weapon.BladeType> GetSubBladeProficiency()
@@ -53,7 +55,7 @@ public class Rogue : PlayersClass
 
     public override HashSet<Armor.ArmorType> GetArmorProficiency()
     {
-        return new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light};
+        return new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light };
     }
 
     public override HashSet<int> GetSaveThrows()

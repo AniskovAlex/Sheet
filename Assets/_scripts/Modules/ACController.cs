@@ -10,6 +10,7 @@ public class ACController : MonoBehaviour
     int addArmor = 0;
     int AC = 10;
     bool shieldEquip = false;
+    public bool duelDefence;
 
     // Start is called before the first frame update
     void Start()
@@ -17,23 +18,29 @@ public class ACController : MonoBehaviour
         UpdateArmorClass(null, false);
     }
 
-    void UploadArmorClass()
+    public void UploadArmorClass()
     {
         int buf = AC + addArmor;
         if (shieldEquip)
             buf += 2;
+        if (duelDefence && GlobalStatus.dealWielder)
+            buf += 1;
         foreach (GameObject x in boxs)
             x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = buf.ToString();
-        addArmor = 0;
+        //addArmor = 0;
     }
 
     public void UpdateArmorClass(Armor armor, bool equip)
     {
+        addArmor = 0;
         int dex = CharacterData.GetModifier(1);
         if (equip)
         {
+        int capAdd = 0;
+            if (GlobalStatus.mediumArmorMaster)
+                capAdd = 1;
             if (armor.ACCap != -1)
-                AC = armor.AC + Mathf.Clamp(dex, -10, armor.ACCap) + addArmor;
+                AC = armor.AC + Mathf.Clamp(dex, -10, armor.ACCap + capAdd) + addArmor;
             else
                 AC = armor.AC + addArmor;
             if (GlobalStatus.defence)
