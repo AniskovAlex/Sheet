@@ -17,6 +17,7 @@ public class RestController : MonoBehaviour
     {
         if (GlobalStatus.needRest)
         {
+            GlobalStatus.needRest = false;
             health.ResetHealth();
             spell.ResetSpellCells();
             ConsumablePanel[] consumables = person.GetComponentsInChildren<ConsumablePanel>(true);

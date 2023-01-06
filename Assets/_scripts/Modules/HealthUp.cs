@@ -18,7 +18,7 @@ public class HealthUp : MonoBehaviour
         PlayersClass playerClass = classes.GetClass();
 
         healthDice.text = "1ê" + playerClass.healthDice;
-        if (CharacterData.GetLevel(playerClass) == 0)
+        if (CharacterData.GetLevel() == 0)
         {
             content.text = playerClass.healthDice.ToString();
             userContent.gameObject.SetActive(false);

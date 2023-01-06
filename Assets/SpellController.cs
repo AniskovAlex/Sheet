@@ -10,6 +10,10 @@ public class SpellController : MonoBehaviour
     [SerializeField] List<GameObject> spellLevelContainerObjects;
     [SerializeField] List<SpellShower> spellLevelObjects;
     [SerializeField] SpellBody spellBody;
+    [SerializeField] GameObject spellPanel;
+    [SerializeField] GameObject spellBook;
+    [SerializeField] GameObject spellPrepare;
+    [SerializeField] Button spellPanelButton;
     public static Action ReloadSpells;
     public static List<(int, List<Spell>)> spellKnew = new List<(int, List<Spell>)>();
     public static List<(int, List<Spell>)> spellPrepared = new List<(int, List<Spell>)>();
@@ -21,6 +25,24 @@ public class SpellController : MonoBehaviour
 
     private void Start()
     {
+        spellPanel.SetActive(false);
+        spellPrepare.SetActive(false);
+        spellPanelButton.interactable = false;
+        spellBook.SetActive(false);
+        foreach ((int, PlayersClass) x in CharacterData.GetClasses())
+            if (x.Item2.magic != 0)
+            {
+                GlobalStatus.magic = true;
+                spellPanel.SetActive(true);
+                spellPanelButton.interactable = true;
+                if (x.Item2.id == 0 || x.Item2.id == 2 || x.Item2.id == 10 || x.Item2.id == 11) continue;
+                spellPrepare.SetActive(true);
+                if (x.Item2.id == 3)
+                {
+                    spellBook.SetActive(true);
+                    break;
+                }
+            }
         if (LoadSpellManager.LoadSpells())
             spells = LoadSpellManager.GetSpells();
         else
@@ -31,6 +53,12 @@ public class SpellController : MonoBehaviour
         }
         currentCells = DataSaverAndLoader.LoadCellsAmount();
         List<(int, HashSet<int>)> spellKnewIdList = DataSaverAndLoader.LoadSpellKnew();
+        if (spellKnewIdList.Count > 0)
+        {
+            GlobalStatus.magic = true;
+            spellPanel.SetActive(true);
+            spellPanelButton.interactable = true;
+        }
         List<(int, HashSet<int>)> spellPreparedIdList = DataSaverAndLoader.LoadSpellPrepared();
         HashSet<int> spellMasterIdList = DataSaverAndLoader.LoadSpellMaster();
         foreach (int x in spellMasterIdList)
@@ -175,7 +203,7 @@ public class SpellController : MonoBehaviour
             case 5:
                 cells[0] += 4;
                 cells[1] += 3;
-                cells[3] += 2;
+                cells[2] += 2;
                 break;
             case 6:
                 cells[0] += 4;

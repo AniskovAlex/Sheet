@@ -45,6 +45,7 @@ public class BuilderManager : MonoBehaviour
 
     public void LoadView()
     {
+        if (!GetComponent<Validater>().Validate()) return;
         GlobalStatus.needRest = true;
         if (playerName.text != "")
         {
@@ -151,6 +152,11 @@ public class BuilderManager : MonoBehaviour
             PlayerPrefs.Save();
         }
         SceneManager.LoadScene("view", LoadSceneMode.Single);
+    }
+
+    public void LoadForceView()
+    {
+        SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
     }
 
     void SaveAttr()

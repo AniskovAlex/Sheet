@@ -236,7 +236,7 @@ public class Personality : MonoBehaviour
                     weaponProficiancy.text += " Тяжёлый арбалет,";
                     break;
                 case Weapon.BladeType.LongBow:
-                    weaponProficiancy.text += " длинный лук,";
+                    weaponProficiancy.text += " Длинный лук,";
                     break;
                 case Weapon.BladeType.Pipe:
                     weaponProficiancy.text += " Духовая трубка,";

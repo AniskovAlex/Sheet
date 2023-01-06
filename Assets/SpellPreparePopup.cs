@@ -14,11 +14,12 @@ public class SpellPreparePopup : MonoBehaviour
         foreach ((int, PlayersClass) x in list)
             if (x.Item2.magic > 0)
             {
+                if (x.Item2.id == 0 || x.Item2.id == 2 || x.Item2.id == 10 || x.Item2.id == 11) continue;
                 SpellPrepare buf = Instantiate(spellPrepare, transform);
                 objList.Add(buf);
-                
-                buf.SetSpells(x.Item2, x.Item1); 
-                
+
+                buf.SetSpells(x.Item2, x.Item1);
+
             }
     }
 

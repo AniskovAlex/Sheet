@@ -9,6 +9,9 @@ public class ConsumablePanel : MonoBehaviour
     public GameObject toggleObject;
     public Action<int> update;
     public Button reset;
+    [SerializeField] GameObject horizontalePanel;
+    [SerializeField] GameObject current;
+    float widthMax = 540f;
 
     private void Awake()
     {
@@ -17,31 +20,71 @@ public class ConsumablePanel : MonoBehaviour
 
     public void SpawnToggles(int amount)
     {
+        Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
+        float width = 0f;
+        foreach (Selectable x in toggles)
+            width += x.GetComponent<RectTransform>().rect.width;
         for (int i = 0; i < amount; i++)
         {
-            Instantiate(toggleObject, transform);
+            width += 90;
+            if (width >= widthMax)
+            {
+                width = toggleObject.GetComponent<RectTransform>().rect.width;
+                current = Instantiate(horizontalePanel, transform);
+            }
+            Instantiate(toggleObject, current.transform);
         }
     }
 
     public void SpawnResetButton()
     {
-        Button button = Instantiate(reset, transform);
+        Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
+        float width = 0f;
+        foreach (Selectable x in toggles)
+            width += x.GetComponent<RectTransform>().rect.width;
+        width += 90;
+        if (width >= widthMax)
+        {
+            width = reset.GetComponent<RectTransform>().rect.width;
+            current = Instantiate(horizontalePanel, transform);
+        }
+        Button button = Instantiate(reset, current.transform);
         button.GetComponentInChildren<Text>().text = "+";
         button.onClick.AddListener(delegate { ResetToggels(1); });
     }
 
     public void SpawnResetWarCellsButton()
     {
-        Button button = Instantiate(reset, transform);
+        Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
+        float width = 0f;
+        foreach (Selectable x in toggles)
+            width += x.GetComponent<RectTransform>().rect.width;
+        width += 90;
+        if (width >= widthMax)
+        {
+            width = reset.GetComponent<RectTransform>().rect.width;
+            current = Instantiate(horizontalePanel, transform);
+        }
+        Button button = Instantiate(reset, current.transform);
         button.GetComponentInChildren<Text>().text = "+";
         button.onClick.AddListener(delegate { ResetWarCells(); });
     }
 
     public void SpawnToggles(int amount, int currentAmount)
     {
+        Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
+        float width = 0f;
+        foreach (Selectable x in toggles)
+            width += x.GetComponent<RectTransform>().rect.width;
         for (int i = 0; i < amount; i++)
         {
-            GameObject gameObject = Instantiate(toggleObject, transform);
+            width += 90;
+            if (width >= widthMax)
+            {
+                width = toggleObject.GetComponent<RectTransform>().rect.width;
+                current = Instantiate(horizontalePanel, transform);
+            }
+            GameObject gameObject = Instantiate(toggleObject, current.transform);
             if (currentAmount > 0)
                 currentAmount--;
             else

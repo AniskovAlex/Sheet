@@ -144,26 +144,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &250662552153254060
+--- !u!114 &598961714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7382340693914670588}
+  m_GameObject: {fileID: 5053584874425454009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Script: {fileID: 11500000, guid: a6d5032437307c542be298dfcc9c3c72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: 200
-  m_MinHeight: -1
-  m_PreferredWidth: 300
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
+  classesHealthDices: {fileID: 1994755949408374715, guid: 52db2e947cf206542bdb98913a9d92c8, type: 3}
+  entrails: {fileID: 5053584876063301088}
+  healthText: {fileID: 9214474464320765692}
 --- !u!1 &7269037982701222294
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,21 +264,26 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &598961714
+--- !u!114 &250662552153254060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5053584874425454009}
+  m_GameObject: {fileID: 7382340693914670588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6d5032437307c542be298dfcc9c3c72, type: 3}
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  classesHealthDices: {fileID: 1994755949408374715, guid: 52db2e947cf206542bdb98913a9d92c8, type: 3}
-  entrails: {fileID: 5053584876063301088}
-  healthText: {fileID: 9214474464320765692}
+  m_IgnoreLayout: 0
+  m_MinWidth: 200
+  m_MinHeight: -1
+  m_PreferredWidth: 300
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1001 &1553554699307079309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -981,19 +981,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3535183665479923759, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99999905
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3535183665479923759, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3535183665479923759, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3535183665479923759, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0013962553
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3535183665479923759, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
       propertyPath: m_AnchoredPosition.x

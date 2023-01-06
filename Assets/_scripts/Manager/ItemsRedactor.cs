@@ -50,7 +50,6 @@ public class ItemsRedactor : MonoBehaviour
         else
         {
             UnlockRedact();
-            currentItem = null;
         }
     }
 
@@ -66,13 +65,19 @@ public class ItemsRedactor : MonoBehaviour
             return result;
         }
         Item newItem = new Item();
-        if (nameField.text == "" || costField.text == "" || weightField.text == "")
+        if (nameField.text == "")
             return (null, 0);
         newItem.id = -1;
         newItem.label = nameField.text;
         newItem.mType = Item.MType.goldCoin + mType.value;
-        newItem.cost = int.Parse(costField.text);
-        newItem.weight = int.Parse(weightField.text);
+        if (costField.text != "")
+            newItem.cost = int.Parse(costField.text);
+        else
+            newItem.cost = 0;
+        if (weightField.text != "")
+            newItem.weight = int.Parse(weightField.text);
+        else
+            newItem.weight = 0;
         switch (type.value)
         {
 
@@ -122,6 +127,7 @@ public class ItemsRedactor : MonoBehaviour
         type.interactable = true;
         weaponSet.Unlock();
         armorSet.Unlock();
+        currentItem = null;
     }
 
     void LockRedact()

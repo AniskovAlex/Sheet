@@ -21,6 +21,7 @@ public class ScreensControler : MonoBehaviour
     float offSetStart = 0;
     float offSetStartY = 0;
     float scaleToCanvas;
+    float ab;
     bool firstCalculation = false;
     bool vertical = false;
     CinemachineFramingTransposer transposer;
@@ -30,7 +31,7 @@ public class ScreensControler : MonoBehaviour
         Vector2 a = cam.ScreenToWorldPoint(new Vector3(0, 0, 0));
         Vector2 b = cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0));
         Vector2 c = cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
-        float ab = b.x - a.x;
+        ab = b.x - a.x;
         float ac = c.y - a.y;
         scaleToCanvas = can.GetComponent<RectTransform>().lossyScale.x;
         ab /= scaleToCanvas;
@@ -43,6 +44,14 @@ public class ScreensControler : MonoBehaviour
             i++;
         }
         Debug.Log("");
+        foreach (Button x in buttons)
+        {
+
+            if (x.name == "Spells" && !GlobalStatus.magic)
+            {
+                x.gameObject.GetComponent<Image>().color = new Color(0.4078431f, 0.4078431f, 0.4078431f);
+            }
+        }
     }
 
     private void Update()
@@ -79,7 +88,7 @@ public class ScreensControler : MonoBehaviour
                         }
                         else
                         {
-                            foreach(ScrollRect x in scrollRects)
+                            foreach (ScrollRect x in scrollRects)
                             {
                                 x.vertical = false;
                             }
@@ -98,7 +107,7 @@ public class ScreensControler : MonoBehaviour
                 if (transposer.m_ScreenX < 0.3f || -velocity > currentVelocity)
                 {
                     int index = screens.FindIndex(x => x == vCam.Follow.gameObject) + 1;
-                    if (index < screens.Count)
+                    if (index < screens.Count && screens[index].gameObject.activeSelf == true && buttons[index].gameObject.activeSelf)
                     {
                         ChangePanel(screens[index]);
                         DeactivateButton(buttons[index]);
@@ -107,7 +116,7 @@ public class ScreensControler : MonoBehaviour
                 if (transposer.m_ScreenX > 0.7f || velocity < currentVelocity)
                 {
                     int index = screens.FindIndex(x => x == vCam.Follow.gameObject) - 1;
-                    if (index >= 0)
+                    if (index >= 0 && screens[index].gameObject.activeSelf == true && buttons[index].gameObject.activeSelf)
                     {
                         ChangePanel(screens[index]);
                         DeactivateButton(buttons[index]);
@@ -136,7 +145,7 @@ public class ScreensControler : MonoBehaviour
                 head.text = "Боевой Экран";
                 break;
             case "Inventory":
-                head.text = "Инвентарь";
+                head.text = "Снаряжение";
                 break;
             case "Main":
                 head.text = "Главный Экран";
@@ -149,6 +158,18 @@ public class ScreensControler : MonoBehaviour
                 break;
             case "Notes":
                 head.text = "Записи";
+                break;
+            case "Class":
+                head.text = "Класс";
+                break;
+            case "Race":
+                head.text = "Раса";
+                break;
+            case "Characteristics":
+                head.text = "Характеристики";
+                break;
+            case "Info":
+                head.text = "Личность";
                 break;
         }
         vCam.Follow = panel.transform;
@@ -165,8 +186,15 @@ public class ScreensControler : MonoBehaviour
             }
             else
             {
+                if (x.name == "Spells" && !GlobalStatus.magic)
+                    continue;
                 x.interactable = true;
             }
         }
+    }
+
+    public float GetPanelWidth()
+    {
+        return ab;
     }
 }

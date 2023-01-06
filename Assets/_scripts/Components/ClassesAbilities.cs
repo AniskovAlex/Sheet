@@ -64,6 +64,11 @@ public class ClassesAbilities : MonoBehaviour
         {
             Destroy(opener[i].gameObject);
         }
+        HealthUp[] healthUps = content.GetComponentsInChildren<HealthUp>();
+        for (int i = 0; i < healthUps.Length; i++)
+        {
+            Destroy(healthUps[i].gameObject);
+        }
         Instantiate(health, content.transform);
         if (playersClass != null)
         {

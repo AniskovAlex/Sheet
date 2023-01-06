@@ -13,6 +13,7 @@ public class StandartInvetoryPanel : MonoBehaviour
     List<(int, Item)> itemList = new List<(int, Item)>();
     List<Dropdown> dropdowns = new List<Dropdown>();
     Item[] items = null;
+    [SerializeField] ScreensControler cam;
 
     public void SetInventoryChoice(PlayersClass playersClass, Backstory backstory, Item[] items)
     {
@@ -26,12 +27,16 @@ public class StandartInvetoryPanel : MonoBehaviour
             {
                 if (x.Count > 1)
                 {
-                    ShowList(y, parent);
+                    ShowList(y, parent, x.Count);
                     if (i != x.Count)
-                        Instantiate(text, parent.transform).text = "или";
+                    {
+                        Text OR = Instantiate(text, parent.transform);
+                        OR.text = "или";
+                        OR.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 80);
+                    }
                 }
                 else
-                    ShowItems(y, parent);
+                    ShowItems(y, parent, 1);
                 i++;
             }
         }
@@ -60,9 +65,13 @@ public class StandartInvetoryPanel : MonoBehaviour
         return itemList;
     }
 
-    void ShowList(List<(int, Item)> list, GameObject parent)
+    void ShowList(List<(int, Item)> list, GameObject parent, int listCount)
     {
         GameObject itemsParent = Instantiate(ObjectList, parent.transform);
+        Vector2 vector2 = new Vector2(cam.GetPanelWidth() / listCount - 120, 0);
+        itemsParent.GetComponent<RectTransform>().sizeDelta = vector2;
+        Text listText = Instantiate(text, itemsParent.transform);
+        listText.text = "";
         foreach ((int, Item) x in list)
         {
             switch (x.Item2.id)
@@ -72,75 +81,80 @@ public class StandartInvetoryPanel : MonoBehaviour
                         if (x.Item2.id == y.id)
                         {
                             if (x.Item1 <= 1)
-                                Instantiate(text, itemsParent.transform).text = y.label;
+                                listText.text += y.label;
                             else
-                                Instantiate(text, itemsParent.transform).text = y.label + " x" + x.Item1;
+                                listText.text += y.label + " x" + x.Item1;
                             break;
                         }
                     break;
                 case -1:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = x.Item2.label;
+                        listText.text += x.Item2.label;
                     else
-                        Instantiate(text, itemsParent.transform).text = x.Item2.label + " x" + x.Item1;
+                        listText.text += x.Item2.label + " x" + x.Item1;
                     break;
                 case -2:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Воинское оружие";
+                        listText.text += "Воинское оружие";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Воинское оружие" + " x" + x.Item1;
+                        listText.text += "Воинское оружие" + " x" + x.Item1;
                     break;
                 case -3:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Простое оружие";
+                        listText.text += "Простое оружие";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Простое оружие" + " x" + x.Item1;
+                        listText.text += "Простое оружие" + " x" + x.Item1;
                     break;
                 case -4:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Музыкальные инструменты";
+                        listText.text += "Музыкальные инструменты";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Музыкальные инструменты" + " x" + x.Item1;
+                        listText.text += "Музыкальные инструменты" + " x" + x.Item1;
                     break;
                 case -5:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Воинское рукопашное оружие";
+                        listText.text += "Воинское рукопашное оружие";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Воинское рукопашное оружие" + " x" + x.Item1;
+                        listText.text += "Воинское рукопашное оружие" + " x" + x.Item1;
                     break;
                 case -6:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Магическая фокусировка";
+                        listText.text += "Магическая фокусировка";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Магическая фокусировка" + " x" + x.Item1;
+                        listText.text += "Магическая фокусировка" + " x" + x.Item1;
                     break;
                 case -7:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Простое рукопашное оружие";
+                        listText.text += "Простое рукопашное оружие";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Простое рукопашное оружие" + " x" + x.Item1;
+                        listText.text += "Простое рукопашное оружие" + " x" + x.Item1;
                     break;
                 case -8:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Фокусировка друида";
+                        listText.text += "Фокусировка друида";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Фокусировка друида" + " x" + x.Item1;
+                        listText.text += "Фокусировка друида" + " x" + x.Item1;
                     break;
                 case -9:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = "Священный символ";
+                        listText.text += "Священный символ";
                     else
-                        Instantiate(text, itemsParent.transform).text = "Священный символ" + " x" + x.Item1;
+                        listText.text += "Священный символ" + " x" + x.Item1;
                     break;
             }
+            listText.text += "\n";
         }
+        listText.text = listText.text.Remove(listText.text.Length - 1);
         Instantiate(button, itemsParent.transform).onClick.AddListener(delegate { SelectedList(parent, list); });
     }
 
-    void ShowItems(List<(int, Item)> list, GameObject parent)
+    void ShowItems(List<(int, Item)> list, GameObject parent, int listCount)
     {
-        ;
         GameObject itemsParent = Instantiate(ObjectList, parent.transform);
+        Vector2 vector2 = new Vector2(cam.GetPanelWidth() / listCount - 120, 0);
+        itemsParent.GetComponent<RectTransform>().sizeDelta = vector2;
+        Text listText = Instantiate(text, itemsParent.transform);
+        listText.text = "";
         foreach ((int, Item) x in list)
         {
             switch (x.Item2.id)
@@ -150,22 +164,22 @@ public class StandartInvetoryPanel : MonoBehaviour
                         if (y.id == x.Item2.id)
                         {
                             if (x.Item1 <= 1)
-                                Instantiate(text, itemsParent.transform).text = y.label;
+                                listText.text += y.label;
                             else
-                                Instantiate(text, itemsParent.transform).text = y.label + " x" + x.Item1;
+                                listText.text += y.label + " x" + x.Item1;
                             itemList.Add((x.Item1, y));
                             break;
                         }
                     break;
                 case -1:
                     if (x.Item1 <= 1)
-                        Instantiate(text, itemsParent.transform).text = x.Item2.label;
+                        listText.text += x.Item2.label;
                     else
-                        Instantiate(text, itemsParent.transform).text = x.Item2.label + " x" + x.Item1;
+                        listText.text += x.Item2.label + " x" + x.Item1;
                     itemList.Add(x);
                     break;
                 case -2:
-                    Instantiate(text, itemsParent.transform).text = "Воинское оружие";
+                    listText.text += "Воинское оружие";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -186,7 +200,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -3:
-                    Instantiate(text, itemsParent.transform).text = "Простое оружие";
+                    listText.text += "Простое оружие";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -207,7 +221,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -4:
-                    Instantiate(text, itemsParent.transform).text = "Музыкальный инструмент";
+                    listText.text += "Музыкальный инструмент";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -223,7 +237,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -5:
-                    Instantiate(text, itemsParent.transform).text = "Воинское рукопашное оружие";
+                    listText.text += "Воинское рукопашное оружие";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -244,7 +258,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -6:
-                    Instantiate(text, itemsParent.transform).text = "Магическая фокусировка";
+                    listText.text += "Магическая фокусировка";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -263,7 +277,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -7:
-                    Instantiate(text, itemsParent.transform).text = "Простое рукопашное оружие";
+                    listText.text += "Простое рукопашное оружие";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -284,7 +298,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -8:
-                    Instantiate(text, itemsParent.transform).text = "Фокусировка друида";
+                    listText.text += "Фокусировка друида";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -303,7 +317,7 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
                 case -9:
-                    Instantiate(text, itemsParent.transform).text = "Священный символ";
+                    listText.text += "Священный символ";
                     for (int i = 0; i < x.Item1; i++)
                     {
                         Dropdown newItem = Instantiate(dropdown, itemsParent.transform);
@@ -322,13 +336,15 @@ public class StandartInvetoryPanel : MonoBehaviour
                     }
                     break;
             }
+            listText.text += "\n";
         }
+        listText.text = listText.text.Remove(listText.text.Length - 1);
     }
 
     void SelectedList(GameObject parent, List<(int, Item)> list)
     {
         foreach (Transform x in parent.transform)
             Destroy(x.gameObject);
-        ShowItems(list, parent);
+        ShowItems(list, parent, 1);
     }
 }

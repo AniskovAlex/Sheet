@@ -19,7 +19,7 @@ public class ItemBox : MonoBehaviour
     public void SetItem(Item item, int amount, bool flag)
     {
         isInventory = flag;
-        if (item.label != null&& item.label != "")
+        if (item.label != null && item.label != "")
             label.text = item.label[0].ToString().ToUpper() + item.label.Remove(0, 1);
         string moneyType = "";
         switch (item.mType)
@@ -122,7 +122,8 @@ public class ItemBox : MonoBehaviour
             else
                 DataSaverAndLoader.SaveAmountItem(item.label, amount);
         }
-        inventoryItemRemove(item);
+        if (inventoryItemRemove != null)
+            inventoryItemRemove(item);
         if (amount <= 0)
         {
             if (isInventory)

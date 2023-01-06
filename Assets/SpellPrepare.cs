@@ -20,14 +20,19 @@ public class SpellPrepare : MonoBehaviour
         if (playerClass.id != 3)
             list = list.FindAll(g => (g.level <= Utilities.GetMaxSpellLevel(CharacterData.GetClasses())) && (g.classes.Contains(playerClass.id)) && g.level > 0);
         else
+        {
+            bool flagWiz = false;
             foreach ((int, List<Spell>) x in SpellController.spellKnew)
             {
                 if (x.Item1 == 3)
                 {
                     list = x.Item2;
+                    flagWiz = true;
                     break;
                 }
             }
+            if (!flagWiz) return;
+        }
         foreach ((int, List<Spell>) x in SpellController.spellKnew)
         {
             if (x.Item1 != 3)

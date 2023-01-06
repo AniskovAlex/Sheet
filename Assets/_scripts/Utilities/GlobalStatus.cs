@@ -27,12 +27,12 @@ public static class GlobalStatus
     public static bool mediumArmorMaster = false;
     public static bool durable = false;
     public static bool mobile = false;
+    public static bool magic = false;
 
     public static void ResetRuleChanger()
     {
         dragging = false;
         popoutMenu = false;
-        needRest = false;
         duelist = false;
         defence = false;
         archer = false;

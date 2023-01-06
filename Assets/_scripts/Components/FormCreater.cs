@@ -396,34 +396,39 @@ public class FormCreater : MonoBehaviour
                     }
                     break;
                 }
-                SpellChoose buf = classesAbilities.GetComponentInChildren<SpellChoose>();
-                if (classesAbilities.GetClass().id == 2 || classesAbilities.GetClass().id == 10)
+                //SpellChoose buf = classesAbilities.GetComponentInChildren<SpellChoose>();
+                if (classesAbilities != null)
                 {
-                    switch (ability.bufInt)
+                    if (classesAbilities.GetClass().id == 2 || classesAbilities.GetClass().id == 10)
                     {
-                        default:
-                            Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, classesAbilities.GetClass().id);
-                            break;
-                        case -4:
-                            SpellChoose bufMyf1 = Instantiate(spellChoose, discription.transform);
-                            bufMyf1.SetSpells(ability.buf2Int, ability.chooseCount, -2, classesAbilities.GetClass().id);
-                            bufMyf1.multAdd = true;
-                            bufMyf1 = Instantiate(spellChoose, discription.transform);
-                            bufMyf1.SetSpells(ability.buf2Int, ability.chooseCount, -3, classesAbilities.GetClass().id);
-                            bufMyf1.multAdd = true;
-                            break;
-                        case -8:
-                            SpellChoose bufMyf2 = Instantiate(spellChoose, discription.transform);
-                            bufMyf2.SetSpells(ability.buf2Int, ability.chooseCount, -6, classesAbilities.GetClass().id);
-                            bufMyf2.multAdd = true;
-                            bufMyf2 = Instantiate(spellChoose, discription.transform);
-                            bufMyf2.SetSpells(ability.buf2Int, ability.chooseCount, -7, classesAbilities.GetClass().id);
-                            bufMyf2.multAdd = true;
-                            break;
+                        switch (ability.bufInt)
+                        {
+                            default:
+                                Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, classesAbilities.GetClass().id);
+                                break;
+                            case -4:
+                                SpellChoose bufMyf1 = Instantiate(spellChoose, discription.transform);
+                                bufMyf1.SetSpells(ability.buf2Int, ability.chooseCount, -2, classesAbilities.GetClass().id);
+                                bufMyf1.multAdd = true;
+                                bufMyf1 = Instantiate(spellChoose, discription.transform);
+                                bufMyf1.SetSpells(ability.buf2Int, ability.chooseCount, -3, classesAbilities.GetClass().id);
+                                bufMyf1.multAdd = true;
+                                break;
+                            case -8:
+                                SpellChoose bufMyf2 = Instantiate(spellChoose, discription.transform);
+                                bufMyf2.SetSpells(ability.buf2Int, ability.chooseCount, -6, classesAbilities.GetClass().id);
+                                bufMyf2.multAdd = true;
+                                bufMyf2 = Instantiate(spellChoose, discription.transform);
+                                bufMyf2.SetSpells(ability.buf2Int, ability.chooseCount, -7, classesAbilities.GetClass().id);
+                                bufMyf2.multAdd = true;
+                                break;
+                        }
                     }
+                    else
+                        Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, classesAbilities.GetClass().id);
                 }
                 else
-                    Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, classesAbilities.GetClass().id);
+                    Instantiate(spellChoose, discription.transform).SetSpells(ability.buf2Int, ability.chooseCount, ability.bufInt, -1);
                 break;
             case Ability.Type.attr:
                 if (ability.chooseCount == 0)
@@ -725,8 +730,8 @@ public class FormCreater : MonoBehaviour
             if (ability.chooseCount > 0)
             {
                 PresavedLists.ChangeCompetencePing -= UpdateCompetenceOptions;
-            foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
-                PresavedLists.RemoveFromCompetence(x.GetComponent<DropdownExtend>().currentValueText);
+                foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+                    PresavedLists.RemoveFromCompetence(x.GetComponent<DropdownExtend>().currentValueText);
             }
             else
                 foreach (string x in ability.common)
@@ -919,7 +924,7 @@ public class FormCreater : MonoBehaviour
                             foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
                                 if (x.Item2.Contains(139))
                                     flag1 = true;
-                            foreach((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
+                            foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
                                 if (x.Item2.Contains(139))
                                     flag1 = true;
                             if (!flag1)

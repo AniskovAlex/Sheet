@@ -70,7 +70,8 @@ public class DraggingStat : MonoBehaviour
                     {
                         oldStat.stat = newSlot.stat;
                         oldStat.stat.transform.SetParent(parent);
-                        newSlot.stat.transform.position = parent.transform.position;
+                        oldStat.stat.parent = parent;
+                        oldStat.stat.transform.position = parent.transform.position;
                     }
                     else
                         oldStat.stat = null;

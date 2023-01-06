@@ -82,6 +82,11 @@ public class LevelUpManager : MonoBehaviour
         SceneManager.LoadScene("view", LoadSceneMode.Single);
     }
 
+    public void LoadForceView()
+    {
+        SceneManager.LoadScene("view", LoadSceneMode.Single);
+    }
+
     void SaveAttr()
     {
         int[] arr = CharacterData.GetAtribute();

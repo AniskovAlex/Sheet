@@ -186,8 +186,8 @@ public static class DataSaverAndLoader
             PlayerPrefs.SetString(characterName + noteHeadSaveName + i, PlayerPrefs.GetString(characterName + noteHeadSaveName + (i + 1)));
             PlayerPrefs.SetString(characterName + noteSaveName + i, PlayerPrefs.GetString(characterName + noteSaveName + (i + 1)));
         }
-        PlayerPrefs.DeleteKey(characterName + noteHeadSaveName + count);
-        PlayerPrefs.DeleteKey(characterName + noteSaveName + count);
+        PlayerPrefs.DeleteKey(characterName + noteHeadSaveName + (count - 1));
+        PlayerPrefs.DeleteKey(characterName + noteSaveName + (count - 1));
         PlayerPrefs.SetInt(characterName + noteCountSaveName, count - 1);
     }
 
@@ -1185,8 +1185,8 @@ public static class DataSaverAndLoader
         int count = PlayerPrefs.GetInt(name + levelCountSaveName);
         for (int i = 0; i < count; i++)
         {
-            string className = PlayerPrefs.GetString(name + levelLabelSaveName + i);
-            PlayerPrefs.DeleteKey(name + classSubClassSaveName + className);
+            int classId = PlayerPrefs.GetInt(name + levelLabelSaveName + i);
+            PlayerPrefs.DeleteKey(name + classSubClassSaveName + classId);
             PlayerPrefs.DeleteKey(name + levelLabelSaveName + i);
             PlayerPrefs.DeleteKey(name + levelSaveName + i);
         }
@@ -1200,6 +1200,28 @@ public static class DataSaverAndLoader
             PlayerPrefs.DeleteKey(name + consumAmountSaveName + buf);
         }
         PlayerPrefs.DeleteKey(name + consumAmountNameCountSaveName);
+
+        count = PlayerPrefs.GetInt(name + spellMasterCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            PlayerPrefs.DeleteKey(name + spellMasterSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + spellMasterCountSaveName);
+
+        count = PlayerPrefs.GetInt(name + featCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            PlayerPrefs.DeleteKey(name + featSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + featCountSaveName);
+
+        count = PlayerPrefs.GetInt(name + noteCountSaveName);
+        for (int i = 0; i < count; i++)
+        {
+            PlayerPrefs.DeleteKey(name + noteHeadSaveName + i);
+            PlayerPrefs.DeleteKey(name + noteSaveName + i);
+        }
+        PlayerPrefs.DeleteKey(name + noteCountSaveName);
 
         for (int i = 1; i < 10; i++)
             PlayerPrefs.DeleteKey(name + cellAmountSaveName + i);
@@ -1229,8 +1251,8 @@ public static class DataSaverAndLoader
         }
         PlayerPrefs.DeleteKey(name + spellClassPrepareCountSaveName);
 
-        string raceName = PlayerPrefs.GetString(name + raceSaveName);
-        PlayerPrefs.DeleteKey(name + raceSubRaceSaveName + raceName);
+        int raceId = PlayerPrefs.GetInt(name + raceSaveName);
+        PlayerPrefs.DeleteKey(name + raceSubRaceSaveName + raceId);
         PlayerPrefs.DeleteKey(name + raceSaveName);
 
         PlayerPrefs.DeleteKey(name + levelCountSaveName);
@@ -1254,6 +1276,7 @@ public static class DataSaverAndLoader
             {
                 PlayerPrefs.DeleteKey(name + itemSaveID + i);
                 PlayerPrefs.DeleteKey(name + itemAmountSaveName + id);
+                PlayerPrefs.SetInt(name + itemsCountSaveName, PlayerPrefs.GetInt(name + itemsCountSaveName) - 1);
             }
         }
         PlayerPrefs.DeleteKey(name + itemsCountSaveName);
@@ -1324,7 +1347,7 @@ public static class DataSaverAndLoader
             PlayerPrefs.DeleteKey(name + saveThrowSaveName + i);
         }
 
-        for (int i = 0; i < 17; i++)
+        for (int i = 0; i < 18; i++)
         {
             PlayerPrefs.DeleteKey(name + skillSaveName + i);
         }
@@ -1360,9 +1383,7 @@ public static class DataSaverAndLoader
         }
         PlayerPrefs.DeleteKey(name + languageCountSaveName);
 
-        DeleteNotes();
-
-        PlayerPrefs.DeleteKey(name + count);
+        PlayerPrefs.DeleteKey(charactersSaveName + count);
         PlayerPrefs.SetInt(charactersCountSaveName, count - 1);
         PlayerPrefs.Save();
 
