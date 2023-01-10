@@ -14,6 +14,7 @@ public class SelecterManager : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
         CharacterCollection.SetName("");
         int count = PlayerPrefs.GetInt(charactersCountSaveName);
         for (int i = count; i > 0; i--)

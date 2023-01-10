@@ -42,11 +42,17 @@ public class ArmorInventory : MonoBehaviour
 
     public void OnArmorRemove(Item armor)
     {
+        Armor arm = armor as Armor;
+        if(arm.armorType == Armor.ArmorType.Shield)
+        {
+            FindObjectOfType<WeaponInventory>().OnWeaponRemove(armor);
+            return;
+        }
         ArmorEquipment[] armors = content.GetComponentsInChildren<ArmorEquipment>();
         ArmorEquipment bufArmor = null;
         foreach (ArmorEquipment x in armors)
         {
-            if (x.GetArmor() == armor as Armor)
+            if (x.GetArmor() == arm)
             {
                 Toggle toggle = x.gameObject.GetComponentInChildren<Type>().GetComponent<Toggle>();
                 if (toggle.isOn)

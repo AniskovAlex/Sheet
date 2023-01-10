@@ -7,7 +7,7 @@ public class SchoolOfEvocation : PlayerSubClass
     public SchoolOfEvocation()
     {
         id = 5;
-        name = "Школа воплащения";
+        name = "Школа воплощения";
         LoadAbilities("SchoolOfEvocation");
     }
 }

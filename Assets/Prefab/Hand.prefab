@@ -492,10 +492,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 15
+  m_MinWidth: 80
   m_MinHeight: 80
   m_PreferredWidth: -1
-  m_PreferredHeight: 80
+  m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 2
@@ -602,7 +602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 100
+  m_MinWidth: 80
   m_MinHeight: 80
   m_PreferredWidth: 300
   m_PreferredHeight: -1
@@ -712,13 +712,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 140
+  m_MinWidth: 100
   m_MinHeight: 80
   m_PreferredWidth: 150
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
-  m_LayoutPriority: 1
+  m_LayoutPriority: 0
 --- !u!114 &2201389463550558800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,13 +1107,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 150
+  m_MinWidth: 100
   m_MinHeight: 80
   m_PreferredWidth: 200
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
-  m_LayoutPriority: 1
+  m_LayoutPriority: 0
 --- !u!114 &2571591929874467777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,13 +1217,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 100
+  m_MinWidth: 80
   m_MinHeight: 80
   m_PreferredWidth: 100
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
-  m_LayoutPriority: 1
+  m_LayoutPriority: 0
 --- !u!114 &3740329952716452832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1427,10 +1427,10 @@ RectTransform:
   m_Father: {fileID: 1036458329788195148}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 2.0800018, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4710628315869035571
 CanvasRenderer:

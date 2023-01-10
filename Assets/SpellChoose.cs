@@ -22,6 +22,7 @@ public class SpellChoose : MonoBehaviour
     private void Start()
     {
         backup = new List<(int, HashSet<int>)>(PresavedLists.spellKnew);
+        changeText.gameObject.SetActive(false);
     }
 
     public void SetSpells(int spellClassId, int count, int level, int classId)
@@ -178,6 +179,8 @@ public class SpellChoose : MonoBehaviour
     void ChangeSpells(int classId, List<Spell> listKnew, int changeCount)
     {
         changeLeft = changeCount;
+        if (changeLeft > 0)
+            changeText.gameObject.SetActive(true);
         changeText.text = changeCount.ToString();
         changeable = true;
         foreach (Spell x in listKnew)
@@ -198,6 +201,10 @@ public class SpellChoose : MonoBehaviour
     {
         changeLeft = change;
         changeText.text = changeLeft.ToString();
+        if (changeLeft > 0)
+            changeText.gameObject.SetActive(true);
+        else
+            changeText.gameObject.SetActive(false);
     }
 
     public void SetCount(int add)
@@ -213,6 +220,7 @@ public class SpellChoose : MonoBehaviour
             if (changeLeft <= 0)
             {
                 block = true;
+                changeText.gameObject.SetActive(false);
                 return;
             }
             changeLeft--;
@@ -231,6 +239,10 @@ public class SpellChoose : MonoBehaviour
             if (leftCount <= 0) return;
             changeLeft++;
         }
+        if(changeLeft>0)
+            changeText.gameObject.SetActive(true);
+        else
+            changeText.gameObject.SetActive(false);
         changeText.text = changeLeft.ToString();
     }
     void ChangeSection(SpellBody spellBody, int id)

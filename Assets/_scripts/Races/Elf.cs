@@ -21,6 +21,9 @@ public class Elf : Race
             case 2:
                 subRace = new ForestElf();
                 break;
+            case 3:
+                subRace = new Drow();
+                break;
             default: return null;
         }
         return subRace.GetAbilities();

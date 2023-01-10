@@ -9,6 +9,7 @@ public class HealthUp : MonoBehaviour
     [SerializeField] Text content;
     [SerializeField] InputField userContent;
     ClassesAbilities classes;
+    int midHealth = 0;
 
     private void Start()
     {
@@ -16,7 +17,7 @@ public class HealthUp : MonoBehaviour
 
         if (classes.GetClass() == null) return;
         PlayersClass playerClass = classes.GetClass();
-
+        midHealth = playerClass.healthDice / 2 + 1;
         healthDice.text = "1ê" + playerClass.healthDice;
         if (CharacterData.GetLevel() == 0)
         {
@@ -27,6 +28,7 @@ public class HealthUp : MonoBehaviour
         {
             userContent.gameObject.SetActive(true);
             content.gameObject.SetActive(false);
+            userContent.GetComponentInChildren<Text>().text = (midHealth).ToString();
         }
     }
 
@@ -34,7 +36,12 @@ public class HealthUp : MonoBehaviour
     {
         int health = 0;
         if (userContent.IsActive())
-            int.TryParse(userContent.text, out health);
+        {
+            if (userContent.text != "")
+                int.TryParse(userContent.text, out health);
+            else
+                health = midHealth;
+        }
         else
             health = classes.GetClass().healthDice;
         return health;

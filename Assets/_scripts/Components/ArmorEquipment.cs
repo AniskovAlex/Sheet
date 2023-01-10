@@ -40,8 +40,16 @@ public class ArmorEquipment : MonoBehaviour
                 type.text = "ׂÿז¸כûו";
                 break;
             case Armor.ArmorType.Shield:
-                type.text = "Ùטע";
-                break;
+                Weapon shield = new Weapon();
+                shield.id = armor.id;
+                shield.cost = armor.cost;
+                shield.label= armor.label;
+                shield.mType= armor.mType;
+                shield.weaponType = Weapon.WeaponType.Shield;
+                shield.weight = armor.weight;
+                FindObjectOfType<WeaponInventory>().AddWeapon(shield);
+                DestroyImmediate(gameObject);
+                return;
 
         }
         stealth.isOn = armor.stealthDis;

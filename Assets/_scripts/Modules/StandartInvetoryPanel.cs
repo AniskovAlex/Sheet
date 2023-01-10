@@ -347,4 +347,12 @@ public class StandartInvetoryPanel : MonoBehaviour
             Destroy(x.gameObject);
         ShowItems(list, parent, 1);
     }
+
+    private void OnDisable()
+    {
+        foreach (Transform x in gameObject.GetComponentsInChildren<Transform>())
+            if (x.gameObject != gameObject)
+                Destroy(x.gameObject);
+        itemList.Clear();
+    }
 }

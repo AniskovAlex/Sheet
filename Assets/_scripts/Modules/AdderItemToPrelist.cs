@@ -104,4 +104,10 @@ public class AdderItemToPrelist : MonoBehaviour, IAdder
         ItemBox newItemBox = Instantiate(itemObject, itemsContainer.transform).GetComponent<ItemBox>();
         newItemBox.SetItem(item, amount, false);
     }
+
+    private void OnDisable()
+    {
+        foreach (ItemBox x in itemsContainer.GetComponentsInChildren<ItemBox>())
+            Destroy(x.gameObject);
+    }
 }

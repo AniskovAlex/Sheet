@@ -9,7 +9,7 @@ public class ACController : MonoBehaviour
     int naturalArmor = 10;
     int addArmor = 0;
     int AC = 10;
-    bool shieldEquip = false;
+    public bool shieldEquip = false;
     public bool duelDefence;
 
     // Start is called before the first frame update
@@ -42,7 +42,7 @@ public class ACController : MonoBehaviour
             if (armor.ACCap != -1)
                 AC = armor.AC + Mathf.Clamp(dex, -10, armor.ACCap + capAdd) + addArmor;
             else
-                AC = armor.AC + addArmor;
+                AC = armor.AC + addArmor + dex;
             if (GlobalStatus.defence)
                 addArmor += 1;
         }

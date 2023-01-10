@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class InventoryCreater : MonoBehaviour
     private void Start()
     {
         items = GetComponent<LoadInventoryManager>().GetItems();
+        classes.chosen += ReturnToChoose;
+        backstory.chosen += ReturnToChoose;
     }
 
     public void ShowBuy()

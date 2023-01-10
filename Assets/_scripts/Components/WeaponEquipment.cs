@@ -19,68 +19,71 @@ public class WeaponEquipment : MonoBehaviour
     {
         _handsInventory = handsInventory;
         label.text = weapon.label;
-        damage.text = weapon.dices + "к" + weapon.hitDice;
-        if (weapon.dist == weapon.maxDist)
-            distance.text = weapon.dist + " фт.";
-        else
-            distance.text = weapon.dist + "/" + weapon.maxDist + " фт.";
-        switch (weapon.damageType)
+        if (weapon.weaponType != Weapon.WeaponType.Shield)
         {
-            case Weapon.DamageType.Slashing:
-                type.text = "Рубящий";
-                break;
-            case Weapon.DamageType.Crushing:
-                type.text = "Дробящий";
-                break;
-            case Weapon.DamageType.Piercing:
-                type.text = "Колющий";
-                break;
-
-        }
-        magick.isOn = weapon.magic;
-        string propString = "";
-        foreach (Weapon.Properties x in weapon.properties)
-        {
-            switch (x)
+            damage.text = weapon.dices + "к" + weapon.hitDice;
+            if (weapon.dist == weapon.maxDist)
+                distance.text = weapon.dist + " фт.";
+            else
+                distance.text = weapon.dist + "/" + weapon.maxDist + " фт.";
+            switch (weapon.damageType)
             {
-                case Weapon.Properties.Ammo:
-                    propString += "Боеприпасы, ";
+                case Weapon.DamageType.Slashing:
+                    type.text = "Рубящий";
                     break;
-                case Weapon.Properties.TwoHanded:
-                    propString += "Двуручное, ";
+                case Weapon.DamageType.Crushing:
+                    type.text = "Дробящий";
                     break;
-                case Weapon.Properties.Reach:
-                    propString += "ДОсигаемость, ";
-                    break;
-                case Weapon.Properties.Distance:
-                    propString += "Дистанционное, ";
-                    break;
-                case Weapon.Properties.Light:
-                    propString += "Лёгкое, ";
-                    break;
-                case Weapon.Properties.Throwing:
-                    propString += "Метательное, ";
-                    break;
-                case Weapon.Properties.Special:
-                    propString += "Особое, ";
-                    break;
-                case Weapon.Properties.Reload:
-                    propString += "Перезарядка, ";
-                    break;
-                case Weapon.Properties.Heavy:
-                    propString += "Тяжёлое, ";
-                    break;
-                case Weapon.Properties.Universal:
-                    propString += "Универсанльное, ";
-                    break;
-                case Weapon.Properties.Fencing:
-                    propString += "Фехтовальное, ";
+                case Weapon.DamageType.Piercing:
+                    type.text = "Колющий";
                     break;
 
             }
+            magick.isOn = weapon.magic;
+            string propString = "";
+            foreach (Weapon.Properties x in weapon.properties)
+            {
+                switch (x)
+                {
+                    case Weapon.Properties.Ammo:
+                        propString += "Боеприпасы, ";
+                        break;
+                    case Weapon.Properties.TwoHanded:
+                        propString += "Двуручное, ";
+                        break;
+                    case Weapon.Properties.Reach:
+                        propString += "ДОсигаемость, ";
+                        break;
+                    case Weapon.Properties.Distance:
+                        propString += "Дистанционное, ";
+                        break;
+                    case Weapon.Properties.Light:
+                        propString += "Лёгкое, ";
+                        break;
+                    case Weapon.Properties.Throwing:
+                        propString += "Метательное, ";
+                        break;
+                    case Weapon.Properties.Special:
+                        propString += "Особое, ";
+                        break;
+                    case Weapon.Properties.Reload:
+                        propString += "Перезарядка, ";
+                        break;
+                    case Weapon.Properties.Heavy:
+                        propString += "Тяжёлое, ";
+                        break;
+                    case Weapon.Properties.Universal:
+                        propString += "Универсанльное, ";
+                        break;
+                    case Weapon.Properties.Fencing:
+                        propString += "Фехтовальное, ";
+                        break;
+
+                }
+            }
+            if (properties.text != null && propString != "")
+                properties.text = propString.Remove(propString.LastIndexOf(','));
         }
-        if(properties.text!=null&& propString != "")
-        properties.text = propString.Remove(propString.LastIndexOf(','));
         if (_handsInventory != null)
             equip.onValueChanged.AddListener(delegate
             {

@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class ClassesAbilities : MonoBehaviour
     [SerializeField] GameObject form;
     [SerializeField] GameObject health;
     [SerializeField] SpellChoose spellChoose;
+    public Action chosen;
     PlayersClass playersClass = null;
     private void Awake()
     {
@@ -19,6 +21,8 @@ public class ClassesAbilities : MonoBehaviour
 
     public void ChosenClass(Dropdown value)
     {
+        if (chosen != null)
+            chosen();
         playersClass = null;
         switch (value.value)
         {

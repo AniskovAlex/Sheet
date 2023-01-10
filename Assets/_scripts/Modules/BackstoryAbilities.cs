@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +8,13 @@ public class BackstoryAbilities : MonoBehaviour
 {
     [SerializeField] GameObject content;
     [SerializeField] GameObject form;
+    public Action chosen;
     Backstory playersBackstory = null;
 
     public void ChosenBackstory(Dropdown value)
     {
+        if (chosen != null)
+            chosen();
         playersBackstory = null;
         switch (value.value)
         {
