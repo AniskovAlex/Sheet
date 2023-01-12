@@ -47,7 +47,7 @@ public class WeaponInventory : MonoBehaviour
         WeaponEquipment bufWeapon = null;
         foreach (WeaponEquipment x in weapons)
         {
-            if (x.GetWeapon() == weapon as Weapon || ((weapon as Armor).armorType == Armor.ArmorType.Shield && x.GetWeapon().weaponType == Weapon.WeaponType.Shield))
+            if (x.GetWeapon() == weapon as Weapon || ((weapon as Armor) != null && (weapon as Armor).armorType == Armor.ArmorType.Shield && x.GetWeapon().weaponType == Weapon.WeaponType.Shield))
             {
                 Toggle toggle = x.gameObject.GetComponentInChildren<Type>().GetComponent<Toggle>();
                 if (toggle.isOn)

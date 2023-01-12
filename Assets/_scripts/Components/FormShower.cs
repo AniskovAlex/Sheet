@@ -90,6 +90,10 @@ public class FormShower : MonoBehaviour
                                     if (playersClass != null)
                                         buf2 = Mathf.Clamp(CharacterData.GetModifier(playersClass.mainState), 1, 10);
                                     break;
+                                case -2:
+                                    if (playersClass != null)
+                                        buf2 = Mathf.Clamp(CharacterData.GetModifier(playersClass.mainState), 0, 10) + 1;
+                                    break;
 
                             }
                         }

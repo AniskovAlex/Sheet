@@ -18,7 +18,10 @@ public static class PresavedLists
 
     static public HashSet<Armor.ArmorType> armorTypes = new HashSet<Armor.ArmorType>();
 
+    static string net = null;
+
     static public HashSet<string> skills = new HashSet<string>();
+    static public List<string> skillsAbove = new List<string>();
     static public HashSet<string> competence = new HashSet<string>();
 
     static public HashSet<string> instruments = new HashSet<string>();
@@ -55,10 +58,19 @@ public static class PresavedLists
     static public void UpdateSkills(string oldValue, string newValue)
     {
         string forceRemoveSkill = "";
+        if (net == oldValue)
+        {
+            net = null;
+            return;
+        }
         if (skills.Contains(newValue))
+        {
             forceRemoveSkill = newValue;
+            net = newValue;
+        }
         skills.Remove(oldValue);
-        skills.Add(newValue);
+        if (newValue != "Пусто")
+            skills.Add(newValue);
         if (ChangeSkillPing != null)
             ChangeSkillPing(forceRemoveSkill);
     }
@@ -77,10 +89,19 @@ public static class PresavedLists
     static public void UpdateInstruments(string oldValue, string newValue)
     {
         string forceRemoveInstruments = "";
+        if (net == oldValue)
+        {
+            net = null;
+            return;
+        }
         if (instruments.Contains(newValue))
+        {
             forceRemoveInstruments = newValue;
+            net = newValue;
+        }
         instruments.Remove(oldValue);
-        instruments.Add(newValue);
+        if (newValue != "Пусто")
+            instruments.Add(newValue);
         if (ChangeIntrumentsPing != null)
             ChangeIntrumentsPing(forceRemoveInstruments);
     }
@@ -88,10 +109,19 @@ public static class PresavedLists
     static public void UpdateLanguage(string oldValue, string newValue)
     {
         string forceRemoveLangugae = "";
+        if (net == oldValue)
+        {
+            net = null;
+            return;
+        }
         if (languages.Contains(newValue))
+        {
             forceRemoveLangugae = newValue;
+            net = newValue;
+        }
         languages.Remove(oldValue);
-        languages.Add(newValue);
+        if (newValue != "Пусто")
+            languages.Add(newValue);
         if (ChangeLanguagePing != null)
             ChangeLanguagePing(forceRemoveLangugae);
     }

@@ -596,10 +596,15 @@ public class FormCreater : MonoBehaviour
             foreach (string y in list)
                 x.options.Add(new Dropdown.OptionData(y));
             string currentValue = x.GetComponent<DropdownExtend>().currentValueText;
-            x.options.Add(new Dropdown.OptionData(currentValue));
-            x.value = x.options.Count - 1;
             if (x.GetComponent<DropdownExtend>().currentValueText == remove)
+            {
+                x.options.Add(new Dropdown.OptionData("Пусто"));
                 x.value = x.options.Count - 1;
+                continue;
+            }
+            x.options.Add(new Dropdown.OptionData(currentValue));
+            x.options.Add(new Dropdown.OptionData("Пусто"));
+            x.value = x.options.Count - 2;
         }
     }
 
@@ -857,6 +862,12 @@ public class FormCreater : MonoBehaviour
                             break;
                         }
                     }
+                return;
+            }
+            if (ability.listName == "Tough")
+            {
+                PresavedLists.addHealth -= 2;
+                PresavedLists.addMaxHealth -= CharacterData.GetLevel() + 1;
                 return;
             }
         }
