@@ -166,7 +166,7 @@ public class SpellController : MonoBehaviour
         int levelAbs = 0;
         foreach ((int, PlayersClass) x in playerClasses)
         {
-            if (x.Item2.magic > 0)
+            if (x.Item2.magic > 0 && x.Item1 >= x.Item2.magic)
             {
                 levelAbs += (x.Item1 + (x.Item2.magic - 1)) / (x.Item2.magic);
             }

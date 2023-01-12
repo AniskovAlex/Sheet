@@ -21,7 +21,7 @@ public class HandsInventory : MonoBehaviour
                 currentHands += handEquipment.SetHand(weapon);
             if (currentHands > maxHands)
             {
-                if (secondHands.Length > 0)
+                while(secondHands.Length > 0 && currentHands > maxHands)
                 {
                     weaponInventory.RemoveEquippedWeapon(secondHands[0].GetWeapon());
                 }
@@ -42,9 +42,9 @@ public class HandsInventory : MonoBehaviour
             {
                 if (x.GetWeapon() == weapon)
                 {
-                    Destroy(x.gameObject);
+                    DestroyImmediate(x.gameObject);
                     currentHands -= x.GetHands();
-                    break; ;
+                    break;
                 }
             }
         }

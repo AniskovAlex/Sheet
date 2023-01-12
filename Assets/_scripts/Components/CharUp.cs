@@ -13,10 +13,9 @@ public class CharUp : MonoBehaviour
     {
         attr.maxValue = 2;
         attr.SetDropdowns(2);
-        foreach (Dropdown x in attr.GetDropdowns())
-            x.onValueChanged.AddListener(delegate { ChoosedAttr(); });
+        attr.check += ChoosedAttr;
     }
-
+    
     public void ChoosedFeat()
     {
         if (feat.GetDropdown().captionText.text == "Пусто")

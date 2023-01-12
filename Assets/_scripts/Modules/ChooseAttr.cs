@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class ChooseAttr : MonoBehaviour
 {
     [SerializeField] GameObject dropdown;
     public int maxValue = 1;
+    public Action check;
     List<string> attrAdd = new List<string>();
     HashSet<string> attrs = new HashSet<string> { "Сила", "Ловкость", "Телосложение", "Интеллект", "Мудрость", "Харизма" };
 
@@ -79,6 +81,8 @@ public class ChooseAttr : MonoBehaviour
             x.onValueChanged.AddListener(delegate { ChangeSelected(x); });
         }
         PresavedLists.UpdateAttrAdd(oldValue, dropdown.captionText.text);
+        if (check != null)
+            check();
     }
 
     private void OnDestroy()

@@ -64,12 +64,48 @@ public class SpellBody : MonoBehaviour
                 if (spell.reactionDis != null)
                     text += ", " + spell.reactionDis;
                 break;
+            case 3:
+                text += "1 час";
+                break;
+            case 4:
+                text += "Бонусное действие";
+                break;
+            case 5:
+                text += "1 минута";
+                break;
+            case 6:
+                text += "10 минут";
+                break;
+            case 7:
+                text += "12 часов";
+                break;
+            case 8:
+                text += "8 часов";
+                break;
+            case 9:
+                text += "24 часа";
+                break;
         }
 
         text += "\n<b>Дистанция:</b> ";
 
         switch (spell.dist)
         {
+            case -6:
+                text += "500 миль";
+                break;
+            case -5:
+                text += "Неограниченная";
+                break;
+            case -4:
+                text += "1 миля";
+                break;
+            case -3:
+                text += "В пределах видимости";
+                break;
+            case -2:
+                text += "Особая";
+                break;
             case -1:
                 text += "На себя";
                 break;
@@ -116,6 +152,39 @@ public class SpellBody : MonoBehaviour
                 break;
             case 4:
                 dur = "10 минут";
+                break;
+            case 5:
+                dur = "10 дней";
+                break;
+            case 6:
+                dur = "1 час";
+                break;
+            case 7:
+                dur = "24 часа";
+                break;
+            case 8:
+                dur = "8 часов";
+                break;
+            case 9:
+                dur = "Пока не рассеется";
+                break;
+            case 10:
+                dur = "2 часа";
+                break;
+            case 11:
+                dur = "7 дней";
+                break;
+            case 12:
+                dur = "Пока не рассеется или не сработает";
+                break;
+            case 13:
+                dur = "30 дней";
+                break;
+            case 14:
+                dur = "Особая";
+                break;
+            case 15:
+                dur = "6 раундов";
                 break;
         }
         if (spell.concentration)

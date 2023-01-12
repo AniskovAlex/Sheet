@@ -206,7 +206,14 @@ public class ChooseFeat : MonoBehaviour
         Dropdown[] dropdowns = discription.GetComponentsInChildren<Dropdown>();
         foreach (Dropdown x in dropdowns)
             Destroy(x.gameObject);
-        foreach (Feat x in list)
+        Text[] texts = discription.GetComponentsInChildren<Text>();
+        foreach (Text x in texts)
+            Destroy(x.gameObject);
+        foreach (string x in attrAdd)
+        {
+            PresavedLists.RemoveFromAttrAdd(x);
+        }
+            foreach (Feat x in list)
         {
             if (x.ability.head == chosenFeat.captionText.text)
             {

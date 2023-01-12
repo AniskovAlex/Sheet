@@ -51,25 +51,20 @@ public static class Utilities
 
     public static int GetMaxSpellLevel(List<(int, PlayersClass)> list)
     {
-        int spellCellCount = 0;
+        int cellPool = 0;
+        int cellMax = 0;
         foreach ((int, PlayersClass) x in list)
         {
-            if (x.Item2 == null) continue;
-            switch (x.Item2.magic)
-            {
-                case 1:
-                    spellCellCount += x.Item1;
-                    break;
-                case 2:
-                    spellCellCount += x.Item1 / 2;
-                    break;
-                case 3:
-                    spellCellCount += x.Item1 / 3;
-                    break;
-            }
+            if (x.Item2 == null || x.Item1 < x.Item2.magic || x.Item2.magic <= 0) continue;
+            cellPool += x.Item1 / x.Item2.magic;
         }
-        spellCellCount = (spellCellCount + 1) / 2;
-        return Mathf.Clamp(spellCellCount, 0, 9);
+        foreach ((int, PlayersClass) x in list)
+        {
+            if (x.Item2 == null || x.Item1 < x.Item2.magic || x.Item2.magic <= 0) continue;
+            int buf = cellPool - (x.Item1 / x.Item2.magic);
+            cellMax = Mathf.Max(cellMax, ((x.Item1 + buf) -1) / (2 * x.Item2.magic) + 1);
+        }
+        return Mathf.Clamp(cellMax, 0, 9);
     }
 
 }
