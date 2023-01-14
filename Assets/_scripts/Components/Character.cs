@@ -31,7 +31,6 @@ public class Character : MonoBehaviour
 
     public void DeleteCharacter()
     {
-        DataSaverAndLoader.DeleteCharacter(characterName);
-        Destroy(gameObject);
+        manager.ConfiermDelete(this);
     }
 }

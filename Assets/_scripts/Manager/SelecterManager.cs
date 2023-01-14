@@ -12,6 +12,8 @@ public class SelecterManager : MonoBehaviour
     public GameObject panel;
     public GameObject prefab;
 
+    [SerializeField] PopoutConfirm confirm;
+
     void Start()
     {
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
@@ -23,6 +25,17 @@ public class SelecterManager : MonoBehaviour
             GameObject newObject = GameObject.Instantiate(prefab, panel.transform);
             newObject.GetComponent<Character>().SetName(charName);
         }
+    }
+
+    public void ConfiermDelete(Character character)
+    {
+        confirm.Show(character);
+    }
+
+    public void DeleteCharacter(Character character)
+    {
+        DataSaverAndLoader.DeleteCharacter(character.name);
+        Destroy(character.gameObject);
     }
 
     public void LoadCharacter(string name)

@@ -30,6 +30,11 @@ public class FormCreater : MonoBehaviour
         head.text = name;
     }
 
+    public string GetHead()
+    {
+        return head.text;
+    }
+
     public void RemoveHead()
     {
         head.transform.parent.gameObject.SetActive(false);
