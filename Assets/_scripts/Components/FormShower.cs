@@ -41,11 +41,11 @@ public class FormShower : MonoBehaviour
                 break;
             case Ability.Type.instruments:
             case Ability.Type.language:
-            case Ability.Type.spellChoose:
             case Ability.Type.skills:
                 if (ability.chooseCount != 0)
                     Destroy(gameObject);
                 break;
+            case Ability.Type.spellChoose:
             case Ability.Type.attr:
             case Ability.Type.charUp:
             case Ability.Type.subRace:

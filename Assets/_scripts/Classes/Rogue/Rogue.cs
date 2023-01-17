@@ -138,6 +138,16 @@ public class Rogue : PlayersClass
         };
         subList.Add(subList1);
         list.Add(subList);
+        subList = new List<List<(int, Item)>>();
+
+        subList1 = new List<(int, Item)>()
+        {
+            (1, new Item(184)),
+            (2, new Item(199)),
+            (1, new Item(98))
+        };
+        subList.Add(subList1);
+        list.Add(subList);
 
         return list;
     }

@@ -113,8 +113,8 @@ public class SpellController : MonoBehaviour
             foreach (Spell x in g.Item2)
             {
                 buf.Add(x.id);
-                spellList.Add((g.Item1, buf));
             }
+            spellList.Add((g.Item1, buf));
         });
         return spellList;
     }

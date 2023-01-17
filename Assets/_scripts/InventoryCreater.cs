@@ -37,7 +37,7 @@ public class InventoryCreater : MonoBehaviour
             returnButton.SetActive(true);
             standartPanel.SetActive(true);
             choosePanel.SetActive(false);
-            standartPanel.GetComponent<StandartInvetoryPanel>().SetInventoryChoice(classes.GetClass(), backstory.GetBackstory(), items);
+            standartPanel.GetComponentInChildren<StandartInvetoryPanel>().SetInventoryChoice(classes.GetClass(), backstory.GetBackstory(), items);
             position = 2;
         }
     }
@@ -58,7 +58,7 @@ public class InventoryCreater : MonoBehaviour
             case 1:
                 return buyPanel.GetComponent<BuyInventoryPanel>().GetItems();
             case 2:
-                return standartPanel.GetComponent<StandartInvetoryPanel>().GetItems();
+                return standartPanel.GetComponentInChildren<StandartInvetoryPanel>().GetItems();
         }
         return null;
     }

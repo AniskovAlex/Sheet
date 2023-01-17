@@ -1183,6 +1183,8 @@ public static class DataSaverAndLoader
     public static void DeleteCharacter(string name)
     {
         int count = PlayerPrefs.GetInt(name + levelCountSaveName);
+        if (count == 0)
+            return;
         for (int i = 0; i < count; i++)
         {
             int classId = PlayerPrefs.GetInt(name + levelLabelSaveName + i);

@@ -610,6 +610,8 @@ public class FormCreater : MonoBehaviour
             x.options.Add(new Dropdown.OptionData(currentValue));
             x.options.Add(new Dropdown.OptionData("Пусто"));
             x.value = x.options.Count - 2;
+            if (x.value == 0 && x.options.Count == 2)
+                x.RefreshShownValue();
         }
     }
 
@@ -781,7 +783,7 @@ public class FormCreater : MonoBehaviour
         }
         if (ability.type == Ability.Type.spellChoose && ability.chooseCount == 0)
         {
-            if (ability.common != null)
+            if (ability.consum != null)
             {
                 foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
                     if (x.Item1 == ability.buf2Int)

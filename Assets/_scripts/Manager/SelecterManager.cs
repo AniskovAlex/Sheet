@@ -34,7 +34,7 @@ public class SelecterManager : MonoBehaviour
 
     public void DeleteCharacter(Character character)
     {
-        DataSaverAndLoader.DeleteCharacter(character.name);
+        DataSaverAndLoader.DeleteCharacter(character.GetName());
         Destroy(character.gameObject);
     }
 

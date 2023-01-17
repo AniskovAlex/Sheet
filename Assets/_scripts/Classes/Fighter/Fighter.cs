@@ -56,7 +56,7 @@ public class Fighter : PlayersClass
 
     public override HashSet<int> GetSaveThrows()
     {
-        return new HashSet<int> { 0, 1 };
+        return new HashSet<int> { 0, 2 };
     }
     public override List<List<List<(int, Item)>>> GetItems()
     {

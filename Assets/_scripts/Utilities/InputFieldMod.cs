@@ -102,6 +102,14 @@ public class InputFieldMod : UIBehaviour
                 }
             }
         }
+
+        /*if (EventSystem.current.currentSelectedGameObject == gameObject)
+        {
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                inputField.text += "\n";
+            }
+        }*/
     }
 
     // string operations

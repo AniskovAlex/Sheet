@@ -32,7 +32,7 @@ public class Personality : MonoBehaviour
         foreach ((int, PlayersClass) playersClass in classes)
             if (playersClass.Item2 != null)
             {
-                classesName.text += " " + playersClass.Item2.name + " ур." + playersClass.Item1 + ",";
+                classesName.text += " "+ playersClass.Item2.name + " ур." + playersClass.Item1 + ",";
                 GameObject classBody = Instantiate(form, content.transform);
                 classBody.GetComponent<FormShower>().SetHead(playersClass.Item2.name);
                 if (playersClass.Item2 != null)
@@ -50,7 +50,7 @@ public class Personality : MonoBehaviour
                     }
                 }
             }
-        classesName.text.Remove(classesName.text.Length - 1);
+        classesName.text = classesName.text.Remove(classesName.text.Length - 1);
         race = CharacterData.GetRace();
         if (race != null)
         {
@@ -112,7 +112,7 @@ public class Personality : MonoBehaviour
                     armorProficiancy.text += " щиты,";
                     break;
             }
-        armorProficiancy.text.Remove(armorProficiancy.text.Length - 1);
+        armorProficiancy.text = armorProficiancy.text.Remove(armorProficiancy.text.Length - 1);
 
         foreach (Weapon.WeaponType x in CharacterData.GetWeaponProficiency())
             switch (x)
@@ -245,7 +245,7 @@ public class Personality : MonoBehaviour
                     weaponProficiancy.text += " Сеть,";
                     break;
             }
-        weaponProficiancy.text.Remove(weaponProficiancy.text.Length - 1);
+        weaponProficiancy.text = weaponProficiancy.text.Remove(weaponProficiancy.text.Length - 1);
         foreach (string x in CharacterData.GetInstruments())
         {
             instrumentProficiancy.text += " " + x;
@@ -253,10 +253,10 @@ public class Personality : MonoBehaviour
                 instrumentProficiancy.text += "*";
             instrumentProficiancy.text += ",";
         }
-        instrumentProficiancy.text.Remove(instrumentProficiancy.text.Length - 1);
+        instrumentProficiancy.text = instrumentProficiancy.text.Remove(instrumentProficiancy.text.Length - 1);
         foreach (string x in CharacterData.GetLanguage())
             language.text += " " + x + ",";
-        language.text.Remove(language.text.Length - 1);
+        language.text = language.text.Remove(language.text.Length - 1);
     }
     void loadFeats()
     {
