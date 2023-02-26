@@ -17,6 +17,7 @@ public class ScrollRectCorrector : MonoBehaviour
         scrollRect = GetComponent<RectTransform>();
         bufCont = content.rect.height;
         height = view.rect.height;
+        content.sizeDelta = new Vector2(view.sizeDelta.x - 20, 0);
         scrollRect.sizeDelta = new Vector2(0, height);
     }
 

@@ -5,6 +5,15 @@ using UnityEngine;
 public class PopoutController : MonoBehaviour
 {
     [SerializeField] GameObject panel;
+    [SerializeField] AnimationPopout animationPopout;
+
+    public void Init()
+    {
+        if (animationPopout != null)
+            animationPopout.Init();
+    }
+
+    bool wait = false;
 
     private void OnEnable()
     {
@@ -14,6 +23,8 @@ public class PopoutController : MonoBehaviour
     public void SetPopout(List<GameObject> list)
     {
         gameObject.SetActive(true);
+        if (animationPopout != null)
+            animationPopout.OpenClose(true);
         foreach (GameObject x in list)
             Instantiate(x, panel.transform);
     }
@@ -27,6 +38,24 @@ public class PopoutController : MonoBehaviour
 
     public void Cancle()
     {
-        gameObject.SetActive(false);
+        wait = true;
+        if (animationPopout != null)
+            animationPopout.OpenClose(false);
+    }
+
+    private void Update()
+    {
+        if (!wait) return;
+        if (animationPopout == null)
+        {
+            gameObject.SetActive(false);
+            wait = false;
+            return;
+        }
+        if (animationPopout.isEnd())
+        {
+            gameObject.SetActive(false);
+            wait = false;
+        }
     }
 }

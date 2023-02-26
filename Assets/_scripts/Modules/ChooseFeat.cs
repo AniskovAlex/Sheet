@@ -213,6 +213,7 @@ public class ChooseFeat : MonoBehaviour
         {
             PresavedLists.RemoveFromAttrAdd(x);
         }
+        attrAdd.Clear();
             foreach (Feat x in list)
         {
             if (x.ability.head == chosenFeat.captionText.text)

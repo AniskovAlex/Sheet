@@ -9,6 +9,7 @@ public class FormShower : MonoBehaviour
     [SerializeField] GameObject headObject;
     [SerializeField] ConsumablePanel consumable;
     [SerializeField] GameObject basicText;
+    [SerializeField] SpellBody spellBody;
     GameObject discription;
     Ability _ability;
     ConsumablePanel consum;
@@ -37,6 +38,35 @@ public class FormShower : MonoBehaviour
                                     x.GetConsumablePanel().SpawnResetButton();
                         }
                         break;
+                }
+                if (ability.listName == "RitualCaster" || ability.listName == "AimCaster")
+                {
+                    List<int> listClass = DataSaverAndLoader.LoadCustom(ability.listName);
+                    if (listClass.Count <= 0) break;
+                    string buf = "Класс: ";
+                    switch (listClass[0])
+                    {
+                        default:
+                        case 0:
+                            buf += "Бард (Харизма)";
+                            break;
+                        case 3:
+                            buf += "Волшебник (Интеллект)";
+                            break;
+                        case 4:
+                            buf += "Друид (Мудрость)";
+                            break;
+                        case 5:
+                            buf += "Жрец (Мудрость)";
+                            break;
+                        case 7:
+                            buf += "Колдун (Харизма)";
+                            break;
+                        case 12:
+                            buf += "Чародей (Харизма)";
+                            break;
+                    }
+                    SetText((1, buf));
                 }
                 break;
             case Ability.Type.instruments:
@@ -67,6 +97,17 @@ public class FormShower : MonoBehaviour
                         if (y.Item1 != x) continue;
                         SetText((2, list[x].Item2));
                         SetText((0, list[x].Item3));
+                        if (ability.consum != null)
+                            foreach ((int, int) k in ability.consum)
+                                if (k.Item1 == y.Item1)
+                                {
+                                    if (k.Item2 < 0) break;
+                                    Spell[] spells;
+                                    spells = LoadSpellManager.GetSpells();
+                                    for (int i = 0; i < spells.Length; i++)
+                                        if (spells[i].id == k.Item2)
+                                            Instantiate(spellBody, discription.transform).SetSpell(spells[i]);
+                                }
                         break;
                     }
                 }
@@ -117,10 +158,30 @@ public class FormShower : MonoBehaviour
                             consum.SpawnResetWarCellsButton();
                             break;
                     }
+                switch (ability.listName)
+                {
+                    case "Arcanum6":
+                    case "Arcanum7":
+                    case "Arcanum8":
+                    case "Arcanum9":
+                        List<int> spellsId = DataSaverAndLoader.LoadCustom(ability.listName);
+                        ability.spellShow = spellsId;
+                        break;
+                }
                 break;
-
         }
 
+        if (ability.spellShow.Count > 0)
+        {
+            Spell[] spells;
+            spells = LoadSpellManager.GetSpells();
+            foreach (int x in ability.spellShow)
+            {
+                for (int i = 0; i < spells.Length; i++)
+                    if (spells[i].id == x)
+                        Instantiate(spellBody, discription.transform).SetSpell(spells[i]);
+            }
+        }
         if (ability.changeRule)
             RuleChanger();
         if (ability.hide)
@@ -284,7 +345,8 @@ public class FormShower : MonoBehaviour
                             flag = true;
                         }
                 }
-                if (!flag) {
+                if (!flag)
+                {
                     Ability diceOfSuprim = new Ability();
                     diceOfSuprim.head = "Кости превосходства";
                     diceOfSuprim.type = Ability.Type.consumable;
@@ -298,7 +360,7 @@ public class FormShower : MonoBehaviour
                     diceOfSuprim.consum[0].Item1 = 1;
                     diceOfSuprim.consum[0].Item2 = 1;
                     Instantiate(gameObject, transform.parent).GetComponent<FormShower>().CreateAbility(diceOfSuprim, 1, null);
-                } 
+                }
                 break;
             case "DealWielder":
                 GlobalStatus.dealWielder = true;

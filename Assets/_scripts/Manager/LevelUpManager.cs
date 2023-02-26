@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LevelUpManager : MonoBehaviour
 {
@@ -27,39 +28,42 @@ public class LevelUpManager : MonoBehaviour
     public void LoadView()
     {
         GlobalStatus.needRest = true;
+        GlobalStatus.load = true;
         characterName = CharacterCollection.GetName();
         if (classes != null)
         {
             PlayersClass playersClass = classes.GetClass();
-            if (CharacterData.GetLevel(playersClass) == 0)
-            {
-                HashSet<Weapon.BladeType> bladeProf;
-                HashSet<Weapon.WeaponType> weaponProf;
-                HashSet<Armor.ArmorType> armorProf;
-                bladeProf = playersClass.GetBladeProficiency();
-                if (bladeProf != null)
-                    PresavedLists.bladeTypes.UnionWith(bladeProf);
 
-                weaponProf = playersClass.GetWeaponProficiency();
-                if (weaponProf != null)
-                    PresavedLists.weaponTypes.UnionWith(weaponProf);
+            HashSet<Weapon.BladeType> bladeProf;
+            HashSet<Weapon.WeaponType> weaponProf;
+            HashSet<Armor.ArmorType> armorProf;
+            bladeProf = playersClass.GetBladeProficiency();
+            if (bladeProf != null)
+                PresavedLists.bladeTypes.UnionWith(bladeProf);
 
-                armorProf = playersClass.GetArmorProficiency();
-                if (armorProf != null)
-                    PresavedLists.armorTypes.UnionWith(armorProf);
-                HashSet<int> saveThrows;
-                saveThrows = playersClass.GetSaveThrows();
-                PresavedLists.saveThrows.UnionWith(saveThrows);
-            }
+            weaponProf = playersClass.GetWeaponProficiency();
+            if (weaponProf != null)
+                PresavedLists.weaponTypes.UnionWith(weaponProf);
+
+            armorProf = playersClass.GetArmorProficiency();
+            if (armorProf != null)
+                PresavedLists.armorTypes.UnionWith(armorProf);
             HealthUp healthUp = abilitiesPanel.GetComponentInChildren<HealthUp>();
             if (healthUp != null)
                 healthDice = healthUp.GetHealth();
+            DataSaverAndLoader.SaveHealthDice(playersClass.id, CharacterData.GetLevel(playersClass.id) + 1);
             DataSaverAndLoader.SaveClass(playersClass.id);
             if (playersClass.GetSubClass() != null)
                 DataSaverAndLoader.SaveSubClass(playersClass);
+            ChangeChosen[] changeChosens = classes.GetComponentsInChildren<ChangeChosen>();
+            foreach(ChangeChosen x in changeChosens)
+            {
+                PresavedLists.RemoveFromPrelist(x.GetAbility().listName, x.GetRemoveID());
+            }
             SaveAttr();
             SaveSkills();
             SaveCompetence();
+            SaveSpacialSpells();
             PresavedLists.SaveProficiency();
             PresavedLists.SaveInstruments();
             PresavedLists.SaveInstrumentsComp();
@@ -79,12 +83,19 @@ public class LevelUpManager : MonoBehaviour
         }
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene("view", LoadSceneMode.Single);
+        LoadSceneManager.Instance.LoadScene("view");
+        //SceneManager.LoadScene("view", LoadSceneMode.Single);
+    }
+
+    private void SaveSpacialSpells()
+    {
+        
     }
 
     public void LoadForceView()
     {
-        SceneManager.LoadScene("view", LoadSceneMode.Single);
+        LoadSceneManager.Instance.LoadScene("view");
+        //SceneManager.LoadScene("view", LoadSceneMode.Single);
     }
 
     void SaveAttr()

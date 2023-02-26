@@ -102,6 +102,7 @@ public class Bard : PlayersClass
             (2, new Item(57)),
             (5, new Item(70)),
             (5, new Item(67)),
+            (1, new Item(10)),
             (1, new Item(132))
         };
         subList.Add(subList1);
@@ -114,6 +115,7 @@ public class Bard : PlayersClass
         };
         subList.Add(subList1);
         list.Add(subList);
+        subList = new List<List<(int, Item)>>();
 
         subList1 = new List<(int, Item)>()
         {

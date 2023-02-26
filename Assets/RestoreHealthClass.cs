@@ -11,9 +11,13 @@ public class RestoreHealthClass : MonoBehaviour
     [SerializeField] Text HealthDice;
     [SerializeField] Text rest;
     int restInt;
+    int restMaxInt;
+    int classId;
     public void SetPanel(int count, PlayersClass playersClass, Action<int, PlayersClass> action)
     {
-        restInt = count;
+        classId = playersClass.id;
+        restInt = DataSaverAndLoader.LoadHealthDice(classId);
+        restMaxInt = count;
         button.onClick.AddListener(delegate
         {
             action(restInt, playersClass);
@@ -21,13 +25,14 @@ public class RestoreHealthClass : MonoBehaviour
         });
         className.text = playersClass.name;
         HealthDice.text = "ê" + playersClass.healthDice;
-        rest.text = count.ToString();
+        rest.text = restInt +"/" + restMaxInt;
     }
 
     void UpdatePanel()
     {
         if (restInt <= 0) return;
         restInt--;
-        rest.text = restInt.ToString();
+        DataSaverAndLoader.SaveHealthDice(classId, restInt);
+        rest.text = restInt + "/" + restMaxInt;
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField] Text characterNameText;
+    [SerializeField] Text characterClassText;
+    [SerializeField] Text characterLevelText;
     public SelecterManager manager = null;
     string characterName;
 
@@ -18,10 +21,12 @@ public class Character : MonoBehaviour
             manager.LoadCharacter(characterName);
     }
 
-    public void SetName(string text)
+    public void SetCharacter(string name, string className, int level)
     {
-        characterName = text;
-        this.gameObject.GetComponentInChildren<Text>().text = text;
+        characterName = name;
+        characterNameText.text = name;
+        characterClassText.text = className;
+        characterLevelText.text = "" + level;
     }
 
     public string GetName()

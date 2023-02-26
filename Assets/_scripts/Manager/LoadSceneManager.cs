@@ -5,15 +5,49 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneManager : MonoBehaviour
 {
-    public void LoadSelecter()
+    [SerializeField] GameObject _loadCanvas;
+    public static LoadSceneManager Instance;
+
+
+
+    private void Awake()
     {
-        PlayerPrefs.Save();
-        SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
     }
 
-    public void LoadLeveler()
+    /// <summary>
+    /// Загружает новую сцену
+    /// </summary>
+    /// <param name="newScene">Имя новой сцены</param>
+    public void LoadScene(string newScene)
     {
-        PlayerPrefs.Save();
-        SceneManager.LoadScene("LevelUp", LoadSceneMode.Single);
+        if (newScene != null)
+        {
+            StartCoroutine(AsyncLoadScene(newScene));
+        }
+    }
+
+    IEnumerator AsyncLoadScene(string newScene)
+    {
+        _loadCanvas.SetActive(true);
+        //yield return new WaitForSeconds(5);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(newScene);
+        asyncLoad.allowSceneActivation = false;
+
+        while (!asyncLoad.isDone)
+        {
+            if (asyncLoad.progress >= 0.9f)
+            {
+                asyncLoad.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+        _loadCanvas.SetActive(false);
     }
 }

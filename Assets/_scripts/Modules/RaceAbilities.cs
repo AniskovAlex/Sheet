@@ -43,9 +43,9 @@ public class RaceAbilities : MonoBehaviour
                 break;
         }
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
-        foreach (FormCreater x in opener)
+        for (int i = opener.Length - 1; i >= 0; i--)
         {
-            Destroy(x.gameObject);
+            DestroyImmediate(opener[i].gameObject);
         }
         if (playersRace != null)
         {

@@ -45,6 +45,8 @@ public static class DataSaverAndLoader
     const string tempHealthSaveName = "@THP_";
     const string addHealthSaveName = "@ATHP_";
 
+    const string healthDiceSaveName = "@healthDice_";
+
     const string raceSaveName = "@race_";
     const string raceSubRaceSaveName = "@subRace_";
     const string backstorySaveName = "@backstory_";
@@ -231,10 +233,23 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
+    public static void SaveHealthDice(int classId,int count)
+    {
+        string characterName = CharacterCollection.GetName();
+        PlayerPrefs.SetInt(characterName + healthDiceSaveName+classId, count);
+        PlayerPrefs.Save();
+    }
+
     public static int LoadAddHealth()
     {
         string characterName = CharacterCollection.GetName();
         return PlayerPrefs.GetInt(characterName + addHealthSaveName);
+    }
+
+    public static int LoadHealthDice(int classId)
+    {
+        string characterName = CharacterCollection.GetName();
+        return PlayerPrefs.GetInt(characterName + healthDiceSaveName + classId);
     }
 
     public static void SaveCharacter(string characterName)
@@ -1191,6 +1206,7 @@ public static class DataSaverAndLoader
             PlayerPrefs.DeleteKey(name + classSubClassSaveName + classId);
             PlayerPrefs.DeleteKey(name + levelLabelSaveName + i);
             PlayerPrefs.DeleteKey(name + levelSaveName + i);
+            PlayerPrefs.DeleteKey(name + healthDiceSaveName + classId);
         }
 
         string buf = "";

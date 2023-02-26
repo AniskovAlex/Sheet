@@ -138,15 +138,18 @@ public class SpellChoose : MonoBehaviour
         if (level != -5)
             for (int i = 0; i < list.Count; i++)
             {
+                bool flag1 = false;
                 foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
                 {
                     if (x.Item2.Contains(list[i].id))
                     {
                         list.RemoveAt(i);
                         i--;
+                        flag1 = true;
                         break;
                     }
                 }
+                if (flag1) continue;
                 foreach ((int, HashSet<int>) x in PresavedLists.spellKnew) 
                 {
                     if (x.Item2.Contains(list[i].id))
@@ -334,6 +337,11 @@ public class SpellChoose : MonoBehaviour
     public int GetLevel()
     {
         return _level;
+    }
+
+    public SpellBody[] GetSpellsChosen()
+    {
+        return chosen.GetComponentsInChildren<SpellBody>();
     }
 
     private void OnDestroy()

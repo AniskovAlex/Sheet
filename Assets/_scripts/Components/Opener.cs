@@ -5,15 +5,11 @@ using UnityEngine;
 public class Opener : MonoBehaviour
 {
     public GameObject panel;
-
-    private void Start()
-    {
-        panel.SetActive(false);
-    }
+    [SerializeField] AnimationOpen anim;
 
     public void click()
     {
-        Debug.Log(gameObject.name);
-        panel.SetActive(!panel.active);
+        if (anim == null) return;
+        anim.OpenClose();
     }
 }

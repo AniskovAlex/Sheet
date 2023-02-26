@@ -49,23 +49,29 @@ public class SpellBookKnow : MonoBehaviour
         }
         if (knewList != null)
         {
-            foreach (Spell x in knewList)
+            StartCoroutine(InstSpellsKnewAsync(knewList));
+        }
+    }
+
+    IEnumerator InstSpellsKnewAsync(List<Spell> knewList)
+    {
+        foreach (Spell x in knewList)
+        {
+            if (x.level == 0) continue;
+            SpellBody newSpell = Instantiate(spellBody, chosen.transform);
+            newSpell.SetSpell(x);
+            Amount buf = newSpell.GetComponentInChildren<Amount>();
+            if (buf != null)
             {
-                if (x.level == 0) continue;
-                SpellBody newSpell = Instantiate(spellBody, chosen.transform);
-                newSpell.SetSpell(x);
-                Amount buf = newSpell.GetComponentInChildren<Amount>();
-                if (buf != null)
+                Button button = buf.GetComponent<Button>();
+                if (button != null)
                 {
-                    Button button = buf.GetComponent<Button>();
-                    if (button != null)
-                    {
-                        button.GetComponentInChildren<Text>().text = "-";
-                        button.onClick.AddListener(delegate { ChangeSection(newSpell, 3); });
-                    }
+                    button.GetComponentInChildren<Text>().text = "-";
+                    button.onClick.AddListener(delegate { ChangeSection(newSpell, 3); });
                 }
             }
         }
+        yield return null;
     }
 
     void ChangeSection(SpellBody spellBody, int id)

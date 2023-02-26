@@ -16,6 +16,7 @@ public class LoadSpellManager
 
     static public Spell[] GetSpells()
     {
+        if (spells == null) LoadSpells();
         return spells;
     }
 }

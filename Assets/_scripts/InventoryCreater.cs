@@ -15,12 +15,12 @@ public class InventoryCreater : MonoBehaviour
     {
         items = GetComponent<LoadInventoryManager>().GetItems();
         classes.chosen += ReturnToChoose;
-        backstory.chosen += ReturnToChoose;
+        backstory.chosen += ReturnToChooseWithCheck;
     }
 
     public void ShowBuy()
     {
-        if (classes.GetClass() != null && backstory.GetBackstory() != null)
+        if (classes.GetClass() != null)
         {
             returnButton.SetActive(true);
             buyPanel.SetActive(true);
@@ -44,6 +44,16 @@ public class InventoryCreater : MonoBehaviour
 
     public void ReturnToChoose()
     {
+        returnButton.SetActive(false);
+        buyPanel.SetActive(false);
+        standartPanel.SetActive(false);
+        choosePanel.SetActive(true);
+        position = 0;
+    }
+
+    public void ReturnToChooseWithCheck()
+    {
+        if (position == 1) return;
         returnButton.SetActive(false);
         buyPanel.SetActive(false);
         standartPanel.SetActive(false);

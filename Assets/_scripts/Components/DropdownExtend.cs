@@ -7,5 +7,5 @@ public class DropdownExtend : MonoBehaviour
 {
     public string currentValueText = "";
     //public int currentValueInt = 0;
-    public Text text;
+    public Text discriptionText;
 }

@@ -48,4 +48,6 @@ public class Ability
 
     public bool changeRule;
     public bool change;
+
+    public List<int> spellShow = new List<int>();
 }

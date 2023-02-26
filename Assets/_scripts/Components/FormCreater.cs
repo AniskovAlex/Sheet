@@ -11,6 +11,7 @@ public class FormCreater : MonoBehaviour
     [SerializeField] GameObject dropdown;
     [SerializeField] SpellChoose spellChoose;
     [SerializeField] ChooseFeat featChoose;
+    [SerializeField] SpellBody spellBody;
     public GameObject consumable;
     public GameObject basicText;
     GameObject discription;
@@ -19,6 +20,7 @@ public class FormCreater : MonoBehaviour
     Ability ability = null;
     bool bufFlag = false;
     bool bufFlag1 = false;
+    SpellChoose newSpellChoose = null;
 
     private void Awake()
     {
@@ -42,11 +44,11 @@ public class FormCreater : MonoBehaviour
 
     public void CreateAbility(Ability ability)
     {
-        SpellChoose newSpellChoose = null;
         this.ability = ability;
         head.text = ability.head;
         foreach ((int, string) x in ability.discription)
             SetText(x);
+        Dropdown DedicatedClass;
         switch (ability.type)
         {
             case Ability.Type.consumable:
@@ -87,7 +89,7 @@ public class FormCreater : MonoBehaviour
                         newSpellChoose.blocked = true;
                         break;
                     case "DedicatedToMagic":
-                        Dropdown DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                        DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
                         DedicatedClass.ClearOptions();
                         DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
                         foreach ((int, string, string, int) x in ability.list)
@@ -128,7 +130,17 @@ public class FormCreater : MonoBehaviour
                             PresavedLists.addMaxHealth += CharacterData.GetLevel() + 1;
                             break;
                         case "RitualCaster":
-                            Dropdown DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                            DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
+                            DedicatedClass.ClearOptions();
+                            DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
+                            foreach ((int, string, string, int) x in ability.list)
+                                DedicatedClass.options.Add(new Dropdown.OptionData(x.Item2));
+                            DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
+                            DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); });
+                            DedicatedClass.value = 0;
+                            break;
+                        case "AimCaster":
+                            DedicatedClass = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
                             DedicatedClass.ClearOptions();
                             DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
                             foreach ((int, string, string, int) x in ability.list)
@@ -143,6 +155,7 @@ public class FormCreater : MonoBehaviour
                                 skillList.Add(x.Item2);
                             skillList.ExceptWith(PresavedLists.instruments);
                             skillList.ExceptWith(PresavedLists.skills);
+                            skillList.ExceptWith(PresavedLists.competence);
                             PresavedLists.ChangeSkillPing += UpdateSkillOptions;
                             PresavedLists.ChangeIntrumentsPing += UpdateInstrumentsOptions;
                             for (int i = 0; i < ability.chooseCount; i++)
@@ -242,7 +255,7 @@ public class FormCreater : MonoBehaviour
                     Dropdown chooseDrop = Instantiate(dropdown, discription.transform).GetComponent<Dropdown>();
                     Text listDis = Instantiate(basicText, discription.transform).GetComponent<Text>();
                     listDis.text = "";
-                    chooseDrop.GetComponent<DropdownExtend>().text = listDis;
+                    chooseDrop.GetComponent<DropdownExtend>().discriptionText = listDis;
                     chooseDrop.ClearOptions();
                     foreach ((int, string, string, int) x in list)
                         chooseDrop.options.Add(new Dropdown.OptionData(x.Item2));
@@ -469,7 +482,17 @@ public class FormCreater : MonoBehaviour
                 Instantiate(featChoose, discription.transform);
                 break;
         }
-
+        if (ability.spellShow.Count > 0)
+        {
+            Spell[] spells;
+            spells = LoadSpellManager.GetSpells();
+            foreach (int x in ability.spellShow)
+            {
+                for (int i = 0; i < spells.Length; i++)
+                    if (spells[i].id == x)
+                        Instantiate(spellBody, discription.transform).SetSpell(spells[i]);
+            }
+        }
     }
 
     void SetText((int, string) preText)
@@ -582,7 +605,7 @@ public class FormCreater : MonoBehaviour
         {
             if (constList[i].Item2 == dropdown.captionText.text)
             {
-                dropdown.GetComponent<DropdownExtend>().text.text = constList[i].Item3;
+                dropdown.GetComponent<DropdownExtend>().discriptionText.text = constList[i].Item3;
                 newValue = constList[i].Item1;
             }
             if (dropdown.GetComponent<DropdownExtend>().currentValueText == constList[i].Item2)
@@ -590,6 +613,36 @@ public class FormCreater : MonoBehaviour
         }
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         PresavedLists.UpdatePrelist(ability.listName, oldValue, newValue);
+
+
+        int textChildIndex = -1;
+        for (int i = 0; i + 1 < discription.transform.childCount; i++)
+        {
+            if (discription.transform.GetChild(i).gameObject == dropdown.GetComponent<DropdownExtend>().discriptionText.gameObject)
+            {
+                textChildIndex = i;
+                SpellBody spellBodyCur;
+                if (discription.transform.GetChild(i + 1).TryGetComponent(out spellBodyCur))
+                    DestroyImmediate(spellBodyCur.gameObject);
+            }
+        }
+        if (ability.consum != null)
+            foreach ((int, int) k in ability.consum)
+                if (k.Item1 == newValue)
+                {
+                    if (k.Item2 < 0) break;
+                    Spell[] spells;
+                    spells = LoadSpellManager.GetSpells();
+                    SpellBody spellBodyCur;
+                    for (int i = 0; i < spells.Length; i++)
+                        if (spells[i].id == k.Item2)
+                        {
+                            spellBodyCur = Instantiate(spellBody, discription.transform);
+                            spellBodyCur.SetSpell(spells[i]);
+                            if (textChildIndex > 0)
+                                spellBodyCur.transform.SetSiblingIndex(textChildIndex + 1);
+                        }
+                }
     }
 
     void ChangeDropdownOptions(HashSet<string> list, string remove)
@@ -699,6 +752,26 @@ public class FormCreater : MonoBehaviour
     private void OnDestroy()
     {
         if (ability == null) return;
+        if (ability.type == Ability.Type.consumable && GlobalStatus.load)
+            switch (ability.listName)
+            {
+                case "SpecialSpells":
+                    break;
+                case "shifter":
+                    break;
+                case "Arcanum6":
+                case "Arcanum7":
+                case "Arcanum8":
+                case "Arcanum9":
+                    SpellBody[] spells = newSpellChoose.GetSpellsChosen();
+                    List<int> spellsId = new List<int>();
+                    foreach (SpellBody x in spells)
+                        spellsId.Add(x.GetSpell().id);
+                    DataSaverAndLoader.SaveCustomList(ability.listName, spellsId);
+                    break;
+                case "DedicatedToMagic":
+                    break;
+            }
         if (ability.type == Ability.Type.withChoose)
         {
             if (ability.chooseCount == 0)
@@ -1011,18 +1084,30 @@ public class FormCreater : MonoBehaviour
     void DedicatedMagic(Dropdown dropdown)
     {
         SpellChoose[] spells = discription.GetComponentsInChildren<SpellChoose>();
-        bool flag = false;
+        int flag = 0;
         if (ability.listName == "RitualCaster")
-            flag = true;
+            flag = 1;
+        if (ability.listName == "AimCaster")
+            flag = 2;
         for (int i = 0; i < spells.Length; i++)
             Destroy(spells[i].gameObject);
         foreach ((int, string, string, int) x in ability.list)
             if (x.Item2 == dropdown.captionText.text)
             {
-                if (!flag)
-                    Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, 1, -1);
-                else
-                    Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, -9, -1);
+                switch (flag)
+                {
+                    default:
+                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, 1, -1);
+                        break;
+                    case 1:
+                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, -9, -1);
+                        break;
+                    case 2:
+                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 1, 0, -1);
+                        break;
+                }
+                if (flag != 0)
+                    DataSaverAndLoader.SaveCustomList(ability.listName, new List<int>() { x.Item1 });
                 break;
             }
     }

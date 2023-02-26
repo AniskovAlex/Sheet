@@ -39,26 +39,25 @@ public class MoneyController : MonoBehaviour
             m.Add((moneyInt, moneyAddInt));
             moneyAdd[index].text = "";
         }
-        bool flag = false;
         for (int index = 0; index < m.Count; index++)
         {
             int diver = m[index].Item1 - m[index].Item2;
             if (diver < 0)
             {
-                if (index != 0 && !flag)
+                if (index != 0)
                 {
                     (int, int) buf2 = m[index];
                     buf2.Item1 += 10;
                     m[index] = buf2;
                     index--;
                     buf2 = m[index];
-                    buf2.Item2 += 1;
+                    buf2.Item1 -= 1;
                     m[index] = buf2;
                     index--;
                 }
                 else
                 {
-                    flag = true;
+                    return;
                 }
             }
             else

@@ -7,6 +7,7 @@ public class HealthUp : MonoBehaviour
 {
     [SerializeField] Text healthDice;
     [SerializeField] Text content;
+    [SerializeField] Text label;
     [SerializeField] InputField userContent;
     ClassesAbilities classes;
     int midHealth = 0;
@@ -21,8 +22,9 @@ public class HealthUp : MonoBehaviour
         healthDice.text = "1к" + playerClass.healthDice;
         if (CharacterData.GetLevel() == 0)
         {
-            content.text = playerClass.healthDice.ToString();
+            content.text = playerClass.healthDice.ToString() + " + Мод. Телосложения";
             userContent.gameObject.SetActive(false);
+            label.text = "Начальное здоровье: ";
         }
         else
         {

@@ -12,6 +12,7 @@ public class ClassesAbilities : MonoBehaviour
     [SerializeField] GameObject form;
     [SerializeField] GameObject health;
     [SerializeField] SpellChoose spellChoose;
+    [SerializeField] ChangeChosen changeChosen;
     public Action chosen;
     PlayersClass playersClass = null;
     private void Awake()
@@ -88,6 +89,10 @@ public class ClassesAbilities : MonoBehaviour
                     if ((x.type == Ability.Type.skills || x.type == Ability.Type.instruments) && x.changeRule && CharacterData.GetLevel() + 1 == 1) continue;
                     if ((x.type == Ability.Type.skills || x.type == Ability.Type.instruments) && !x.changeRule && CharacterData.GetLevel() + 1 > 1) continue;
                     Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
+                }
+                if (x.type == Ability.Type.withChoose && !x.hide && x.change && x.level != level)
+                {
+                    Instantiate(changeChosen, content.transform).SetList(x);
                 }
             }
             if (level != 1 && playersClass.magicChange > 0)
@@ -273,11 +278,13 @@ public class ClassesAbilities : MonoBehaviour
         {
             Ability[] abilityArr = playersClass.ChooseSubClass(value.value);
             if (abilityArr != null)
+            {
                 foreach (Ability x in abilityArr)
                 {
                     if (x.level == CharacterData.GetLevel(playersClass) + 1)
                         Instantiate(form, formCreater.GetComponentInChildren<Discription>().transform).GetComponent<FormCreater>().CreateAbility(x);
                 }
+            }
         }
     }
 

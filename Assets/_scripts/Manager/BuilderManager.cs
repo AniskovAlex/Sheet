@@ -47,6 +47,7 @@ public class BuilderManager : MonoBehaviour
     {
         if (!GetComponent<Validater>().Validate()) return;
         GlobalStatus.needRest = true;
+        GlobalStatus.load = true;
         if (playerName.text != "")
         {
             DataSaverAndLoader.SaveCharacter(playerName.text);
@@ -98,7 +99,23 @@ public class BuilderManager : MonoBehaviour
                         itemList = new List<(int, Item)>();
                     List<(int, Item)> bufItems = backstory.GetBackstory().GetItems();
                     if (bufItems != null)
-                        itemList.AddRange(bufItems);
+                        for (int i = 0; i < bufItems.Count; i++)
+                        {
+                            bool flag = true;
+                            for (int j = 0; j < itemList.Count; j++)
+                            {
+                                if (itemList[j].Item2.id == bufItems[i].Item2.id || (bufItems[i].Item2.id == -1 && itemList[j].Item2.label == bufItems[i].Item2.label))
+                                {
+                                    (int, Item) bufItem = (itemList[j].Item1 + bufItems[i].Item1, itemList[j].Item2);
+                                    itemList.RemoveAt(j);
+                                    itemList.Insert(j, bufItem);
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (flag)
+                                itemList.Add(bufItems[i]);
+                        }
                     if (PresavedLists.items != null)
                     {
                         bool flag = false;
@@ -137,6 +154,7 @@ public class BuilderManager : MonoBehaviour
             DataSaverAndLoader.SaveAttachment(attachment.text);
             DataSaverAndLoader.SaveWeakness(weakness.text);
             DataSaverAndLoader.SaveBackstoryExtend(backstoryExtend.text);
+            DataSaverAndLoader.SaveHealthDice(classes.GetClass().id, 1);
             SaveAttr();
             PresavedLists.SaveProficiency();
             PresavedLists.SaveInstruments();
@@ -151,12 +169,14 @@ public class BuilderManager : MonoBehaviour
                 DataSaverAndLoader.SaveMoney(new List<int>(money));
             PlayerPrefs.Save();
         }
-        SceneManager.LoadScene("view", LoadSceneMode.Single);
+        LoadSceneManager.Instance.LoadScene("view");
+        //SceneManager.LoadScene("view", LoadSceneMode.Single);
     }
 
     public void LoadForceView()
     {
-        SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
+        LoadSceneManager.Instance.LoadScene("CharacterSelecter");
+        //SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
     }
 
     void SaveAttr()

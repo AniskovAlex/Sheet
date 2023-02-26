@@ -28,6 +28,7 @@ public static class GlobalStatus
     public static bool durable = false;
     public static bool mobile = false;
     public static bool magic = false;
+    public static bool load = false;
 
     public static void ResetRuleChanger()
     {
