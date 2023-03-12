@@ -31,6 +31,9 @@ public class NoticePanel : MonoBehaviour
             case 1:
                 Instantiate(body, transform).Set("” вас уже существует персонаж с таким именем");
                 break;
+            case 2:
+                Instantiate(body, transform).Set("ќба пол€ замены должны быть выбраны");
+                break;
         }
     }
 }

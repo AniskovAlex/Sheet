@@ -78,6 +78,8 @@ public class SelecterManager : MonoBehaviour
                     level += classLevel;
                 }
             }
+            if (countClasses > 1)
+                className += " +" + (countClasses - 1);
             newObject.GetComponent<Character>().SetCharacter(charName, className, level);
         }
     }

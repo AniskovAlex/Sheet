@@ -5,12 +5,16 @@ using UnityEngine.UI;
 
 public class ChangeChosen : MonoBehaviour
 {
+    [SerializeField] Text head;
     [SerializeField] Dropdown change;
     [SerializeField] Text changeText;
     [SerializeField] Dropdown changed;
     [SerializeField] Text changedText;
     [SerializeField] GameObject discription;
     [SerializeField] SpellBody spellBody;
+    [SerializeField] SpellChoose spellChoose;
+
+    bool secrets = false;
 
     List<(int, string, string, int)> list;
     List<(int, string, string, int)> changeList = new List<(int, string, string, int)>();
@@ -20,6 +24,7 @@ public class ChangeChosen : MonoBehaviour
     public void SetList(Ability _ability)
     {
         ability = _ability;
+        head.text = "Замена: " + _ability.head;
         if (ability.isUniq)
             constList = FileSaverAndLoader.LoadList(ability.pathToList);
         else
@@ -94,8 +99,47 @@ public class ChangeChosen : MonoBehaviour
         }
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         if (!change)
+        {
             PresavedLists.UpdatePrelist(ability.listName, oldValue, newValue);
-
+            if (ability.listName == "Appeals")
+            {
+                switch (oldValue)
+                {
+                    case 15:
+                        Destroy(discription.GetComponentInChildren<SpellChoose>().gameObject);
+                        break;
+                    case 10:
+                        List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
+                        List<string> remove = new List<string>() { "Обман", "Убеждение" };
+                        if (save != null && save.Count > 0)
+                            foreach (int x in save)
+                            {
+                                if (x == 0) remove.Remove("Обман");
+                                if (x == 1) remove.Remove("Убеждение");
+                            }
+                        foreach (string x in remove)
+                            PresavedLists.RemoveFromSkills(x);
+                        break;
+                }
+                switch (newValue)
+                {
+                    case 15:
+                        Instantiate(spellChoose, discription.transform).SetSpells(-3, 2, 1, -3);
+                        break;
+                    case 10:
+                        List<int> save = new List<int>();
+                        if (PresavedLists.skills.Contains("Обман"))
+                            save.Add(0);
+                        if (PresavedLists.skills.Contains("Убеждение"))
+                            save.Add(1);
+                        PresavedLists.UpdateSkills("", "Обман");
+                        PresavedLists.UpdateSkills("", "Убеждение");
+                        if (save.Count > 0)
+                            DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                        break;
+                }
+            }
+        }
 
         int textChildIndex = -1;
         for (int i = 0; i + 1 < discription.transform.childCount; i++)
@@ -288,5 +332,13 @@ public class ChangeChosen : MonoBehaviour
     public int GetRemoveID()
     {
         return id;
+    }
+
+    public bool Validate()
+    {
+        if ((change.captionText.text != "" && change.captionText.text != "Пусто") == (changed.captionText.text != "" && changed.captionText.text != "Пусто"))
+            return true;
+        else
+            return false;
     }
 }

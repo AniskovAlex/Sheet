@@ -27,6 +27,7 @@ public class LevelUpManager : MonoBehaviour
 
     public void LoadView()
     {
+        if (!GetComponent<Validater>().Validate()) return;
         GlobalStatus.needRest = true;
         GlobalStatus.load = true;
         characterName = CharacterCollection.GetName();

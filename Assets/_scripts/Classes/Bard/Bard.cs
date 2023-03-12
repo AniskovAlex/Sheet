@@ -34,23 +34,28 @@ public class Bard : PlayersClass
     public override HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
         HashSet<Weapon.WeaponType> list = new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist };
-        if (subClass != null)
-            if (subClass.GetWeaponProficiency() != null)
-                list = new HashSet<Weapon.WeaponType>(list.Concat(subClass.GetWeaponProficiency()));
+        HashSet<Weapon.WeaponType> buf = base.GetWeaponProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.WeaponType>(list.Concat(buf).ToArray());
         return list;
     }
 
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
-        return new HashSet<Weapon.BladeType>() { Weapon.BladeType.LongSword, Weapon.BladeType.ShortSword, Weapon.BladeType.Rapier, Weapon.BladeType.HandedCrossbow };
+        HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>() { Weapon.BladeType.LongSword, Weapon.BladeType.ShortSword, Weapon.BladeType.Rapier, Weapon.BladeType.HandedCrossbow };
+        HashSet<Weapon.BladeType> buf = base.GetBladeProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.BladeType>(list.Concat(buf).ToArray());
+        return list;
     }
+
 
     public override HashSet<Armor.ArmorType> GetArmorProficiency()
     {
-        HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light};
-        if (subClass != null)
-            if (subClass.GetArmorProficiency() != null)
-                list = new HashSet<Armor.ArmorType>(list.Concat(subClass.GetArmorProficiency()));
+        HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light };
+        HashSet<Armor.ArmorType> buf = base.GetArmorProficiency();
+        if (buf != null)
+            list = new HashSet<Armor.ArmorType>(list.Concat(buf).ToArray());
         return list;
     }
 

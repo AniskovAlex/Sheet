@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,12 +36,20 @@ public class Barbarian : PlayersClass
 
     public override HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
-        return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.WarMelee, Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist, Weapon.WeaponType.WarDist, Weapon.WeaponType.Shield };
+        HashSet<Weapon.WeaponType> list = new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.WarMelee, Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist, Weapon.WeaponType.WarDist, Weapon.WeaponType.Shield };
+        HashSet<Weapon.WeaponType> buf = base.GetWeaponProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.WeaponType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<Armor.ArmorType> GetArmorProficiency()
     {
-        return new HashSet<Armor.ArmorType>() {  Armor.ArmorType.Light, Armor.ArmorType.Medium, Armor.ArmorType.Shield };
+        HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light, Armor.ArmorType.Medium, Armor.ArmorType.Shield };
+        HashSet<Armor.ArmorType> buf = base.GetArmorProficiency();
+        if (buf != null)
+            list = new HashSet<Armor.ArmorType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<int> GetSaveThrows()

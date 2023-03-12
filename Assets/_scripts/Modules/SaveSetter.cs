@@ -35,6 +35,11 @@ public class SaveSetter : MonoBehaviour
                     break;
             }
             Utilities.SetTextSign(modifier, x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>());
+            if (index != 0)
+                x.GetComponentInChildren<Toggle>().isOn = true;
+            else
+                x.GetComponentInChildren<Toggle>().isOn = false;
+
         }
     }
 

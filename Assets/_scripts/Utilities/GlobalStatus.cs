@@ -29,6 +29,8 @@ public static class GlobalStatus
     public static bool mobile = false;
     public static bool magic = false;
     public static bool load = false;
+    public static bool ritualCaster = false;
+    public static bool secreatsBook = false;
 
     public static void ResetRuleChanger()
     {
@@ -54,5 +56,7 @@ public static class GlobalStatus
         mediumArmorMaster = false;
         durable = false;
         mobile = false;
+        ritualCaster = false;
+        secreatsBook = false;
     }
 }

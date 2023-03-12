@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,12 +32,20 @@ public class Druid : PlayersClass
 
     public override HashSet<Armor.ArmorType> GetArmorProficiency()
     {
-        return new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light, Armor.ArmorType.Medium, Armor.ArmorType.Shield };
+        HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light, Armor.ArmorType.Medium, Armor.ArmorType.Shield };
+        HashSet<Armor.ArmorType> buf = base.GetArmorProficiency();
+        if (buf != null)
+            list = new HashSet<Armor.ArmorType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
-        return new HashSet<Weapon.BladeType>() { Weapon.BladeType.Mace, Weapon.BladeType.Dart, Weapon.BladeType.Club, Weapon.BladeType.Dagger, Weapon.BladeType.Spear, Weapon.BladeType.ThrowingSpear, Weapon.BladeType.WarStaff, Weapon.BladeType.Sling, Weapon.BladeType.Sickle, Weapon.BladeType.Scimitar };
+        HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>() { Weapon.BladeType.Mace, Weapon.BladeType.Dart, Weapon.BladeType.Club, Weapon.BladeType.Dagger, Weapon.BladeType.Spear, Weapon.BladeType.ThrowingSpear, Weapon.BladeType.WarStaff, Weapon.BladeType.Sling, Weapon.BladeType.Sickle, Weapon.BladeType.Scimitar };
+        HashSet<Weapon.BladeType> buf = base.GetBladeProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.BladeType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<Weapon.BladeType> GetSubBladeProficiency()

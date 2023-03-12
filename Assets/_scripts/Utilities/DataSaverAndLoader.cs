@@ -233,10 +233,10 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
-    public static void SaveHealthDice(int classId,int count)
+    public static void SaveHealthDice(int classId, int count)
     {
         string characterName = CharacterCollection.GetName();
-        PlayerPrefs.SetInt(characterName + healthDiceSaveName+classId, count);
+        PlayerPrefs.SetInt(characterName + healthDiceSaveName + classId, count);
         PlayerPrefs.Save();
     }
 
@@ -488,6 +488,7 @@ public static class DataSaverAndLoader
                 {
                     flag = true;
                     buf = k;
+                    break;
                 }
             }
             int j;
@@ -495,6 +496,53 @@ public static class DataSaverAndLoader
                 j = PlayerPrefs.GetInt(characterName + spellKnewCountSaveName + buf);
             else
                 j = 0;
+            foreach (int y in x.Item2)
+            {
+                PlayerPrefs.SetInt(characterName + spellKnewSaveName + x.Item1 + j, y);
+                j++;
+            }
+            if (flag)
+            {
+                PlayerPrefs.SetInt(characterName + spellKnewCountSaveName + buf, j);
+                PlayerPrefs.SetInt(characterName + spellClassKnewSaveName + buf, x.Item1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt(characterName + spellKnewCountSaveName + count, j);
+                PlayerPrefs.SetInt(characterName + spellClassKnewSaveName + count, x.Item1);
+                count++;
+            }
+        }
+        PlayerPrefs.SetInt(characterName + spellClassKnewCountSaveName, count);
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveSpellKnewOverride(List<(int, HashSet<int>)> list)
+    {
+        string characterName = CharacterCollection.GetName();
+        int count = PlayerPrefs.GetInt(characterName + spellClassKnewCountSaveName);
+        foreach ((int, HashSet<int>) x in list)
+        {
+            int buf = 0;
+            bool flag = false;
+            for (int k = 0; k < count; k++)
+            {
+                buf = PlayerPrefs.GetInt(characterName + spellClassKnewSaveName + k);
+                if (buf == x.Item1)
+                {
+                    flag = true;
+                    buf = k;
+                    break;
+                }
+            }
+            int j;
+            if (flag)
+            {
+                j = PlayerPrefs.GetInt(characterName + spellKnewCountSaveName + buf);
+                for (int l = 0; l < j; l++)
+                    PlayerPrefs.DeleteKey(characterName + spellKnewSaveName + l);
+            }
+            j = 0;
             foreach (int y in x.Item2)
             {
                 PlayerPrefs.SetInt(characterName + spellKnewSaveName + x.Item1 + j, y);

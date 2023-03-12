@@ -32,7 +32,11 @@ public class Personality : MonoBehaviour
         foreach ((int, PlayersClass) playersClass in classes)
             if (playersClass.Item2 != null)
             {
-                classesName.text += " "+ playersClass.Item2.name + " ур." + playersClass.Item1 + ",";
+                classesName.text += " " + playersClass.Item2.name + " ур." + playersClass.Item1;
+                if (playersClass.Item2.GetSubClass() != null)
+                    classesName.text += " (" + playersClass.Item2.GetSubClass().GetName() + ")";
+                classesName.text += ", ";
+
                 GameObject classBody = Instantiate(form, content.transform);
                 classBody.GetComponent<FormShower>().SetHead(playersClass.Item2.name);
                 if (playersClass.Item2 != null)
@@ -62,7 +66,7 @@ public class Personality : MonoBehaviour
             if (abilitieSubRaceArr != null)
             {
                 abilityArr = abilityArr.Concat(abilitieSubRaceArr).ToArray();
-                RaceName.text += "(" + race.GetSubRace().GetName() + ")";
+                RaceName.text += " (" + race.GetSubRace().GetName() + ")";
             }
             foreach (Ability x in abilityArr)
             {

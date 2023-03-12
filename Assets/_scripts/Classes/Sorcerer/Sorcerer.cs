@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,11 @@ public class Sorcerer : PlayersClass
 
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
-        return new HashSet<Weapon.BladeType>() { Weapon.BladeType.Dagger, Weapon.BladeType.Dart, Weapon.BladeType.Sling, Weapon.BladeType.WarStaff, Weapon.BladeType.LightCrossbow };
+        HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>() { Weapon.BladeType.Dagger, Weapon.BladeType.Dart, Weapon.BladeType.Sling, Weapon.BladeType.WarStaff, Weapon.BladeType.LightCrossbow };
+        HashSet<Weapon.BladeType> buf = base.GetBladeProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.BladeType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<int> GetSaveThrows()

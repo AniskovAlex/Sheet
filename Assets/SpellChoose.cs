@@ -68,6 +68,9 @@ public class SpellChoose : MonoBehaviour
         }
         switch (spellClassId)
         {
+            case -3:
+                list = list.FindAll(g => (g.level == level && g.ritual));
+                break;
             case -1:
                 list = list.FindAll(g => (g.level <= levelCul));
                 break;
@@ -141,7 +144,7 @@ public class SpellChoose : MonoBehaviour
                 bool flag1 = false;
                 foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
                 {
-                    if (x.Item2.Contains(list[i].id))
+                    if (x.Item2.Contains(list[i].id) && x.Item1 != -3)
                     {
                         list.RemoveAt(i);
                         i--;
@@ -150,9 +153,9 @@ public class SpellChoose : MonoBehaviour
                     }
                 }
                 if (flag1) continue;
-                foreach ((int, HashSet<int>) x in PresavedLists.spellKnew) 
+                foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
                 {
-                    if (x.Item2.Contains(list[i].id))
+                    if (x.Item2.Contains(list[i].id) && x.Item1 != -3)
                     {
                         list.RemoveAt(i);
                         i--;
@@ -242,7 +245,7 @@ public class SpellChoose : MonoBehaviour
             if (leftCount <= 0) return;
             changeLeft++;
         }
-        if(changeLeft>0)
+        if (changeLeft > 0)
             changeText.gameObject.SetActive(true);
         else
             changeText.gameObject.SetActive(false);

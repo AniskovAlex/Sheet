@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,22 +41,33 @@ public class Rogue : PlayersClass
 
     public override HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
-        return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist };
+        HashSet<Weapon.WeaponType> list = new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist };
+        HashSet<Weapon.WeaponType> buf = base.GetWeaponProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.WeaponType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
-        return new HashSet<Weapon.BladeType>() { Weapon.BladeType.HandedCrossbow, Weapon.BladeType.LongSword, Weapon.BladeType.Rapier, Weapon.BladeType.ShortSword };
+        HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>() { Weapon.BladeType.HandedCrossbow, Weapon.BladeType.LongSword, Weapon.BladeType.Rapier, Weapon.BladeType.ShortSword };
+        HashSet<Weapon.BladeType> buf = base.GetBladeProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.BladeType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<Weapon.BladeType> GetSubBladeProficiency()
     {
-        return null;
+        if (subClass == null) return null;
+        return subClass.GetBladeProficiency();
     }
 
     public override HashSet<Armor.ArmorType> GetArmorProficiency()
     {
-        return new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light };
+        HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light };
+        list = new HashSet<Armor.ArmorType>(list.Concat(base.GetArmorProficiency()));
+        return list;
     }
 
     public override HashSet<int> GetSaveThrows()

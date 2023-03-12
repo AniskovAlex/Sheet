@@ -90,7 +90,7 @@ public class ClassesAbilities : MonoBehaviour
                     if ((x.type == Ability.Type.skills || x.type == Ability.Type.instruments) && !x.changeRule && CharacterData.GetLevel() + 1 > 1) continue;
                     Instantiate(form, content.transform).GetComponent<FormCreater>().CreateAbility(x);
                 }
-                if (x.type == Ability.Type.withChoose && !x.hide && x.change && x.level != level)
+                if (x.type == Ability.Type.withChoose && !x.hide && x.change && level > x.level)
                 {
                     Instantiate(changeChosen, content.transform).SetList(x);
                 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpellBookKnow : MonoBehaviour
+public class SectretsBookknow : MonoBehaviour
 {
     [SerializeField] SpellBody spellBody;
     [SerializeField] GameObject choose;
@@ -14,34 +14,31 @@ public class SpellBookKnow : MonoBehaviour
     private void Start()
     {
 
-        head.text = "Книга заклинаний";
-
+        head.text = "Ритуальная книга";
         bool flag = false;
 
         foreach ((int, List<Spell>) x in SpellController.spellKnew)
         {
-            if (x.Item1 == 3)
+            if (x.Item1 == -3)
             {
                 flag = true;
             }
         }
         if (!flag)
-            SpellController.spellKnew.Add((3, new List<Spell>()));
+            SpellController.spellKnew.Add((-3, new List<Spell>()));
+
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
 
-        list = list.FindAll(g => (g.level <= Utilities.GetMaxSpellLevel(CharacterData.GetClasses())) && g.level > 0);
+        list = list.FindAll(g => g.level <= (CharacterData.GetLevel() + 1) / 2 && g.level > 0 && g.ritual);
         foreach ((int, List<Spell>) x in SpellController.spellKnew)
-            if (x.Item1 == 3)
+            if (x.Item1 == -3)
             {
                 list = list.Except(x.Item2).ToList();
                 spellKnew = x.Item2;
             }
-
         int ID = 0;
-
-        ID = 3;
-
+        ID = -3;
         foreach (Spell x in list)
         {
             if (x.level == 0) continue;
@@ -75,7 +72,7 @@ public class SpellBookKnow : MonoBehaviour
                 if (button != null)
                 {
                     button.GetComponentInChildren<Text>().text = "-";
-                    button.onClick.AddListener(delegate { ChangeSection(newSpell, 3); });
+                    button.onClick.AddListener(delegate { ChangeSection(newSpell, -3); });
                 }
             }
         }
@@ -125,7 +122,7 @@ public class SpellBookKnow : MonoBehaviour
         HashSet<int> buf = new HashSet<int>();
         foreach (Spell x in spellKnew)
             buf.Add(x.id);
-        DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (3, buf) });
+        DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (-3, buf) });
         SpellController.ReloadSpells();
     }
 }

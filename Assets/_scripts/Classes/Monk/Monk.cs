@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,12 +39,20 @@ public class Monk : PlayersClass
 
     public override HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
-        return new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist };
+        HashSet<Weapon.WeaponType> list = new HashSet<Weapon.WeaponType>() { Weapon.WeaponType.CommonMelee, Weapon.WeaponType.CommonDist };
+        HashSet<Weapon.WeaponType> buf = base.GetWeaponProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.WeaponType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
-        return new HashSet<Weapon.BladeType>() { Weapon.BladeType.ShortSword };
+        HashSet<Weapon.BladeType> list = new HashSet<Weapon.BladeType>() { Weapon.BladeType.ShortSword };
+        HashSet<Weapon.BladeType> buf = base.GetBladeProficiency();
+        if (buf != null)
+            list = new HashSet<Weapon.BladeType>(list.Concat(buf).ToArray());
+        return list;
     }
 
     public override HashSet<int> GetSaveThrows()

@@ -69,13 +69,13 @@ public class FormShower : MonoBehaviour
                     SetText((1, buf));
                 }
                 break;
-            case Ability.Type.instruments:
             case Ability.Type.language:
             case Ability.Type.skills:
-                if (ability.chooseCount != 0)
+            case Ability.Type.spellChoose:
+                if (ability.spellShow == null || (ability.spellShow != null && ability.spellShow.Count <= 0))
                     Destroy(gameObject);
                 break;
-            case Ability.Type.spellChoose:
+            case Ability.Type.instruments:
             case Ability.Type.attr:
             case Ability.Type.charUp:
             case Ability.Type.subRace:
@@ -97,6 +97,8 @@ public class FormShower : MonoBehaviour
                         if (y.Item1 != x) continue;
                         SetText((2, list[x].Item2));
                         SetText((0, list[x].Item3));
+                        if (ability.listName == "Appeals" && y.Item1 == 15)
+                            GlobalStatus.secreatsBook = true;
                         if (ability.consum != null)
                             foreach ((int, int) k in ability.consum)
                                 if (k.Item1 == y.Item1)
@@ -373,6 +375,9 @@ public class FormShower : MonoBehaviour
                 break;
             case "Mobile":
                 GlobalStatus.mobile = true;
+                break;
+            case "RitualCaster":
+                GlobalStatus.ritualCaster = true;
                 break;
         }
     }

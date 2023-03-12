@@ -380,14 +380,26 @@ public class FormCreater : MonoBehaviour
                     }
                     if (ability.consum != null)
                     {
+                        if (ability.listName == "CirclesSpells")
+                        {
+                            List<(int, int)> buf = new List<(int, int)>();
+                            int index = DataSaverAndLoader.LoadCustom(ability.listName)[0];
+                            buf.Add(ability.consum[index * 2]);
+                            buf.Add(ability.consum[index * 2 + 1]);
+                            ability.consum = buf.ToArray();
+                        }
                         bool flag = false;
                         List<(int, HashSet<int>)> list;
                         list = PresavedLists.spellKnew;
                         foreach ((int, HashSet<int>) x in list)
-                            if (classesAbilities == null && x.Item1 == -1)
+                            if (classesAbilities == null)
                             {
+                                if (x.Item1 != -1) continue;
                                 foreach ((int, int) y in ability.consum)
+                                {
                                     x.Item2.Add(y.Item1);
+                                    ability.spellShow.Add(y.Item1);
+                                }
                                 flag = true;
                             }
                             else
@@ -395,7 +407,10 @@ public class FormCreater : MonoBehaviour
                                 if (x.Item1 == classesAbilities.GetClass().id)
                                 {
                                     foreach ((int, int) y in ability.consum)
+                                    {
                                         x.Item2.Add(y.Item1);
+                                        ability.spellShow.Add(y.Item1);
+                                    }
                                     flag = true;
                                 }
                             }
@@ -408,7 +423,10 @@ public class FormCreater : MonoBehaviour
                                 addClassId = -1;
                             (int, HashSet<int>) add = (addClassId, new HashSet<int>());
                             foreach ((int, int) y in ability.consum)
+                            {
                                 add.Item2.Add(y.Item1);
+                                ability.spellShow.Add(y.Item1);
+                            }
                             list.Add(add);
                         }
                     }
@@ -614,6 +632,119 @@ public class FormCreater : MonoBehaviour
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         PresavedLists.UpdatePrelist(ability.listName, oldValue, newValue);
 
+        if (ability.listName == "CirclesSpells")
+        {
+            for (int i = 0; i < discription.transform.childCount; i++)
+            {
+                SpellBody bufSpell;
+                if (discription.transform.GetChild(i).TryGetComponent(out bufSpell))
+                {
+                    DestroyImmediate(bufSpell.gameObject);
+                    i--;
+                }
+            }
+            if (newValue == -1) return;
+            List<(int, int)> buf = new List<(int, int)>();
+            Spell[] spells;
+            spells = LoadSpellManager.GetSpells();
+            SpellBody spellBodyCur;
+            for (int i = 0; i < 2; i++)
+            {
+                if (ability.consum.Length > newValue * 2 + i)
+                {
+                    for (int j = 0; j < spells.Length; j++)
+                        if (spells[j].id == ability.consum[newValue * 2 + i].Item1)
+                        {
+                            spellBodyCur = Instantiate(spellBody, discription.transform);
+                            spellBodyCur.SetSpell(spells[j]);
+                        }
+                }
+
+
+            }
+            bool flag = false;
+            List<(int, HashSet<int>)> list;
+            list = PresavedLists.spellKnew;
+            foreach ((int, HashSet<int>) x in list)
+                if (x.Item1 == 4)
+                {
+                    if (newValue >= 0)
+                    {
+                        x.Item2.Add(ability.consum[newValue * 2].Item1);
+                        x.Item2.Add(ability.consum[newValue * 2 + 1].Item1);
+                    }
+                    if (oldValue >= 0)
+                    {
+                        x.Item2.Remove(ability.consum[oldValue * 2].Item1);
+                        x.Item2.Remove(ability.consum[oldValue * 2 + 1].Item1);
+                    }
+                    flag = true;
+                }
+            if (!flag)
+            {
+                (int, HashSet<int>) add = (4, new HashSet<int>());
+                if (newValue >= 0)
+                {
+                    add.Item2.Add(ability.consum[newValue * 2].Item1);
+                    add.Item2.Add(ability.consum[newValue * 2 + 1].Item1);
+                }
+                list.Add(add);
+            }
+            return;
+        }
+        if (ability.listName == "ItemOfContract")
+        {
+            if (oldValue == 0)
+                for (int i = 0; i < discription.transform.childCount; i++)
+                {
+                    SpellChoose bufSpell;
+                    if (discription.transform.GetChild(i).TryGetComponent(out bufSpell))
+                    {
+                        DestroyImmediate(bufSpell.gameObject);
+                        i--;
+                    }
+                }
+            if (newValue == 0)
+                Instantiate(spellChoose, discription.transform).SetSpells(-1, 3, 0, 7);
+        }
+        if (ability.listName == "Appeals")
+        {
+            switch (oldValue)
+            {
+                case 15:
+                    Destroy(discription.GetComponentInChildren<SpellChoose>().gameObject);
+                    break;
+                case 10:
+                    List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
+                    List<string> remove = new List<string>(){ "Обман", "Убеждение" };
+                    if (save != null && save.Count > 0)
+                        foreach (int x in save)
+                        {
+                            if (x == 0) remove.Remove("Обман");
+                            if (x == 1) remove.Remove("Убеждение");
+                        }
+                    foreach (string x in remove)
+                        PresavedLists.RemoveFromSkills(x);
+                    break;
+            }
+            switch (newValue)
+            {
+                case 15:
+                    Instantiate(spellChoose, discription.transform).SetSpells(-3, 2, 1, -3);
+                    break;
+                case 10:
+                    List<int> save = new List<int>();
+                    if (PresavedLists.skills.Contains("Обман"))
+                        save.Add(0);
+                    if (PresavedLists.skills.Contains("Убеждение"))
+                        save.Add(1);
+                    PresavedLists.UpdateSkills("", "Обман");
+                    PresavedLists.UpdateSkills("", "Убеждение");
+                    if (save.Count > 0)
+                        DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                    break;
+            }
+        }
 
         int textChildIndex = -1;
         for (int i = 0; i + 1 < discription.transform.childCount; i++)
@@ -774,6 +905,20 @@ public class FormCreater : MonoBehaviour
             }
         if (ability.type == Ability.Type.withChoose)
         {
+            if (ability.listName == "CirclesSpells")
+            {
+                int index = -1;
+                foreach ((string, List<int>) y in PresavedLists.preLists)
+                    if (y.Item1 == ability.listName)
+                        index = y.Item2[0];
+                if (index >= 0)
+                    foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+                        if (x.Item1 == 4)
+                        {
+                            x.Item2.Remove(ability.consum[index * 2].Item1);
+                            x.Item2.Remove(ability.consum[index * 2 + 1].Item1);
+                        }
+            }
             if (ability.chooseCount == 0)
             {
                 foreach ((int, int) x in ability.consum)
@@ -781,13 +926,13 @@ public class FormCreater : MonoBehaviour
                 return;
             }
             PresavedLists.ChangePing -= UpdateOptions;
-            foreach (Dropdown x in GetComponentsInChildren<Dropdown>())
+            foreach (Dropdown x in discription.GetComponentsInChildren<Dropdown>())
             {
-                for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < constList.Count; i++)
                 {
-                    if (dropdown.GetComponent<DropdownExtend>().currentValueText == list[i].Item2)
+                    if (x.GetComponent<DropdownExtend>().currentValueText == constList[i].Item2)
                     {
-                        PresavedLists.RemoveFromPrelist(ability.listName, list[i].Item1);
+                        PresavedLists.RemoveFromPrelist(ability.listName, constList[i].Item1);
                         break;
                     }
                 }
@@ -1100,7 +1245,7 @@ public class FormCreater : MonoBehaviour
                         Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, 1, -1);
                         break;
                     case 1:
-                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, -9, -1);
+                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, -9, -2);
                         break;
                     case 2:
                         Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 1, 0, -1);

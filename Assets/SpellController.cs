@@ -12,6 +12,8 @@ public class SpellController : MonoBehaviour
     [SerializeField] SpellBody spellBody;
     [SerializeField] GameObject spellPanel;
     [SerializeField] GameObject spellBook;
+    [SerializeField] GameObject ritualBook;
+    [SerializeField] GameObject secreatsBook;
     [SerializeField] GameObject spellPrepare;
     [SerializeField] Button spellPanelButton;
     public static Action ReloadSpells;
@@ -29,6 +31,10 @@ public class SpellController : MonoBehaviour
         spellPrepare.SetActive(false);
         spellPanelButton.interactable = false;
         spellBook.SetActive(false);
+        if (!GlobalStatus.ritualCaster)
+            ritualBook.SetActive(false);
+        if (!GlobalStatus.secreatsBook)
+            secreatsBook.SetActive(false);
         foreach ((int, PlayersClass) x in CharacterData.GetClasses())
             if (x.Item2.magic != 0)
             {

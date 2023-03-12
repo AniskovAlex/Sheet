@@ -18,12 +18,24 @@ public class Validater : MonoBehaviour
         foreach (Dropdown x in dropdowns)
             if (x.captionText.text == "" || x.captionText.text == "Пусто")
             {
+                bool bufFlag = flag;
                 flag = false;
                 FormCreater formCreater;
                 if (x.transform.parent.parent.TryGetComponent(out formCreater))
                     notice.SetNotice(formCreater);
                 else
                 {
+                    ChangeChosen changeChosen;
+                    if (x.transform.parent.parent.TryGetComponent(out changeChosen))
+                    {
+                        if (!changeChosen.Validate())
+                            notice.SetNotice(2);
+                        else
+                        {
+                            flag = bufFlag;
+                            continue;
+                        }
+                    }
                     Discription discription;
                     if (x.transform.parent.TryGetComponent(out discription))
                         notice.SetNotice(discription.transform.parent.GetComponentInChildren<Text>());
@@ -31,7 +43,7 @@ public class Validater : MonoBehaviour
                     {
                         if (x.transform.parent == null) continue;
                         RaceAbilities raceAbilities = x.transform.parent.GetComponentInChildren<RaceAbilities>();
-                        if(raceAbilities!= null)
+                        if (raceAbilities != null)
                         {
                             notice.SetNotice("Раса");
                             continue;
@@ -48,7 +60,9 @@ public class Validater : MonoBehaviour
                     }
                 }
             }
-        if (characterName != null && characterName.text == "")
+        if (characterName == null)
+            return flag;
+        if (characterName.text == "")
         {
             notice.SetNotice(0);
             flag = false;
