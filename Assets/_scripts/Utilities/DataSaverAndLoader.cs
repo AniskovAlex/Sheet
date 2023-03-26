@@ -758,8 +758,9 @@ public static class DataSaverAndLoader
                 weapon.magic = false;
             else
                 weapon.magic = true;
-            weapon.damageType = Weapon.DamageType.Slashing + PlayerPrefs.GetInt(characterName + weaponTypeSaveName + label);
+            weapon.damageType = Weapon.DamageType.Slashing + PlayerPrefs.GetInt(characterName + damageTypeSaveName + label);
             weapon.bladeType = Weapon.BladeType.WarStaff + PlayerPrefs.GetInt(characterName + bladeTypeSaveName + label);
+            weapon.weaponType = Weapon.WeaponType.CommonMelee + PlayerPrefs.GetInt(characterName + weaponTypeSaveName + label);
             List<Weapon.Properties> list = new List<Weapon.Properties>();
             int propCount = PlayerPrefs.GetInt(characterName + propertiesCountSaveName + label);
             for (int i = 0; i < propCount; i++)

@@ -66,7 +66,9 @@ public class Rogue : PlayersClass
     public override HashSet<Armor.ArmorType> GetArmorProficiency()
     {
         HashSet<Armor.ArmorType> list = new HashSet<Armor.ArmorType>() { Armor.ArmorType.Light };
-        list = new HashSet<Armor.ArmorType>(list.Concat(base.GetArmorProficiency()));
+        HashSet<Armor.ArmorType> buf = base.GetArmorProficiency();
+        if (buf != null)
+            list = new HashSet<Armor.ArmorType>(list.Concat(buf).ToArray());
         return list;
     }
 

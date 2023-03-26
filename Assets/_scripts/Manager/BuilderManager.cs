@@ -104,7 +104,7 @@ public class BuilderManager : MonoBehaviour
                             bool flag = true;
                             for (int j = 0; j < itemList.Count; j++)
                             {
-                                if (itemList[j].Item2.id == bufItems[i].Item2.id || (bufItems[i].Item2.id == -1 && itemList[j].Item2.label == bufItems[i].Item2.label))
+                                if ((itemList[j].Item2.id == bufItems[i].Item2.id && bufItems[i].Item2.id != -1) || (bufItems[i].Item2.id == -1 && itemList[j].Item2.label == bufItems[i].Item2.label))
                                 {
                                     (int, Item) bufItem = (itemList[j].Item1 + bufItems[i].Item1, itemList[j].Item2);
                                     itemList.RemoveAt(j);
@@ -129,9 +129,12 @@ public class BuilderManager : MonoBehaviour
                                         (int, Item) bufItem = (itemList[i].Item1 + 1, itemList[i].Item2);
                                         itemList.RemoveAt(i);
                                         itemList.Insert(i, bufItem);
+                                        flag = true;
                                         break;
                                     }
                                 PresavedLists.items.Remove(x.label);
+                                if (!flag)
+                                    itemList.Add((1, x));
                             }
                         }
                         foreach (string x in PresavedLists.items)

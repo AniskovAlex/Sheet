@@ -17,7 +17,7 @@ public class Acolyte : Backstory
         {
             (1, new Item("Молитвенник")),
             (5, new Item("Благовония")),
-            (5, new Item(69)),
+            (1, new Item(69)),
             (1, new Item(233)),
             (1, new Item(37))
         };

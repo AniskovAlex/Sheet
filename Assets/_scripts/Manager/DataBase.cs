@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using System.IO;
 
 public class DataBase : MonoBehaviour

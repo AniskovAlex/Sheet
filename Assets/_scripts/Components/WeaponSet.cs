@@ -38,7 +38,7 @@ public class WeaponSet : MonoBehaviour
             dropdown.onValueChanged.AddListener(delegate { AddProperties(dropdown); });
             j++;
         }
-        blade.value = (int)weapon.bladeType;
+        blade.value = (int)weapon.bladeType + 1;
         Lock();
     }
 
@@ -48,7 +48,6 @@ public class WeaponSet : MonoBehaviour
         hitDice.interactable = false;
         dist.interactable = false;
         maxDist.interactable = false;
-        type.interactable = false;
         magic.interactable = false;
         type.interactable = false;
         blade.interactable = false;
@@ -66,7 +65,6 @@ public class WeaponSet : MonoBehaviour
         hitDice.interactable = true;
         dist.interactable = true;
         maxDist.interactable = true;
-        type.interactable = true;
         magic.interactable = true;
         type.interactable = true;
         blade.interactable = true;
@@ -118,13 +116,58 @@ public class WeaponSet : MonoBehaviour
         int.TryParse(dist.text, out newWeapon.dist);
         int.TryParse(maxDist.text, out newWeapon.maxDist);
         newWeapon.magic = magic.isOn;
-        newWeapon.bladeType= Weapon.BladeType.WarStaff + blade.value;
+        newWeapon.bladeType = Weapon.BladeType.WarStaff + blade.value - 1;
         switch (newWeapon.bladeType)
         {
+            case Weapon.BladeType.WarStaff:
+            case Weapon.BladeType.Mace:
+            case Weapon.BladeType.Club:
+            case Weapon.BladeType.Dagger:
+            case Weapon.BladeType.Spear:
+            case Weapon.BladeType.LightHammer:
+            case Weapon.BladeType.ThrowingSpear:
+            case Weapon.BladeType.Stick:
+            case Weapon.BladeType.HandAxe:
+            case Weapon.BladeType.Sickle:
             default:
                 newWeapon.weaponType = Weapon.WeaponType.CommonMelee;
                 break;
+            case Weapon.BladeType.LightCrossbow:
+            case Weapon.BladeType.Dart:
+            case Weapon.BladeType.ShortBow:
+            case Weapon.BladeType.Sling:
+                newWeapon.weaponType = Weapon.WeaponType.CommonDist;
+                break;
+            case Weapon.BladeType.Halberd:
+            case Weapon.BladeType.BattlePickaxe:
+            case Weapon.BladeType.BattleHammer:
+            case Weapon.BladeType.BattleAxe:
+            case Weapon.BladeType.Glaive:
+            case Weapon.BladeType.TwohandedSword:
+            case Weapon.BladeType.LongSpear:
+            case Weapon.BladeType.LongSword:
+            case Weapon.BladeType.Whip:
+            case Weapon.BladeType.ShortSword:
+            case Weapon.BladeType.Hammer:
+            case Weapon.BladeType.Morgenstern:
+            case Weapon.BladeType.Peak:
+            case Weapon.BladeType.Rapier:
+            case Weapon.BladeType.Poleaxe:
+            case Weapon.BladeType.Scimitar:
+            case Weapon.BladeType.Trident:
+            case Weapon.BladeType.Flail:
+                newWeapon.weaponType = Weapon.WeaponType.WarMelee;
+                break;
+            case Weapon.BladeType.HandedCrossbow:
+            case Weapon.BladeType.HeavyCrossbow:
+            case Weapon.BladeType.LongBow:
+            case Weapon.BladeType.Pipe:
+            case Weapon.BladeType.Net:
+                newWeapon.weaponType = Weapon.WeaponType.WarDist;
+                break;
+
         }
+        newWeapon.damageType = Weapon.DamageType.Slashing + type.value;
         List<Weapon.Properties> list = new List<Weapon.Properties>();
         Dropdown[] buf = props.GetComponentsInChildren<Dropdown>();
         if (buf != null)

@@ -716,7 +716,7 @@ public class FormCreater : MonoBehaviour
                     break;
                 case 10:
                     List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
-                    List<string> remove = new List<string>(){ "Обман", "Убеждение" };
+                    List<string> remove = new List<string>() { "Обман", "Убеждение" };
                     if (save != null && save.Count > 0)
                         foreach (int x in save)
                         {
@@ -778,7 +778,10 @@ public class FormCreater : MonoBehaviour
 
     void ChangeDropdownOptions(HashSet<string> list, string remove)
     {
-        Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>();
+        Dropdown[] dropdowns;
+        if (this != null)
+            dropdowns = GetComponentsInChildren<Dropdown>();
+        else return;
         foreach (Dropdown x in dropdowns)
         {
             x.ClearOptions();
