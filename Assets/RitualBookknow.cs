@@ -115,6 +115,7 @@ public class RitualBookknow : MonoBehaviour
             }
         }
         spellBody.transform.SetAsLastSibling();
+        Resize();
     }
 
     private void OnDestroy()
@@ -124,5 +125,37 @@ public class RitualBookknow : MonoBehaviour
             buf.Add(x.id);
         DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (-2, buf) });
         SpellController.ReloadSpells();
+    }
+
+    void Resize()
+    {
+        Opener opener;
+        opener = choose.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+        opener = chosen.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+
+        opener = GetComponentInChildren<Opener>();
+        opener.HieghtSizeInit();
+        Transform obj = this.transform;
+        for (obj = transform.parent; obj != null; obj = obj.parent)
+        {
+            ContentSizer contentSizer;
+            if (obj.TryGetComponent<ContentSizer>(out contentSizer))
+            {
+                contentSizer.HieghtSizeInit();
+            }
+            Opener opener1;
+            if (obj.parent != null && obj.parent.GetChild(0).TryGetComponent<Opener>(out opener1))
+            {
+                opener1.HieghtSizeInit();
+            }
+        }
     }
 }

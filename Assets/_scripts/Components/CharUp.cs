@@ -14,6 +14,7 @@ public class CharUp : MonoBehaviour
         attr.maxValue = 2;
         attr.SetDropdowns(2);
         attr.check += ChoosedAttr;
+        feat.check += ChoosedFeat;
     }
     
     public void ChoosedFeat()
@@ -48,5 +49,8 @@ public class CharUp : MonoBehaviour
             feat.gameObject.SetActive(false);
             text.SetActive(false);
         }
+        ContentSizer content;
+        if (TryGetComponent(out content))
+            content.Resize();
     }
 }

@@ -12,6 +12,7 @@ public class ItemBox : MonoBehaviour
     [SerializeField] Text weight;
     [SerializeField] Text type;
     Action<Item> inventoryItemRemove;
+    ContentSizer content;
     int amount;
     Item item;
     bool isInventory = false;
@@ -21,6 +22,7 @@ public class ItemBox : MonoBehaviour
         isInventory = flag;
         if (item.label != null && item.label != "")
             label.text = item.label[0].ToString().ToUpper() + item.label.Remove(0, 1);
+        transform.parent.TryGetComponent(out content);
         string moneyType = "";
         switch (item.mType)
         {
@@ -128,7 +130,8 @@ public class ItemBox : MonoBehaviour
         {
             if (isInventory)
                 DataSaverAndLoader.RemoveItem(item);
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
+            content.HieghtSizeInit();
         }
     }
 }

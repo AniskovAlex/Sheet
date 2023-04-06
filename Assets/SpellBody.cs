@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SpellBody : MonoBehaviour
 {
     [SerializeField] Text head;
     [SerializeField] Text headCaption;
-    [SerializeField] Text body;
+    [SerializeField] Text time;
+    [SerializeField] Text distance;
+    [SerializeField] Text components;
+    [SerializeField] Text duration;
+    [SerializeField] GameObject discription;
+    [SerializeField] Opener opener;
+    [SerializeField] GameObject ent;
 
     Spell _spell;
 
@@ -87,6 +94,7 @@ public class SpellBody : MonoBehaviour
                 break;
         }
 
+        //time.text = text;
         text += "\n<b>Дистанция:</b> ";
 
         switch (spell.dist)
@@ -116,6 +124,7 @@ public class SpellBody : MonoBehaviour
                 text += spell.dist + " фт.";
                 break;
         }
+        //distance.text = text;
         text += "\n<b>Компоненты:</b> ";
         foreach (Spell.Component x in spell.comp)
         {
@@ -136,6 +145,7 @@ public class SpellBody : MonoBehaviour
             text += ", ";
         }
         text.Remove(text.Length - 2);
+        //components.text = text;
         text += "\n<b>Длительность:</b> ";
         string dur;
         switch (spell.duration)
@@ -191,9 +201,25 @@ public class SpellBody : MonoBehaviour
             text += "Концентрация (" + dur + ")";
         else
             text += dur;
-        text += "\n<b>Описание:</b>\n";
+        //duration.text = text;
+        text += "\n<b>Описание: </b>";
         text += spell.discription;
-        body.text = text;
+        //discription.text = text;
+        Text buf;
+        for (int i = text.IndexOf('\n'); i != -1; i = text.IndexOf('\n'))
+        {
+            buf = Instantiate(discription, ent.transform).GetComponent<Text>();
+            buf.text = text.Remove(i);
+            buf.fontSize = 40;
+            buf.fontStyle = FontStyle.Normal;
+            text = text.Substring(i + 1);
+        }
+        buf = Instantiate(discription, ent.transform).GetComponent<Text>();
+        buf.text = text;
+        buf.fontSize = 40;
+        buf.fontStyle = FontStyle.Normal;
+        //opener.init = false;
+        //opener.HieghtSizeInit();
     }
 
     public Spell GetSpell()

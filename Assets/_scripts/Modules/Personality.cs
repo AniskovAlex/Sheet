@@ -54,7 +54,7 @@ public class Personality : MonoBehaviour
                     }
                 }
             }
-        classesName.text = classesName.text.Remove(classesName.text.Length - 1);
+        classesName.text = classesName.text.Remove(classesName.text.Length - 2);
         race = CharacterData.GetRace();
         if (race != null)
         {

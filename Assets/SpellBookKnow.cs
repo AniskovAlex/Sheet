@@ -30,7 +30,7 @@ public class SpellBookKnow : MonoBehaviour
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
 
-        list = list.FindAll(g => (g.level <= Utilities.GetMaxSpellLevel(CharacterData.GetClasses())) && g.level > 0);
+        list = list.FindAll(g => (g.level <= Utilities.GetMaxSpellLevel(CharacterData.GetClasses())) && g.level > 0 && g.classes.Contains(3));
         foreach ((int, List<Spell>) x in SpellController.spellKnew)
             if (x.Item1 == 3)
             {
@@ -118,8 +118,41 @@ public class SpellBookKnow : MonoBehaviour
             }
         }
         spellBody.transform.SetAsLastSibling();
+        Resize();
     }
 
+
+    void Resize()
+    {
+        Opener opener;
+        opener = choose.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+        opener = chosen.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+
+        opener = GetComponentInChildren<Opener>();
+        opener.HieghtSizeInit();
+        Transform obj = this.transform;
+        for (obj = transform.parent; obj != null; obj = obj.parent)
+        {
+            ContentSizer contentSizer;
+            if (obj.TryGetComponent<ContentSizer>(out contentSizer))
+            {
+                contentSizer.HieghtSizeInit();
+            }
+            Opener opener1;
+            if (obj.parent != null && obj.parent.GetChild(0).TryGetComponent<Opener>(out opener1))
+            {
+                opener1.HieghtSizeInit();
+            }
+        }
+    }
     private void OnDestroy()
     {
         HashSet<int> buf = new HashSet<int>();

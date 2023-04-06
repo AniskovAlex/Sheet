@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class ClassesAbilities : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class ClassesAbilities : MonoBehaviour
     [SerializeField] GameObject health;
     [SerializeField] SpellChoose spellChoose;
     [SerializeField] ChangeChosen changeChosen;
+    [SerializeField] ContentSizer contentSizer;
     public Action chosen;
     PlayersClass playersClass = null;
     private void Awake()
@@ -66,12 +69,12 @@ public class ClassesAbilities : MonoBehaviour
         FormCreater[] opener = content.GetComponentsInChildren<FormCreater>();
         for (int i = 0; i < opener.Length; i++)
         {
-            Destroy(opener[i].gameObject);
+            DestroyImmediate(opener[i].gameObject);
         }
         HealthUp[] healthUps = content.GetComponentsInChildren<HealthUp>();
         for (int i = 0; i < healthUps.Length; i++)
         {
-            Destroy(healthUps[i].gameObject);
+            DestroyImmediate(healthUps[i].gameObject);
         }
         Instantiate(health, content.transform);
         if (playersClass != null)
@@ -265,6 +268,7 @@ public class ClassesAbilities : MonoBehaviour
                 }
             }
         }
+        contentSizer.HieghtSizeInit();
     }
 
     public void ChosenSubClass(Dropdown value, FormCreater formCreater)
@@ -285,6 +289,7 @@ public class ClassesAbilities : MonoBehaviour
                 }
             }
         }
+        contentSizer.HieghtSizeInit();
     }
 
     public PlayersClass GetClass()

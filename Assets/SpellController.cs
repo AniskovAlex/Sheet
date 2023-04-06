@@ -81,6 +81,7 @@ public class SpellController : MonoBehaviour
         InitSpells();
         ReloadSpells = RespellKnew;
         ReloadSpells += InitSpells;
+        ReloadSpells += Resize;
         InitSpellCells();
     }
 
@@ -128,8 +129,8 @@ public class SpellController : MonoBehaviour
     void InitSpells()
     {
         foreach (GameObject x in spellLevelContainerObjects)
-            for (int i = 0; i < x.transform.childCount; i++)
-                Destroy(x.transform.GetChild(i).gameObject);
+            while (x.transform.childCount > 0)
+                DestroyImmediate(x.transform.GetChild(0).gameObject);
         spellKnew.ForEach(g =>
         {
             if (g.Item1 != 3)
@@ -381,6 +382,19 @@ public class SpellController : MonoBehaviour
     public int[] GetCellsMax()
     {
         return maxCells;
+    }
+
+    void Resize()
+    {
+        Transform obj = GetComponentInChildren<ContentSizer>().transform;
+        for (int i = 0; i < obj.childCount; i++)
+        {
+            Opener opener = obj.GetChild(i).GetComponentInChildren<Opener>();
+            if (opener != null)
+            {
+                opener.HieghtSizeInit();
+            }
+        }
     }
 
 }

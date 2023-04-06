@@ -22,11 +22,11 @@ public class PopoutController : MonoBehaviour
 
     public void SetPopout(List<GameObject> list)
     {
+        foreach (GameObject x in list)
+            Instantiate(x, panel.transform);
         gameObject.SetActive(true);
         if (animationPopout != null)
             animationPopout.OpenClose(true);
-        foreach (GameObject x in list)
-            Instantiate(x, panel.transform);
     }
 
     private void OnDisable()

@@ -11,17 +11,26 @@ public class ConsumablePanel : MonoBehaviour
     public Button reset;
     [SerializeField] GameObject horizontalePanel;
     [SerializeField] GameObject current;
-    float widthMax = 540f;
+    float width = 0f;
+    public float widthMax = 540f;//560
+    RectTransform rectTransform;
 
     private void Awake()
     {
-        GetComponentInChildren<Button>().onClick.AddListener(delegate { Decrease(); });
+        rectTransform = GetComponent<RectTransform>();
+        Button buf = GetComponentInChildren<Button>();
+        buf.onClick.AddListener(delegate { Decrease(); });
+        rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 80 + 20);
     }
 
     public void SpawnToggles(int amount)
     {
+        Opener opener;
+        if (transform.parent.TryGetComponent<Opener>(out opener))
+        {
+            opener.AddConsum(this);
+        }
         Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
-        float width = 0f;
         foreach (Selectable x in toggles)
             width += x.GetComponent<RectTransform>().rect.width;
         for (int i = 0; i < amount; i++)
@@ -31,6 +40,9 @@ public class ConsumablePanel : MonoBehaviour
             {
                 width = toggleObject.GetComponent<RectTransform>().rect.width;
                 current = Instantiate(horizontalePanel, transform);
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + horizontalePanel.GetComponent<RectTransform>().sizeDelta.y + 10);
+                if (opener != null)
+                    opener.ResizeHead(80 + 10);
             }
             Instantiate(toggleObject, current.transform);
         }
@@ -72,10 +84,15 @@ public class ConsumablePanel : MonoBehaviour
 
     public void SpawnToggles(int amount, int currentAmount)
     {
-        Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
+        Opener opener;
+        if (transform.parent.TryGetComponent<Opener>(out opener))
+        {
+            opener.AddConsum(this);
+        }
+        //[] toggles = current.GetComponentsInChildren<Selectable>();
         float width = 0f;
-        foreach (Selectable x in toggles)
-            width += x.GetComponent<RectTransform>().rect.width;
+        for (int i = 0; i < current.transform.childCount; i++)
+            width += 90;
         for (int i = 0; i < amount; i++)
         {
             width += 90;
@@ -83,6 +100,9 @@ public class ConsumablePanel : MonoBehaviour
             {
                 width = toggleObject.GetComponent<RectTransform>().rect.width;
                 current = Instantiate(horizontalePanel, transform);
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + 80 + 10);
+                if (opener != null)
+                    opener.ResizeHead(80 + 10);
             }
             GameObject gameObject = Instantiate(toggleObject, current.transform);
             if (currentAmount > 0)

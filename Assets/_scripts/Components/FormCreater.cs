@@ -95,7 +95,10 @@ public class FormCreater : MonoBehaviour
                         foreach ((int, string, string, int) x in ability.list)
                             DedicatedClass.options.Add(new Dropdown.OptionData(x.Item2));
                         DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
-                        DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); });
+                        DedicatedClass.onValueChanged.AddListener(delegate { 
+                            DedicatedMagic(DedicatedClass);
+                            DedicatedClass.GetComponent<DropdownExtend>().Resize();
+                        });
                         DedicatedClass.value = 0;
                         break;
                 }
@@ -136,7 +139,7 @@ public class FormCreater : MonoBehaviour
                             foreach ((int, string, string, int) x in ability.list)
                                 DedicatedClass.options.Add(new Dropdown.OptionData(x.Item2));
                             DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
-                            DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); });
+                            DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); DedicatedClass.GetComponent<DropdownExtend>().Resize(); });
                             DedicatedClass.value = 0;
                             break;
                         case "AimCaster":
@@ -146,7 +149,7 @@ public class FormCreater : MonoBehaviour
                             foreach ((int, string, string, int) x in ability.list)
                                 DedicatedClass.options.Add(new Dropdown.OptionData(x.Item2));
                             DedicatedClass.options.Add(new Dropdown.OptionData("Пусто"));
-                            DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); });
+                            DedicatedClass.onValueChanged.AddListener(delegate { DedicatedMagic(DedicatedClass); DedicatedClass.GetComponent<DropdownExtend>().Resize(); });
                             DedicatedClass.value = 0;
                             break;
                         case "Skilled":
@@ -511,6 +514,10 @@ public class FormCreater : MonoBehaviour
                         Instantiate(spellBody, discription.transform).SetSpell(spells[i]);
             }
         }
+
+        ContentSizer contentSizer;
+        if (discription.TryGetComponent<ContentSizer>(out contentSizer))
+            contentSizer.Resize();
     }
 
     void SetText((int, string) preText)
@@ -774,6 +781,9 @@ public class FormCreater : MonoBehaviour
                                 spellBodyCur.transform.SetSiblingIndex(textChildIndex + 1);
                         }
                 }
+        DropdownExtend dropdownExtend;
+        if (dropdown.TryGetComponent(out dropdownExtend))
+            dropdownExtend.Resize();
     }
 
     void ChangeDropdownOptions(HashSet<string> list, string remove)

@@ -62,6 +62,7 @@ public class ChangeChosen : MonoBehaviour
         change.onValueChanged.AddListener(delegate
         {
             ChangeSelected(change, true);
+            change.GetComponent<DropdownExtend>().Resize();
         });
         change.value = changeList.Count;
 
@@ -74,6 +75,7 @@ public class ChangeChosen : MonoBehaviour
         changed.onValueChanged.AddListener(delegate
         {
             ChangeSelected(changed, false);
+            changed.GetComponent<DropdownExtend>().Resize();
         });
         changed.value = list.Count;
     }

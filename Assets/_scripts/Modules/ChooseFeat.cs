@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class ChooseFeat : MonoBehaviour
     [SerializeField] FormCreater form;
     List<string> attrAdd = new List<string>();
     Feat currentFeat = null;
+    public Action check;
     bool bufFlag = false;
 
     List<Feat> list = null;
@@ -21,9 +23,9 @@ public class ChooseFeat : MonoBehaviour
     {
         list = new List<Feat>(FileSaverAndLoader.LoadFeats());
         List<Feat> buf = PresavedLists.feats.FindAll(g => !g.mul);
-        for(int i =0;i< list.Count;i++)
-            foreach(Feat x in buf)
-                if(list[i].id == x.id)
+        for (int i = 0; i < list.Count; i++)
+            foreach (Feat x in buf)
+                if (list[i].id == x.id)
                 {
                     list.RemoveAt(i);
                     i--;
@@ -202,19 +204,19 @@ public class ChooseFeat : MonoBehaviour
             Destroy(x.gameObject);*/
         FormCreater[] abilities = discription.GetComponentsInChildren<FormCreater>();
         foreach (FormCreater x in abilities)
-            Destroy(x.gameObject);
+            DestroyImmediate(x.gameObject);
         Dropdown[] dropdowns = discription.GetComponentsInChildren<Dropdown>();
         foreach (Dropdown x in dropdowns)
-            Destroy(x.gameObject);
+            DestroyImmediate(x.gameObject);
         Text[] texts = discription.GetComponentsInChildren<Text>();
         foreach (Text x in texts)
-            Destroy(x.gameObject);
+            DestroyImmediate(x.gameObject);
         foreach (string x in attrAdd)
         {
             PresavedLists.RemoveFromAttrAdd(x);
         }
         attrAdd.Clear();
-            foreach (Feat x in list)
+        foreach (Feat x in list)
         {
             if (x.ability.head == chosenFeat.captionText.text)
             {
@@ -278,6 +280,11 @@ public class ChooseFeat : MonoBehaviour
                 break;
             }
         }
+        if (check != null)
+            check();
+        ContentSizer content;
+        if (discription.TryGetComponent(out content))
+            content.Resize();
     }
 
 

@@ -28,6 +28,9 @@ public class ChooseAttr : MonoBehaviour
             newObject.GetComponent<Dropdown>().onValueChanged.AddListener(delegate { ChangeSelected(newObject.GetComponent<Dropdown>()); });
 
         }
+        ContentSizer contentSizer;
+        if (transform.TryGetComponent(out contentSizer))
+            contentSizer.Resize();
     }
     public void SetDropdowns(int count, List<string> exclude)
     {
@@ -46,6 +49,9 @@ public class ChooseAttr : MonoBehaviour
             newObject.GetComponent<Dropdown>().onValueChanged.AddListener(delegate { ChangeSelected(newObject.GetComponent<Dropdown>()); });
 
         }
+        ContentSizer contentSizer;
+        if (transform.TryGetComponent(out contentSizer))
+            contentSizer.Resize();
     }
 
     public Dropdown[] GetDropdowns()

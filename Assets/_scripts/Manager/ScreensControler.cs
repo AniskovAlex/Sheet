@@ -102,9 +102,9 @@ public class ScreensControler : MonoBehaviour
             offSet = null;
             if (!vertical)
             {
-                float currentVelocity = (transposer.m_ScreenX - 0.5f) / currentTime;
+                //float currentVelocity = (transposer.m_ScreenX - 0.5f) / currentTime;
                 //Debug.Log(currentVelocity);
-                if (transposer.m_ScreenX < 0.15f || -velocity > currentVelocity)
+                if (transposer.m_ScreenX < 0.15f/* || -velocity > currentVelocity*/)
                 {
                     int index = screens.FindIndex(x => x == vCam.Follow.gameObject) + 1;
                     if (index < screens.Count && screens[index].gameObject.activeSelf == true && buttons[index].gameObject.activeSelf)
@@ -113,7 +113,7 @@ public class ScreensControler : MonoBehaviour
                         DeactivateButton(buttons[index]);
                     }
                 }
-                if (transposer.m_ScreenX > 0.85f || velocity < currentVelocity)
+                if (transposer.m_ScreenX > 0.85f/* || velocity < currentVelocity*/)
                 {
                     int index = screens.FindIndex(x => x == vCam.Follow.gameObject) - 1;
                     if (index >= 0 && screens[index].gameObject.activeSelf == true && buttons[index].gameObject.activeSelf)

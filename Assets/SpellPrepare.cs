@@ -41,7 +41,7 @@ public class SpellPrepare : MonoBehaviour
             }
         }
         SpellController.spellPrepared.ForEach(g => list = list.Except(g.Item2).ToList());
-        
+
         foreach (Spell x in list)
         {
             if (x.level == 0) continue;
@@ -55,7 +55,7 @@ public class SpellPrepare : MonoBehaviour
                     button.onClick.AddListener(delegate { ChangeSection(newSpell, playerClass.id); });
             }
         }
-        
+
         List<Spell> preparedList = SpellController.spellPrepared.Find(g => g.Item1 == playerClass.id).Item2;
         int preparedCount = 0;
         if (preparedList != null)
@@ -131,5 +131,38 @@ public class SpellPrepare : MonoBehaviour
         }
         spellBody.transform.SetAsLastSibling();
         leftText.text = leftCount.ToString();
+        Resize();
+    }
+
+    void Resize()
+    {
+        Opener opener;
+        opener = choose.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+        opener = chosen.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+
+        opener = GetComponentInChildren<Opener>();
+        opener.HieghtSizeInit();
+        Transform obj = this.transform;
+        for(obj = transform.parent; obj!= null; obj = obj.parent)
+        {
+            ContentSizer contentSizer;
+            if (obj.TryGetComponent<ContentSizer>(out contentSizer))
+            {
+                contentSizer.HieghtSizeInit();
+            }
+            Opener opener1;
+            if(obj.parent!= null && obj.parent.GetChild(0).TryGetComponent<Opener>(out opener1))
+            {
+                opener1.HieghtSizeInit();
+            }
+        }
     }
 }

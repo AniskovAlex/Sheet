@@ -8,10 +8,12 @@ public class NotesPanel : MonoBehaviour
     [SerializeField] GameObject noteForm;
     [SerializeField] GameObject content;
     [SerializeField] GameObject noteCreate;
+    [SerializeField] ContentSizer contentSizer;
 
     private void Start()
     {
         LoadNotes();
+
     }
 
     void LoadNotes()
@@ -46,6 +48,7 @@ public class NotesPanel : MonoBehaviour
             if (transforms[i].transform.parent.gameObject == note)
                 break;
         DataSaverAndLoader.DeleteNotes(i);
-        Destroy(note);
+        DestroyImmediate(note);
+        contentSizer.HieghtSizeInit();
     }
 }

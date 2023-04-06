@@ -73,7 +73,7 @@ public class FormShower : MonoBehaviour
             case Ability.Type.skills:
             case Ability.Type.spellChoose:
                 if (ability.spellShow == null || (ability.spellShow != null && ability.spellShow.Count <= 0))
-                    Destroy(gameObject);
+                    DestroyImmediate(gameObject);
                 break;
             case Ability.Type.instruments:
             case Ability.Type.attr:
@@ -81,7 +81,7 @@ public class FormShower : MonoBehaviour
             case Ability.Type.subRace:
             case Ability.Type.subClass:
             case Ability.Type.feat:
-                Destroy(gameObject);
+                DestroyImmediate(gameObject);
                 break;
             case Ability.Type.withChoose:
                 (int, string, string, int)[] list;
@@ -187,7 +187,7 @@ public class FormShower : MonoBehaviour
         if (ability.changeRule)
             RuleChanger();
         if (ability.hide)
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
     }
 
     public Ability GetAbility()

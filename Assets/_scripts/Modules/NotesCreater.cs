@@ -10,6 +10,7 @@ public class NotesCreater : MonoBehaviour
     [SerializeField] GameObject form;
     [SerializeField] GameObject newNoteButton;
     [SerializeField] NotesPanel notesPanel;
+    [SerializeField] ContentSizer contentSizer;
 
     public void AddNote()
     {
@@ -25,12 +26,14 @@ public class NotesCreater : MonoBehaviour
         head.text = "";
         note.text = "";
         newNoteButton.SetActive(false);
+        contentSizer.HieghtSizeInit();
     }
 
     public void Cancle()
     {
         form.SetActive(false);
         newNoteButton.SetActive(true);
+        contentSizer.HieghtSizeInit();
     }
 
 }

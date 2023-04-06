@@ -54,14 +54,10 @@ public class SpellMasterAdd : MonoBehaviour
             if (newSpell.GetSpell().level == 1)
             {
                 lvlOL = Mathf.Clamp(lvlOL - 1, 0, 999);
-                if (lvlOL == 0)
-                    levelOneLeft.gameObject.SetActive(false);
             }
             if (newSpell.GetSpell().level == 2)
             {
                 lvlTL = Mathf.Clamp(lvlTL - 1, 0, 999);
-                if (lvlTL == 0)
-                    levelTwoLeft.gameObject.SetActive(false);
             }
             Amount buf = newSpell.GetComponentInChildren<Amount>();
             if (buf != null)
@@ -110,14 +106,10 @@ public class SpellMasterAdd : MonoBehaviour
             if (spellBody.GetSpell().level == 1)
             {
                 lvlOL = Mathf.Clamp(lvlOL - 1, 0, 999);
-                if (lvlOL == 0)
-                    levelOneLeft.gameObject.SetActive(false);
             }
             if (spellBody.GetSpell().level == 2)
             {
                 lvlTL = Mathf.Clamp(lvlTL - 1, 0, 999);
-                if (lvlTL == 0)
-                    levelTwoLeft.gameObject.SetActive(false);
             }
             if (button != null)
                 button.GetComponentInChildren<Text>().text = "-";
@@ -127,6 +119,39 @@ public class SpellMasterAdd : MonoBehaviour
             SpellController.spellMaster.Add(spellBody.GetSpell());
         }
         spellBody.transform.SetAsLastSibling();
+        Resize();
+    }
+
+    void Resize()
+    {
+        Opener opener;
+        opener = choose.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+        opener = chosen.transform.parent.parent.GetComponentInChildren<Opener>();
+        if (opener != null)
+        {
+            opener.HieghtSizeInit();
+        }
+
+        opener = GetComponentInChildren<Opener>();
+        opener.HieghtSizeInit();
+        Transform obj = this.transform;
+        for (obj = transform.parent; obj != null; obj = obj.parent)
+        {
+            ContentSizer contentSizer;
+            if (obj.TryGetComponent<ContentSizer>(out contentSizer))
+            {
+                contentSizer.HieghtSizeInit();
+            }
+            Opener opener1;
+            if (obj.parent != null && obj.parent.GetChild(0).TryGetComponent<Opener>(out opener1))
+            {
+                opener1.HieghtSizeInit();
+            }
+        }
     }
 
     private void OnDestroy()
