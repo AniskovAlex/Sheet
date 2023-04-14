@@ -115,6 +115,45 @@ public class HandEquipment : MonoBehaviour
         return hands;
     }
 
+    public void SetFist()
+    {
+        int attack = CharacterData.GetModifier(0);
+        label.text = "Безоружняя атака";
+        string damage= Mathf.Clamp(1 + attack, 1, 999).ToString();
+            int dice = 0;
+        if (GlobalStatus.monkWeapon)
+        {
+            dice = 4;
+            int level = CharacterData.GetLevel(8);
+            if (level >= 5) dice = 6;
+            if (level >= 11) dice = 8;
+            if (level >= 17) dice = 10;
+            damage = "1к" + dice;
+            if (attack > 0)
+                damage += "+" + attack;
+            if (attack < 0)
+                damage += attack;
+        }
+        if (GlobalStatus.cockerel)
+            dice = Mathf.Max(dice, 8);
+        if(dice!= 0)
+        {
+            damage = "1к" + dice;
+            if (attack > 0)
+                damage += "+" + attack;
+            if (attack < 0)
+                damage += attack;
+        }
+        hitDices.text = damage;
+        if (attack > 0)
+            attackBonus.text = "+" + attack;
+        else
+            attackBonus.text = attack.ToString();
+        distance.text = 5 + "фт.";
+        damageType.text = "Дробящий";
+        magick.isOn = false;
+    }
+
     public Weapon GetWeapon()
     {
         return currentWeapon;
@@ -182,7 +221,7 @@ public class HandEquipment : MonoBehaviour
             foreach (HandEquipment x in secondHands)
                 x.ReDamage();
         }
-        if (currentWeapon.weaponType == Weapon.WeaponType.Shield)
+        if (currentWeapon != null && currentWeapon.weaponType == Weapon.WeaponType.Shield)
         {
             ACController aCController = FindObjectOfType<ACController>();
             if (aCController != null)

@@ -1255,7 +1255,8 @@ public class FormCreater : MonoBehaviour
                 switch (flag)
                 {
                     default:
-                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, 1, -1);
+                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, 0, -1);
+                        Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 1, 1, -1);
                         break;
                     case 1:
                         Instantiate(spellChoose, discription.transform).SetSpells(x.Item1, 2, -9, -2);

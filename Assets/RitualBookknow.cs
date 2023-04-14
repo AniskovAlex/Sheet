@@ -10,6 +10,12 @@ public class RitualBookknow : MonoBehaviour
     [SerializeField] GameObject choose;
     [SerializeField] GameObject chosen;
     [SerializeField] Text head;
+    [SerializeField] SheetControler sheetsController;
+    [SerializeField] int spellsPerSheet;
+    SheetControler sheetControlerChoose;
+    SheetControler sheetControlerChosen;
+    List<(int, string, List<Spell>)> spellSheetsChoose;
+    List<(int, string, List<Spell>)> spellSheetsChosen;
     List<Spell> spellKnew = new List<Spell>();
     private void Start()
     {
@@ -29,8 +35,10 @@ public class RitualBookknow : MonoBehaviour
 
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
-
-        list = list.FindAll(g => g.level <= (CharacterData.GetLevel() + 1) / 2 && g.level > 0 && g.ritual);
+        List<int> listClass = DataSaverAndLoader.LoadCustom("RitualCaster");
+        if (listClass.Count <= 0) return;
+        int classID = listClass[0];
+        list = list.FindAll(g => g.level <= (CharacterData.GetLevel() + 1) / 2 && g.level > 0 && g.ritual && g.classes.Contains(classID));
         foreach ((int, List<Spell>) x in SpellController.spellKnew)
             if (x.Item1 == -2)
             {
@@ -39,31 +47,38 @@ public class RitualBookknow : MonoBehaviour
             }
         int ID = 0;
         ID = -2;
-        foreach (Spell x in list)
+        if (list.Count > spellsPerSheet)
         {
-            if (x.level == 0) continue;
-            SpellBody newSpell = Instantiate(spellBody, choose.transform);
-            newSpell.SetSpell(x);
-            Amount buf = newSpell.GetComponentInChildren<Amount>();
-            if (buf != null)
-            {
-                Button button = buf.GetComponent<Button>();
-                if (button != null)
-                    button.onClick.AddListener(delegate { ChangeSection(newSpell, ID); });
-            }
+            spellSheetsChoose = Utilities.SplitSpellList(list, spellsPerSheet);
+            sheetControlerChoose = Instantiate(sheetsController, choose.transform);
+            sheetControlerChoose.changeSpells += InitSpells;
+            sheetControlerChoose.SetButtons(spellSheetsChoose, true, choose);
         }
+        else
+            InitSpells(list, true, choose);
         if (spellKnew != null)
         {
-            StartCoroutine(InstSpellsKnewAsync(spellKnew));
+            if (spellKnew.Count > spellsPerSheet)
+            {
+                spellSheetsChosen = Utilities.SplitSpellList(spellKnew, spellsPerSheet);
+                sheetControlerChosen = Instantiate(sheetsController, chosen.transform);
+                sheetControlerChosen.changeSpells += InitSpells;
+                sheetControlerChosen.SetButtons(spellSheetsChosen, false, chosen);
+            }
+            else
+                InitSpells(spellKnew, false, chosen);
         }
     }
 
-    IEnumerator InstSpellsKnewAsync(List<Spell> knewList)
+    void InitSpells(List<Spell> knewList, bool add, GameObject panel)
     {
+        SpellBody[] spellChooses = panel.GetComponentsInChildren<SpellBody>();
+        foreach (SpellBody x in spellChooses)
+            DestroyImmediate(x.gameObject);
         foreach (Spell x in knewList)
         {
             if (x.level == 0) continue;
-            SpellBody newSpell = Instantiate(spellBody, chosen.transform);
+            SpellBody newSpell = Instantiate(spellBody, panel.transform);
             newSpell.SetSpell(x);
             Amount buf = newSpell.GetComponentInChildren<Amount>();
             if (buf != null)
@@ -71,12 +86,13 @@ public class RitualBookknow : MonoBehaviour
                 Button button = buf.GetComponent<Button>();
                 if (button != null)
                 {
-                    button.GetComponentInChildren<Text>().text = "-";
+                    if (!add)
+                        button.GetComponentInChildren<Text>().text = "-";
                     button.onClick.AddListener(delegate { ChangeSection(newSpell, -2); });
                 }
             }
         }
-        yield return null;
+        Resize();
     }
 
     void ChangeSection(SpellBody spellBody, int id)
@@ -100,6 +116,17 @@ public class RitualBookknow : MonoBehaviour
                 }
                 i++;
             }
+            if (spellSheetsChosen != null)
+                foreach ((int, string, List<Spell>) y in spellSheetsChosen)
+                    y.Item3.Remove(spellBody.GetSpell());
+            if (sheetControlerChoose != null)
+            {
+                spellSheetsChoose[0].Item3.Add(spellBody.GetSpell());
+                spellSheetsChoose = Utilities.SortSpellList(spellSheetsChoose, spellsPerSheet);
+                sheetControlerChoose.SetButtons(spellSheetsChoose, true, choose);
+            }
+            else
+                spellBody.transform.SetAsLastSibling();
         }
         else
         {
@@ -113,8 +140,18 @@ public class RitualBookknow : MonoBehaviour
                     spellKnew.Add(spellBody.GetSpell());
                 i++;
             }
+            if (spellSheetsChoose != null)
+                foreach ((int, string, List<Spell>) y in spellSheetsChoose)
+                    y.Item3.Remove(spellBody.GetSpell());
+            if (sheetControlerChosen != null)
+            {
+                spellSheetsChosen[0].Item3.Add(spellBody.GetSpell());
+                spellSheetsChosen = Utilities.SortSpellList(spellSheetsChosen, spellsPerSheet);
+                sheetControlerChosen.SetButtons(spellSheetsChosen, true, chosen);
+            }
+            else
+                spellBody.transform.SetAsLastSibling();
         }
-        spellBody.transform.SetAsLastSibling();
         Resize();
     }
 

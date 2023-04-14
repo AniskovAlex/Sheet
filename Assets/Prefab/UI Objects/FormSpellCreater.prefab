@@ -497,6 +497,8 @@ MonoBehaviour:
   chosen: {fileID: 8660236098541552064}
   leftText: {fileID: 1702569455490083421}
   changeText: {fileID: 1852034926833161649}
+  sheetsController: {fileID: 9058288538452493707, guid: 2d3a7c2597b72f047ad2ca0b99f0b09d, type: 3}
+  spellsPerSheet: 25
   mult: 0
   changeable: 0
   multAdd: 0
@@ -1160,7 +1162,6 @@ MonoBehaviour:
   verticalPadding: 0
   horizontalPadding: 0
   space: 0
-  open: 0
   init: 0
   resizing: 0
 --- !u!114 &8660236099159933562
@@ -1367,7 +1368,6 @@ MonoBehaviour:
   verticalPadding: 0
   horizontalPadding: 0
   space: 0
-  open: 0
   init: 0
   resizing: 0
 --- !u!114 &8660236099219301288

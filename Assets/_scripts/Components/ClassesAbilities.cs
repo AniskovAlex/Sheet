@@ -19,7 +19,6 @@ public class ClassesAbilities : MonoBehaviour
     PlayersClass playersClass = null;
     private void Awake()
     {
-        Debug.Log(CharacterCollection.GetName());
     }
 
     public void ChosenClass(Dropdown value)
@@ -76,9 +75,14 @@ public class ClassesAbilities : MonoBehaviour
         {
             DestroyImmediate(healthUps[i].gameObject);
         }
-        Instantiate(health, content.transform);
+        ChangeChosen[] changeChosens = content.GetComponentsInChildren<ChangeChosen>();
+        for (int i = 0; i < changeChosens.Length; i++)
+        {
+            DestroyImmediate(changeChosens[i].gameObject);
+        }
         if (playersClass != null)
         {
+            Instantiate(health, content.transform);
             Ability[] abilitieSubClassArr = playersClass.ChooseSubClass(DataSaverAndLoader.LoadSubClass(playersClass));
             Ability[] abilityArr = playersClass.GetAbilities();
             if (abilityArr != null && abilitieSubClassArr != null)
@@ -200,7 +204,7 @@ public class ClassesAbilities : MonoBehaviour
                 else
                 {
                     List<int> left = null;
-                    if(playersClass.id == 2)
+                    if (playersClass.id == 2)
                         left = new List<int> { -1, -2, -3 };
                     if (playersClass.id == 10)
                         left = new List<int> { -1, -6, -7 };
@@ -266,6 +270,9 @@ public class ClassesAbilities : MonoBehaviour
                     newSpellChoose.SetSpells(playersClass.id, 0, -1, playersClass.id);
                     newSpellChoose.SetSpells(playersClass.id, listSpells, playersClass.magicChange);
                 }
+                /*ContentSizer contentSizer;
+                if (formForSpells.TryGetComponent(out contentSizer))
+                    contentSizer.HieghtSizeInit();*/
             }
         }
         contentSizer.HieghtSizeInit();

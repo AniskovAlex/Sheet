@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,10 +12,16 @@ public class SpellPrepare : MonoBehaviour
     [SerializeField] GameObject chosen;
     [SerializeField] Text head;
     [SerializeField] Text leftText;
+    [SerializeField] SheetControler sheetsController;
+    [SerializeField] int spellsPerSheet;
+    SheetControler sheetControlerChoose;
+    List<(int, string, List<Spell>)> spellSheetsChoose;
     int leftCount = 0;
+    int id;
     public void SetSpells(PlayersClass playerClass, int level)
     {
         head.text = playerClass.name;
+        id = playerClass.id;
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
         if (playerClass.id != 3)
@@ -42,42 +49,26 @@ public class SpellPrepare : MonoBehaviour
         }
         SpellController.spellPrepared.ForEach(g => list = list.Except(g.Item2).ToList());
 
-        foreach (Spell x in list)
+        if (list.Count > spellsPerSheet)
         {
-            if (x.level == 0) continue;
-            SpellBody newSpell = Instantiate(spellBody, choose.transform);
-            newSpell.SetSpell(x);
-            Amount buf = newSpell.GetComponentInChildren<Amount>();
-            if (buf != null)
-            {
-                Button button = buf.GetComponent<Button>();
-                if (button != null)
-                    button.onClick.AddListener(delegate { ChangeSection(newSpell, playerClass.id); });
-            }
+            spellSheetsChoose = Utilities.SplitSpellList(list, spellsPerSheet);
+            if (spellSheetsChoose.Count > 0)
+                list = spellSheetsChoose[0].Item3;
+            sheetControlerChoose = Instantiate(sheetsController, choose.transform);
+            sheetControlerChoose.changeSpells += ChangeSpells;
+            sheetControlerChoose.SetButtons(spellSheetsChoose, true, choose);
         }
+        else
+            ChangeSpells(list, true, choose);
 
         List<Spell> preparedList = SpellController.spellPrepared.Find(g => g.Item1 == playerClass.id).Item2;
         int preparedCount = 0;
         if (preparedList != null)
         {
-            foreach (Spell x in preparedList)
-            {
-                if (x.level == 0) continue;
-                SpellBody newSpell = Instantiate(spellBody, chosen.transform);
-                newSpell.SetSpell(x);
-                Amount buf = newSpell.GetComponentInChildren<Amount>();
-                if (buf != null)
-                {
-                    Button button = buf.GetComponent<Button>();
-                    if (button != null)
-                    {
-                        button.GetComponentInChildren<Text>().text = "-";
-                        button.onClick.AddListener(delegate { ChangeSection(newSpell, playerClass.id); });
-                    }
-                }
-            }
+            ChangeSpells(preparedList, false, chosen);
             preparedCount = preparedList.Count;
         }
+
         bool flag = false;
         foreach ((int, List<Spell>) x in SpellController.spellPrepared)
             if (x.Item1 == playerClass.id)
@@ -87,6 +78,31 @@ public class SpellPrepare : MonoBehaviour
         int prepareFromLevel = level / playerClass.magic;
         leftCount = Mathf.Clamp(prepareFromLevel + CharacterData.GetModifier(playerClass.mainState), 1, 100) - preparedCount;
         leftText.text = leftCount.ToString();
+    }
+
+    void ChangeSpells(List<Spell> spells, bool add, GameObject panel)
+    {
+        SpellBody[] spellChooses = panel.GetComponentsInChildren<SpellBody>();
+        foreach (SpellBody x in spellChooses)
+            DestroyImmediate(x.gameObject);
+        foreach (Spell x in spells)
+        {
+            if (x.level == 0) continue;
+            SpellBody newSpell = Instantiate(spellBody, panel.transform);
+            newSpell.SetSpell(x);
+            Amount buf = newSpell.GetComponentInChildren<Amount>();
+            if (buf != null)
+            {
+                Button button = buf.GetComponent<Button>();
+                if (button != null)
+                {
+                    if (!add)
+                        button.GetComponentInChildren<Text>().text = "-";
+                    button.onClick.AddListener(delegate { ChangeSection(newSpell, id); });
+                }
+            }
+        }
+        Resize();
     }
 
     void ChangeSection(SpellBody spellBody, int id)
@@ -110,6 +126,14 @@ public class SpellPrepare : MonoBehaviour
                 }
                 i++;
             }
+            if (sheetControlerChoose != null)
+            {
+                spellSheetsChoose[0].Item3.Add(spellBody.GetSpell());
+                spellSheetsChoose = Utilities.SortSpellList(spellSheetsChoose, spellsPerSheet);
+                sheetControlerChoose.SetButtons(spellSheetsChoose, true, choose);
+            }
+            else
+                spellBody.transform.SetAsLastSibling();
             leftCount++;
         }
         else
@@ -128,8 +152,11 @@ public class SpellPrepare : MonoBehaviour
                 i++;
             }
             leftCount--;
+            if (spellSheetsChoose != null)
+                foreach ((int, string, List<Spell>) y in spellSheetsChoose)
+                y.Item3.Remove(spellBody.GetSpell());
+            spellBody.transform.SetAsLastSibling();
         }
-        spellBody.transform.SetAsLastSibling();
         leftText.text = leftCount.ToString();
         Resize();
     }
@@ -151,7 +178,7 @@ public class SpellPrepare : MonoBehaviour
         opener = GetComponentInChildren<Opener>();
         opener.HieghtSizeInit();
         Transform obj = this.transform;
-        for(obj = transform.parent; obj!= null; obj = obj.parent)
+        for (obj = transform.parent; obj != null; obj = obj.parent)
         {
             ContentSizer contentSizer;
             if (obj.TryGetComponent<ContentSizer>(out contentSizer))
@@ -159,7 +186,7 @@ public class SpellPrepare : MonoBehaviour
                 contentSizer.HieghtSizeInit();
             }
             Opener opener1;
-            if(obj.parent!= null && obj.parent.GetChild(0).TryGetComponent<Opener>(out opener1))
+            if (obj.parent != null && obj.parent.GetChild(0).TryGetComponent<Opener>(out opener1))
             {
                 opener1.HieghtSizeInit();
             }

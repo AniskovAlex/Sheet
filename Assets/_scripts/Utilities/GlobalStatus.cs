@@ -31,6 +31,7 @@ public static class GlobalStatus
     public static bool load = false;
     public static bool ritualCaster = false;
     public static bool secreatsBook = false;
+    public static bool cockerel = false;
 
     public static void ResetRuleChanger()
     {
@@ -58,5 +59,6 @@ public static class GlobalStatus
         mobile = false;
         ritualCaster = false;
         secreatsBook = false;
+        cockerel = false;
     }
 }

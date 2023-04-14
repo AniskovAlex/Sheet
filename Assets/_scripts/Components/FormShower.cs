@@ -379,6 +379,9 @@ public class FormShower : MonoBehaviour
             case "RitualCaster":
                 GlobalStatus.ritualCaster = true;
                 break;
+            case "cockerel":
+                GlobalStatus.cockerel = true;
+                break;
         }
     }
 }

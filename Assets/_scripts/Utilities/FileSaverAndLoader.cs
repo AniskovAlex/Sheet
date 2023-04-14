@@ -30,14 +30,12 @@ public static class FileSaverAndLoader
     {
         string JSON = "";
         string path = Path.Combine(Application.streamingAssetsPath, pathname + ".json");
-        Debug.Log(path);
         if (Application.platform == RuntimePlatform.Android)
         {
             UnityWebRequest www = UnityWebRequest.Get(path);
             www.SendWebRequest();
             while (!www.isDone) ;
             JSON = www.downloadHandler.text;
-            Debug.Log(JSON);
         }
         else
             JSON = File.ReadAllText(path);

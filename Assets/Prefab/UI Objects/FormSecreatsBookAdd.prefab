@@ -188,3 +188,5 @@ MonoBehaviour:
   choose: {fileID: 5102891314012805369}
   chosen: {fileID: 2736890439340988058}
   head: {fileID: 5383195914515981721}
+  sheetsController: {fileID: 9058288538452493707, guid: 2d3a7c2597b72f047ad2ca0b99f0b09d, type: 3}
+  spellsPerSheet: 25

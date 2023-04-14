@@ -273,8 +273,8 @@ MonoBehaviour:
   verticalPadding: 10
   horizontalPadding: 10
   space: 10
-  open: 0
   init: 0
+  resizing: 0
 --- !u!114 &2621301210294662834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,8 +478,8 @@ MonoBehaviour:
   verticalPadding: 0
   horizontalPadding: 0
   space: 0
-  open: 0
   init: 0
+  resizing: 0
 --- !u!114 &2929302404296874103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,8 +1357,8 @@ MonoBehaviour:
   verticalPadding: 10
   horizontalPadding: 10
   space: 10
-  open: 0
   init: 0
+  resizing: 0
 --- !u!114 &5746672935320711181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2298,3 +2298,5 @@ MonoBehaviour:
   choose: {fileID: 7121473593983743054}
   chosen: {fileID: 143817525896182317}
   head: {fileID: 7976268789456980270}
+  sheetsController: {fileID: 9058288538452493707, guid: 2d3a7c2597b72f047ad2ca0b99f0b09d, type: 3}
+  spellsPerSheet: 25

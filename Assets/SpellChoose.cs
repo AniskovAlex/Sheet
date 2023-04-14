@@ -10,7 +10,11 @@ public class SpellChoose : MonoBehaviour
     [SerializeField] GameObject chosen;
     [SerializeField] Text leftText;
     [SerializeField] Text changeText;
+    [SerializeField] SheetControler sheetsController;
+    [SerializeField] int spellsPerSheet;
     List<(int, HashSet<int>)> backup;
+    SheetControler sheetControlerChoose;
+    List<(int, string, List<Spell>)> spellSheetsChoose;
     int leftCount = 0;
     int changeLeft = 0;
     public bool mult = false;
@@ -19,6 +23,7 @@ public class SpellChoose : MonoBehaviour
     public bool blocked = false;
     bool block = false;
     int _level = 0;
+    int id;
     private void Start()
     {
         backup = new List<(int, HashSet<int>)>(PresavedLists.spellKnew);
@@ -27,17 +32,23 @@ public class SpellChoose : MonoBehaviour
 
     public void SetSpells(int spellClassId, int count, int level, int classId)
     {
+        id = classId;
         _level = level;
         ChosenSpells(spellClassId, count, level, classId);
+        ContentSizer contentSizer;
+        if (TryGetComponent(out contentSizer))
+            contentSizer.Resize();
     }
 
     public void SetSpells(int classId, List<Spell> listKnew, int changeCount)
     {
+        id = classId;
         ChangeSpells(classId, listKnew, changeCount);
     }
 
     void ChosenSpells(int spellClassId, int count, int level, int classId)
     {
+        id = classId;
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
         int levelCul = 0;
@@ -163,7 +174,20 @@ public class SpellChoose : MonoBehaviour
                     }
                 }
             }
-        foreach (Spell x in list)
+
+        if (list.Count > spellsPerSheet)
+        {
+            spellSheetsChoose = Utilities.SplitSpellList(list, spellsPerSheet);
+            if (spellSheetsChoose.Count > 0)
+                list = spellSheetsChoose[0].Item3;
+            sheetControlerChoose = Instantiate(sheetsController, choose.transform);
+            sheetControlerChoose.changeSpells += ChangeSpells;
+            sheetControlerChoose.SetButtons(spellSheetsChoose, true, choose);
+        }
+        else
+            ChangeSpells(list, true, choose);
+
+        /*foreach (Spell x in list)
         {
             SpellBody newSpell = Instantiate(spellBody, choose.transform);
             newSpell.SetSpell(x);
@@ -177,13 +201,16 @@ public class SpellChoose : MonoBehaviour
                         ChangeSection(newSpell, classId);
                     });
             }
-        }
+        }*/
         leftCount = count;
         leftText.text = leftCount.ToString();
     }
 
     void ChangeSpells(int classId, List<Spell> listKnew, int changeCount)
     {
+        SpellBody[] spellChooses = chosen.GetComponentsInChildren<SpellBody>();
+        foreach (SpellBody x in spellChooses)
+            DestroyImmediate(x.gameObject);
         changeLeft = changeCount;
         if (changeLeft > 0)
             changeText.gameObject.SetActive(true);
@@ -197,10 +224,36 @@ public class SpellChoose : MonoBehaviour
             if (buf != null)
             {
                 Button button = buf.GetComponent<Button>();
+                button.GetComponentInChildren<Text>().text = "-";
                 if (button != null)
                     button.onClick.AddListener(delegate { Blocker(newSpell); ChangeSection(newSpell, classId); });
             }
         }
+        Resize();
+    }
+
+    void ChangeSpells(List<Spell> spells, bool add, GameObject panel)
+    {
+        SpellBody[] spellChooses = panel.GetComponentsInChildren<SpellBody>();
+        foreach (SpellBody x in spellChooses)
+            DestroyImmediate(x.gameObject);
+        foreach (Spell x in spells)
+        {
+            SpellBody newSpell = Instantiate(spellBody, panel.transform);
+            newSpell.SetSpell(x);
+            Amount buf = newSpell.GetComponentInChildren<Amount>();
+            if (buf != null)
+            {
+                Button button = buf.GetComponent<Button>();
+                if (button != null)
+                {
+                    if (!add)
+                        button.GetComponentInChildren<Text>().text = "-";
+                    button.onClick.AddListener(delegate { ChangeSection(newSpell, id); });
+                }
+            }
+        }
+        Resize();
     }
 
     public void RechangeLeft(int change)
@@ -289,6 +342,14 @@ public class SpellChoose : MonoBehaviour
             {
                 PresavedLists.spellMaster.Remove(spellBody.GetSpell().id);
             }
+            if (sheetControlerChoose != null)
+            {
+                spellSheetsChoose[0].Item3.Add(spellBody.GetSpell());
+                spellSheetsChoose = Utilities.SortSpellList(spellSheetsChoose, spellsPerSheet);
+                sheetControlerChoose.SetButtons(spellSheetsChoose, true, choose);
+            }
+            else
+                spellBody.transform.SetAsLastSibling();
             leftCount++;
         }
         else
@@ -325,8 +386,11 @@ public class SpellChoose : MonoBehaviour
                     if (x.multAdd && x != this)
                         x.SetCount(-1);
             }
+            if (spellSheetsChoose != null)
+                foreach ((int, string, List<Spell>) y in spellSheetsChoose)
+                    y.Item3.Remove(spellBody.GetSpell());
+            spellBody.transform.SetAsLastSibling();
         }
-        spellBody.transform.SetAsLastSibling();
         leftText.text = leftCount.ToString();
         Resize();
     }

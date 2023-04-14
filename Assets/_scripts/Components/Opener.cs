@@ -56,7 +56,6 @@ public class Opener : MonoBehaviour
     {
         float hieght = 0f;
         resizing = false;
-        Debug.Log(panel.transform.childCount);
         RectTransform buf = panel.GetComponent<RectTransform>();
         int childCount = panel.transform.childCount;
         for (int i = 0; i < childCount; i++)
@@ -68,12 +67,14 @@ public class Opener : MonoBehaviour
             Text text;
             if (childRectTransform.TryGetComponent(out text))
             {
-                Vector2 genExtents = new Vector2(childRectTransform.rect.width, 0f);
-                Debug.Log(childRectTransform.rect.width);
+                /*Vector2 genExtents = new Vector2(childRectTransform.rect.width, 0f);
                 TextGenerationSettings settings = text.GetGenerationSettings(genExtents);
 
-                TextGenerator generator = new TextGenerator();
-                float height = generator.GetPreferredHeight(text.text, settings);
+                TextGenerator generator = new TextGenerator();*/
+                //float height = generator.GetPreferredHeight(text.text, settings);
+                float height = text.preferredHeight;
+                /*if (height < 50)
+                    height = 50;*/
                 childRectTransform.sizeDelta = new Vector2(childRectTransform.sizeDelta.x, height);
 
             }
@@ -85,7 +86,6 @@ public class Opener : MonoBehaviour
             }
             hieght += childRectTransform.rect.height;
         }
-        Debug.Log(hieght);
         buf.sizeDelta = new Vector2(0, hieght + space * (childCount - 1) + verticalPadding * 2);
         if (open)
             anim.GetComponent<RectTransform>().sizeDelta = buf.sizeDelta;

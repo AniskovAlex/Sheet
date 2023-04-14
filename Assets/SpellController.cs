@@ -139,7 +139,6 @@ public class SpellController : MonoBehaviour
                     if (x.level >= 0 && x.level <= 9)
                     {
                         Instantiate(spellBody, spellLevelContainerObjects[x.level].transform).SetSpell(x);
-                        Debug.Log(spellLevelContainerObjects[x.level].GetComponentsInChildren<SpellBody>().Length);
                     }
             }
             else

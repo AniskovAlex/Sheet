@@ -27,7 +27,6 @@ public class ScrollRectCorrector : MonoBehaviour
         bufCont = content.rect.height;
         height = Mathf.Clamp(content.rect.height, 0, view.rect.height);
         scrollRect.sizeDelta = new Vector2(0, height);
-        Debug.Log(scrollRect.rect.height);
     }
 
 }

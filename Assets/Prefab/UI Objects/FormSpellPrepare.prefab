@@ -878,6 +878,8 @@ MonoBehaviour:
   chosen: {fileID: 6666681176147659807}
   head: {fileID: 3732173775690186524}
   leftText: {fileID: 8914090909144590701}
+  sheetsController: {fileID: 9058288538452493707, guid: 2d3a7c2597b72f047ad2ca0b99f0b09d, type: 3}
+  spellsPerSheet: 25
 --- !u!1 &3138400873646774591
 GameObject:
   m_ObjectHideFlags: 0

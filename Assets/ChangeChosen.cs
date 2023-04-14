@@ -59,6 +59,7 @@ public class ChangeChosen : MonoBehaviour
         foreach ((int, string, string, int) x in changeList)
             change.options.Add(new Dropdown.OptionData(x.Item2));
         change.options.Add(new Dropdown.OptionData("Пусто"));
+        change.options.Add(new Dropdown.OptionData("Пусто"));
         change.onValueChanged.AddListener(delegate
         {
             ChangeSelected(change, true);
@@ -85,62 +86,25 @@ public class ChangeChosen : MonoBehaviour
         if (dropdown.GetComponent<DropdownExtend>().currentValueText == dropdown.captionText.text) return;
         int oldValue = -1;
         int newValue = -1;
+        dropdown.GetComponent<DropdownExtend>().discriptionText.text = "";
         for (int i = 0; i < constList.Count; i++)
         {
             if (constList[i].Item2 == dropdown.captionText.text)
             {
                 dropdown.GetComponent<DropdownExtend>().discriptionText.text = constList[i].Item3;
                 newValue = constList[i].Item1;
-                if (change)
-                    id = constList[i].Item1;
             }
             if (dropdown.GetComponent<DropdownExtend>().currentValueText == constList[i].Item2)
             {
                 oldValue = constList[i].Item1;
             }
         }
+        if (change)
+            id = newValue;
         dropdown.GetComponent<DropdownExtend>().currentValueText = dropdown.captionText.text;
         if (!change)
         {
-            PresavedLists.UpdatePrelist(ability.listName, oldValue, newValue);
-            if (ability.listName == "Appeals")
-            {
-                switch (oldValue)
-                {
-                    case 15:
-                        Destroy(discription.GetComponentInChildren<SpellChoose>().gameObject);
-                        break;
-                    case 10:
-                        List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
-                        List<string> remove = new List<string>() { "Обман", "Убеждение" };
-                        if (save != null && save.Count > 0)
-                            foreach (int x in save)
-                            {
-                                if (x == 0) remove.Remove("Обман");
-                                if (x == 1) remove.Remove("Убеждение");
-                            }
-                        foreach (string x in remove)
-                            PresavedLists.RemoveFromSkills(x);
-                        break;
-                }
-                switch (newValue)
-                {
-                    case 15:
-                        Instantiate(spellChoose, discription.transform).SetSpells(-3, 2, 1, -3);
-                        break;
-                    case 10:
-                        List<int> save = new List<int>();
-                        if (PresavedLists.skills.Contains("Обман"))
-                            save.Add(0);
-                        if (PresavedLists.skills.Contains("Убеждение"))
-                            save.Add(1);
-                        PresavedLists.UpdateSkills("", "Обман");
-                        PresavedLists.UpdateSkills("", "Убеждение");
-                        if (save.Count > 0)
-                            DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
-                        break;
-                }
-            }
+            Change(oldValue, newValue);
         }
 
         int textChildIndex = -1;
@@ -193,8 +157,55 @@ public class ChangeChosen : MonoBehaviour
             changed.options.Clear();
             foreach ((int, string, string, int) y in list)
                 changed.options.Add(new Dropdown.OptionData(y.Item2));
+            changed.options.Add(new Dropdown.OptionData("Пусто"));
             changed.options.Add(new Dropdown.OptionData(changed.captionText.text));
             changed.value = changed.options.Count - 1;
+        }
+    }
+
+    void Change(int oldValue, int newValue)
+    {
+        if (newValue == -1)
+            PresavedLists.RemoveFromPrelist(ability.listName, oldValue);
+        else
+            PresavedLists.UpdatePrelist(ability.listName, oldValue, newValue);
+        if (ability.listName == "Appeals")
+        {
+            switch (oldValue)
+            {
+                case 15:
+                    Destroy(discription.GetComponentInChildren<SpellChoose>().gameObject);
+                    break;
+                case 10:
+                    List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
+                    List<string> remove = new List<string>() { "Обман", "Убеждение" };
+                    if (save != null && save.Count > 0)
+                        foreach (int x in save)
+                        {
+                            if (x == 0) remove.Remove("Обман");
+                            if (x == 1) remove.Remove("Убеждение");
+                        }
+                    foreach (string x in remove)
+                        PresavedLists.RemoveFromSkills(x);
+                    break;
+            }
+            switch (newValue)
+            {
+                case 15:
+                    Instantiate(spellChoose, discription.transform).SetSpells(-3, 2, 1, -3);
+                    break;
+                case 10:
+                    List<int> save = new List<int>();
+                    if (PresavedLists.skills.Contains("Обман"))
+                        save.Add(0);
+                    if (PresavedLists.skills.Contains("Убеждение"))
+                        save.Add(1);
+                    PresavedLists.UpdateSkills("", "Обман");
+                    PresavedLists.UpdateSkills("", "Убеждение");
+                    if (save.Count > 0)
+                        DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                    break;
+            }
         }
     }
 
@@ -342,5 +353,19 @@ public class ChangeChosen : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    private void OnDestroy()
+    {
+        PresavedLists.ChangePing -= UpdateOptions;
+        int oldValue = -1;
+        for (int i = 0; i < constList.Count; i++)
+        {
+            if (changed.GetComponent<DropdownExtend>().currentValueText == constList[i].Item2)
+            {
+                oldValue = constList[i].Item1;
+            }
+        }
+        Change(oldValue, -1);
     }
 }

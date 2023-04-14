@@ -43,7 +43,6 @@ public class ScreensControler : MonoBehaviour
             x.GetComponent<RectTransform>().localPosition = new Vector2(i * ab, 0);
             i++;
         }
-        Debug.Log("");
         foreach (Button x in buttons)
         {
 
@@ -103,7 +102,6 @@ public class ScreensControler : MonoBehaviour
             if (!vertical)
             {
                 //float currentVelocity = (transposer.m_ScreenX - 0.5f) / currentTime;
-                //Debug.Log(currentVelocity);
                 if (transposer.m_ScreenX < 0.15f/* || -velocity > currentVelocity*/)
                 {
                     int index = screens.FindIndex(x => x == vCam.Follow.gameObject) + 1;

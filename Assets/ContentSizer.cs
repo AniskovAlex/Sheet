@@ -56,16 +56,17 @@ public class ContentSizer : MonoBehaviour
                 continue;
             RectTransform childRectTransform = transform.GetChild(i).GetComponent<RectTransform>();
             childRectTransform.transform.localPosition = new Vector2(0, -(hieght + verticalPadding + (i * space)));
-            childRectTransform.sizeDelta = new Vector2( - (horizontalPadding * 2), childRectTransform.sizeDelta.y);
+            childRectTransform.sizeDelta = new Vector2(-(horizontalPadding * 2), childRectTransform.sizeDelta.y);
             Text text;
             if (childRectTransform.TryGetComponent(out text))
             {
                 Vector2 genExtents = new Vector2(childRectTransform.rect.width, 0f);
-                Debug.Log(childRectTransform.rect.width);
                 TextGenerationSettings settings = text.GetGenerationSettings(genExtents);
 
                 TextGenerator generator = new TextGenerator();
                 float height = generator.GetPreferredHeight(text.text, settings);
+                if (height < 50)
+                    height = 50;
                 childRectTransform.sizeDelta = new Vector2(childRectTransform.sizeDelta.x, height);
 
             }
@@ -84,10 +85,9 @@ public class ContentSizer : MonoBehaviour
             }
             hieght += childRectTransform.rect.height;
         }
-        Debug.Log(hieght);
         RectTransform buf = GetComponent<RectTransform>();
         buf.sizeDelta = new Vector2(buf.sizeDelta.x, hieght + space * (childCount - 1) + verticalPadding * 2);
-        
+
     }
 
     public void EntResize(float hieght, int childID)

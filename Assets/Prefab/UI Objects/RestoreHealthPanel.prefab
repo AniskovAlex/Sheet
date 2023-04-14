@@ -976,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3535183666209784705, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
       propertyPath: m_Text
-      value: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0435\u043B\u043D\u0438\u0435
+      value: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435
         \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F"
       objectReference: {fileID: 0}
     - target: {fileID: 3535183666209784706, guid: c4932a6185f0865459ba6be5605fccf6, type: 3}
