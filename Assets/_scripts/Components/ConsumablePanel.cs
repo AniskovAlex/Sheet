@@ -32,15 +32,15 @@ public class ConsumablePanel : MonoBehaviour
         }
         Selectable[] toggles = current.GetComponentsInChildren<Selectable>();
         foreach (Selectable x in toggles)
-            width += x.GetComponent<RectTransform>().rect.width;
+            width += 90;
         for (int i = 0; i < amount; i++)
         {
             width += 90;
             if (width >= widthMax)
             {
-                width = toggleObject.GetComponent<RectTransform>().rect.width;
+                width = 90;
                 current = Instantiate(horizontalePanel, transform);
-                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + horizontalePanel.GetComponent<RectTransform>().sizeDelta.y + 10);
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + 80 + 10);
                 if (opener != null)
                     opener.ResizeHead(80 + 10);
             }
@@ -98,7 +98,7 @@ public class ConsumablePanel : MonoBehaviour
             width += 90;
             if (width >= widthMax)
             {
-                width = toggleObject.GetComponent<RectTransform>().rect.width;
+                width = 90;
                 current = Instantiate(horizontalePanel, transform);
                 rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + 80 + 10);
                 if (opener != null)
@@ -110,6 +110,8 @@ public class ConsumablePanel : MonoBehaviour
             else
                 gameObject.GetComponent<Toggle>().isOn = false;
         }
+        if (opener != null)
+            opener.ResizeHead(0);
     }
 
     public void Decrease()

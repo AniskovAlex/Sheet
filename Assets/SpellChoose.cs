@@ -96,7 +96,7 @@ public class SpellChoose : MonoBehaviour
                         if (classId == 7)
                         {
                             List<(int, PlayersClass)> listBuf1 = CharacterData.GetClasses();
-                            int classLevel = 0;
+                            int classLevel = 1;
                             HashSet<int> bufSet = new HashSet<int>();
                             foreach ((int, PlayersClass) x in listBuf1)
                             {

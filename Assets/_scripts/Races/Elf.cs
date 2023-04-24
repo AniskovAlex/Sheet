@@ -28,4 +28,9 @@ public class Elf : Race
         }
         return subRace.GetAbilities();
     }
+
+    public override Vision GetVision()
+    {
+        return Vision.dark;
+    }
 }

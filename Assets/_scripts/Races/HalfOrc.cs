@@ -10,4 +10,8 @@ public class HalfOrc : Race
         name = "Полуорк";
         LoadAbilities("HalfOrc");
     }
+    public override Vision GetVision()
+    {
+        return Vision.dark;
+    }
 }

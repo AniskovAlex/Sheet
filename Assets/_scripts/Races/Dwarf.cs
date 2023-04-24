@@ -31,6 +31,11 @@ public class Dwarf : Race
         return 25;
     }
 
+    public override Vision GetVision()
+    {
+        return Vision.dark;
+    }
+
     public override HashSet<Weapon.BladeType> GetBladeProficiency()
     {
         return new HashSet<Weapon.BladeType>() { Weapon.BladeType.BattleAxe, Weapon.BladeType.HandAxe, Weapon.BladeType.LightHammer, Weapon.BladeType.BattleHammer };

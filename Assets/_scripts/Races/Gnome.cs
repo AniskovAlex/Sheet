@@ -36,4 +36,9 @@ public class Gnome : Race
     {
         return Size.little;
     }
+
+    public override Vision GetVision()
+    {
+        return Vision.dark;
+    }
 }

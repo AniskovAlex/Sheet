@@ -207,19 +207,20 @@ public class Opener : MonoBehaviour
 
     public void AddConsum(ConsumablePanel consumablePanel)
     {
+        RectTransform op = GetComponent<RectTransform>();
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform child = transform.GetChild(i);
             Text text;
             if (child.TryGetComponent(out text))
             {
-                child.GetComponent<RectTransform>().sizeDelta = new Vector2(-GetComponent<RectTransform>().rect.width / 2, child.GetComponent<RectTransform>().sizeDelta.y);
-                child.localPosition = new Vector3(-GetComponent<RectTransform>().rect.width / 2 + 20, child.localPosition.y);
+                child.GetComponent<RectTransform>().sizeDelta = new Vector2(-op.rect.width / 2, child.GetComponent<RectTransform>().sizeDelta.y);
+                child.localPosition = new Vector3(-op.rect.width / 2 + 20, child.localPosition.y);
             }
             if (child.gameObject == consumablePanel.gameObject)
             {
-                consumablePanel.widthMax = GetComponent<RectTransform>().rect.width / 2 - 160;
-                child.localPosition = new Vector3(-40, child.localPosition.y);
+                consumablePanel.widthMax = op.rect.width / 2 - 120;
+                child.localPosition = new Vector3(0, child.localPosition.y);
             }
         }
     }

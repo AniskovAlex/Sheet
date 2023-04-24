@@ -20,6 +20,8 @@ public class Personality : MonoBehaviour
     [SerializeField] InputField backstoryExtend;
     [SerializeField] Text classesName;
     [SerializeField] Text RaceName;
+    [SerializeField] Text RaceSize;
+    [SerializeField] Text RaceVision;
     [SerializeField] Text armorProficiancy;
     [SerializeField] Text weaponProficiancy;
     [SerializeField] Text instrumentProficiancy;
@@ -58,9 +60,29 @@ public class Personality : MonoBehaviour
         race = CharacterData.GetRace();
         if (race != null)
         {
-            GameObject raceBody = Instantiate(form, content.transform);
             RaceName.text += " " + race.name;
-            raceBody.GetComponent<FormShower>().SetHead(race.name);
+            switch (race.GetVision())
+            {
+                case Race.Vision.normal:
+                    RaceVision.text += " Обычное";
+                    break;
+                case Race.Vision.dark:
+                    RaceVision.text += " Тёмное";
+                    break;
+            }
+
+            switch (race.GetSize())
+            {
+                case Race.Size.little:
+                    RaceSize.text += " Маленький";
+                    break;
+                case Race.Size.medium:
+                    RaceSize.text += " Средний";
+                    break;
+                case Race.Size.large:
+                    RaceSize.text += " Большой";
+                    break;
+            }
             Ability[] abilitieSubRaceArr = race.ChooseSubRace(DataSaverAndLoader.LoadSubRace(race));
             Ability[] abilityArr = race.GetAbilities();
             if (abilitieSubRaceArr != null)
@@ -68,10 +90,15 @@ public class Personality : MonoBehaviour
                 abilityArr = abilityArr.Concat(abilitieSubRaceArr).ToArray();
                 RaceName.text += " (" + race.GetSubRace().GetName() + ")";
             }
+
+            GameObject raceBody = Instantiate(form, content.transform);
+            raceBody.GetComponent<FormShower>().SetHead(race.name);
             foreach (Ability x in abilityArr)
             {
                 Instantiate(form, raceBody.GetComponent<FormShower>().GetDiscription().transform).GetComponent<FormShower>().CreateAbility(x, 1, null);
             }
+            if (raceBody.GetComponent<FormShower>().GetDiscription().GetComponentsInChildren<FormShower>().Length <= 0)
+                DestroyImmediate(raceBody);
         }
         backstory = CharacterData.GetBackstory();
         if (backstory != null)
@@ -104,16 +131,16 @@ public class Personality : MonoBehaviour
             switch (x)
             {
                 case Armor.ArmorType.Light:
-                    armorProficiancy.text += " лёгкие,";
+                    armorProficiancy.text += " Лёгкие,";
                     break;
                 case Armor.ArmorType.Medium:
-                    armorProficiancy.text += " средние,";
+                    armorProficiancy.text += " Средние,";
                     break;
                 case Armor.ArmorType.Heavy:
-                    armorProficiancy.text += " тяжёлые,";
+                    armorProficiancy.text += " Тяжёлые,";
                     break;
                 case Armor.ArmorType.Shield:
-                    armorProficiancy.text += " щиты,";
+                    armorProficiancy.text += " Щиты,";
                     break;
             }
         armorProficiancy.text = armorProficiancy.text.Remove(armorProficiancy.text.Length - 1);

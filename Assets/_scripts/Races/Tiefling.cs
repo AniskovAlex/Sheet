@@ -10,4 +10,9 @@ public class Tiefling : Race
         name = "Тифлинг";
         LoadAbilities("Tiefling");
     }
+
+    public override Vision GetVision()
+    {
+        return Vision.dark;
+    }
 }

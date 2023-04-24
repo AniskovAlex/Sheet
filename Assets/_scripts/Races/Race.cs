@@ -28,6 +28,12 @@ public abstract class Race : ObjectsBehavior
         large
     }
 
+    public enum Vision
+    {
+        normal,
+        dark
+    }
+
     public virtual int GetSpeed()
     {
         return 30;
@@ -37,6 +43,12 @@ public abstract class Race : ObjectsBehavior
     {
         return Size.medium;
     }
+
+    public virtual Vision GetVision()
+    {
+        return Vision.normal;
+    }
+
     public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
     {
         if (subRace != null)
@@ -48,10 +60,6 @@ public abstract class Race : ObjectsBehavior
         if (subRace != null)
             return subRace.GetArmorProficiency();
         return null;
-    }
-    public bool GetVision()
-    {
-        return false;
     }
 
     public SubRace GetSubRace()

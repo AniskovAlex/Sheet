@@ -74,7 +74,7 @@ public class FormShower : MonoBehaviour
             case Ability.Type.spellChoose:
                 if (ability.spellShow == null || (ability.spellShow != null && ability.spellShow.Count <= 0))
                     DestroyImmediate(gameObject);
-                break;
+                return;
             case Ability.Type.instruments:
             case Ability.Type.attr:
             case Ability.Type.charUp:
@@ -82,7 +82,7 @@ public class FormShower : MonoBehaviour
             case Ability.Type.subClass:
             case Ability.Type.feat:
                 DestroyImmediate(gameObject);
-                break;
+                return;
             case Ability.Type.withChoose:
                 (int, string, string, int)[] list;
                 if (ability.isUniq)

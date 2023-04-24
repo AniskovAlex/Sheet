@@ -118,11 +118,12 @@ public class HandEquipment : MonoBehaviour
     public void SetFist()
     {
         int attack = CharacterData.GetModifier(0);
-        label.text = "Безоружняя атака";
-        string damage= Mathf.Clamp(1 + attack, 1, 999).ToString();
-            int dice = 0;
+        label.text = "Безоружная атака";
+        int dice = 0;
+        string damage = Mathf.Clamp(1 + attack, 1, 999).ToString();
         if (GlobalStatus.monkWeapon)
         {
+            attack = Mathf.Max(attack, CharacterData.GetModifier(1));
             dice = 4;
             int level = CharacterData.GetLevel(8);
             if (level >= 5) dice = 6;
@@ -136,7 +137,7 @@ public class HandEquipment : MonoBehaviour
         }
         if (GlobalStatus.cockerel)
             dice = Mathf.Max(dice, 8);
-        if(dice!= 0)
+        if (dice != 0)
         {
             damage = "1к" + dice;
             if (attack > 0)
@@ -146,9 +147,9 @@ public class HandEquipment : MonoBehaviour
         }
         hitDices.text = damage;
         if (attack > 0)
-            attackBonus.text = "+" + attack;
+            attackBonus.text = "+" + (attack + CharacterData.GetProficiencyBonus());
         else
-            attackBonus.text = attack.ToString();
+            attackBonus.text = (attack + CharacterData.GetProficiencyBonus()).ToString();
         distance.text = 5 + "фт.";
         damageType.text = "Дробящий";
         magick.isOn = false;

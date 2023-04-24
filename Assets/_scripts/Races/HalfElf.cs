@@ -10,4 +10,9 @@ public class HalfElf : Race
         name = "ֿמכף‎כüפ";
         LoadAbilities("HalfElf");
     }
+
+    public override Vision GetVision()
+    {
+        return Vision.dark;
+    }
 }
