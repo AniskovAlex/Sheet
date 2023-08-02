@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
+using System.Threading.Tasks;
 
 public class CharacterDataLoader : MonoBehaviour
 {
@@ -33,15 +35,62 @@ public class CharacterDataLoader : MonoBehaviour
     PlayersClass playersClass = null;
     Race race = null;
     Backstory backstory = null;
+    List<(int,int)> healthDices = new List<(int,int)>();
+    List<int> feats = new List<int>();
     int maxHP;
     int currentHP;
     int tempHP;
+    bool init = false;
 
-    private void Awake()
+    private void Start()
     {
+        //LoadSceneManager.Instance.GetReady();
         PresavedLists.ResetAll();
         characterName = CharacterCollection.GetName();
         GlobalStatus.ResetRuleChanger();
+        //CharacterData.SetCharacter(DataCloudeSave.Load<Character>(characterName).Result);
+        StartCoroutine(Auth());
+        //while (!init);
+    }
+
+    IEnumerator Auth()
+    {
+        Task task = DataCloudeSave.Auth();
+        while (!task.IsCompleted) yield return null;
+        task = SetCharaterFromCloud();
+        while (!task.IsCompleted) yield return null;
+        CharacterData.loadIsDone();
+        LoadSceneManager.Instance.HideLoadScreen();
+    }
+
+    async Task SetCharaterFromCloud()
+    {
+        if (characterName == "")
+        {
+            CharacterData.SetCharacter(new Character());
+            return;
+        }
+        Character character = await DataCloudeSave.Load<Character>("char_Id_" + CharacterCollection.GetId().ToString());
+        Debug.Log(character);
+        if (character == null)
+        {
+            
+            //character = new Character(_attributesArr, _saves, _money, _skills, _classes, language, instruments, bladeProficiency, weaponProficiency, armorProficiency, level, race, backstory, maxHP, currentHP, tempHP);
+            character = new Character();
+            LoadOldSave();
+            initChar(character);
+            //await DataCloudeSave.Save("char_Id_" + character._id.ToString(), character);
+        }
+
+        character.Init();
+        CharacterData.SetCharacter(character);
+        init = true;
+        Debug.Log(characterName + "is Loaded!");
+    }
+
+    void LoadOldSave()
+    {
+        
         LoadAttributes();
         LoadMoney();
         LoadSkills();
@@ -52,9 +101,56 @@ public class CharacterDataLoader : MonoBehaviour
         LoadProficiency();
         LoadHP();
         LoadFeats();
+        LoadHealthDices();
         language = DataSaverAndLoader.LoadLanguage();
         instruments = DataSaverAndLoader.LoadInstruments();
-        CharacterData.SetCharacterData(_attributesArr, _saves, _money, _skills, _classes, language, instruments, bladeProficiency, weaponProficiency, armorProficiency, level, race, backstory, maxHP, currentHP, tempHP);
+
+
+    }
+
+    void initChar(Character character)
+    {
+        character._name = characterName;
+        for (int i=0; i<_classes.Count;i++)
+        {
+            int subId = 0;
+            if (_classes[i].Item2.GetSubClass() == null)
+                subId = -1;
+            else
+                subId = _classes[i].Item2.GetSubClass().id;
+            int curHealthDices = 0;
+            foreach ((int, int) x in healthDices)
+                if (x.Item2 == _classes[i].Item2.id)
+                    curHealthDices = x.Item1;
+            character._classes.Add((_classes[i].Item1, _classes[i].Item2.id, subId, curHealthDices));
+        }
+
+        character._notes = DataSaverAndLoader.LoadNotes();
+        character._feats = feats;
+        character._charAtr = _attributesArr;
+        character._saves = _saves;
+        character._money = _money;
+        character._skills = _skills;
+        character._language = language;
+        character._instruments = instruments;
+        character._bladeProficiency = bladeProficiency.ToList();
+        character._weaponProficiency = weaponProficiency.ToList();
+        character._armorProficiency = armorProficiency.ToList();
+        character._level = level;
+        character._backstoryId = backstory.id;
+        character._raceId[0] = race.id;
+        if (race.GetSubRace() == null)
+            character._raceId[1] = -1;
+        else
+            character._raceId[1] = race.GetSubRace().id; 
+        character._maxHP = maxHP;
+        character._tempHP = tempHP;
+        character._currentHP = currentHP;
+        character._spellCells = DataSaverAndLoader.LoadCellsAmount();
+        character._instrumentsComp = DataSaverAndLoader.LoadInstrumentsComp();
+        character._spellPrepared = DataSaverAndLoader.LoadSpellPrepared();
+        character._spellMaster= DataSaverAndLoader.LoadSpellMaster().ToList();
+        character._spellKnew = DataSaverAndLoader.LoadSpellKnew();
     }
 
     void LoadAttributes()
@@ -171,6 +267,7 @@ public class CharacterDataLoader : MonoBehaviour
                 race = new Elf();
                 break;
         }
+        race.ChooseSubRace(DataSaverAndLoader.LoadSubRace(race));
     }
 
     void LoadBackstory()
@@ -249,95 +346,24 @@ public class CharacterDataLoader : MonoBehaviour
             {
                 if (y.id == x)
                 {
-                    PresavedLists.feats.Add(y);
+                    feats.Add(y.id);
                     break;
                 }
             }
-    } 
-
-    public void LoadPrelists()
-    {
-        string name = "";
-        for (int i = 0; i < 18; i++)
-            if (_skills[i] != 0)
-            {
-                switch (i)
-                {
-                    case 0:
-                        name = "Атлетика";
-                        break;
-                    case 1:
-                        name = "Акробатика";
-                        break;
-                    case 2:
-                        name = "Ловкость рук";
-                        break;
-                    case 3:
-                        name = "Скрытность";
-                        break;
-                    case 4:
-                        name = "Анализ";
-                        break;
-                    case 5:
-                        name = "История";
-                        break;
-                    case 6:
-                        name = "Магия";
-                        break;
-                    case 7:
-                        name = "Природа";
-                        break;
-                    case 8:
-                        name = "Религия";
-                        break;
-                    case 9:
-                        name = "Внимательность";
-                        break;
-                    case 10:
-                        name = "Выживание";
-                        break;
-                    case 11:
-                        name = "Медицина";
-                        break;
-                    case 12:
-                        name = "Проницательность";
-                        break;
-                    case 13:
-                        name = "Уход за животными";
-                        break;
-                    case 14:
-                        name = "Выступление";
-                        break;
-                    case 15:
-                        name = "Запугивание";
-                        break;
-                    case 16:
-                        name = "Обман";
-                        break;
-                    case 17:
-                        name = "Убеждение";
-                        break;
-                }
-                if (_skills[i] == 1)
-                    PresavedLists.skills.Add(name);
-                else
-                    PresavedLists.competence.Add(name);
-            }
-        foreach ((int, PlayersClass) x in _classes)
-        {
-            Ability[] abilities = x.Item2.GetAbilities();
-            if (x.Item2.GetSubClass() != null)
-                abilities.Concat(x.Item2.GetSubClass().GetAbilities());
-            foreach (Ability y in abilities)
-                if (y.listName != null && y.level <= x.Item1)
-                    PresavedLists.preLists.Add((y.listName, DataSaverAndLoader.LoadCustom(y.listName)));
-        }
-        PresavedLists.armorTypes = armorProficiency;
-        PresavedLists.bladeTypes = bladeProficiency;
-        PresavedLists.weaponTypes = weaponProficiency;
-        PresavedLists.instruments = instruments;
-        PresavedLists.languages = language;
-        PresavedLists.saveThrows.Concat(_saves);
-        PresavedLists.compInstruments = DataSaverAndLoader.LoadInstrumentsComp();
     }
+
+    void LoadHealthDices()
+    {
+        foreach((int,PlayersClass) x in _classes)
+        {
+            healthDices.Add((DataSaverAndLoader.LoadHealthDice(x.Item2.id),x.Item2.id));
+        }
+    }
+
+    private void OnDestroy()
+    {
+        CharacterData.load = null;
+    }
+
+
 }

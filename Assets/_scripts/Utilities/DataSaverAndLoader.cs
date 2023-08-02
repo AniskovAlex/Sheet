@@ -1,5 +1,7 @@
+
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class DataSaverAndLoader
@@ -109,7 +111,7 @@ public static class DataSaverAndLoader
 
     const string customListCount = "@customListCount_";
     const string customList = "@customList_";
-
+    
     public static int[] LoadCellsAmount()
     {
         string characterName = CharacterCollection.GetName();
@@ -626,16 +628,16 @@ public static class DataSaverAndLoader
         PlayerPrefs.Save();
     }
 
-    public static List<(int, HashSet<int>)> LoadSpellKnew()
+    public static List<(int, List<int>)> LoadSpellKnew()
     {
         string characterName = CharacterCollection.GetName();
         int classCount = PlayerPrefs.GetInt(characterName + spellClassKnewCountSaveName);
-        List<(int, HashSet<int>)> list = new List<(int, HashSet<int>)>();
+        List<(int, List<int>)> list = new List<(int, List<int>)>();
         for (int i = 0; i < classCount; i++)
         {
             int count = PlayerPrefs.GetInt(characterName + spellKnewCountSaveName + i);
             int classId = PlayerPrefs.GetInt(characterName + spellClassKnewSaveName + i);
-            list.Add((classId, new HashSet<int>()));
+            list.Add((classId, new List<int>()));
             for (int j = 0; j < count; j++)
                 list[i].Item2.Add(PlayerPrefs.GetInt(characterName + spellKnewSaveName + classId + j));
         }
@@ -654,16 +656,16 @@ public static class DataSaverAndLoader
         return list;
     }
 
-    public static List<(int, HashSet<int>)> LoadSpellPrepared()
+    public static List<(int, List<int>)> LoadSpellPrepared()
     {
         string characterName = CharacterCollection.GetName();
         int classCount = PlayerPrefs.GetInt(characterName + spellClassPrepareCountSaveName);
-        List<(int, HashSet<int>)> list = new List<(int, HashSet<int>)>();
+        List<(int, List<int>)> list = new List<(int, List<int>)>();
         for (int i = 0; i < classCount; i++)
         {
             int count = PlayerPrefs.GetInt(characterName + spellPrepareCountSaveName + i);
             int classId = PlayerPrefs.GetInt(characterName + spellClassPrepareSaveName + i);
-            list.Add((classId, new HashSet<int>()));
+            list.Add((classId, new List<int>()));
             for (int j = 0; j < count; j++)
                 list[i].Item2.Add(PlayerPrefs.GetInt(characterName + spellPrepareSaveName + classId + j));
         }

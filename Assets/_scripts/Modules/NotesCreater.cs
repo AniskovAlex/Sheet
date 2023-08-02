@@ -36,4 +36,9 @@ public class NotesCreater : MonoBehaviour
         contentSizer.HieghtSizeInit();
     }
 
+    public string GetHead()
+    {
+        return head.text;
+    }
+
 }

@@ -87,7 +87,9 @@ public class WeaponEquipment : MonoBehaviour
         if (_handsInventory != null)
             equip.onValueChanged.AddListener(delegate
             {
-                DataSaverAndLoader.WeaponEquipmentChanged(weapon, equip.isOn);
+                //DataSaverAndLoader.WeaponEquipmentChanged(weapon, equip.isOn);
+                CharacterData.EditWeaponEquip(weapon, equip.isOn);
+                CharacterData.SaveCharacter();
                 _handsInventory.NewItemEquiptedOrUnequipted(weapon, equip.isOn);
             });
         currentWeapon = weapon;
@@ -110,7 +112,9 @@ public class WeaponEquipment : MonoBehaviour
         _handsInventory.NewItemEquiptedOrUnequipted(currentWeapon, equip.isOn);
         equip.onValueChanged.AddListener(delegate
         {
-            DataSaverAndLoader.WeaponEquipmentChanged(currentWeapon, equip.isOn);
+            //DataSaverAndLoader.WeaponEquipmentChanged(currentWeapon, equip.isOn);
+            CharacterData.EditWeaponEquip(currentWeapon, equip.isOn);
+            CharacterData.SaveCharacter();
             _handsInventory.NewItemEquiptedOrUnequipted(currentWeapon, equip.isOn);
         });
     }

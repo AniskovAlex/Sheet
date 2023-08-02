@@ -33,7 +33,7 @@ public class ChangeChosen : MonoBehaviour
         bool found = false;
         List<(string, List<int>)> buf = PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName);
         if (buf.Count <= 0)
-            PresavedLists.preLists.Add((ability.listName, DataSaverAndLoader.LoadCustom(ability.listName)));
+            PresavedLists.preLists.Add((ability.listName, CharacterData.GetCustomList(ability.listName) /*DataSaverAndLoader.LoadCustom(ability.listName)*/));
         buf = PresavedLists.preLists.FindAll(x => x.Item1 == ability.listName);
         foreach ((string, List<int>) x in buf)
         {
@@ -177,7 +177,7 @@ public class ChangeChosen : MonoBehaviour
                     Destroy(discription.GetComponentInChildren<SpellChoose>().gameObject);
                     break;
                 case 10:
-                    List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
+                    List<int> save = CharacterData.GetCustomList(ability.listName + "skills") /*DataSaverAndLoader.LoadCustom(ability.listName + "skills")*/;
                     List<string> remove = new List<string>() { "Обман", "Убеждение" };
                     if (save != null && save.Count > 0)
                         foreach (int x in save)
@@ -203,7 +203,10 @@ public class ChangeChosen : MonoBehaviour
                     PresavedLists.UpdateSkills("", "Обман");
                     PresavedLists.UpdateSkills("", "Убеждение");
                     if (save.Count > 0)
-                        DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                    {
+                        CharacterData.AddCustomList(ability.listName + "skills", save);
+                        //DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                    }
                     break;
             }
         }
@@ -271,7 +274,7 @@ public class ChangeChosen : MonoBehaviour
                             foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
                                 if (x.Item2.Contains(139))
                                     flag1 = true;
-                            foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
+                            foreach ((int, List<int>) x in CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/)
                                 if (x.Item2.Contains(139))
                                     flag1 = true;
                             if (!flag1)

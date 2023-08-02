@@ -35,11 +35,56 @@ public static class FileSaverAndLoader
             UnityWebRequest www = UnityWebRequest.Get(path);
             www.SendWebRequest();
             while (!www.isDone) ;
+            if (www.isNetworkError)
+                return null;
             JSON = www.downloadHandler.text;
+            Debug.Log(JSON);
         }
         else
-            JSON = File.ReadAllText(path);
+        {
+            if (File.Exists(path))
+                JSON = File.ReadAllText(path);
+            else
+                return null;
+        }
         return JSON;
+    }
+
+    public static string LoadPersistenFile(string pathname)
+    {
+        string JSON = "";
+        string path = Path.Combine(Application.persistentDataPath, pathname + ".json");
+        /*if (Application.platform == RuntimePlatform.Android)
+        {
+            UnityWebRequest www = UnityWebRequest.Get(path);
+            www.SendWebRequest();
+            while (!www.isDone) ;
+            if (www.isNetworkError)
+                return null;
+            JSON = www.downloadHandler.text;
+            Debug.Log(JSON + "gdregdfgfdgfdgdrgreg");
+        }
+        else
+        {*/
+            if (File.Exists(path))
+                JSON = File.ReadAllText(path);
+            else
+                return null;
+        //}
+        Debug.Log(JSON);
+        return JSON;
+    }
+
+    public static void SaveFile(string pathname, string text)
+    {
+        string path = Path.Combine(Application.persistentDataPath, pathname + ".json");
+        File.WriteAllText(path, text);
+    }
+
+    public static void DeleteFile(string pathname)
+    {
+        string path = Path.Combine(Application.persistentDataPath, pathname + ".json");
+        File.Delete(path);
     }
 
     public static Feat[] LoadFeats()
@@ -63,7 +108,7 @@ public static class FileSaverAndLoader
 
     public static List<(int, string, string, int)> LoadList(string pathName)
     {
-        pathName = pathName[0].ToString().ToUpper() + pathName.Remove(0,1);
+        pathName = pathName[0].ToString().ToUpper() + pathName.Remove(0, 1);
         List<(int, string, string, int)> list = new List<(int, string, string, int)>();
         string path = Path.Combine(Application.streamingAssetsPath, pathName + ".json");
         string JSONAbilities = "";

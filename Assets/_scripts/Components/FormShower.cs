@@ -41,7 +41,7 @@ public class FormShower : MonoBehaviour
                 }
                 if (ability.listName == "RitualCaster" || ability.listName == "AimCaster")
                 {
-                    List<int> listClass = DataSaverAndLoader.LoadCustom(ability.listName);
+                    List<int> listClass = CharacterData.GetCustomList(ability.listName) /* DataSaverAndLoader.LoadCustom(ability.listName)*/;
                     if (listClass.Count <= 0) break;
                     string buf = "Класс: ";
                     switch (listClass[0])
@@ -89,7 +89,7 @@ public class FormShower : MonoBehaviour
                     list = FileSaverAndLoader.LoadList(ability.pathToList).ToArray();
                 else
                     list = ability.list;
-                List<int> chosen = DataSaverAndLoader.LoadCustom(ability.listName);
+                List<int> chosen = CharacterData.GetCustomList(ability.listName) /*DataSaverAndLoader.LoadCustom(ability.listName)*/;
                 foreach (int x in chosen)
                 {
                     foreach ((int, string, string, int) y in list)
@@ -115,7 +115,7 @@ public class FormShower : MonoBehaviour
                 }
                 break;
             case Ability.Type.consumable:
-                int amount = DataSaverAndLoader.LoadConsumAmount(ability.listName);
+                int amount = CharacterData.GetConsum(ability.listName) /*DataSaverAndLoader.LoadConsumAmount(ability.listName)*/;
                 consum = Instantiate(consumable, headObject.transform);
                 int buf2 = 0;
                 if (level > 0)
@@ -166,9 +166,38 @@ public class FormShower : MonoBehaviour
                     case "Arcanum7":
                     case "Arcanum8":
                     case "Arcanum9":
-                        List<int> spellsId = DataSaverAndLoader.LoadCustom(ability.listName);
+                        List<int> spellsId = CharacterData.GetCustomList(ability.listName) /*DataSaverAndLoader.LoadCustom(ability.listName)*/;
                         ability.spellShow = spellsId;
                         break;
+                }
+                if (ability.listName == "DedicatedToMagic")
+                {
+                    List<int> listClass = CharacterData.GetCustomList(ability.listName) /* DataSaverAndLoader.LoadCustom(ability.listName)*/;
+                    if (listClass.Count <= 0) break;
+                    string buf = "Класс: ";
+                    switch (listClass[0])
+                    {
+                        default:
+                        case 0:
+                            buf += "Бард (Харизма)";
+                            break;
+                        case 3:
+                            buf += "Волшебник (Интеллект)";
+                            break;
+                        case 4:
+                            buf += "Друид (Мудрость)";
+                            break;
+                        case 5:
+                            buf += "Жрец (Мудрость)";
+                            break;
+                        case 7:
+                            buf += "Колдун (Харизма)";
+                            break;
+                        case 12:
+                            buf += "Чародей (Харизма)";
+                            break;
+                    }
+                    SetText((1, buf));
                 }
                 break;
         }
@@ -202,7 +231,8 @@ public class FormShower : MonoBehaviour
 
     void UpdateConsum(int count)
     {
-        DataSaverAndLoader.SaveConsumAmount(_ability.listName, count);
+        CharacterData.SetConsum(_ability.listName, count);
+        //DataSaverAndLoader.SaveConsumAmount(_ability.listName, count);
     }
 
     public void SetHead(string text)
@@ -248,7 +278,7 @@ public class FormShower : MonoBehaviour
         switch (_ability.listName)
         {
             case "BattleStyles":
-                List<int> list = DataSaverAndLoader.LoadCustom(_ability.listName);
+                List<int> list = CharacterData.GetCustomList(_ability.listName) /*DataSaverAndLoader.LoadCustom(_ability.listName)*/;
                 foreach (int x in list)
                 {
                     switch (x)

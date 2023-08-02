@@ -11,10 +11,14 @@ public class HandsInventory : MonoBehaviour
 
     private void Start()
     {
+        CharacterData.load += Init;
+    }
+    void Init()
+    {
         if (currentHands < maxHands && fist == null)
             SetFist();
-    }
 
+    }
     int maxHands = 2;
     int currentHands = 0;
     public void NewItemEquiptedOrUnequipted(Weapon weapon, bool toggle)
@@ -26,8 +30,15 @@ public class HandsInventory : MonoBehaviour
             HandEquipment handEquipment = newHand.GetComponent<HandEquipment>();
             if (handEquipment != null)
                 currentHands += handEquipment.SetHand(weapon);
+            if (currentHands >= maxHands && fist != null)
+                Destroy(fist.gameObject);
             if (currentHands > maxHands)
             {
+                /*foreach(HandEquipment x in secondHands)
+                {
+                    if (x.GetWeapon() == null)
+                        currentHands--;
+                }*/
                 while (secondHands.Length > 0 && currentHands > maxHands)
                 {
                     weaponInventory.RemoveEquippedWeapon(secondHands[0].GetWeapon());
@@ -65,8 +76,6 @@ public class HandsInventory : MonoBehaviour
                 aC.duelDefence = false;
             aC.UploadArmorClass();
         }
-        if (currentHands >= maxHands && fist != null)
-            Destroy(fist.gameObject);
         if (currentHands < maxHands && fist == null)
             SetFist();
 

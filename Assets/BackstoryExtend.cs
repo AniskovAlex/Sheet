@@ -15,6 +15,9 @@ public class BackstoryExtend : MonoBehaviour
     public void Save()
     {
         if (inputField != null)
-            DataSaverAndLoader.SaveBackstoryExtend(inputField.text);
+        {
+            CharacterData.SetBackstoryExtend(inputField.text);
+            //DataSaverAndLoader.SaveBackstoryExtend(inputField.text);
+        }
     }
 }

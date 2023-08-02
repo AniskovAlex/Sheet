@@ -10,6 +10,12 @@ public class SaveSetter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharacterData.load += Init;
+
+    }
+
+    void Init()
+    {
         savesList = GetComponentsInChildren<Save>();
         foreach (Save x in savesList)
         {
@@ -41,6 +47,7 @@ public class SaveSetter : MonoBehaviour
                 x.GetComponentInChildren<Toggle>().isOn = false;
 
         }
+
     }
 
 }

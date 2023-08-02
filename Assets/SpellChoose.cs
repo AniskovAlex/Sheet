@@ -121,8 +121,8 @@ public class SpellChoose : MonoBehaviour
                         list = list.FindAll(g => (g.level <= levelCul && g.level > 0 && (g.spellType == Spell.Type.Abjuration || g.spellType == Spell.Type.Evocation)) && (g.classes.Contains(spellClassId)));
                         break;
                     case -5:
-                        HashSet<int> buf = null;
-                        foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
+                        List<int> buf = null;
+                        foreach ((int, List<int>) x in CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/)
                             if (x.Item1 == 3)
                             {
                                 buf = x.Item2;
@@ -153,7 +153,7 @@ public class SpellChoose : MonoBehaviour
             for (int i = 0; i < list.Count; i++)
             {
                 bool flag1 = false;
-                foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
+                foreach ((int, List<int>) x in CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/)
                 {
                     if (x.Item2.Contains(list[i].id) && x.Item1 != -3)
                     {

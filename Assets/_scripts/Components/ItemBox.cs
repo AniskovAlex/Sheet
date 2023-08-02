@@ -120,16 +120,22 @@ public class ItemBox : MonoBehaviour
         if (isInventory)
         {
             if (item.id != -1)
-                DataSaverAndLoader.SaveAmountItem(item.id, amount);
+            {
+                CharacterData.EditItem(item.label, amount);
+                //DataSaverAndLoader.SaveAmountItem(item.id, amount);
+            }
             else
-                DataSaverAndLoader.SaveAmountItem(item.label, amount);
+            {
+                CharacterData.EditItem(item.id, amount);
+                //DataSaverAndLoader.SaveAmountItem(item.label, amount);
+            }
         }
         if (inventoryItemRemove != null)
             inventoryItemRemove(item);
         if (amount <= 0)
         {
-            if (isInventory)
-                DataSaverAndLoader.RemoveItem(item);
+            /*if (isInventory)
+                DataSaverAndLoader.RemoveItem(item);*/
             DestroyImmediate(gameObject);
             content.HieghtSizeInit();
         }

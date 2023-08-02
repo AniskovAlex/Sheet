@@ -35,7 +35,7 @@ public class RitualBookknow : MonoBehaviour
 
         List<Spell> list = new List<Spell>(LoadSpellManager.GetSpells());
         if (list == null) return;
-        List<int> listClass = DataSaverAndLoader.LoadCustom("RitualCaster");
+        List<int> listClass = CharacterData.GetCustomList("RitualCaster") /*DataSaverAndLoader.LoadCustom("RitualCaster")*/;
         if (listClass.Count <= 0) return;
         int classID = listClass[0];
         list = list.FindAll(g => g.level <= (CharacterData.GetLevel() + 1) / 2 && g.level > 0 && g.ritual && g.classes.Contains(classID));
@@ -157,10 +157,13 @@ public class RitualBookknow : MonoBehaviour
 
     private void OnDestroy()
     {
-        HashSet<int> buf = new HashSet<int>();
+        List<int> buf = new List<int>();
         foreach (Spell x in spellKnew)
+        {
             buf.Add(x.id);
-        DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (-2, buf) });
+        }
+        /*DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (-2, buf) });*/
+        CharacterData.SetSpellKnew(-2, buf);
         SpellController.ReloadSpells();
     }
 

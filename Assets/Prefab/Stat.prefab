@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6846103425918779724}
   m_RootOrder: 0
@@ -120,6 +121,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6846103425918779724}
   m_RootOrder: 1
@@ -201,6 +203,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 122552679724342102}
   - {fileID: 5731482026482090250}
@@ -290,6 +293,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffer: {fileID: 0}
   parent: {fileID: 0}
-  collider: {fileID: 0}
+  colliderBox: {fileID: 2151993730156259555}
   attr: {fileID: 3508436133056143928}
   mod: {fileID: 8572234886376433139}

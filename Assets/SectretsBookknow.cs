@@ -187,10 +187,13 @@ public class SectretsBookknow : MonoBehaviour
 
     private void OnDestroy()
     {
-        HashSet<int> buf = new HashSet<int>();
+        List<int> buf = new List<int>();
         foreach (Spell x in spellKnew)
+        {
             buf.Add(x.id);
-        DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (-3, buf) });
+        }
+        CharacterData.SetSpellKnew(-3, buf);
+        //DataSaverAndLoader.SaveSpellKnewOverride(new List<(int, HashSet<int>)>() { (-3, buf) });
         SpellController.ReloadSpells();
     }
 }

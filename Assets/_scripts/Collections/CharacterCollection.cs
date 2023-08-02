@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CharacterCollection : ScriptableObject
 {
-    string name = null;
+    int id = 0;
+    string name = "";
     static CharacterCollection instance;
 
     public static CharacterCollection GetCollection()
@@ -27,15 +28,36 @@ public class CharacterCollection : ScriptableObject
         }
         return instance.name;
     }
-
-    public static void SetName(string text)
+    public static int GetId()
     {
         if (!instance)
         {
             instance = Resources.Load("Character Collection") as CharacterCollection;
-            instance.name = text;
+            instance.id = 0;
+            return instance.id;
+        }
+        return instance.id;
+    }
+
+    public static void SetName(string name)
+    {
+        if (!instance)
+        {
+            instance = Resources.Load("Character Collection") as CharacterCollection;
+            instance.name = name;
             return;
         }
-        instance.name = text;
+        instance.name = name;
+    }
+
+    public static void SetId(int id)
+    {
+        if (!instance)
+        {
+            instance = Resources.Load("Character Collection") as CharacterCollection;
+            instance.id = id;
+            return;
+        }
+        instance.id = id;
     }
 }

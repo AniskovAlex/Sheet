@@ -40,5 +40,6 @@ public class RestoreHealthPanel : MonoBehaviour
     {
         if (health != null)
             health.ChangeHP(healthRestore);
+        CharacterData.SaveCharacter();
     }
 }

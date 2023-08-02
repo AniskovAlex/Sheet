@@ -9,6 +9,12 @@ public class SkillSetter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        CharacterData.load += Init;
+    }
+    void Init()
+    {
+
         skillsList = GetComponentsInChildren<Skill>();
         string characterName = CharacterCollection.GetName();
         foreach (Skill x in skillsList)
@@ -40,5 +46,4 @@ public class SkillSetter : MonoBehaviour
         }
     }
 
-    
 }

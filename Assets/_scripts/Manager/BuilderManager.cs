@@ -1,8 +1,11 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 public class BuilderManager : MonoBehaviour
 {
@@ -33,6 +36,9 @@ public class BuilderManager : MonoBehaviour
     [SerializeField] InputField backstoryExtend;
     int healthDice = 0;
 
+
+    bool saveDone = false;
+
     private void Awake()
     {
         LoadSpellManager.LoadSpells();
@@ -50,8 +56,10 @@ public class BuilderManager : MonoBehaviour
         GlobalStatus.load = true;
         if (playerName.text != "")
         {
-            DataSaverAndLoader.SaveCharacter(playerName.text);
-            CharacterCollection.SetName(playerName.text);
+            Character newCharacter = new Character();
+            //DataSaverAndLoader.SaveCharacter(playerName.text);
+            CharacterData.SetCharacter(newCharacter);
+            newCharacter._name = playerName.text;
             characterName = CharacterCollection.GetName();
             HashSet<Weapon.BladeType> bladeProf;
             HashSet<Weapon.WeaponType> weaponProf;
@@ -72,27 +80,37 @@ public class BuilderManager : MonoBehaviour
                 if (armorProf != null)
                     PresavedLists.armorTypes.UnionWith(armorProf);
 
-                DataSaverAndLoader.SaveClass(player.id);
+                int subId = -1;
                 if (player.GetSubClass() != null)
-                    DataSaverAndLoader.SaveSubClass(classes.GetClass());
+                {
+                    subId = player.GetSubClass().id;
+                    //DataSaverAndLoader.SaveSubClass(classes.GetClass());
+                }
+                newCharacter._classes.Add((player.id, 1, subId, 1));
+                //DataSaverAndLoader.SaveClass(player.id);
                 saveThrows = player.GetSaveThrows();
                 PresavedLists.saveThrows.UnionWith(saveThrows);
                 healthDice = player.healthDice;
             }
             if (race.GetRace() != null)
             {
-                DataSaverAndLoader.SaveRace(race.GetRace().id);
+                newCharacter._raceId[0] = race.GetRace().id;
+                //DataSaverAndLoader.SaveRace(race.GetRace().id);
+                int subRaceId = -1;
                 if (race.GetRace().GetSubRace() != null)
                 {
-                    DataSaverAndLoader.SaveSubRace(race.GetRace());
+                    subRaceId = race.GetRace().GetSubRace().id;
+                    //DataSaverAndLoader.SaveSubRace(race.GetRace());
                     if (race.GetRace().GetBladeProficiency() != null)
                         PresavedLists.bladeTypes.UnionWith(race.GetRace().GetBladeProficiency());
                 }
+                newCharacter._raceId[1] = subRaceId;
             }
             List<(int, Item)> itemList = inventory.GetItems();
             if (backstory.GetBackstory() != null)
             {
-                DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().id);
+                newCharacter._backstoryId = backstory.GetBackstory().id;
+                //DataSaverAndLoader.SaveBackstory(backstory.GetBackstory().id);
                 if (inventory.isStandart())
                 {
                     if (itemList == null)
@@ -145,35 +163,100 @@ public class BuilderManager : MonoBehaviour
             }
             if (itemList != null)
                 foreach ((int, Item) x in itemList)
-                    DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
-            SaveSkills();
-            SaveCompetence();
-            int buf;
+                {
+                    x.Item2.amount = x.Item1;
+                    CharacterData.SetItemSilent(x.Item2);
+                    //DataSaverAndLoader.SaveNewItem(x.Item2, itemList.IndexOf(x), x.Item1);
+                }
+            SaveSkills(newCharacter);
+            SaveCompetence(newCharacter);
+            SaveAttr(newCharacter);
+            /*int buf;
             int.TryParse(maxHealth.text, out buf);
-            PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
-            DataSaverAndLoader.SaveAlignment(alignment.value);
+            //PlayerPrefs.SetInt(characterName + maxHealthSaveName, buf);
+            newCharacter._maxHP = buf;*/
+            newCharacter._alignment = alignment.value;
+            newCharacter._nature = nature.text;
+            newCharacter._ideal = ideal.text;
+            newCharacter._attachment = attachment.text;
+            newCharacter._weakness = weakness.text;
+            newCharacter._backstoryExtend = backstoryExtend.text;
+            /*DataSaverAndLoader.SaveAlignment(alignment.value);
             DataSaverAndLoader.SaveNature(nature.text);
             DataSaverAndLoader.SaveIdeal(ideal.text);
             DataSaverAndLoader.SaveAttachment(attachment.text);
             DataSaverAndLoader.SaveWeakness(weakness.text);
             DataSaverAndLoader.SaveBackstoryExtend(backstoryExtend.text);
-            DataSaverAndLoader.SaveHealthDice(classes.GetClass().id, 1);
-            SaveAttr();
-            PresavedLists.SaveProficiency();
-            PresavedLists.SaveInstruments();
-            PresavedLists.SaveInstrumentsComp();
+            DataSaverAndLoader.SaveHealthDice(classes.GetClass().id, 1);*/
+            //PresavedLists.SaveProficiency();
+            newCharacter._bladeProficiency = PresavedLists.bladeTypes.ToList();
+            newCharacter._weaponProficiency = PresavedLists.weaponTypes.ToList();
+            newCharacter._armorProficiency = PresavedLists.armorTypes.ToList();
+            newCharacter._instruments = PresavedLists.instruments;
+            //PresavedLists.SaveInstruments();
+            newCharacter._instrumentsComp = PresavedLists.compInstruments;
+            //PresavedLists.SaveInstrumentsComp();
             PresavedLists.SaveCustomPrelists();
-            PresavedLists.saveSaveThrows();
-            PresavedLists.SaveLanguage();
-            PresavedLists.SaveSpellKnew();
-            PresavedLists.SaveFeats();
+            foreach (int x in PresavedLists.saveThrows)
+            {
+                if (x >= 0 && x < 6)
+                    newCharacter._saves[x] = 1;
+            }
+            //newCharacter._saves = PresavedLists.saveThrows;
+            //PresavedLists.saveSaveThrows();
+            newCharacter._language = PresavedLists.languages;
+            //PresavedLists.SaveLanguage();
+            List<(int, List<int>)> spellBuf = new List<(int, List<int>)>();
+            foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
+                spellBuf.Add((x.Item1, x.Item2.ToList()));
+            newCharacter._spellKnew = spellBuf;
+            //PresavedLists.SaveSpellKnew();
+            List<int> feats = new List<int>();
+            foreach (Feat x in PresavedLists.feats)
+                feats.Add(x.id);
+            newCharacter._feats = feats;
+            //PresavedLists.SaveFeats();
             int[] money = inventory.GetMoney();
             if (money != null)
-                DataSaverAndLoader.SaveMoney(new List<int>(money));
-            PlayerPrefs.Save();
+            {
+                newCharacter._money = money;
+                //DataSaverAndLoader.SaveMoney(new List<int>(money));
+            }
+            //PlayerPrefs.Save();
+            string teststr = JsonConvert.SerializeObject(newCharacter);
+            Debug.Log("Character: " + teststr);
+            StartCoroutine(Save(newCharacter));
+            CharacterCollection.SetName(newCharacter._name);
+            CharacterCollection.SetId(newCharacter._id);
+            while (!saveDone) ;
         }
         LoadSceneManager.Instance.LoadScene("view");
         //SceneManager.LoadScene("view", LoadSceneMode.Single);
+    }
+
+    IEnumerator Save(Character newCharacter)
+    {
+        Debug.Log(newCharacter);
+        Task<int> task = DataCloudeSave.Load<int>("char_last_id");
+        while (!task.IsCompleted) yield return null;
+        int lastId = task.Result;
+
+        Task<List<(int, string)>> task1 = DataCloudeSave.Load<List<(int, string)>>("_characters_");
+        while (!task1.IsCompleted) yield return null;
+        List<(int, string)> list = task1.Result;
+        newCharacter._id = lastId + 1;
+        list.Add((newCharacter._id, newCharacter._name));
+        Debug.Log(lastId + 1);
+        Task task2 = DataCloudeSave.Save("char_last_id", lastId + 1);
+        while (!task2.IsCompleted) yield return null;
+        task2 = DataCloudeSave.Save("char_Id_" + newCharacter._id.ToString(), newCharacter);
+        while (!task2.IsCompleted) yield return null;
+        Debug.Log(list);
+        task2 = DataCloudeSave.Save("_characters_", list);
+        while (!task2.IsCompleted) yield return null;
+        Debug.Log("Done");
+        saveDone = true;
+        CloudAutoSaveManager.GetInstance().AutoSave();
     }
 
     public void LoadForceView()
@@ -182,7 +265,7 @@ public class BuilderManager : MonoBehaviour
         //SceneManager.LoadScene("CharacterSelecter", LoadSceneMode.Single);
     }
 
-    void SaveAttr()
+    void SaveAttr(Character character)
     {
         int[] arr = attr.GetAttributes();
         foreach (string x in PresavedLists.attrAdd)
@@ -207,15 +290,18 @@ public class BuilderManager : MonoBehaviour
                     arr[5]++;
                     break;
             }
-        int addHealth = DataSaverAndLoader.LoadAddHealth();
-        DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth);
-        DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth);
-        if (PresavedLists.addHealth > 0)
-            DataSaverAndLoader.SaveAddHealth(PresavedLists.addHealth + addHealth);
-        DataSaverAndLoader.SaveAttributes(arr);
+        int addHealth = PresavedLists.addHealth;
+        character._maxHP = (arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth;
+        //DataSaverAndLoader.SaveMaxHealth((arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth);
+        character._currentHP = character._maxHP;
+        //DataSaverAndLoader.SaveHealth((arr[2] / 2 - 5) + healthDice + addHealth + PresavedLists.addMaxHealth);
+        /*if (PresavedLists.addHealth > 0)
+            DataSaverAndLoader.SaveAddHealth(PresavedLists.addHealth + addHealth);*/
+        //DataSaverAndLoader.SaveAttributes(arr);
+        character._charAtr = (int[])arr.Clone();
     }
 
-    void SaveSkills()
+    void SaveSkills(Character character)
     {
         HashSet<string> list = PresavedLists.skills;
         foreach (string x in list)
@@ -223,65 +309,83 @@ public class BuilderManager : MonoBehaviour
             switch (x)
             {
                 case "Атлетика":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 0, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 0, 1);
+                    character._skills[0] = 1;
                     break;
                 case "Акробатика":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 1, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 1, 1);
+                    character._skills[1] = 1;
                     break;
                 case "Ловкость рук":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 2, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 2, 1);
+                    character._skills[2] = 1;
                     break;
                 case "Скрытность":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 3, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 3, 1);
+                    character._skills[3] = 1;
                     break;
                 case "Анализ":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 4, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 4, 1);
+                    character._skills[4] = 1;
                     break;
                 case "История":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 5, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 5, 1);
+                    character._skills[5] = 1;
                     break;
                 case "Магия":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 6, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 6, 1);
+                    character._skills[6] = 1;
                     break;
                 case "Природа":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 7, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 7, 1);
+                    character._skills[7] = 1;
                     break;
                 case "Религия":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 8, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 8, 1);
+                    character._skills[8] = 1;
                     break;
                 case "Внимательность":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 9, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 9, 1);
+                    character._skills[9] = 1;
                     break;
                 case "Выживание":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 10, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 10, 1);
+                    character._skills[10] = 1;
                     break;
                 case "Медицина":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 11, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 11, 1);
+                    character._skills[11] = 1;
                     break;
                 case "Проницательность":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 12, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 12, 1);
+                    character._skills[12] = 1;
                     break;
                 case "Уход за животными":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 13, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 13, 1);
+                    character._skills[13] = 1;
                     break;
                 case "Выступление":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 14, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 14, 1);
+                    character._skills[14] = 1;
                     break;
                 case "Запугивание":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 15, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 15, 1);
+                    character._skills[15] = 1;
                     break;
                 case "Обман":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 16, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 16, 1);
+                    character._skills[16] = 1;
                     break;
                 case "Убеждение":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 17, 1);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 17, 1);
+                    character._skills[17] = 1;
                     break;
             }
         }
         PresavedLists.skills.Clear();
     }
 
-    void SaveCompetence()
+    void SaveCompetence(Character character)
     {
         HashSet<string> list = PresavedLists.competence;
         foreach (string x in list)
@@ -289,61 +393,76 @@ public class BuilderManager : MonoBehaviour
             switch (x)
             {
                 case "Атлетика":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 0, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 0, 1);
+                    character._skills[0] = 2;
                     break;
                 case "Акробатика":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 1, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 1, 1);
+                    character._skills[1] = 2;
                     break;
                 case "Ловкость рук":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 2, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 2, 1);
+                    character._skills[2] = 2;
                     break;
                 case "Скрытность":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 3, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 3, 1);
+                    character._skills[3] = 2;
                     break;
                 case "Анализ":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 4, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 4, 1);
+                    character._skills[4] = 2;
                     break;
                 case "История":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 5, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 5, 1);
+                    character._skills[5] = 2;
                     break;
                 case "Магия":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 6, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 6, 1);
+                    character._skills[6] = 2;
                     break;
                 case "Природа":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 7, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 7, 2);
+                    character._skills[7] = 2;
                     break;
                 case "Религия":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 8, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 8, 2);
+                    character._skills[8] = 2;
                     break;
                 case "Внимательность":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 9, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 9, 2);
+                    character._skills[9] = 2;
                     break;
                 case "Выживание":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 10, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 20, 2);
+                    character._skills[10] = 2;
                     break;
                 case "Медицина":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 11, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 11, 1);
+                    character._skills[11] = 2;
                     break;
                 case "Проницательность":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 12, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 12, 1);
+                    character._skills[12] = 2;
                     break;
                 case "Уход за животными":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 13, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 13, 1);
+                    character._skills[13] = 2;
                     break;
                 case "Выступление":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 14, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 14, 1);
+                    character._skills[14] = 2;
                     break;
                 case "Запугивание":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 15, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 15, 1);
+                    character._skills[15] = 2;
                     break;
                 case "Обман":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 16, 2);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 16, 1);
+                    character._skills[16] = 2;
                     break;
                 case "Убеждение":
-                    PlayerPrefs.SetInt(characterName + skillSaveName + 17, 2);
-                    break;
-                case "Воровские инстурменты":
-                    PresavedLists.compInstruments.Add(x);
+                    //PlayerPrefs.SetInt(characterName + skillSaveName + 17, 1);
+                    character._skills[17] = 2;
                     break;
             }
         }

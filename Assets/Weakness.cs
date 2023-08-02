@@ -15,6 +15,9 @@ public class Weakness : MonoBehaviour
     public void Save()
     {
         if (inputField != null)
-            DataSaverAndLoader.SaveWeakness(inputField.text);
+        {
+            CharacterData.SetWeakness(inputField.text);
+            //DataSaverAndLoader.SaveWeakness(inputField.text);
+        }
     }
 }

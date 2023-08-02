@@ -15,6 +15,9 @@ public class Attachment : MonoBehaviour
     public void Save()
     {
         if (inputField != null)
-            DataSaverAndLoader.SaveAttachment(inputField.text);
+        {
+            CharacterData.SetAttachment(inputField.text);
+            //DataSaverAndLoader.SaveAttachment(inputField.text);
+        }
     }
 }

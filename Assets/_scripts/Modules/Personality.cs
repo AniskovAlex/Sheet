@@ -30,6 +30,11 @@ public class Personality : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharacterData.load += Init;
+    }
+
+    void Init()
+    {
         classes = CharacterData.GetClasses();
         foreach ((int, PlayersClass) playersClass in classes)
             if (playersClass.Item2 != null)
@@ -82,8 +87,11 @@ public class Personality : MonoBehaviour
                 case Race.Size.large:
                     RaceSize.text += " Большой";
                     break;
+
             }
-            Ability[] abilitieSubRaceArr = race.ChooseSubRace(DataSaverAndLoader.LoadSubRace(race));
+            Ability[] abilitieSubRaceArr = null;
+            if (race.GetSubRace() != null)
+                abilitieSubRaceArr = race.GetSubRace().GetAbilities();
             Ability[] abilityArr = race.GetAbilities();
             if (abilitieSubRaceArr != null)
             {
@@ -113,16 +121,17 @@ public class Personality : MonoBehaviour
         loadFeats();
         LoadPersonInformation();
         LoadProficiancy();
+        content.GetComponent<ContentSizer>().HieghtSizeInit();
     }
 
     void LoadPersonInformation()
     {
-        alignment.value = DataSaverAndLoader.LoadAlignment();
-        nature.text = DataSaverAndLoader.LoadNature();
-        ideal.text = DataSaverAndLoader.LoadIdeal();
-        attachment.text = DataSaverAndLoader.LoadAttachment();
-        weakness.text = DataSaverAndLoader.LoadWeakness();
-        backstoryExtend.text = DataSaverAndLoader.LoadBackstoryExtend();
+        alignment.value = CharacterData.GetAlignments();
+        nature.text = CharacterData.GetNature();
+        ideal.text = CharacterData.GetIdeal();
+        attachment.text = CharacterData.GetAttachment();
+        weakness.text = CharacterData.GetWeakness();
+        backstoryExtend.text = CharacterData.GetBackstoryExtend();
     }
 
     void LoadProficiancy()

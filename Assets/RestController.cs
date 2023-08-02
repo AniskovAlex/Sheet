@@ -49,15 +49,16 @@ public class RestController : MonoBehaviour
     public void LongRest()
     {
         popout.SetPopout(new List<GameObject> { preparePanel.gameObject });
-        health.ResetHealth();
         spell.ResetSpellCells();
         foreach ((int, PlayersClass) x in CharacterData.GetClasses())
         {
-            DataSaverAndLoader.SaveHealthDice(x.Item2.id, Mathf.Clamp(DataSaverAndLoader.LoadHealthDice(x.Item2.id) + (x.Item1 + 1) / 2, 1, x.Item1));
+            CharacterData.SetHealthDice(x.Item2.id, Mathf.Clamp(CharacterData.GetHealthDice(x.Item2.id) + (x.Item1 + 1) / 2, 1, x.Item1));
+            //DataSaverAndLoader.SaveHealthDice(x.Item2.id, Mathf.Clamp(DataSaverAndLoader.LoadHealthDice(x.Item2.id) + (x.Item1 + 1) / 2, 1, x.Item1));
         }
         ConsumablePanel[] consumables = person.GetComponentsInChildren<ConsumablePanel>(true);
         foreach (ConsumablePanel x in consumables)
             x.ResetToggels();
+        health.ResetHealth(); // так же вызовет сохранение персонажа
     }
 
 

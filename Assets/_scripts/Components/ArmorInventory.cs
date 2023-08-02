@@ -17,8 +17,8 @@ public class ArmorInventory : MonoBehaviour
     public void LoadEquited()
     {
         ArmorEquipment[] armors = content.GetComponentsInChildren<ArmorEquipment>();
-        (int, string)[] equipted = DataSaverAndLoader.LoadEquitedArmor();
-        foreach ((int, string) x in equipted)
+        List<(int, string)> equipted = CharacterData.GetArmorEquip();
+        foreach ((int, string) x in new List<(int, string)>(equipted))
         {
             foreach (ArmorEquipment y in armors)
             {
@@ -43,7 +43,7 @@ public class ArmorInventory : MonoBehaviour
     public void OnArmorRemove(Item armor)
     {
         Armor arm = armor as Armor;
-        if(arm.armorType == Armor.ArmorType.Shield)
+        if (arm.armorType == Armor.ArmorType.Shield)
         {
             FindObjectOfType<WeaponInventory>().OnWeaponRemove(armor);
             return;

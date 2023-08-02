@@ -15,6 +15,9 @@ public class Alignments : MonoBehaviour
     public void Save()
     {
         if (inputField != null)
-            DataSaverAndLoader.SaveAlignment(inputField.value);
+        {
+            CharacterData.SetAlignments(inputField.value);
+            //DataSaverAndLoader.SaveAlignment(inputField.value);
+        }
     }
 }

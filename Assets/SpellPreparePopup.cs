@@ -25,7 +25,8 @@ public class SpellPreparePopup : MonoBehaviour
 
     private void OnDestroy()
     {
-        DataSaverAndLoader.SaveSpellPrepared(SpellController.GetSpellsId(SpellController.spellPrepared));
+        /*DataSaverAndLoader.SaveSpellPrepared(*/
+        CharacterData.SetSpellPrepared(SpellController.GetSpellsId(SpellController.spellPrepared));
         SpellController.ReloadSpells();
     }
 }

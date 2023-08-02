@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting;
 
+[Preserve]
 public class Armor: Item
 {
     /*const string ACSaveName = "armorAC_";
@@ -10,6 +12,7 @@ public class Armor: Item
     const string StealthSaveName = "armorStealth_";
     const string TypeSaveName = "armorType_";*/
 
+    [Preserve]
     public enum ArmorType
     {
         Light,
@@ -18,11 +21,11 @@ public class Armor: Item
         Shield
     }
 
-    public int AC;
-    public int ACCap;
-    public int strReq;
-    public bool stealthDis;
-    public ArmorType armorType;
+    [Preserve] public int AC;
+    [Preserve] public int ACCap;
+    [Preserve] public int strReq;
+    [Preserve] public bool stealthDis;
+    [Preserve] public ArmorType armorType;
 
     /*public static Armor? LoadArmor(string label)
     {

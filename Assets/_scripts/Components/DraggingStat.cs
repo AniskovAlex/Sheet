@@ -8,7 +8,7 @@ public class DraggingStat : MonoBehaviour
     [SerializeField] GameObject buffer;
     bool dragging = false;
     [SerializeField] Transform parent;
-    [SerializeField] BoxCollider2D collider;
+    [SerializeField] BoxCollider2D colliderBox;
     [SerializeField] Text attr;
     [SerializeField] Text mod;
     int sum = 0;
@@ -56,7 +56,7 @@ public class DraggingStat : MonoBehaviour
         dragging = false;
         GlobalStatus.dragging = false;
         Collider2D[] overlaps = new Collider2D[2];
-        if (collider.OverlapCollider(filter.NoFilter(), overlaps) > 0)
+        if (colliderBox.OverlapCollider(filter.NoFilter(), overlaps) > 0)
         {
             foreach (Collider2D x in overlaps)
             {

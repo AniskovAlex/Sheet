@@ -5,9 +5,9 @@ using UnityEngine;
 public class PopoutConfirm : MonoBehaviour
 {
     [SerializeField] SelecterManager manager;
-    Character buf;
+    CharacterTab buf;
 
-    public void Show(Character name)
+    public void Show(CharacterTab name)
     {
         gameObject.SetActive(true);
         buf = name;

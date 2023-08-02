@@ -15,6 +15,7 @@ public class LoadInventoryManager : MonoBehaviour
         string JSONItems = FileSaverAndLoader.LoadFile("Items");
         string JSONWeapons = FileSaverAndLoader.LoadFile("Weapons");
         string JSONArmors = FileSaverAndLoader.LoadFile("Armors");
+
         /*wep.cost = 1;
         wep.damageType = Weapon.DamageType.Crushing;
         wep.dices = 1;

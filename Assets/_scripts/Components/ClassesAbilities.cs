@@ -83,7 +83,7 @@ public class ClassesAbilities : MonoBehaviour
         if (playersClass != null)
         {
             Instantiate(health, content.transform);
-            Ability[] abilitieSubClassArr = playersClass.ChooseSubClass(DataSaverAndLoader.LoadSubClass(playersClass));
+            Ability[] abilitieSubClassArr = playersClass.ChooseSubClass(CharacterData.GetSubClass(playersClass.id));
             Ability[] abilityArr = playersClass.GetAbilities();
             if (abilityArr != null && abilitieSubClassArr != null)
                 abilityArr = abilityArr.Concat(playersClass.GetSubClass().GetAbilities()).ToArray();
@@ -106,12 +106,12 @@ public class ClassesAbilities : MonoBehaviour
                 List<Spell> listSpells = new List<Spell>();
                 List<Spell> listSpellsAbj = new List<Spell>();
                 List<Spell> listSpellsEvo = new List<Spell>();
-                List<(int, HashSet<int>)> list = DataSaverAndLoader.LoadSpellKnew();
+                List<(int, List<int>)> list = CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/;
                 FormCreater formForSpells = Instantiate(form, content.transform).GetComponent<FormCreater>();
                 GameObject discription = formForSpells.GetComponentInChildren<Discription>().gameObject;
                 formForSpells.SetHead("Заклинания");
                 bool flag = false;
-                foreach ((int, HashSet<int>) x in list)
+                foreach ((int, List<int>) x in list)
                 {
                     if (x.Item1 == playersClass.id)
                     {

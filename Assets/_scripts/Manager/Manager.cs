@@ -15,6 +15,7 @@ public class Manager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        CloudAutoSaveManager.GetInstance().AutoSave();
         LoadSceneManager.Instance.LoadScene(sceneName);
     }
 }

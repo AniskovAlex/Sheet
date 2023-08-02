@@ -16,6 +16,7 @@ public class SpellController : MonoBehaviour
     [SerializeField] GameObject secreatsBook;
     [SerializeField] GameObject spellPrepare;
     [SerializeField] Button spellPanelButton;
+    [SerializeField] ContentLocater contentLocater;
     public static Action ReloadSpells;
     public static List<(int, List<Spell>)> spellKnew = new List<(int, List<Spell>)>();
     public static List<(int, List<Spell>)> spellPrepared = new List<(int, List<Spell>)>();
@@ -27,9 +28,15 @@ public class SpellController : MonoBehaviour
 
     private void Start()
     {
+        CharacterData.load += Init;
+    }
+
+    void Init()
+    {
         spellPanel.SetActive(false);
         spellPrepare.SetActive(false);
         spellPanelButton.interactable = false;
+        spellPanelButton.gameObject.GetComponent<Image>().color = new Color(0.4078431f, 0.4078431f, 0.4078431f);
         spellBook.SetActive(false);
         if (!GlobalStatus.ritualCaster)
             ritualBook.SetActive(false);
@@ -41,6 +48,7 @@ public class SpellController : MonoBehaviour
                 GlobalStatus.magic = true;
                 spellPanel.SetActive(true);
                 spellPanelButton.interactable = true;
+                spellPanelButton.gameObject.GetComponent<Image>().color = new Color(1,1,1);
                 if (x.Item2.id == 0 || x.Item2.id == 2 || x.Item2.id == 10 || x.Item2.id == 11) continue;
                 spellPrepare.SetActive(true);
                 if (x.Item2.id == 3)
@@ -57,16 +65,16 @@ public class SpellController : MonoBehaviour
             Debug.Log("Список заклинаний не загружен!");
             return;
         }
-        currentCells = DataSaverAndLoader.LoadCellsAmount();
-        List<(int, HashSet<int>)> spellKnewIdList = DataSaverAndLoader.LoadSpellKnew();
+        currentCells = CharacterData.GetSpellCells() /*DataSaverAndLoader.LoadCellsAmount()*/;
+        List<(int, List<int>)> spellKnewIdList = CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/;
         if (spellKnewIdList.Count > 0)
         {
             GlobalStatus.magic = true;
             spellPanel.SetActive(true);
             spellPanelButton.interactable = true;
         }
-        List<(int, HashSet<int>)> spellPreparedIdList = DataSaverAndLoader.LoadSpellPrepared();
-        HashSet<int> spellMasterIdList = DataSaverAndLoader.LoadSpellMaster();
+        List<(int, List<int>)> spellPreparedIdList = CharacterData.GetSpellPrepared() /*DataSaverAndLoader.LoadSpellPrepared()*/;
+        HashSet<int> spellMasterIdList = CharacterData.GetSpellMaster() /*DataSaverAndLoader.LoadSpellMaster()*/;
         foreach (int x in spellMasterIdList)
         {
             foreach (Spell y in spells)
@@ -83,15 +91,16 @@ public class SpellController : MonoBehaviour
         ReloadSpells += InitSpells;
         ReloadSpells += Resize;
         InitSpellCells();
+        contentLocater.Init();
     }
 
     void RespellKnew()
     {
-        List<(int, HashSet<int>)> spellKnewIdList = DataSaverAndLoader.LoadSpellKnew();
+        List<(int, List<int>)> spellKnewIdList = CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/;
         spellKnew = SetSpell(spellKnewIdList);
     }
 
-    List<(int, List<Spell>)> SetSpell(List<(int, HashSet<int>)> list)
+    List<(int, List<Spell>)> SetSpell(List<(int, List<int>)> list)
     {
         List<(int, List<Spell>)> spellList = new List<(int, List<Spell>)>();
         list.ForEach(g =>
@@ -111,12 +120,12 @@ public class SpellController : MonoBehaviour
         return spellList;
     }
 
-    public static List<(int, HashSet<int>)> GetSpellsId(List<(int, List<Spell>)> list)
+    public static List<(int, List<int>)> GetSpellsId(List<(int, List<Spell>)> list)
     {
-        List<(int, HashSet<int>)> spellList = new List<(int, HashSet<int>)>();
+        List<(int, List<int>)> spellList = new List<(int, List<int>)>();
         list.ForEach(g =>
         {
-            HashSet<int> buf = new HashSet<int>();
+            List<int> buf = new List<int>();
             foreach (Spell x in g.Item2)
             {
                 buf.Add(x.id);
@@ -162,7 +171,8 @@ public class SpellController : MonoBehaviour
         HashSet<int> list = new HashSet<int>();
         foreach (Spell x in spellMaster)
             list.Add(x.id);
-        DataSaverAndLoader.SaveSpellMaster(list);
+        CharacterData.SetSpellMaster(list);
+        /*DataSaverAndLoader.SaveSpellMaster(list);*/
     }
 
     void InitSpellCells()

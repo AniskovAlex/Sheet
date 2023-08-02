@@ -8,7 +8,12 @@ public class CharacterLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<InputField>().text = CharacterData.GetLevel().ToString();
+        CharacterData.load += Init;
     }
 
+    void Init()
+    {
+        GetComponent<InputField>().text = CharacterData.GetLevel().ToString();
+
+    }
 }

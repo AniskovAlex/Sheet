@@ -12,15 +12,20 @@ public class ContentLocater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //CharacterData.load += Init;
+    }
+
+    public void Init()
+    {
         rectTransform = GetComponent<RectTransform>();
-        float hieght =  Size();
+        float hieght = Size();
         int active = 0;
         for (int i = 0; i < transform.childCount && i != preferedChild; i++)
         {
             if (!transform.GetChild(i).gameObject.activeInHierarchy) continue;
             active++;
         }
-        if (preferedChild>0 && hieght + verticalPadding< rectTransform.sizeDelta.y)
+        if (preferedChild > 0 && hieght + verticalPadding < rectTransform.sizeDelta.y)
         {
             float bufSapce = 0;
             if (active != 0)

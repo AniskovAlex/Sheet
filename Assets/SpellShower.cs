@@ -6,7 +6,7 @@ public class SpellShower : MonoBehaviour
 {
     [SerializeField] ConsumablePanel consumable;
     [SerializeField] int level;
-    public void SetCells(int amount,int currentAmount)
+    public void SetCells(int amount, int currentAmount)
     {
         ConsumablePanel buf = Instantiate(consumable, GetComponentInChildren<Opener>().transform);
         buf.SpawnToggles(amount, currentAmount);
@@ -15,6 +15,7 @@ public class SpellShower : MonoBehaviour
 
     void UpdateConsum(int amount)
     {
-        DataSaverAndLoader.SaveCellAmount(level, amount);
+        CharacterData.SetSpellCell(level, amount);
+        //DataSaverAndLoader.SaveCellAmount(level, amount);
     }
 }

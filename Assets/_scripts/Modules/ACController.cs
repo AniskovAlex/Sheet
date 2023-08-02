@@ -15,7 +15,13 @@ public class ACController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharacterData.load += Init;
+    }
+
+    void Init()
+    {
         UpdateArmorClass(null, false);
+
     }
 
     public void UploadArmorClass()

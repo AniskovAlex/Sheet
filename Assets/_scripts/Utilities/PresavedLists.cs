@@ -43,6 +43,11 @@ public static class PresavedLists
     static public Action<string> ChangeIntrumentsPing;
     static public Action<string> ChangeLanguagePing;
 
+    static public void Init(Character character)
+    {
+
+    }
+
     static public void UpdatePrelist(string listName, int oldValue, int newValue)
     {
         foreach ((string, List<int>) x in preLists.FindAll(x => x.Item1 == listName))
@@ -186,45 +191,45 @@ public static class PresavedLists
 
     static public void SaveProficiency()
     {
-        DataSaverAndLoader.SaveBladeProficiency(bladeTypes);
-        DataSaverAndLoader.SaveWeaponProficiency(weaponTypes);
-        DataSaverAndLoader.SaveArmorProficiency(armorTypes);
+        //DataSaverAndLoader.SaveBladeProficiency(bladeTypes);
+        //DataSaverAndLoader.SaveWeaponProficiency(weaponTypes);
+        //DataSaverAndLoader.SaveArmorProficiency(armorTypes);
     }
 
     static public void SaveInstruments()
     {
-        DataSaverAndLoader.SaveInstruments(instruments);
+        //DataSaverAndLoader.SaveInstruments(instruments);
     }
 
     static public void SaveInstrumentsComp()
     {
-        DataSaverAndLoader.SaveInstrumentsComp(compInstruments);
+        //DataSaverAndLoader.SaveInstrumentsComp(compInstruments);
     }
     static public void SaveLanguage()
     {
-        DataSaverAndLoader.SaveLanguage(languages);
+        //DataSaverAndLoader.SaveLanguage(languages);
     }
 
     static public void SaveSpellKnew()
     {
 
-        DataSaverAndLoader.SaveAddSpellKnew(spellKnew);
+        //DataSaverAndLoader.SaveAddSpellKnew(spellKnew);
     }
 
     static public void SaveFeats()
     {
-        DataSaverAndLoader.SaveFeats(feats);
+        //DataSaverAndLoader.SaveFeats(feats);
 
     }
 
     static public void SaveCustomPrelists()
     {
-        preLists.ForEach(x => DataSaverAndLoader.SaveCustomList(x.Item1, x.Item2));
+        preLists.ForEach(x => CharacterData.AddCustomList(x.Item1, x.Item2) /*DataSaverAndLoader.SaveCustomList(x.Item1, x.Item2)*/);
     }
 
     static public void saveSaveThrows()
     {
-        DataSaverAndLoader.SaveSaveThrows(saveThrows);
+        //DataSaverAndLoader.SaveSaveThrows(saveThrows);
     }
 
     static public void ResetAll()

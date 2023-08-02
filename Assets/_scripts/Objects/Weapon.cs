@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting;
 
+[Preserve]
 public class Weapon : Item
 {
     /*static string dicesSaveName = "weaponDices_";
@@ -15,6 +17,7 @@ public class Weapon : Item
     static string typeSaveName = "weaponType_";
 
     */
+    [Preserve]
     public enum DamageType
     {
         Slashing,
@@ -22,6 +25,7 @@ public class Weapon : Item
         Piercing
     }
 
+    [Preserve]
     public enum Properties
     {
         Ammo,
@@ -37,6 +41,7 @@ public class Weapon : Item
         Fencing
     }
 
+    [Preserve]
     public enum WeaponType
     {
         CommonMelee,
@@ -47,6 +52,7 @@ public class Weapon : Item
 
     }
 
+    [Preserve]
     public enum BladeType
     {
         WarStaff,
@@ -88,15 +94,15 @@ public class Weapon : Item
         Net
     }
 
-    public int dices;
-    public int hitDice;
-    public int dist;
-    public int maxDist;
-    public bool magic;
-    public DamageType damageType;
-    public Properties[] properties;
-    public WeaponType weaponType;
-    public BladeType bladeType;
+    [Preserve] public int dices;
+    [Preserve] public int hitDice;
+    [Preserve] public int dist;
+    [Preserve] public int maxDist;
+    [Preserve] public bool magic;
+    [Preserve] public DamageType damageType;
+    [Preserve] public Properties[] properties;
+    [Preserve] public WeaponType weaponType;
+    [Preserve] public BladeType bladeType;
 
     /*public static Weapon? LoadWeapon(string label)
     {

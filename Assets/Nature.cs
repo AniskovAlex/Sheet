@@ -15,6 +15,9 @@ public class Nature : MonoBehaviour
     public void Save()
     {
         if (inputField != null)
-            DataSaverAndLoader.SaveNature(inputField.text);
+        {
+            CharacterData.SetNature(inputField.text);
+            //DataSaverAndLoader.SaveNature(inputField.text);
+        }
     }
 }

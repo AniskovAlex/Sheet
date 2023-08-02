@@ -16,7 +16,7 @@ public class RestoreHealthClass : MonoBehaviour
     public void SetPanel(int count, PlayersClass playersClass, Action<int, PlayersClass> action)
     {
         classId = playersClass.id;
-        restInt = DataSaverAndLoader.LoadHealthDice(classId);
+        restInt = CharacterData.GetHealthDice(classId);
         restMaxInt = count;
         button.onClick.AddListener(delegate
         {
@@ -32,7 +32,7 @@ public class RestoreHealthClass : MonoBehaviour
     {
         if (restInt <= 0) return;
         restInt--;
-        DataSaverAndLoader.SaveHealthDice(classId, restInt);
+        CharacterData.SetHealthDice(classId, restInt);
         rest.text = restInt + "/" + restMaxInt;
     }
 }

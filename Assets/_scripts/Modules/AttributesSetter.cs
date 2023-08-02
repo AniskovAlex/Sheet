@@ -8,6 +8,11 @@ public class AttributesSetter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharacterData.load += Init;
+    }
+
+    void Init()
+    {
         Box[] boxList = GetComponentsInChildren<Box>();
         foreach (Box x in boxList)
         {
@@ -22,5 +27,6 @@ public class AttributesSetter : MonoBehaviour
             x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = str;
 
         }
+
     }
 }

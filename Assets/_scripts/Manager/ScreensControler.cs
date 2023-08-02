@@ -46,10 +46,10 @@ public class ScreensControler : MonoBehaviour
         foreach (Button x in buttons)
         {
 
-            if (x.name == "Spells" && !GlobalStatus.magic)
+            /*if (x.name == "Spells" && !GlobalStatus.magic)
             {
                 x.gameObject.GetComponent<Image>().color = new Color(0.4078431f, 0.4078431f, 0.4078431f);
-            }
+            }*/
         }
     }
 

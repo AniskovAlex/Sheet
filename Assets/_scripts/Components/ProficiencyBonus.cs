@@ -8,7 +8,12 @@ public class ProficiencyBonus : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + CharacterData.GetProficiencyBonus();
+        CharacterData.load += Init;
     }
 
+    void Init()
+    {
+        GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = "+" + CharacterData.GetProficiencyBonus();
+
+    }
 }

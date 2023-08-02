@@ -9,6 +9,11 @@ public class SpeedController : MonoBehaviour
     int add = 0;
     void Start()
     {
+        CharacterData.load += Init;
+    }
+
+    void Init()
+    {
         int speed = CharacterData.GetSpeed();
         if (GlobalStatus.fastFeet)
             speed = 35;
@@ -17,12 +22,12 @@ public class SpeedController : MonoBehaviour
         if (GlobalStatus.mobile)
             add += 10;
         if (GlobalStatus.monkSpeed)
-        { 
+        {
             int level = CharacterData.GetLevel(8);
             if (level >= 2 && level <= 5)
                 add += 10;
             if (level >= 6 && level <= 9)
-                add += 15; 
+                add += 15;
             if (level >= 10 && level <= 13)
                 add += 20;
             if (level >= 14 && level <= 17)

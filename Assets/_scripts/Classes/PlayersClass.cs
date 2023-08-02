@@ -2,19 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Scripting;
 
+[Preserve]
 public abstract class PlayersClass : ObjectsBehavior
 {
-    protected PlayerSubClass subClass = null;
+    [Preserve] protected PlayerSubClass subClass = null;
 
-    int HD = 0;
+    [Preserve] int HD = 0;
+    [Preserve]
     public int healthDice
     {
         get { return HD; }
         protected set { HD = value; }
     }
 
-    string N = null;
+    [Preserve] string N = null;
+    [Preserve]
     public string name
     {
         get { return N; }
@@ -22,6 +26,7 @@ public abstract class PlayersClass : ObjectsBehavior
     }
 
     int ID = -1;
+    [Preserve]
     public int id
     {
         get { return ID; }
@@ -29,57 +34,66 @@ public abstract class PlayersClass : ObjectsBehavior
     }
 
     int M = 0;
+    [Preserve]
     public int magic
     {
         get { return M; }
         protected set { M = value; }
     }
 
+    [Preserve]
     public void SetMagic(int add)
     {
         magic = add;
     }
 
-    int MC = 0;
+    [Preserve] int MC = 0;
+    [Preserve]
     public int magicChange
     {
         get { return MC; }
         protected set { MC = value; }
     }
 
-    protected int level = 0;
+    [Preserve] protected int level = 0;
 
-    int MS = 0;
+    [Preserve] int MS = 0;
+    [Preserve]
     public int mainState
     {
         get { return MS; }
         protected set { MS = value; }
     }
 
-    protected Ability[] abilities;
+    [Preserve] protected Ability[] abilities;
 
-    protected int PB;
+    [Preserve] protected int PB;
 
+    [Preserve]
     protected void LoadAbilities(string pathName)
     {
         abilities = FileSaverAndLoader.LoadAbilities("Classes/" + pathName);
     }
 
+    [Preserve]
     public virtual Ability[] GetAbilities()
     {
         return abilities;
     }
 
+    [Preserve]
     public virtual Ability[] ChooseSubClass(int subId)
     {
         return null;
     }
 
+    [Preserve]
     public virtual PlayerSubClass GetSubClass()
     {
         return subClass;
     }
 
+    [Preserve]
     public virtual HashSet<Weapon.WeaponType> GetWeaponProficiency()
     {
         if (subClass != null)
@@ -87,12 +101,14 @@ public abstract class PlayersClass : ObjectsBehavior
         return null;
     }
 
+    [Preserve]
     public virtual HashSet<Weapon.BladeType> GetBladeProficiency()
     {
         if (subClass != null)
             return subClass.GetBladeProficiency(); ;
         return null;
     }
+    [Preserve]
     public virtual HashSet<Armor.ArmorType> GetArmorProficiency()
     {
         if (subClass != null)
@@ -100,35 +116,42 @@ public abstract class PlayersClass : ObjectsBehavior
         return null;
     }
 
+    [Preserve]
     public virtual HashSet<Weapon.WeaponType> GetSubWeaponProficiency()
     {
         return GetWeaponProficiency();
     }
 
+    [Preserve]
     public virtual HashSet<Weapon.BladeType> GetSubBladeProficiency()
     {
         return GetBladeProficiency();
     }
+    [Preserve]
     public virtual HashSet<Armor.ArmorType> GetSubArmorProficiency()
     {
         return GetArmorProficiency();
     }
 
+    [Preserve]
     public virtual HashSet<int> GetSaveThrows()
     {
         return new HashSet<int>();
     }
 
+    [Preserve]
     public virtual List<List<List<(int, Item)>>> GetItems()
     {
         return null;
     }
 
+    [Preserve]
     public virtual int GetMoney()
     {
         return 0;
     }
 
+    [Preserve]
     public static PlayersClass GetPlayersClassByID(int id)
     {
         PlayersClass playersClass = null;

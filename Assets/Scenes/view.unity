@@ -611,9 +611,9 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 40
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 60
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -3037,6 +3037,17 @@ MonoBehaviour:
   horizontalPadding: 10
   space: 10
   preferedChild: 4
+--- !u!114 &132025219 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2076763804, guid: fa14023db91bfca479a4342b2a2b6e70, type: 3}
+  m_PrefabInstance: {fileID: 3654471163718584102}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e26582395509d6a4a9bcbd8e7ac6007e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &134372745
 GameObject:
   m_ObjectHideFlags: 0
@@ -4814,7 +4825,7 @@ MonoBehaviour:
   form: {fileID: 992981646776302948}
   newNoteButton: {fileID: 2025020609}
   notesPanel: {fileID: 186187194}
-  contentSizer: {fileID: 0}
+  contentSizer: {fileID: 1328789707}
 --- !u!114 &202283828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6747,6 +6758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 6134561642142820398, guid: 1d4bea4466d2ff2458d0dc26aec0a759, type: 3}
   panel: {fileID: 1881026740}
+  inventory: {fileID: 132025219}
 --- !u!4 &294076632
 Transform:
   m_ObjectHideFlags: 0
@@ -9859,6 +9871,9 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
+      m_Calls: []
+  m_OnDidEndEdit:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 425323539}
         m_TargetAssemblyTypeName: Attachment, Assembly-CSharp
@@ -9872,9 +9887,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_OnDidEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12289,6 +12301,9 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
+      m_Calls: []
+  m_OnDidEndEdit:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 541732610}
         m_TargetAssemblyTypeName: Nature, Assembly-CSharp
@@ -12302,9 +12317,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_OnDidEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -25789,6 +25801,7 @@ MonoBehaviour:
   secreatsBook: {fileID: 1378482381}
   spellPrepare: {fileID: 249167799}
   spellPanelButton: {fileID: 590064053}
+  contentLocater: {fileID: 130655992}
 --- !u!114 &1149338450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33645,6 +33658,9 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
+      m_Calls: []
+  m_OnDidEndEdit:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1491682167}
         m_TargetAssemblyTypeName: Ideal, Assembly-CSharp
@@ -33658,9 +33674,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_OnDidEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -38148,6 +38161,9 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
+      m_Calls: []
+  m_OnDidEndEdit:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1715460335}
         m_TargetAssemblyTypeName: Weakness, Assembly-CSharp
@@ -38161,9 +38177,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_OnDidEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -41392,6 +41405,9 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
+      m_Calls: []
+  m_OnDidEndEdit:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1975034159}
         m_TargetAssemblyTypeName: BackstoryExtend, Assembly-CSharp
@@ -41405,9 +41421,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_OnDidEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

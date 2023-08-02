@@ -7,7 +7,7 @@ public class LoadSceneManager : MonoBehaviour
 {
     [SerializeField] GameObject _loadCanvas;
     public static LoadSceneManager Instance;
-
+    bool flag = false;
 
 
     private void Awake()
@@ -48,6 +48,17 @@ public class LoadSceneManager : MonoBehaviour
             }
             yield return null;
         }
+        /*if (!flag)
+            _loadCanvas.SetActive(false);*/
+    }
+
+    public void SetLoadScreen()
+    {
+        _loadCanvas.SetActive(true);
+    }
+
+    public void HideLoadScreen()
+    {
         _loadCanvas.SetActive(false);
     }
 }

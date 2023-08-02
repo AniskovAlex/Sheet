@@ -59,7 +59,9 @@ public class ArmorEquipment : MonoBehaviour
             equip.onValueChanged.AddListener(delegate {
                 inventory.RemoveEquippedArmor(this, equip.isOn);
                 body.UpdateArmorClass(armor, equip.isOn);
-                DataSaverAndLoader.ArmorEquipmentChanged(armor, equip.isOn);
+                //DataSaverAndLoader.ArmorEquipmentChanged(armor, equip.isOn);
+                CharacterData.EditArmorEquip(armor, equip.isOn);
+                CharacterData.SaveCharacter();
             });
         currentArmor = armor;
     }
@@ -78,12 +80,16 @@ public class ArmorEquipment : MonoBehaviour
     {
         equip.onValueChanged.RemoveListener(delegate
         {
-            DataSaverAndLoader.ArmorEquipmentChanged(currentArmor, equip.isOn);
+            CharacterData.EditArmorEquip(currentArmor, equip.isOn);
+            CharacterData.SaveCharacter();
+            //DataSaverAndLoader.ArmorEquipmentChanged(currentArmor, equip.isOn);
         });
         equip.isOn = true;
         equip.onValueChanged.AddListener(delegate
         {
-            DataSaverAndLoader.ArmorEquipmentChanged(currentArmor, equip.isOn);
+            CharacterData.EditArmorEquip(currentArmor, equip.isOn);
+            CharacterData.SaveCharacter();
+            //DataSaverAndLoader.ArmorEquipmentChanged(currentArmor, equip.isOn);
         });
     }
 

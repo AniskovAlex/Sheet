@@ -18,8 +18,8 @@ public class WeaponInventory : MonoBehaviour
     public void LoadEquited()
     {
         WeaponEquipment[] weapons = content.GetComponentsInChildren<WeaponEquipment>();
-        (int, string)[] equipted = DataSaverAndLoader.LoadEquitedWeapon();
-        foreach ((int, string) x in equipted)
+        List<(int, string)> equipted = CharacterData.GetWeaponEquip();
+        foreach ((int, string) x in new List<(int, string)>(equipted))
         {
             foreach (WeaponEquipment y in weapons)
             {
@@ -59,7 +59,7 @@ public class WeaponInventory : MonoBehaviour
                 }
             }
         }
-        if(bufWeapon != null)
+        if (bufWeapon != null)
         {
             bufWeapon.Unequip();
             Destroy(bufWeapon.gameObject);

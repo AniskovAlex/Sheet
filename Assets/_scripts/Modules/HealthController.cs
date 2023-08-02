@@ -13,8 +13,22 @@ public class HealthController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharacterData.load += Init;
+    }
+
+    void Init()
+    {
         CharacterData.GetHealth(out maxHealth, out health, out tempHealth);
-        UpdataHP();
+        InitHP();
+    }
+
+    void InitHP()
+    {
+        foreach (GameObject x in boxs)
+        {
+            x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
+            x.GetComponentInChildren<Amount>().gameObject.GetComponent<Text>().text = tempHealth.ToString();
+        }
     }
 
     void UpdataHP()
@@ -24,7 +38,7 @@ public class HealthController : MonoBehaviour
             x.GetComponentInChildren<Modifier>().gameObject.GetComponent<Text>().text = health + "/" + maxHealth;
             x.GetComponentInChildren<Amount>().gameObject.GetComponent<Text>().text = tempHealth.ToString();
         }
-        CharacterData.SetHealth(health, tempHealth);
+        CharacterData.SetCurrentHealth(health, tempHealth);
     }
 
     public void ChangeHP(int value)

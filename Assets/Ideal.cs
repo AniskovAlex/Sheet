@@ -15,6 +15,9 @@ public class Ideal : MonoBehaviour
     public void Save()
     {
         if (inputField != null)
-            DataSaverAndLoader.SaveIdeal(inputField.text);
+        {
+            CharacterData.SetIdeal(inputField.text);
+            //DataSaverAndLoader.SaveIdeal(inputField.text);
+        }
     }
 }

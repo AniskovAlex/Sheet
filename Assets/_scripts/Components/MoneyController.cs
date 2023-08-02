@@ -11,9 +11,13 @@ public class MoneyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetMoney();
+        CharacterData.load += Init;
     }
+    void Init()
+    {
+        SetMoney();
 
+    }
     void SetMoney()
     {
 
@@ -119,6 +123,7 @@ public class MoneyController : MonoBehaviour
 
     public void SaveMoney()
     {
-        DataSaverAndLoader.SaveMoney(money.ConvertAll<int>(x => int.Parse(x.text)));
+        CharacterData.SetMoney(money.ConvertAll<int>(x => int.Parse(x.text)).ToArray());
+        //DataCloudeSave.Save();
     }
 }

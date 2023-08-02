@@ -44,7 +44,7 @@ public class SpellBody : MonoBehaviour
                 headCaption.text += "очарование";
                 break;
             case Spell.Type.Evocation:
-                headCaption.text += "воплащение";
+                headCaption.text += "воплощение";
                 break;
             case Spell.Type.Illusion:
                 headCaption.text += "иллюзи€";

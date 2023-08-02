@@ -239,7 +239,7 @@ public class FormCreater : MonoBehaviour
                     found = true;
                 }
                 if (!found)
-                    PresavedLists.preLists.Add((ability.listName, DataSaverAndLoader.LoadCustom(ability.listName)));
+                    PresavedLists.preLists.Add((ability.listName, CharacterData.GetCustomList(ability.listName) /*DataSaverAndLoader.LoadCustom(ability.listName)*/));
                 if (ability.chooseCount == 0)
                 {
                     foreach ((string, List<int>) x in PresavedLists.preLists)
@@ -386,7 +386,7 @@ public class FormCreater : MonoBehaviour
                         if (ability.listName == "CirclesSpells")
                         {
                             List<(int, int)> buf = new List<(int, int)>();
-                            int index = DataSaverAndLoader.LoadCustom(ability.listName)[0];
+                            int index = CharacterData.GetCustomList(ability.listName)[0]/*DataSaverAndLoader.LoadCustom(ability.listName)[0]*/;
                             buf.Add(ability.consum[index * 2]);
                             buf.Add(ability.consum[index * 2 + 1]);
                             ability.consum = buf.ToArray();
@@ -722,7 +722,7 @@ public class FormCreater : MonoBehaviour
                     Destroy(discription.GetComponentInChildren<SpellChoose>().gameObject);
                     break;
                 case 10:
-                    List<int> save = DataSaverAndLoader.LoadCustom(ability.listName + "skills");
+                    List<int> save = CharacterData.GetCustomList(ability.listName + "skills")/*DataSaverAndLoader.LoadCustom(ability.listName + "skills")*/;
                     List<string> remove = new List<string>() { "Обман", "Убеждение" };
                     if (save != null && save.Count > 0)
                         foreach (int x in save)
@@ -748,7 +748,10 @@ public class FormCreater : MonoBehaviour
                     PresavedLists.UpdateSkills("", "Обман");
                     PresavedLists.UpdateSkills("", "Убеждение");
                     if (save.Count > 0)
-                        DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                    {
+                        //DataSaverAndLoader.SaveCustomList(ability.listName + "skills", save);
+                        CharacterData.AddCustomList(ability.listName + "skills", save);
+                    }
                     break;
             }
         }
@@ -911,7 +914,8 @@ public class FormCreater : MonoBehaviour
                     List<int> spellsId = new List<int>();
                     foreach (SpellBody x in spells)
                         spellsId.Add(x.GetSpell().id);
-                    DataSaverAndLoader.SaveCustomList(ability.listName, spellsId);
+                    CharacterData.AddCustomList(ability.listName, spellsId);
+                    //DataSaverAndLoader.SaveCustomList(ability.listName, spellsId);
                     break;
                 case "DedicatedToMagic":
                     break;
@@ -1047,7 +1051,7 @@ public class FormCreater : MonoBehaviour
         if (ability.type == Ability.Type.abilitie)
         {
             if (ability.listName == "DwarfHold")
-                DataSaverAndLoader.SaveAddHealth(DataSaverAndLoader.LoadAddHealth() - 1);
+                PresavedLists.addHealth -= 1;
             if (ability.listName == "LightlyArmored")
                 if (!bufFlag)
                     PresavedLists.armorTypes.Remove(Armor.ArmorType.Light);
@@ -1173,7 +1177,7 @@ public class FormCreater : MonoBehaviour
                             foreach ((int, HashSet<int>) x in PresavedLists.spellKnew)
                                 if (x.Item2.Contains(139))
                                     flag1 = true;
-                            foreach ((int, HashSet<int>) x in DataSaverAndLoader.LoadSpellKnew())
+                            foreach ((int, List<int>) x in CharacterData.GetSpellsKnew() /*DataSaverAndLoader.LoadSpellKnew()*/)
                                 if (x.Item2.Contains(139))
                                     flag1 = true;
                             if (!flag1)
@@ -1266,7 +1270,10 @@ public class FormCreater : MonoBehaviour
                         break;
                 }
                 if (flag != 0)
-                    DataSaverAndLoader.SaveCustomList(ability.listName, new List<int>() { x.Item1 });
+                {
+                    CharacterData.AddCustomList(ability.listName, new List<int>() { x.Item1 });
+                    //DataSaverAndLoader.SaveCustomList(ability.listName, new List<int>() { x.Item1 });
+                }
                 break;
             }
     }

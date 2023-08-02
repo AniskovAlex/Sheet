@@ -119,7 +119,7 @@ public class Wizard : PlayersClass
 
         subList1 = new List<(int, Item)>()
         {
-            (1, new Item(2))
+            (1, new Item(27))
         };
         subList.Add(subList1);
         list.Add(subList);

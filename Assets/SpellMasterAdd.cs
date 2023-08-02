@@ -159,7 +159,8 @@ public class SpellMasterAdd : MonoBehaviour
         HashSet<int> list = new HashSet<int>();
         foreach (Spell x in SpellController.spellMaster)
             list.Add(x.id);
-        DataSaverAndLoader.SaveSpellMaster(list);
+        CharacterData.SetSpellMaster(list);
+        /*DataSaverAndLoader.SaveSpellMaster(list);*/
         //SpellController.ReloadSpells();
     }
 }

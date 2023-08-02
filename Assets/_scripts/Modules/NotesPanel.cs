@@ -12,24 +12,25 @@ public class NotesPanel : MonoBehaviour
 
     private void Start()
     {
-        LoadNotes();
-
+        CharacterData.load += LoadNotes;
     }
 
     void LoadNotes()
     {
-        List<(string, string)> list = DataSaverAndLoader.LoadNotes();
+        List<(string, string)> list = CharacterData.GetNotes() /*DataSaverAndLoader.LoadNotes()*/;
         foreach ((string, string) x in list)
         {
             CreateNote(x.Item1, x.Item2);
         }
         noteCreate.transform.SetAsLastSibling();
+        contentSizer.HieghtSizeInit();
     }
 
     public void AddNewNote(string head, string note)
     {
         CreateNote(head, note);
-        DataSaverAndLoader.SaveNote(head, note);
+        CharacterData.AddNote(head, note);
+        //DataSaverAndLoader.SaveNote(head, note);
     }
 
     void CreateNote(string head, string note)
@@ -46,8 +47,12 @@ public class NotesPanel : MonoBehaviour
         int i;
         for (i = 0; i < transforms.Length; i++)
             if (transforms[i].transform.parent.gameObject == note)
+            {
                 break;
-        DataSaverAndLoader.DeleteNotes(i);
+            }
+        CharacterData.DeleteNote(i);
+        //DataSaverAndLoader.DeleteNotes(i);
+
         DestroyImmediate(note);
         contentSizer.HieghtSizeInit();
     }

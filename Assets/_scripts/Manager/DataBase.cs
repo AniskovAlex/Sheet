@@ -13,9 +13,10 @@ public class DataBase : MonoBehaviour
     const string itemSaveID = "@itemID_";
     const string itemCostSaveName = "@itemCost_";
     const string itemAmountSaveName = "@itemA_";
-    
+
     public GameObject item;
     public GameObject panel;
+    public AdderItemsToInventory inventory;
 
     Item[] items;
     int itemsCount;
@@ -27,13 +28,22 @@ public class DataBase : MonoBehaviour
         characterName = CharacterCollection.GetName();
 
         items = GetComponent<LoadInventoryManager>().GetItems();
-        LoadItems();
+        CharacterData.load += LoadItems;
     }
 
     void LoadItems()
     {
         //PlayerPrefs.DeleteAll();
-        if (PlayerPrefs.HasKey(characterName + itemsCountSaveName))
+        foreach (Item x in CharacterData.GetItems())
+        {
+            if (x.id == -1)
+                AddItemBox(x, x.amount);
+            else
+                foreach (Item y in items)
+                    if (y.id == x.id)
+                        AddItemBox(y, x.amount);
+        }
+        if (PlayerPrefs.HasKey(characterName + itemsCountSaveName) && CharacterData.GetItems().Count == 0) // надо удалять предметы, когда загрузил их из реестра
         {
             itemsCount = PlayerPrefs.GetInt(characterName + itemsCountSaveName);
             for (int i = 0; i < itemsCount; i++)
@@ -45,35 +55,43 @@ public class DataBase : MonoBehaviour
                 if ((id == -1) && PlayerPrefs.HasKey(characterName + itemCostSaveName + label))
                 {
                     amount = PlayerPrefs.GetInt(characterName + itemAmountSaveName + label);
-                    AddItemBox(DataSaverAndLoader.LoadSavedItem(label), amount);
+                    Item custom = DataSaverAndLoader.LoadSavedItem(label);
+                    AddItemBox(custom, amount);
+                    custom.amount = amount;
+                    CharacterData.SetItemSilent(custom);
                 }
                 else
                 {
+
                     amount = PlayerPrefs.GetInt(characterName + itemAmountSaveName + id);
                     foreach (Item x in items)
                     {
                         if (x.id == id)
                         {
                             AddItemBox(x, amount);
+                            x.amount = amount;
+                            CharacterData.SetItemSilent(x);
                             break;
                         }
                     }
                 }
             }
+            CharacterData.SaveCharacter();
         }
         WeaponInventory weaponInventory = FindObjectOfType<WeaponInventory>();
         weaponInventory.LoadEquited();
         ArmorInventory armorInventory = FindObjectOfType<ArmorInventory>();
         armorInventory.LoadEquited();
+        inventory.updatePanel();
     }
 
-   
+
     void AddItemBox(Item x, int amount)
     {
 
         GameObject newItem = Instantiate(item, panel.transform);
         newItem.GetComponent<ItemBox>().SetItem(x, amount, true);
-        
+
     }
-   
+
 }
