@@ -1,4 +1,4 @@
-//#define LOCAL_TEST
+#define LOCAL_TEST
 
 using System.Collections;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ public static class DataCloudeSave
     static Task AuthGoogle()
     {
 #if LOCAL_TEST
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        return AuthenticationService.Instance.SignInAnonymouslyAsync();
 #else
         var tcs = new TaskCompletionSource<object>();
         PlayGamesPlatform.Instance.Authenticate((success) =>
@@ -162,7 +162,7 @@ public static class DataCloudeSave
         if (_client == null) await Auth();
         var query = await Call(_client.LoadAsync(new HashSet<string> { "_characters_" }));
         if (query == null) return new CloudSaveObj();
-        return query.TryGetValue("_characters_@", out var value) ? Deserialize<CloudSaveObj>(value) : default;
+        return query.TryGetValue("_characters_", out var value) ? Deserialize<CloudSaveObj>(value) : default;
     }
 
     private static T Deserialize<T>(string input)

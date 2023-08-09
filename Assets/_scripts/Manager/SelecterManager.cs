@@ -36,13 +36,7 @@ public class SelecterManager : MonoBehaviour
 
     async Task DeleteData()
     {
-        characters = await DataCloudeSave.Load<List<(int, string)>>("_characters_");
-        foreach ((int, string) x in new List<(int, string)>(characters))
-        {
-            DataCloudeSave.Delete("char_Id_" + x.Item1);
-            characters.Remove(x);
-        }
-        await DataCloudeSave.Save("_characters_", characters);
+        DataCloudeSave.DeleteAll();
     }
 
 
@@ -66,7 +60,7 @@ public class SelecterManager : MonoBehaviour
 
         CloudAutoSaveManager.GetInstance().init = true;
 
-        //task = CloudAutoSaveManager.GetInstance().SyncSaves(characters);
+        task = CloudAutoSaveManager.GetInstance().SyncSaves(characters);
         while (!task.IsCompleted) yield return null;
 
         task = Init();
@@ -86,7 +80,7 @@ public class SelecterManager : MonoBehaviour
                 Character character = await DataCloudeSave.Load<Character>("char_Id_" + x.Item1.ToString());
                 Debug.Log(character._id + " " + character._name);
                 character.Init();
-                Debug.Log(character._id + " " + character._name + "aaaaaaaaaaaaaa");
+                //Debug.Log(character._id + " " + character._name + "aaaaaaaaaaaaaa");
                 //int countClasses = PlayerPrefs.GetInt(charName + levelCountSaveName);
                 int level = character._level;
                 List<(int, PlayersClass)> classes = character.GetClasses();
@@ -96,7 +90,7 @@ public class SelecterManager : MonoBehaviour
                     className = classes[0].Item2.name;
                 if (classes.Count > 1)
                     className += " +" + (classes.Count - 1 - 1);
-                Debug.Log(x.Item2 + " " + x.Item1);
+                //Debug.Log(x.Item2 + " " + x.Item1);
                 newObject.GetComponent<CharacterTab>().SetCharacter(x.Item2, className, level, x.Item1);
             }
         else

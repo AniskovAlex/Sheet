@@ -49,7 +49,7 @@ public class CloudAutoSaveManager : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if(!focus)
+        if (!focus)
         {
             SyncSaves();
             Debug.Log("Autosave!");
@@ -61,9 +61,16 @@ public class CloudAutoSaveManager : MonoBehaviour
     {
         long localFileTime = await DataCloudeSave.Load<long>("_time_@");
         CloudSaveObj cloudFile = await DataCloudeSave.LoadFromCloud();
-        if (localFileTime == cloudFile.time) return;
-        if (localFileTime > cloudFile.time)
+        if (cloudFile != null)
+            Debug.Log("Begin sync: local time - " + localFileTime + "| cloud time - " + cloudFile.time);
+        if (cloudFile != null&& localFileTime == cloudFile.time)
         {
+            Debug.Log("Sync no needed");
+            return;
+        }
+        if ((cloudFile != null && localFileTime > cloudFile.time) || cloudFile == null)
+        {
+            Debug.Log("Sync to cloud");
             //characters = await DataCloudeSave.Load<List<(int, string)>>("_characters_");
             // метод со[ранения локального файла в облако
             CloudSaveObj cloudSaveObj = new CloudSaveObj();
@@ -72,16 +79,18 @@ public class CloudAutoSaveManager : MonoBehaviour
             cloudSaveObj.time = localFileTime;
             await DataCloudeSave.SaveToCloud(cloudSaveObj);
             cloudSave = cloudSaveObj;
+            Debug.Log("End sync to cloud");
         }
         {
-
+            Debug.Log("Sync to local");
             //метод загрузки файла из облака в локальный файл
+            characters.Clear();
             foreach (Character x in cloudFile.characters)
             {
-                characters.Clear();
                 characters.Add((x._id, x._name));
                 await DataCloudeSave.Save("char_Id_" + x._id.ToString(), x);
             }
+            Debug.Log("End sync to local");
         }
         Debug.Log("Saved");
     }
@@ -92,8 +101,16 @@ public class CloudAutoSaveManager : MonoBehaviour
         CloudSaveObj cloudFile = await DataCloudeSave.LoadFromCloud();
         if (localFileTime == cloudFile.time) return;
         List<(int, string)> characters = new List<(int, string)>();
-        if (localFileTime > cloudFile.time)
+        if (cloudFile != null)
+            Debug.Log("Begin sync: local time - " + localFileTime + "| cloud time - " + cloudFile.time);
+        if (cloudFile != null && localFileTime == cloudFile.time)
         {
+            Debug.Log("Sync no needed");
+            return;
+        }
+        if ((cloudFile != null && localFileTime > cloudFile.time) || cloudFile == null)
+        {
+            Debug.Log("Sync to cloud");
             characters = await DataCloudeSave.Load<List<(int, string)>>("_characters_");
             // метод со[ранения локального файла в облако
             CloudSaveObj cloudSaveObj = new CloudSaveObj();
@@ -102,14 +119,17 @@ public class CloudAutoSaveManager : MonoBehaviour
             cloudSaveObj.time = localFileTime;
             await DataCloudeSave.SaveToCloud(cloudSaveObj);
             cloudSave = cloudSaveObj;
+            Debug.Log("End sync to cloud");
         }
+        else
         {
-
+            Debug.Log("Sync to local");
             //метод загрузки файла из облака в локальный файл
             foreach (Character x in cloudFile.characters)
             {
                 await DataCloudeSave.Save("char_Id_" + x._id.ToString(), x);
             }
+            Debug.Log("End sync to local");
         }
     }
 
